@@ -6,14 +6,21 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-
+	<!-- DB 설정 파일 불러오기 -->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+	    <property name="locations">
+	        <list>
+	            <value>classpath:application.properties</value>
+	        </list>
+	    </property>
+	</bean>
+	
 	<!-- HikariCP -->
 	<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:oracle:thin:@localhost:1521:xe"></property>
-		
-		<property name="username" value="spring"></property>
-		<property name="password" value="java1234"></property>
+		<property name="driverClassName" value="${spring.datasource.driver-class-name}"></property>
+	    <property name="jdbcUrl" value="${spring.datasource.url}"/>
+	    <property name="username" value="${spring.datasource.username}"/>
+	    <property name="password" value="${spring.datasource.password}"/>
 	</bean>
 	
 	<bean class="com.zaxxer.hikari.HikariDataSource" id="dataSource">

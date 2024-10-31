@@ -16,4 +16,4 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 /.metadata/
-**/src/main/resources/application.yml
+**/src/main/resources/application.properties
