@@ -3,8 +3,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.test</groupId>
-	<artifactId>editor</artifactId>
-	<name>CodeEditor</name>
+	<artifactId>chat</artifactId>
+	<name>Chatting</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
@@ -71,7 +71,6 @@
 			<version>1.16</version>
 		</dependency>
 
-
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
@@ -104,8 +103,7 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 			<scope>test</scope>
-		</dependency>    
-
+		</dependency>  
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
 		<!-- junit이 있지만 스프링과 원할하게 연동하기 위해 테스트 가능 -->
 		<dependency>
@@ -116,7 +114,6 @@
 			 test할 때만 사용한다는 표시인데 
 			org.springframework.test 임포트가 안돼서 삭제-->
 		</dependency>
-
 		
 		<!-- lombok -->
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
@@ -125,13 +122,6 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.34</version>
 			<scope>provided</scope>
-		</dependency>   
-				
-		<!-- HikariCP -->
-		<dependency>
-			<groupId>com.zaxxer</groupId>
-			<artifactId>HikariCP</artifactId>
-			<version>2.7.4</version>
 		</dependency> 
 		
 		<!-- mybatis -->
@@ -157,26 +147,11 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- Tiles -->  
+		<!-- HikariCP -->
 		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-core</artifactId>
-			<version>3.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-jsp</artifactId>
-			<version>3.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-api</artifactId>
-			<version>3.0.8</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tiles</groupId>
-			<artifactId>tiles-servlet</artifactId>
-			<version>3.0.8</version>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>2.7.4</version>
 		</dependency>
 		
 		<!-- WebSocket --> 
@@ -189,7 +164,19 @@
 			<groupId>javax.websocket</groupId>
 			<artifactId>javax.websocket-api</artifactId>
 			<version>1.1</version>
-		</dependency> 
+		</dependency>
+		
+		<!-- Swagger 구축 -->  
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.9.2</version>
+		</dependency>
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger-ui</artifactId>
+		    <version>2.9.2</version>
+		</dependency>     
 	</dependencies>
     <build>
         <plugins>

@@ -6,7 +6,7 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
+
 	<!-- HikariCP -->
 	<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
 		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
@@ -14,9 +14,6 @@
 		
 		<property name="username" value="spring"></property>
 		<property name="password" value="java1234"></property>
-    <!-- <property name="jdbcUrl" value="${spring.datasource.url}"/>
-    <property name="username" value="${spring.datasource.username}"/>
-    <property name="password" value="${spring.datasource.password}"/> -->
 	</bean>
 	
 	<bean class="com.zaxxer.hikari.HikariDataSource" id="dataSource">
@@ -45,12 +42,11 @@
 	<bean class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sessionFactory"></constructor-arg>
 	</bean>
-	
+
 	<!-- 
 		MyBatis SQL 실행 객체
 		1. SqlSessionTemplate
 		2. 인터페이스 매퍼
 	 -->
-	<mybatis-spring:scan base-package="com.test.editor.mapper"/>
-		
+	<mybatis-spring:scan base-package="com.test.chat.mapper"/>
 </beans>

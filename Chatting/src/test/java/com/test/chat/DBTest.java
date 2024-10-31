@@ -1,4 +1,4 @@
-package com.test.editor;
+package com.test.chat;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.test.editor.mapper.EditorMapper;
+import com.test.chat.mapper.ChatMapper;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
 public class DBTest {
 	
 	@Autowired
-	private EditorMapper mapper;
+	private ChatMapper mapper;
 	
 	@Test
 	public void testDB() {

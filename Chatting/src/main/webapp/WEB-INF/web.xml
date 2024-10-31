@@ -43,5 +43,4 @@
 		<filter-name>encoding</filter-name>
 		<servlet-name>appServlet</servlet-name>
 	</filter-mapping>
-
 </web-app>
