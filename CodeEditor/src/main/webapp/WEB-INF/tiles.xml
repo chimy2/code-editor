@@ -10,4 +10,9 @@
 		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute> -->
 	</definition>
+	
+	<definition name="home" template="/WEB-INF/views/home.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+	</definition>
+	
 </tiles-definitions>
