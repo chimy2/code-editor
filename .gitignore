@@ -17,3 +17,8 @@ buildNumber.properties
 .classpath
 /.metadata/
 **/src/main/resources/application.properties
+
+Servers/
+
+# git update-index --assume-unchanged "Servers/Tomcat v9.0 Server at localhost-config/server.xml"
+# git update-index --assume-unchanged "Servers/Tomcat v9.0 Server at localhost.server"
