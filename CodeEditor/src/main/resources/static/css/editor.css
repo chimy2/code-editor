@@ -4,6 +4,18 @@
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	padding: 0 5px;
 	height: 30px;
 	background: var(--gray5);
+}
+
+.header_editor img {
+	color: var(--gray4);
+	padding: 0 2px;
+	cursor: pointer;
+}
+
+.editor {
+	height: calc(100vh - 60px);
+	background: tomato;
 }
