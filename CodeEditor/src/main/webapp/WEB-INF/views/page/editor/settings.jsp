@@ -37,8 +37,20 @@
             </li>
         </ul>
         
-        <div class="settings-content" id="appearance-content" style="display: none;">
-            Appearance 내용
+        <div class="theme-content" id="appearance-content" style="display: none;">
+	        <h2>Appearance</h2>
+	        <hr>
+	        <h3>Theme</h3>
+	        <fieldset class="theme-selector">
+	          <label class="theme-mode">
+	              <input type="radio" name="theme" value="dark" id="dark-button" checked>
+	              <span>Dark</span>
+	          </label>
+	          <label class="theme-mode">
+	              <input type="radio" name="theme" value="light" id="light-button" >
+	              <span>Light</span>
+	          </label>
+	        </fieldset>
         </div>
         <div class="settings-content" id="colors-content" style="display: none;">
             Colors 내용 
@@ -92,6 +104,25 @@
         // 선택한 콘텐츠만 보이게 설정
         document.getElementById(contentId + '-content').style.display = 'block';
     }
+    
+ 	// Dark와 Light 버튼 클릭 시 선택 상태를 적용하는 함수
+    function toggleThemeSelection(theme) {
+        const darkButton = document.getElementById('dark-button');
+        const lightButton = document.getElementById('light-button');
+
+        if (theme === 'dark') {
+            darkButton.classList.add('selected');
+            lightButton.classList.remove('selected');
+        } else if (theme === 'light') {
+            lightButton.classList.add('selected');
+            darkButton.classList.remove('selected');
+        }
+    }
+
+    // 이벤트 리스너 추가
+    document.getElementById('dark-button').addEventListener('click', () => toggleThemeSelection('dark'));
+    document.getElementById('light-button').addEventListener('click', () => toggleThemeSelection('light'));
+
 </script>
 
 </html>

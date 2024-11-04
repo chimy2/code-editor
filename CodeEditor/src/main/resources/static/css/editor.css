@@ -113,7 +113,7 @@ body {
 
 .settings-container {
     display: flex;
-    height: calc(100% - 113px); /* header와 footer를 제외한 높이 */
+    height: calc(100% - 113px);
     width: 100%;
     margin-top: 50px;
     margin-bottom: 63px;
@@ -160,3 +160,83 @@ body {
 	width: 14px;
 	height: 14px;
 }
+
+
+
+.theme-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box; 
+    padding: 0; 
+    margin: 0; 
+}
+
+
+.theme-content hr {
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 22px); 
+}
+
+.theme-content h2,
+.theme-content h3 {
+	color: #FFFFFF;
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+.theme-content h2 {
+	font-size: 20px;
+}
+
+.theme-content h3 {
+	font-size: 16px;
+}
+
+.theme-selector {
+    display: flex;
+    align-items: center;
+	width: 350px;
+	height: 90px;
+	background-color: #D9D9D9;
+	justify-content: space-around;
+	border: 0;
+	border-radius: 5px;
+	margin-left: 20px;
+}
+.theme-mode input[type="radio"] {
+   color: #666666;
+}
+
+.theme-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 50px;
+    background-color: #FFF;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid #666666;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.theme-mode span {
+	margin-left: 10px;
+}
+
+#dark-button:checked + label, 
+#dark-button:checked + label {
+    background-color: #666666; /* Dark 모드 색상 */
+    color: #FFFFFF; /* 텍스트 색상 */
+}
+
+
+
+
