@@ -21,3 +21,6 @@
     </ul>
 </div>
 <button id="add-tab">Add Tab</button>
+
+</body>
+</html>

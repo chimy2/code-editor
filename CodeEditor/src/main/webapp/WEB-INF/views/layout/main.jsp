@@ -6,12 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Main</title>
-	<tiles:insertAttribute name="asset_main"></tiles:insertAttribute><!-- link, script 기본 세팅 -->
+	<tiles:insertAttribute name="asset_main"/><!-- link, script 기본 세팅 -->
 </head>
 <body class="main">
-	<!-- mypage_header -->
-	<tiles:insertAttribute name="header_main"></tiles:insertAttribute> 
 	<!-- mypage_content -->
-	<tiles:insertAttribute name="content_mypage"></tiles:insertAttribute> 
+	<tiles:insertAttribute name="content_main"/> 
 </body>
 </html>
