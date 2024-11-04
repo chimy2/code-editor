@@ -11,10 +11,9 @@
 	<tiles:insertAttribute name="asset_main"></tiles:insertAttribute><!-- link, script 메인 세팅 -->
 </head>
 <body class="mypage">
-	<header>
-		<tiles:insertAttribute name="header_main"></tiles:insertAttribute> 
-	</header>
-
+	<!-- mypage_header -->
+	<tiles:insertAttribute name="header_main"></tiles:insertAttribute> 
+	<!-- mypage_content -->
 	<tiles:insertAttribute name="content_mypage"></tiles:insertAttribute> 
 </body>
 </html>
