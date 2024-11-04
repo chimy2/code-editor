@@ -10,17 +10,17 @@
 
 <div id="content_mypage">
 	<div class="calendar">
-		<div id="calendar_box">
-			<div id="calendar_name">November 2024</div>
-			<div id="calendar_item">
+		<div class="calendar_box">
+			<div class="calendar_name">November 2024</div>
+			<div class="calendar_item">
 				<div><img class="plus" src="/editor/resources/image/icon/plus.svg"></div>
 				<div class="calendar_item">일정수정</div>
 				<div class="calendar_item">프로젝트 확인하기</div>
 				<div class="calendar_item">보드</div>
 				<div class="calendar_item">날짜</div>
 			</div>
-			<div id="calendar_month"></div>
-			<div id="contact">Contact us</div>
+			<div class="calendar_month"></div>
+			<div class="contact">Contact us</div>
 		</div>
 		
 	</div>
@@ -48,7 +48,7 @@
 			<div class="inner_box_header">
 				<img class="team_icon" src="/editor/resources/image/icon/team.svg">
 				Team1 Project
-				<div id="total_project">전체 프로젝트 관리</div>
+				<div class="total_project">전체 프로젝트 관리</div>
 				<img class="plus" src="/editor/resources/image/icon/plus.svg">
 			</div>
 			<div class="inner_box_content"></div>

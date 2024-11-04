@@ -14,6 +14,7 @@
     --gray8: #ededed;
     --gray9: #f1f1f1;
     --gray10: #f9f9f9;
+    --gray11: #0c0d11;
 
     --red1: #ee0a0a;
     --red2: #d92b2b;
@@ -43,28 +44,19 @@
 
 
 /* main */
-.main{
-	background-color: #26292F;
-	margin : 0;
-	width : 100%;
-	height : 100%;
-	display : flex;
-	justify-content: center;
-    align-self: center;
-    flex-direction : column; 
-}
+
 .login_header{
 	display: flex;
 	margin-left : auto;
 }
 
 .login_header .login_box{
-	border : 1px solid #FFFFFF;
+	border : 1px solid var(--white);
 	width : 100px;
 	height : 40px;
 	border-radius: 3px;
 	font-size : 1rem;
-	color : #FFFFFF;
+	color : var(--white);
 	display: flex;
 	justify-content : center; 
 	align-items: center;
@@ -83,19 +75,67 @@
 	margin-right : 10px;
 }
 
-.main_text{
-	color : #FFFFFF;
+.main_content{
+	border : 2px solid var(--white);
+	height : 700px;
+	display : flex;
+	flex-direction : column;
+	align-content: center;
+	justify-content: space-around;
 }
 
-.main_text:nth-child(1){
-	font-size : 3rem;
-	justify-items: center;
+.main_text{
+	color : var(--white);
+	display : flex;
+	flex-direction : column;
+	justify-content: center;
+	text-align: center;
+}
+
+.main_menu{
+	margin : auto;
+}
+.main_menu_box{
+	border : 2px solid var(--orange);
+	border-radius: 50%;
+	width : 110px;
+	height : 110px;
+	color : var(--orange);
+	font-size : 1rem;
+	text-align: center;
+	display : flex;
+	flex-direction : column;
+	align-items: center;
+	justify-content: center;
+}
+
+.main_menu_box:hover{
+	cursor:pointer;
+}
+.main_menu_box img{
+	width : 40px;
+	height : 40px;
+}
+
+.main_menu{
+	display : flex;
 }
 
 /* mypage */
+.main{
+	background-color: var(--gray1);
+	margin : 0;
+	width : 100%;
+	height : 100%;
+	display : flex;
+	justify-content: center;
+    align-self: center;
+    flex-direction : column; 
+}
+
 .mypage {
     margin: 0;
-    background-color: #0c0d11;
+    background-color: var(--gray11);
     width: 100%;
     height: 100%;
 }
@@ -104,7 +144,7 @@
 .header {
     width: 100%;
     height: 30px;
-    background-color: #26292f;
+    background-color: var(--gray1);
     display: flex;
     align-items: center;
 }
@@ -126,7 +166,7 @@
 }
 
 #nick {
-	color : #FFFFFF;
+	color : var(--white);
 	font-size : 1rem;
 	margin-left : 10px;
 	margin-bottom : 2px;
@@ -145,7 +185,6 @@
 }
 
 .calendar{
-	/*  border : 1px solid #FFFFFF;  */
 	grid-row: 1 / 3;
 	grid-column: 1 / 4;
 	box-sizing: border-box;
@@ -157,16 +196,17 @@
 	justify-content: center;
 }
 
-.calendar #contact{
+.calendar .contact{
+	margin-top : 10px;
     align-self: flex-start; 
     border-bottom : 1px solid gold;
 }
 
-.calendar #contact:hover{
+.calendar .contact:hover{
     cursor : pointer;
 }
 
-#calendar_box{
+.calendar_box{
 	box-sizing: border-box;
 	width : 90%;
 	height : 80%;
@@ -174,30 +214,23 @@
 	flex-direction : column;
 }
 
-#calendar_box div{
-	margin : 5px 0;
-}
 
-#calendar_month{
-	border : 1px solid #FFFFFF;
+.calendar_month{
+	border : 1px solid var(--white);
 	width : 100%;
 	height : 80%;
 	align-self: center; 
 	margin-top : 0;
 }
 
-#calendar_name{
-	color : #FFFFFF;
+.calendar_name{
+	color : var(--white);
 	font-size:2rem;
 }
 
-#calendar_item{
-	color : #FFFFFF;
-	display:flex;
-	margin-bottom : 0;
-}
 
-#calendar_item:hover{
+
+.calendar_item:hover{
 	cursor : pointer;
 }
 
@@ -206,22 +239,22 @@
 	height : 10px;
 }
 
-#calendar_item div:nth-child(1){
+.calendar_item div:nth-child(1){
 	display: inline-flex;
     align-items: center; 
     justify-content: center;
 }
 
-.calendar #contact {
+.calendar .contact {
     align-self: flex-start;
     border-bottom: 1px solid gold;
 }
 
-.calendar #contact:hover {
+.calendar .contact:hover {
     cursor: pointer;
 }
 
-#calendar_box {
+.calendar_box {
     box-sizing: border-box;
     width: 90%;
     height: 80%;
@@ -229,37 +262,41 @@
     flex-direction: column;
 }
 
-#calendar_box div {
-    margin: 5px 0;
+.calendar_box .calendar_name, 
+.calendar_box .calendar_item {
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
-#calendar_month {
-    border: 1px solid #ffffff;
+.calendar_month {
+    border: 1px solid var(--white);
     width: 100%;
     height: 80%;
     align-self: center;
-    margin-top: 0;
+    margin-top: 10px;
 }
 
-#calendar_name {
-    color: #ffffff;
+.calendar_name {
+    color: var(--white);
 }
 
-#calendar_item {
-    color: #ffffff;
+.calendar_item {
+    color: var(--white);
     display: flex;
     margin-bottom: 0;
 }
 
-#calendar_item:hover {
+.calendar_item:hover {
     cursor: pointer;
 }
 
 .plus {
-    width: 10px;
-    height: 10px;
+    width: 25px;
+    height: 25px;
+    margin-right : 10px;
+    margin-right : 10px;
 }
-#calendar_item div:nth-child(1) {
+.calendar_item div:nth-child(1) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -268,25 +305,25 @@
     height: 10px;
 }
 
-#calendar_item .calendar_item {
-    border: 1px solid #ffffff;
+.calendar_item .calendar_item {
+    border: 1px solid var(--white);
     border-radius: 3px;
-    height: 10px;
-    color: #ffffff;
-    font-size: 0.5rem;
+    height: 18px;
+    color: var(--white);
+    font-size: 1rem;
     margin-left: 5px;
     text-align: center;
     padding: 3px;
     line-height: 1;
+    margin-right : 5px;
 }
 
-#contact {
-    color: #ffffff;
-    font-size: 1rem;
+.contact {
+    color: var(--white);
+    font-size: 1.5rem;
 }
 
 .team_project {
-    /*  border : 1px solid #FFFFFF;  */
     grid-column: 4 / 6;
     box-sizing: border-box;
     width: 100%;
@@ -303,20 +340,20 @@
 }
 
 .inner_box_header {
-    border: 1px solid #ffffff;
-    background-color: #26292f;
+    border: 1px solid var(--white);
+    background-color: var(--gray1);
     border-radius: 3px 3px 0 0;
     height: 15%;
-    font-size: 0.8rem;
-    color: #ffffff;
+    font-size: 1rem;
+    color: var(--white);
     line-height: 2;
     padding-left: 10px;
     display: flex;
     align-items: center;
 }
 .inner_box_header .team_icon {
-    border: 1px solid #ff8a1f;
-    background-color: #ffffff;
+    border: 1px solid var(--orange);
+    background-color: var(--white);
     border-radius: 50%;
     width: 20px;
     height: 20px;
@@ -324,13 +361,12 @@
 }
 
 .team_project .plus {
-    /* align-items: flex-end; */
-    margin-left: auto;
+    margin-left: 10px;
     margin-right: 10px;
 }
 
-#total_project + img {
-    margin: 0;
+.total_project + img {
+    margin-left: 0;
     margin-right: 10px;
 }
 
@@ -338,38 +374,35 @@
     cursor: pointer;
 }
 
-.inner_box_header #total_project {
-    color: #a29d9d;
-    border-bottom: 1px solid #a29d9d;
-    /* margin-left : auto; */
+.inner_box_header .total_project {
+    color: var(--gray6);
+    border-bottom: 1px solid var(--gray6);
     justify-items: flex-end;
     margin-left: auto;
-    /* align-items: flex-end; */
-    font-size: 0.8rem;
+    font-size: 1rem;
     line-height: 1;
-    margin-right: 10px;
 }
 
-.inner_box_header #total_project:hover {
+.inner_box_header .total_project:hover {
     cursor: pointer;
 }
 
 .inner_box_content {
-    border: 1px solid #ffffff;
-    background-color: #0c0d11;
+    border: 1px solid var(--white);
+    background-color: var(--gray11);
     border-radius: 0 0 3px 3px;
     height: 80%;
 }
 .inner_box_content {
     display: flex;
-    color: #ffffff;
+    color: var(--white);
     align-self: center;
 }
 
 .inner_box_content .user_icon,
 .inner_box_content .team_icon {
-    border: 1px solid #ffffff;
-    background-color: #ffffff;
+    border: 1px solid var(--white);
+    background-color: var(--white);
     border-radius: 50%;
     width: 25px;
     height: 25px;
