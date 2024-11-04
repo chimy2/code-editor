@@ -10,15 +10,13 @@
 <body>
 
 	<!-- <div class = "svg"><img src="/editor/resources/image/icon/user.svg"></div> -->
-	<header>
-		<div class="header">
-			<div class = "headerImg">
-				<img src="/editor/resources/image/icon/Home.svg">
-				<img src="/editor/resources/image/icon/Edit.svg">
-			</div>
-			<div id="nick">test</div>
+	<div class="header">
+		<div class = "headerImg">
+			<img src="/editor/resources/image/icon/Home.svg">
+			<img src="/editor/resources/image/icon/Edit.svg">
 		</div>
-	</header>
+		<div id="nick">test</div>
+	</div>
 	
 </body>
 <script>
