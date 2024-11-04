@@ -1,6 +1,7 @@
 /**
  *
  */
+ 
 
 $('.add_class').click(() => {
     console.log('class 추가');
@@ -70,3 +71,6 @@ $(document).ready(function () {
     // Initialize visibility of close buttons
     $('#tabs ul li.ui-tabs-active .tab-close').show();
 });
+
+
+

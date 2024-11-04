@@ -29,23 +29,27 @@
                 </ul>
             </li>
             <li class="settings-main-item">
-                <button onclick="toggleSubMenu('template')" id="template-button">
-                    Template
-                </button>
+				<button onclick="showContent('template')" id="template-button">
+				    Template
+				</button>
                 <ul class="settings-sub-menu" id="template" style="display: none;">
                 </ul>
             </li>
         </ul>
         
         <div class="settings-content" id="appearance-content" style="display: none;">
-            <!-- Appearance 내용 -->
+            Appearance 내용
         </div>
         <div class="settings-content" id="colors-content" style="display: none;">
-            <!-- Colors 내용 -->
+            Colors 내용 
         </div>
         <div class="settings-content" id="font-content" style="display: none;">
-            <!-- Font 내용 -->
+            Font 내용 
         </div>
+        <div class="settings-content" id="template-content" style="display: none;">
+		    Template 내용
+		</div>
+		        
     </div>
 
     <footer>
@@ -55,6 +59,8 @@
 </body>
 
 <script>
+	
+ 
     function toggleSubMenu(menuId) {
         // 선택한 서브 메뉴와 버튼의 아이콘 찾기
         const menu = document.getElementById(menuId);

@@ -18,6 +18,8 @@
 .editor {
 	height: calc(100vh - 60px);
 	background: tomato;
+}
+
 
 body {
     font-family: "Nanum Gothic", sans-serif;
