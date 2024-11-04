@@ -41,6 +41,57 @@
     --profile-purple: #9a82c1;
 }
 
+
+/* main */
+.main{
+	background-color: #26292F;
+	margin : 0;
+	width : 100%;
+	height : 100%;
+	display : flex;
+	justify-content: center;
+    align-self: center;
+    flex-direction : column; 
+}
+.login_header{
+	display: flex;
+	margin-left : auto;
+}
+
+.login_header .login_box{
+	border : 1px solid #FFFFFF;
+	width : 100px;
+	height : 40px;
+	border-radius: 3px;
+	font-size : 1rem;
+	color : #FFFFFF;
+	display: flex;
+	justify-content : center; 
+	align-items: center;
+	line-height: 1;
+	margin-top : 10px;
+	margin-right : 20px;
+	text-align: center;
+}
+.login_header .login_box:hover{
+	cursor : pointer;
+}
+
+.login_header .login_box img{
+	width : 20px;
+	height : 20px;
+	margin-right : 10px;
+}
+
+.main_text{
+	color : #FFFFFF;
+}
+
+.main_text:nth-child(1){
+	font-size : 3rem;
+	justify-items: center;
+}
+
 /* mypage */
 .mypage {
     margin: 0;
