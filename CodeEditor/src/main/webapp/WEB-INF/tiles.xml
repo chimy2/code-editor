@@ -33,6 +33,7 @@
 		
 		<put-attribute name="left_side" value="/WEB-INF/views/page/editor/explorer.jsp"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/views/page/editor/editor.jsp"></put-attribute>
+		<put-attribute name="settings" value="/WEB-INF/views/page/editor/settings.jsp"></put-attribute>
 		<put-attribute name="right_side" value="/WEB-INF/views/layout/right_side.jsp"></put-attribute>
 	</definition>
 </tiles-definitions>
