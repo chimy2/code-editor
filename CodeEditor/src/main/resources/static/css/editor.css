@@ -1,8 +1,7 @@
 @charset "UTF-8";
 
-
 body {
-	font-family: "Nanum Gothic", sans-serif;
+    font-family: "Nanum Gothic", sans-serif;
     background-color: #1E1E1E;
 }
 
@@ -11,14 +10,12 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%; 
+    width: 100%;
 }
- 
 
 /* settings */
-.settings-html, 
+.settings-html,
 .settings-body {
-	/* margin-top: 96px; */
     height: 100%;
     margin: 0;
     display: flex;
@@ -27,20 +24,19 @@ body {
 }
 
 .settings-main {
-    position: relative; /* 내부 요소를 절대 위치시킬 기준점 */
-    width: 610px; 
+    position: relative;
+    width: 610px;
     height: 630px;
     background-color: #666666;
     display: flex;
-    justify-content: center;
-    align-items: center;
     border: 1px solid #FFFFFF;
     border-radius: 15px;
-    flex-direction: column; /* 내부 요소들을 수직으로 배치 */
+    flex-direction: column;
+    align-items: center;
 }
 
 .settings-main header {
-    position: absolute; /* settings-main 상단에 위치 고정 */
+    position: absolute;
     top: 0;
     left: 0;
     background-color: #45464A;
@@ -49,19 +45,27 @@ body {
     border-top-right-radius: 15px;
     height: 50px;
     width: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .settings-main header div {
-    margin-top: 11px;
     margin-left: 30px;
     font-size: 24px;
     font-weight: 600;
     color: #FFFFFF;
 }
 
-.settings-main footer {  
+.settings-close-icon {
     position: absolute;
-    bottom: 0; /* settings-main의 하단에 위치 */
+    top: 13px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.settings-main footer {
+    position: absolute;
+    bottom: 0;
     left: 0;
     border-top: 1px solid #FFFFFF;
     border-bottom-left-radius: 15px;
@@ -76,10 +80,62 @@ body {
     top: 13px;
 }
 
-.header_editor {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	height: 30px;
-	background: var(--gray5);
+.settings-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 170px;
+    height: 100%;
+    background-color: #1E1E1E;
+    color: white;
+}
+
+.settings-container {
+    display: flex;
+    height: calc(100% - 113px); /* header와 footer를 제외한 높이 */
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 63px;
+    margin-left: 40px;
+    
+}
+
+.settings-main-item {
+    margin: 10px 0;
+}
+
+#theme-button,
+#template-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 100%;
+    text-align: left;
+    padding: 0px 20px;
+    font-size: 16px;
+}
+
+#theme-button {
+	margin-top: 20px;
+}
+
+#template-button {
+	margin-left: 19px;
+}
+
+.settings-sub-menu {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none; /* 기본적으로 숨김 */
+    margin-left: 30px; 
+}
+
+.settings-sub-menu li {
+	margin-top: 10px;
+}
+
+.settings-container img {
+	width: 14px;
+	height: 14px;
 }
