@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>MyPage</title>
-	<tiles:insertAttribute name="asset_main"/><!-- link, script 기본 세팅 -->
+	<tiles:insertAttribute name="asset_main"/>
 </head>
 <body class="mypage">
 	<!-- mypage_header -->

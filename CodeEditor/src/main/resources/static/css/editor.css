@@ -1,1 +1,85 @@
 @charset "UTF-8";
+
+
+body {
+	font-family: "Nanum Gothic", sans-serif;
+    background-color: #1E1E1E;
+}
+
+/* header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; 
+}
+ 
+
+/* settings */
+.settings-html, 
+.settings-body {
+	/* margin-top: 96px; */
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-main {
+    position: relative; /* 내부 요소를 절대 위치시킬 기준점 */
+    width: 610px; 
+    height: 630px;
+    background-color: #666666;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #FFFFFF;
+    border-radius: 15px;
+    flex-direction: column; /* 내부 요소들을 수직으로 배치 */
+}
+
+.settings-main header {
+    position: absolute; /* settings-main 상단에 위치 고정 */
+    top: 0;
+    left: 0;
+    background-color: #45464A;
+    border-bottom: 1px solid #FFFFFF;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 50px;
+    width: 100%;
+}
+
+.settings-main header div {
+    margin-top: 11px;
+    margin-left: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.settings-main footer {  
+    position: absolute;
+    bottom: 0; /* settings-main의 하단에 위치 */
+    left: 0;
+    border-top: 1px solid #FFFFFF;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 63px;
+    width: 100%;
+}
+
+.settings-main footer img {
+    position: absolute;
+    right: 20px;
+    top: 13px;
+}
+
+.header_editor {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 30px;
+	background: var(--gray5);
+}
