@@ -16,8 +16,14 @@
 	</definition>
 	
 	<definition name="editor" template="/WEB-INF/views/layout/editor.jsp">
-		<put-attribute name="main_menu" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
-		<put-attribute name="sub_menu" value="/WEB-INF/views/inc/header_editor.jsp"></put-attribute>
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_edtior" value="/WEB-INF/views/inc/asset_editor.jsp"></put-attribute>
+		<put-attribute name="asset_chat" value="/WEB-INF/views/inc/asset_chat.jsp"></put-attribute>
+		<put-attribute name="asset_bot" value="/WEB-INF/views/inc/asset_bot.jsp"></put-attribute>
+		
+		<put-attribute name="main_header" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="editor_header" value="/WEB-INF/views/inc/header_editor.jsp"></put-attribute>
+		
 		<put-attribute name="left_side" value="/WEB-INF/views/page/editor/explorer.jsp"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/views/page/editor/editor.jsp"></put-attribute>
 		<put-attribute name="right_side" value="/WEB-INF/views/layout/right_side.jsp"></put-attribute>
