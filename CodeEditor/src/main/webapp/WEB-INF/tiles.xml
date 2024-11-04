@@ -11,11 +11,13 @@
 		<put-attribute name="content" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute> -->
 	</definition>
 	
-	<definition name="home" template="/WEB-INF/views/home.jsp">
-		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+	<!-- main -->
+	<definition name="main" template="/WEB-INF/views/layout/main.jsp">
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
 	</definition>
 	
-		<definition name="mypage" template="/WEB-INF/views/layout/mypage.jsp">
+	<definition name="mypage" template="/WEB-INF/views/layout/mypage.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute><!-- 기본 세팅 링크 -->
 		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute><!-- 상단 메뉴 -->
 		<put-attribute name="content_mypage" value="/WEB-INF/views/page/main/content_mypage.jsp"></put-attribute><!-- 캘린더, 팀, 프로젝트 -->

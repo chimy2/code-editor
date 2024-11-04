@@ -75,3 +75,11 @@ body {
     right: 20px;
     top: 13px;
 }
+
+.header_editor {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	height: 30px;
+	background: var(--gray5);
+}
