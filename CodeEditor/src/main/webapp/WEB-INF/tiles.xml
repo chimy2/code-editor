@@ -14,6 +14,7 @@
 	<!-- main -->
 	<definition name="main" template="/WEB-INF/views/layout/main.jsp">
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="content_main" value="/WEB-INF/views/page/main/content_main.jsp"></put-attribute>
 	</definition>
 	
 	<!-- mypage -->
