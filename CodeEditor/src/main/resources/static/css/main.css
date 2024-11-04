@@ -22,13 +22,13 @@
 .headerImg{
 	margin : auto 0;
 	margin-left : 20px; 
-	box-sizing : 15px;
+	box-sizing : 20px;
 }
 
 .headerImg img{
-	margin-right : 5px; 
-	width : 15px;
-	height : 15px;
+	margin-right : 8px; 
+	width : 18px;
+	height : 18px;
 }
 
 .header img:hover{
@@ -37,7 +37,7 @@
 
 #nick{
 	color : #FFFFFF;
-	font-size : 0.8rem;
+	font-size : 1rem;
 	margin-left : 10px;
 	margin-bottom : 2px;
 	line-height: 1;
@@ -99,6 +99,7 @@
 
 #calendar_name{
 	color : #FFFFFF;
+	font-size:2rem;
 }
 
 #calendar_item{
