@@ -58,6 +58,8 @@
 		
 		<put-attribute name="settings" value="/WEB-INF/views/page/editor/settings.jsp"></put-attribute>
 		<put-attribute name="right_side" value="/WEB-INF/views/layout/right_side.jsp"></put-attribute>
+		<put-attribute name="chat_main" value="/WEB-INF/views/page/chat/chat_main.jsp"></put-attribute>
+		
 		
 		<put-list-attribute name="popups">
 			<add-attribute value="/WEB-INF/views/page/editor/new.jsp" />
