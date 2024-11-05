@@ -43,10 +43,6 @@
     --profile-purple: #9a82c1;
 }
 
-body {
-    font-family: "Nanum Gothic";
-}
-
 
 /* main */
 
@@ -55,8 +51,45 @@ body {
 	margin-left : auto;
 }
 
+html{
+	margin : 0;
+	width : 100%;
+	height : 100%;
+}
+
+body{	
+	font-family: "Nanum Gothic";
+	background-color: var(--gray11);
+	margin : 0;
+	width : 100%;
+	height : 100%;
+	display : flex;
+	justify-content: center;
+    align-content: center;
+    flex-direction : column; 
+}
+
+/* main_header */
+.login_header{
+	width: 100%;
+	display: flex;
+	justify-content : center; 
+	align-self: center;
+}
+
+.logo{
+	color : var(--white);
+	text-align: center;
+	margin : 12px;
+	font-size : 1.4rem;	
+}
+.logo:hover{
+	cursor : pointer;
+}
+
+
 .login_header .login_box{
-	border : 1px solid var(--white);
+	outline : 1px solid var(--white);
 	width : 100px;
 	height : 40px;
 	border-radius: 3px;
@@ -69,9 +102,16 @@ body {
 	margin-top : 10px;
 	margin-right : 20px;
 	text-align: center;
+	margin-left : auto;
 }
+.login_header .login_box:nth-child(3){
+	margin-left : 0;
+}
+
 .login_header .login_box:hover{
 	cursor : pointer;
+	background-color: var(--black);
+	outline : 3px solid var(--white);
 }
 
 .login_header .login_box img{
@@ -79,14 +119,16 @@ body {
 	height : 20px;
 	margin-right : 10px;
 }
+/* main */
 
 .main_content{
-	border : 2px solid var(--white);
-	height : 700px;
+	width : 80%;
+	height: 100%;
 	display : flex;
 	flex-direction : column;
-	align-content: center;
-	justify-content: space-around;
+	justify-content: center;
+	align-self: center;
+	margin-bottom : 80px;
 }
 
 .main_text{
@@ -97,17 +139,32 @@ body {
 	text-align: center;
 }
 
+.main_text h1{
+	font-size: 5rem;
+	margin-bottom : 30px;
+	margin-top : 0;
+}
+
+.main_text small{
+	font-size: 1.5rem;
+}
+
 .main_menu{
-	margin : auto;
+	width : 30%;
+	margin-top : 50px;
+	display : flex;
+	justify-content: space-around;
+	align-self : center;
 }
 .main_menu_box{
-	border : 2px solid var(--orange);
+	outline : 2.5px solid var(--orange);
 	border-radius: 50%;
-	width : 110px;
-	height : 110px;
+	width : 130px;
+	height : 130px;
 	color : var(--orange);
 	font-size : 1rem;
 	text-align: center;
+	justify-items: center;
 	display : flex;
 	flex-direction : column;
 	align-items: center;
@@ -116,33 +173,36 @@ body {
 
 .main_menu_box:hover{
 	cursor:pointer;
+	background-color: var(--black);
+	outline : 4px solid var(--orange);
 }
-.main_menu_box img{
-	width : 40px;
-	height : 40px;
+
+.main_menu_box .document{
+	width : 35px;
+	height : 35px;
+	margin-bottom : 8px;
 }
+
+.main_menu_box .code{
+	width : 45px;
+	height : 45px;
+}
+
+.main_menu_box:hover .document{
+	width : 38px;
+	height : 38px;
+	margin-bottom : 8px;
+}
+
+.main_menu_box:hover .code{
+	width : 48px;
+	height : 48px;
+}
+
+
 
 .main_menu{
 	display : flex;
-}
-
-/* mypage */
-.main{
-	background-color: var(--gray1);
-	margin : 0;
-	width : 100%;
-	height : 100%;
-	display : flex;
-	justify-content: center;
-    align-self: center;
-    flex-direction : column; 
-}
-
-.mypage {
-    margin: 0;
-    background-color: var(--gray11);
-    width: 100%;
-    height: 100%;
 }
 
 /* header_main */
@@ -412,3 +472,81 @@ body {
     height: 25px;
     padding: 2px;
 }
+
+/*content_join*/
+.content_join {
+    width: 100%;
+    height: calc(100vh - 30px);
+    display : felx;
+    flex-direction: column;
+    justify-items: center;
+    align-content: center;
+    color : var(--white);
+    margin-bottom : 80px;
+}
+.content_join h1{
+	font-size : 5.5rem;
+}
+
+
+.join_box{
+	outline : 1px solid var(--white);
+	background-color : var(--gray1);
+	width : 340px;
+	height : 55px;
+	display : flex;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+	color : var(--white);
+	border-radius: 5px;
+	margin-bottom : 28px;
+	font-size: 1.5rem;
+}
+
+.join_box:hover{
+	cursor : pointer;
+	outline : 2.5px solid var(--white);
+	background-color : var(--black);
+}
+
+
+.email_img{
+	width : 35px;
+	height : 35px;
+	margin-right : 15px;
+}
+
+.kakao_img{
+	width : 35px;
+	height : 35px;
+	margin-right : 15px;
+}
+
+.google_img{
+	width : 35px;
+	height : 35px;
+	margin-right : 26px;
+}
+.content_join div:nth-child(4){
+	padding-right : 16px;
+	box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
