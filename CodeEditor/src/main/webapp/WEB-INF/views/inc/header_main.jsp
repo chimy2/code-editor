@@ -13,12 +13,12 @@
 	<div class="login_header">
 		<div class="logo">Zenith</div>
 	
-		<div class="login_box">
+		<div class="login_header_box">
 			<img class="user_box" src="/editor/resources/image/icon/user_white.svg">
 			Sign up
 		</div>
-		<div class="login_box">
-			<img class="login" src="/editor/resources/image/icon/login.svg">
+		<div class="login_header_box">
+			<img class="main_login" src="/editor/resources/image/icon/login.svg">
 			Log in
 		</div>
 
