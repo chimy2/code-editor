@@ -1,7 +1,7 @@
 /**
  *
  */
- 
+
 /* test tab */
 $('.add_class').click(() => {
     console.log('class 추가');
@@ -15,20 +15,20 @@ $(document).ready(function () {
     $('#tabs').tabs();
 
     // Make tabs sortable within the tab container
-        $("#tabs ul").sortable({
-            axis: "x",
-            containment: "parent", // 탭 목록 내에서만 드래그 가능
-            helper: "original", // 드래그 시 탭이 제자리에서 움직이지 않도록 설정
-            start: function(event, ui) {
-                // 드래그 시작 시 포커스 이동
-                const tabIndex = ui.item.index();
-                $("#tabs").tabs("option", "active", tabIndex);
-            },
-            stop: function(event, ui) {
-                $("#tabs").tabs("refresh");
-            },
-  			scroll: false
-        });
+    $('#tabs ul').sortable({
+        axis: 'x',
+        containment: 'parent', // 탭 목록 내에서만 드래그 가능
+        helper: 'original', // 드래그 시 탭이 제자리에서 움직이지 않도록 설정
+        start: function (event, ui) {
+            // 드래그 시작 시 포커스 이동
+            const tabIndex = ui.item.index();
+            $('#tabs').tabs('option', 'active', tabIndex);
+        },
+        stop: function (event, ui) {
+            $('#tabs').tabs('refresh');
+        },
+        scroll: false,
+    });
     // Add a new tab
     $('#add-tab').on('click', function () {
         const tabId = 'tab' + tabCounter;
@@ -46,9 +46,9 @@ $(document).ready(function () {
         $('#tabs ul').append(tabTemplate);
         $('#tabs').append(tabContent);
         $('#tabs').tabs('refresh');
-        
-        const newTabIndex = $("#tabs ul li").length - 1;
-        $("#tabs").tabs("option", "active", newTabIndex);
+
+        const newTabIndex = $('#tabs ul li').length - 1;
+        $('#tabs').tabs('option', 'active', newTabIndex);
 
         // Update tab counter
         tabCounter++;
@@ -74,28 +74,55 @@ $(document).ready(function () {
 
 /* editor header button event */
 $('.btn_run').click(() => {
-	
-});
-$('.btn_console').click(() => {
-	
-});
-$('.btn_settings').click(() => {
-	
-});
-$('.btn_download').click(() => {
-	
-});
-$('.btn_record').click(() => {
-	
-});
-$('.btn_version').click(() => {
-	
-});
-$('.btn_settings').click(() => {
-	$('.settings-body').css('display', 'flex');
+    $('.editor').addClass('active_console');
 });
 
-/* setting button event */
-$('.settings-close-icon').click(function() {
-	$('.settings-body').hide();
+$('.btn_console').click(() => {
+    $('.editor').toggleClass('active_console');
 });
+
+$('.btn_download').click(() => {
+    alert('다운로드해 뭐하는거야');
+});
+
+$('.btn_record').click(() => {
+    toggleDisplay($('.record-container'));
+});
+
+$('.btn_new').click(() => {
+    toggleDisplay($('.new-container'));
+});
+
+$('.btn_version').click(() => {
+    toggleDisplay($('.version-container'));
+});
+
+$('.btn_settings').click(() => {
+    toggleDisplay($('.settings-body'));
+});
+
+/* console button event */
+$('.btn_console_close').click(() => {
+    $('.editor').removeClass('active_console');
+});
+
+/* popup button event */
+$('.btn_popup_close').click(function () {
+	console.log('hello?');
+    toggleDisplay($(this).parents('.popup-container'));
+});
+
+$('.settings-close-icon').click(function () {
+    $('.settings-body').hide();
+});
+
+/* function */
+function toggleDisplay(element) {
+	const display = element.css('display');
+	
+	if(display == 'none') {
+		element.css('display', 'flex');
+	} else {
+		element.css('display', 'none');
+	}		
+}
