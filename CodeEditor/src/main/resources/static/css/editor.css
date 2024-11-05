@@ -218,6 +218,7 @@
     color: var(--white);
 }
 
+
 /* settings */
 .settings-body {
     position: absolute;
@@ -231,8 +232,9 @@
     align-items: center;
 }
 
+
 .settings-body .show {
-    display: flex;
+	display: flex;	
 }
 
 .settings-main {
@@ -309,11 +311,13 @@
     margin-top: 50px;
     margin-bottom: 63px;
     margin-left: 40px;
+    
 }
 
 .settings-main-item {
     margin: 10px 0;
 }
+
 
 #theme-button,
 #template-button {
@@ -328,72 +332,49 @@
 }
 
 #theme-button {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 #template-button {
-    margin-left: 19px;
+	margin-left: 19px;
 }
 
 .settings-sub-menu {
     list-style-type: none;
     padding-left: 20px;
     display: none; /* 기본적으로 숨김 */
-    margin-left: 30px;
+    margin-left: 30px; 
 }
 
 .settings-sub-menu li {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 
 /* ????????? */
 .settings-sub-menu li:hover .settings-sub-menu li {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .settings-container img {
-    width: 14px;
-    height: 14px;
+	width: 14px;
+	height: 14px;
 }
 
-<<<<<<< HEAD
-.theme-content {
-=======
 
 .settings-content {
->>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
     flex: 1;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
-<<<<<<< HEAD
-.theme-content hr {
-=======
 
 .settings-content hr {
->>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
     margin: 0;
     padding: 0;
-    width: calc(100% - 22px);
+    width: calc(100% - 22px); 
 }
 
-<<<<<<< HEAD
-.theme-content h2,
-.theme-content h3 {
-    color: var(--white);
-    margin-left: 20px;
-    font-weight: 600;
-}
-
-.theme-content h2 {
-    font-size: 20px;
-}
-
-.theme-content h3 {
-    font-size: 16px;
-=======
 .settings-content h2,
 .settings-content h3 {
 	color: var(--white);
@@ -407,27 +388,21 @@
 
 .settings-content h3 {
 	font-size: 16px;
->>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
 }
 
 .theme-selector {
     display: flex;
     align-items: center;
-    width: 350px;
-    height: 90px;
-    background-color: #d9d9d9;
-    justify-content: space-around;
-    border: 0;
-    border-radius: 5px;
-    margin-left: 20px;
+	width: 350px;
+	height: 90px;
+	background-color: #D9D9D9;
+	justify-content: space-around;
+	border: 0;
+	border-radius: 5px;
+	margin-left: 20px;
 }
-<<<<<<< HEAD
-.theme-mode input[type='radio'] {
-    color: var(--gray5);
-=======
 .theme-mode input[type="radio"] {
 	margin-right: 20px;
->>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
 }
 
 .theme-mode {
@@ -436,7 +411,7 @@
     justify-content: center;
     width: 130px;
     height: 50px;
-    background-color: #fff;
+    background-color: #FFF;
     color: var(--gray5);
     font-size: 16px;
     font-weight: 600;
@@ -447,16 +422,9 @@
 }
 
 .theme-mode span {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
-<<<<<<< HEAD
-#dark-button:checked + label,
-#light-button:checked + label {
-    background-color: var(--gray5);
-    color: var(--white);
-}
-=======
 .theme-mode.selected {
     background-color: var(--gray3);
     color: var(--white);
@@ -476,6 +444,7 @@
   border: 2px solid var(--white);
   background-color: var(--orange);
 }
+
 
 
 /* colors */
@@ -533,13 +502,13 @@
     border: 1px solid var(--white);
 }
 
-.btn-colors-edit {
+.btn-settings {
 	display: flex; 
 	margin-top: 21px;
 	margin-right: 35px;
 }
 
-.btn-colors-edit button {
+.btn-settings button {
 	width: 70px;
 	height: 25px;
 	font-weight: bold;
@@ -553,7 +522,7 @@
 }
 
 
-.btn-colors-edit button:hover {
+.btn-settings button:hover {
   	outline: 1.5px solid var(--white); 
 }
 
@@ -654,7 +623,62 @@
 }
 
 
+/* Template */
+.template-container {
+	margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+}
 
+.btn-settings {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+    margin: 0;
+    padding: 0; 
+    margin-right: 17px;
+}
 
+.template-table {
+	width: 300px;
+	height: 220px;
+	overflow: auto;
+	color: var(--white);
+	font-size: 12px;
+	font-weight: 400;
+	text-align: left;
+}
 
+<<<<<<< HEAD
+.template-table th {
+	background-color: var(--gray1);	
+	font-weight: 400;
+	height: 25px;
+	min-width: 65px;
+	padding-left: 5px;
+}
+
+.template-table td {
+	background-color: var(--black2);
+	padding-left: 5px;
+	height: 25px;
+    max-width: 200px; /* 330 - 5 - 80에 해당하는 값 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.template-table td:first-child {
+	width: 65px;
+}
+
+.template-preview {
+	margin-left: 20px;
+	width: 380px;
+	height: 150px;
+	background-color: var(--black2);
+}
+=======
 >>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
+>>>>>>> 24790f8ded21072dec009cfc1c69599ff85befca
