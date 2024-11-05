@@ -16,6 +16,11 @@ public class MainController {
 		return "mypage";
 	}
 	
+	@GetMapping("/stats")
+	public String stats() {
+		return "stats";
+	}
+	
 	@GetMapping("/login")
 	public String login() {
 		return "login";

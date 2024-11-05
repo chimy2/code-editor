@@ -13,6 +13,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +34,8 @@ public class GPTController {
     @Autowired
     private ChatDAO dao;
 
-    private String model = "gpt-3.5-turbo"; //  "gpt-3.5-turbo" , "ft:gpt-4o-mini-2024-07-18:personal::AQ28Huai" 
-    private String apiKey = "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"; // 실제 API 키로 변경
+    private String model = "gpt-3.5-turbo";	//  "gpt-3.5-turbo" , "ft:gpt-4o-mini-2024-07-18:personal::AQ28Huai" 
+    private String apiKey = "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";
     private String apiUrl = "https://api.openai.com/v1/chat/completions";
     private final RestTemplate restTemplate;
     
@@ -47,13 +48,27 @@ public class GPTController {
     }
 
     @GetMapping("/chat")
-    public String chatPage() {
+    public String chatPage(@RequestParam("seq") String seq, Model model) {
+        // seq에 해당하는 사용자의 기존 대화 내역을 DB에서 조회
+        List<ChatDTO> list = dao.list(seq);
+
+        // 조회한 대화 내역을 messages 리스트에 추가
+        messages.clear();
+        for (ChatDTO chat : list) {
+            messages.add(new Message("user", chat.getMembermsg()));
+            messages.add(new Message("assistant", chat.getBotmsg()));
+        }
+
+        // JSP로 전달하기 위해 모델에 이전 대화 내역을 추가
+        model.addAttribute("chatHistory", messages);
+        model.addAttribute("seq", seq); // 사용자 seq도 JSP에 전달
+        
         return "chatbot";
     }
 
     @PostMapping(value = "/chat", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public Map<String, String> chatPost(@RequestParam("prompt") String prompt, ChatDTO dto) {
+    public Map<String, String> chatPost(@RequestParam("prompt") String prompt, @RequestParam("seq") String seq, ChatDTO dto) {
         // 사용자 메시지를 messages 리스트에 추가
         messages.add(new Message("user", prompt));
 
@@ -78,8 +93,10 @@ public class GPTController {
         messages.add(new Message("assistant", content));
 
         // DB에 사용자 메시지와 챗봇 응답을 저장
-        dto.setUsermsg(prompt);
+        dto.setMembermsg(prompt);
         dto.setBotmsg(content);
+        dto.setSeq(seq);
+
         dao.add(dto);
 
         Map<String, String> responseMap = new HashMap<>();
@@ -90,4 +107,5 @@ public class GPTController {
 
         return responseMap;
     }
+
 }

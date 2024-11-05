@@ -26,7 +26,6 @@
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             background-color: white;
-            
             position: fixed;
             bottom: 110px;
             right: 30px;
@@ -37,7 +36,7 @@
             overflow-y: auto;
             padding: 10px;
             display: flex;
-            flex-direction: column-reverse;
+            flex-direction: column; /* 메시지를 시간 순으로 나열 */
         }
         .message {
             display: flex;
@@ -102,7 +101,6 @@
             height: 40px;
             border-radius: 50%;
         }
-        
         #toggle-chatbot {
             position: fixed;
             bottom: 20px;
@@ -112,18 +110,46 @@
             width: 75px;
             height: 75px;
         }
+        #scroll-button {
+            display: none; /* 기본은 숨김 */
+            position: absolute;
+            bottom: 70px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #1e88e5;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <%
         String botImageUrl = request.getContextPath() + "/resources/asset/pic/bot.png";
-	    String botIcon1 = request.getContextPath() + "/resources/asset/pic/sleepbot.png";
-	    String botIcon2 = request.getContextPath() + "/resources/asset/pic/bot.png";
+        String botIcon1 = request.getContextPath() + "/resources/asset/pic/sleepbot.png";
+        String botIcon2 = request.getContextPath() + "/resources/asset/pic/bot.png";
+        String seq = request.getParameter("seq"); 
     %>
     <img src="<%= botIcon1 %>" id="toggle-chatbot" alt="챗봇 열기 아이콘" />
     
     <div id="chat-container">
-        <div id="chat-messages"></div>
+        <div id="chat-messages">
+            <c:forEach var="message" items="${chatHistory}">
+                <div class="message">
+                    <c:choose>
+                        <c:when test="${message.role == 'user'}">
+                            <div class="user-message">${message.content}</div>
+                        </c:when>
+                        <c:otherwise>
+                            <img src="<%= botImageUrl %>" class="bot-image" alt="Bot" />
+                            <div class="bot-message">${message.content}</div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </c:forEach>
+        </div>
+        <button id="scroll-button" onclick="scrollToBottom()">맨 아래로</button>
         <div id="user-input">
             <input type="text" name="prompt" id="prompt" placeholder="메시지를 입력하세요." />
             <button type="button" id="btn-send">전송</button>
@@ -131,57 +157,87 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script>
+	<script>
 	    const botIcon1 = "<%= botIcon1 %>";
 	    const botIcon2 = "<%= botIcon2 %>";
-        const botImageUrl = "<%= botImageUrl %>";
-        let chatOpen = false;
-        
-        $('#toggle-chatbot').click(function() {
-            chatOpen = !chatOpen;
-            if (chatOpen) {
-                $('#chat-container').css('display', 'flex'); // display를 flex로 변경
-                setTimeout(() => {
-                    $('#chat-container').css('opacity', '1'); // 약간의 지연 후에 opacity를 적용
-                }, 10); 
-                $('#toggle-chatbot').attr('src', botIcon2);
-            } else {
-                $('#chat-container').css('opacity', '0');
-                setTimeout(() => {
-                    $('#chat-container').css('display', 'none'); // opacity 0이 완료된 후 display를 none으로
-                }, 300); // transition 속도에 맞춰 지연 시간 설정
-                $('#toggle-chatbot').attr('src', botIcon1);
-            }
-        });
-
-
-        $(document).ready(function() {
-            $('#btn-send').click(function() {
-                var prompt = $('#prompt').val();
-                if (prompt.trim() === "") return;
-
-                // 사용자의 질문 추가
-                $('#chat-messages').prepend('<div class="message"><div class="user-message">' + prompt + '</div></div>');
-                $('#prompt').val('');
-
-                // 서버로 요청 전송
-                $.ajax({
-                    type: 'POST',
-                    url: '/bot/gpt/chat',
-                    data: { prompt: prompt },
-                    dataType: 'json',
-                    success: function(result) {
-                        var response = result.response;
-                        // 봇의 응답 추가
-                        $('#chat-messages').prepend('<div class="message"><img src="' + botImageUrl + '" class="bot-image" alt="Bot" /><div class="bot-message">' + response + '</div></div>');
-                    },
-                    error: function(a, b, c) {
-                        alert("오류 발생");
-                        console.log(a, b, c);
-                    }
-                });
-            });
-        });
-    </script>
+	    const botImageUrl = "<%= botImageUrl %>";
+	    const userSeq = "<%= seq %>";
+	    let chatOpen = false;
+	    
+	    $('#toggle-chatbot').click(function() {
+	        chatOpen = !chatOpen;
+	        if (chatOpen) {
+	            $('#chat-container').css('display', 'flex');
+	            setTimeout(() => {
+	                $('#chat-container').css('opacity', '1');
+	                scrollToBottom();
+	            }, 10);
+	            $('#toggle-chatbot').attr('src', botIcon2);
+	        } else {
+	            $('#chat-container').css('opacity', '0');
+	            setTimeout(() => {
+	                $('#chat-container').css('display', 'none');
+	            }, 300);
+	            $('#toggle-chatbot').attr('src', botIcon1);
+	        }
+	    });
+	    
+	    function scrollToBottom() {
+	        const chatMessages = document.getElementById('chat-messages');
+	        chatMessages.scrollTop = chatMessages.scrollHeight;
+	    }
+	
+	    function checkScrollPosition() {
+	        const chatMessages = document.getElementById('chat-messages');
+	        const scrollButton = document.getElementById('scroll-button');
+	
+	        if (chatMessages.scrollTop + chatMessages.clientHeight < chatMessages.scrollHeight) {
+	            scrollButton.style.display = 'block';
+	        } else {
+	            scrollButton.style.display = 'none';
+	        }
+	    }
+	
+	    function sendMessage() {
+	        const prompt = $('#prompt').val();
+	        if (prompt.trim() === "") return;
+	
+	        $('#chat-messages').append('<div class="message"><div class="user-message">' + prompt + '</div></div>');
+	        $('#prompt').val('');
+	
+	        $.ajax({
+	            type: 'POST',
+	            url: '/bot/gpt/chat',
+	            data: { prompt: prompt, seq: userSeq },
+	            dataType: 'json',
+	            success: function(result) {
+	                const response = result.response;
+	                $('#chat-messages').append('<div class="message"><img src="' + botImageUrl + '" class="bot-image" alt="Bot" /><div class="bot-message">' + response + '</div></div>');
+	
+	                scrollToBottom();
+	            },
+	            error: function(a, b, c) {
+	                alert("오류 발생");
+	                console.log(a, b, c);
+	            }
+	        });
+	    }
+	
+	    $(document).ready(function() {
+	        scrollToBottom();
+	
+	        $('#chat-messages').on('scroll', checkScrollPosition);
+	
+	        $('#btn-send').click(sendMessage);
+	
+	        // Enter 키로도 메시지 전송 가능하게 설정
+	        $('#prompt').keydown(function(event) {
+	            if (event.key === "Enter") {
+	                event.preventDefault();
+	                sendMessage();
+	            }
+	        });
+	    });
+	</script>
 </body>
 </html>
