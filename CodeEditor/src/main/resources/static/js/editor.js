@@ -2,7 +2,7 @@
  *
  */
  
-
+/* test tab */
 $('.add_class').click(() => {
     console.log('class 추가');
     $('.file_tab').append('<div>추가</div>');
@@ -72,5 +72,30 @@ $(document).ready(function () {
     $('#tabs ul li.ui-tabs-active .tab-close').show();
 });
 
+/* editor header button event */
+$('.btn_run').click(() => {
+	
+});
+$('.btn_console').click(() => {
+	
+});
+$('.btn_settings').click(() => {
+	
+});
+$('.btn_download').click(() => {
+	
+});
+$('.btn_record').click(() => {
+	
+});
+$('.btn_version').click(() => {
+	
+});
+$('.btn_settings').click(() => {
+	$('.settings-body').css('display', 'flex');
+});
 
-
+/* setting button event */
+$('.settings-close-icon').click(function() {
+	$('.settings-body').hide();
+});

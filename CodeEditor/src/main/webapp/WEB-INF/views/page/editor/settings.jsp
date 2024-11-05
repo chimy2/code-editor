@@ -1,67 +1,67 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <div class="settings-body">
-<div class="settings-main">
-    <header>
-        <div>
-            Setting
-        </div>
-        <img src="/editor/resources/image/icon/settings-close.svg" class="settings-close-icon">
-    </header>
-    
-    <div class="settings-container">
-        <ul class="settings-menu">
-            <li class="settings-main-item">
-                <button onclick="toggleSubMenu('theme')" id="theme-button">
-                    <img src="/editor/resources/image/icon/right-arrow.svg" class="arrow-icon">
-                    Theme
-                </button>
-                <ul class="settings-sub-menu" id="theme" style="display: none;">
-                    <li onclick="showContent('appearance')">Appearance</li>
-                    <li onclick="showContent('colors')">Colors</li>
-                    <li onclick="showContent('font')">Font</li>
-                </ul>
-            </li>
-            <li class="settings-main-item">
-				<button onclick="showContent('template')" id="template-button">
-				    Template
-				</button>
-                <ul class="settings-sub-menu" id="template" style="display: none;">
-                </ul>
-            </li>
-        </ul>
-        
-        <div class="theme-content" id="appearance-content" style="display: none;">
-	        <h2>Appearance</h2>
-	        <hr>
-	        <h3>Theme</h3>
-	        <fieldset class="theme-selector">
-	          <label class="theme-mode">
-	              <input type="radio" name="theme" value="dark" id="dark-button" checked>
-	              <span>Dark</span>
-	          </label>
-	          <label class="theme-mode">
-	              <input type="radio" name="theme" value="light" id="light-button" >
-	              <span>Light</span>
-	          </label>
-	        </fieldset>
-        </div>
-        <div class="settings-content" id="colors-content" style="display: none;">
-            Colors 내용 
-        </div>
-        <div class="settings-content" id="font-content" style="display: none;">
-            Font 내용 
-        </div>
-        <div class="settings-content" id="template-content" style="display: none;">
-		    Template 내용
-		</div>
-		        
-    </div>
-
-    <footer>
-        <img src="/editor/resources/image/icon/check-circle.svg">
-    </footer>
-</div>
+	<div class="settings-main">
+	    <div class="settings-header">
+	        <div>
+	            Setting
+	        </div>
+	        <img src="/editor/resources/image/icon/settings-close.svg" class="settings-close-icon">
+	    </div>
+	    
+	    <div class="settings-container">
+	        <ul class="settings-menu">
+	            <li class="settings-main-item">
+	                <button onclick="toggleSubMenu('theme')" id="theme-button">
+	                    <img src="/editor/resources/image/icon/right-arrow.svg" class="arrow-icon">
+	                    Theme
+	                </button>
+	                <ul class="settings-sub-menu" id="theme" style="display: none;">
+	                    <li onclick="showContent('appearance')">Appearance</li>
+	                    <li onclick="showContent('colors')">Colors</li>
+	                    <li onclick="showContent('font')">Font</li>
+	                </ul>
+	            </li>
+	            <li class="settings-main-item">
+					<button onclick="showContent('template')" id="template-button">
+					    Template
+					</button>
+	                <ul class="settings-sub-menu" id="template" style="display: none;">
+	                </ul>
+	            </li>
+	        </ul>
+	        
+	        <div class="theme-content" id="appearance-content" style="display: none;">
+		        <h2>Appearance</h2>
+		        <hr>
+		        <h3>Theme</h3>
+		        <fieldset class="theme-selector">
+		          <label class="theme-mode">
+		              <input type="radio" name="theme" value="dark" id="dark-button" checked>
+		              <span>Dark</span>
+		          </label>
+		          <label class="theme-mode">
+		              <input type="radio" name="theme" value="light" id="light-button" >
+		              <span>Light</span>
+		          </label>
+		        </fieldset>
+	        </div>
+	        <div class="settings-content" id="colors-content" style="display: none;">
+	            Colors 내용 
+	        </div>
+	        <div class="settings-content" id="font-content" style="display: none;">
+	            Font 내용 
+	        </div>
+	        <div class="settings-content" id="template-content" style="display: none;">
+			    Template 내용
+			</div>
+			        
+	    </div>
+	
+	    <div class="settings-footer">
+	        <img src="/editor/resources/image/icon/check-circle.svg">
+	    </div>
+	</div>
 </div>
 
 <script>
