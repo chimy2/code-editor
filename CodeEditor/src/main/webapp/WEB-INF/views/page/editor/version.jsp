@@ -102,7 +102,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="popup-footer version-footer">
+			<div class="version-footer">
 				<button class="btn_submit_version">
 			        복원
 				</button>
