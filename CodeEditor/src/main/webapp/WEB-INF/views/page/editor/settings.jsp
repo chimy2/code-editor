@@ -1,13 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html class="settings-html">
-<head>
-<meta charset="UTF-8">
-<title>Settings</title>
-</head>
-<body class="settings-body">
-<main class="settings-main">
+<div class="settings-body">
+<div class="settings-main">
     <header>
         <div>
             Setting
@@ -67,8 +61,8 @@
     <footer>
         <img src="/editor/resources/image/icon/check-circle.svg">
     </footer>
-</main>
-</body>
+</div>
+</div>
 
 <script>
 	
@@ -125,4 +119,4 @@
 
 </script>
 
-</html>
+
