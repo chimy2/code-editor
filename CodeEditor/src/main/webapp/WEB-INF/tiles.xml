@@ -43,6 +43,14 @@
 		<put-attribute name="asset_bot" value="/WEB-INF/views/page/bot/bot.jsp"></put-attribute>
 	</definition> 
 	
+	<!-- document -->
+	<definition name="document" template="/WEB-INF/views/layout/document.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="content_document" value="/WEB-INF/views/page/main/content_document.jsp"></put-attribute>
+	</definition>
+	
 	<definition name="editor" template="/WEB-INF/views/layout/editor.jsp">
 		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
 		<put-attribute name="asset_edtior" value="/WEB-INF/views/inc/asset_editor.jsp"></put-attribute>

@@ -30,4 +30,9 @@ public class MainController {
 	public String join() {
 		return "join";
 	}
+	
+	@GetMapping("/document")
+	public String document() {
+		return "document";
+	}
 }
