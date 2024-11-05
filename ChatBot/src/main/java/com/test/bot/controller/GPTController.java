@@ -33,7 +33,7 @@ public class GPTController {
     @Autowired
     private ChatDAO dao;
 
-    private String model = "gpt-3.5-turbo";	// 또는 "gpt-4" 
+    private String model = "gpt-3.5-turbo"; //  "gpt-3.5-turbo" , "ft:gpt-4o-mini-2024-07-18:personal::AQ28Huai"
     private String apiKey = "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"; // 실제 API 키로 변경
     private String apiUrl = "https://api.openai.com/v1/chat/completions";
     private final RestTemplate restTemplate;
