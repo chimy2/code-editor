@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class ChatDTO {
 	private String seq;
-	private String userseq;
+	private String memberseq;
 	private String botmsg;
-	private String usermsg;
+	private String membermsg;
 	private String chatdate;
 }

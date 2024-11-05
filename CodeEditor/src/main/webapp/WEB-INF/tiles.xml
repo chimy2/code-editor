@@ -34,8 +34,14 @@
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute><!-- 기본 세팅 링크 -->
 		<put-attribute name="header_mypage" value="/WEB-INF/views/inc/header_mypage.jsp"></put-attribute><!-- 상단 메뉴 -->
 		<put-attribute name="content_mypage" value="/WEB-INF/views/page/main/content_mypage.jsp"></put-attribute><!-- 캘린더, 팀, 프로젝트 -->
-	</definition> 
+	</definition>
 	
+	<!-- stats -->
+	<definition name="stats" template="/WEB-INF/views/layout/stats.jsp">
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="asset_bot" value="/WEB-INF/views/page/bot/bot.jsp"></put-attribute>
+	</definition> 
 	
 	<definition name="editor" template="/WEB-INF/views/layout/editor.jsp">
 		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
@@ -48,7 +54,16 @@
 		
 		<put-attribute name="left_side" value="/WEB-INF/views/page/editor/explorer.jsp"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/views/page/editor/editor.jsp"></put-attribute>
+		<put-attribute name="console" value="/WEB-INF/views/page/editor/console.jsp"></put-attribute>
+		
 		<put-attribute name="settings" value="/WEB-INF/views/page/editor/settings.jsp"></put-attribute>
 		<put-attribute name="right_side" value="/WEB-INF/views/layout/right_side.jsp"></put-attribute>
+		
+		<put-list-attribute name="popups">
+			<add-attribute value="/WEB-INF/views/page/editor/new.jsp" />
+			<add-attribute value="/WEB-INF/views/page/editor/record.jsp" />
+			<add-attribute value="/WEB-INF/views/page/editor/version.jsp" />
+			<add-attribute value="/WEB-INF/views/page/editor/settings.jsp" />
+		</put-list-attribute>
 	</definition>
 </tiles-definitions>

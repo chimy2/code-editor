@@ -14,6 +14,9 @@ pageEncoding="UTF-8"%>
     	<button class="btn_record">
 	        <img src="/editor/resources/image/icon/record.svg" />
     	</button>
+    	<button class="btn_new">
+	        test용 생성 버튼
+    	</button>
     </div>
     <div>
     	<button class="btn_version">

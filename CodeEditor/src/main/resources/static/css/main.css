@@ -2,7 +2,7 @@
 
 :root {
     --black: #000000;
-    --black2: #1E1E1E;
+    --black2: #1e1e1e;
     --white: #ffffff;
 
     --gray1: #26292f;
@@ -17,10 +17,10 @@
     --gray10: #f9f9f9;
     --gray11: #0c0d11;
 
-    --red1: #ee0a0a;
-    --red2: #d92b2b;
+    --red1: #ff0000;
+    --red2: #ee0a0a;
     --red3: #d92b2b;
-    --red4: #d92b2b;
+    --red4: #ff4043;
 
     --orange: #ff8a1f;
 
@@ -41,14 +41,48 @@
     --profile-green: #7edd9a;
     --profile-blue: #7dafe2;
     --profile-purple: #9a82c1;
-}
 
+    --icon-bot: url('../image/icon/bot.svg') no-repeat center;
+    --icon-botton-arrow: url('../image/icon/bottom-arrow.svg') no-repeat center;
+    --icon-bubble: url('../image/icon/bubble.svg') no-repeat center;
+    --icon-check-circle: url('../image/icon/check-circle.svg') no-repeat center;
+    --icon-code: url('../image/icon/code.svg') no-repeat center;
+    --icon-console: url('../image/icon/console.svg') no-repeat center;
+    --icon-document: url('../image/icon/document.svg') no-repeat center;
+    --icon-download: url('../image/icon/download.svg') no-repeat center;
+    --icon-edit: url('../image/icon/edit.svg') no-repeat center;
+    --icon-file: url('../image/icon/file.svg') no-repeat center;
+    --icon-home: url('../image/icon/home.svg') no-repeat center;
+    --icon-interface: url('../image/icon/interface.svg') no-repeat center;
+    --icon-login: url('../image/icon/login.svg') no-repeat center;
+    --icon-package: url('../image/icon/package.svg') no-repeat center;
+    --icon-plus: url('../image/icon/plus.svg') no-repeat center;
+    --icon-project: url('../image/icon/project.svg') no-repeat center;
+    --icon-project2: url('../image/icon/project2.svg') no-repeat center;
+    --icon-record: url('../image/icon/record.svg') no-repeat center;
+    --icon-right-arrow: url('../image//icon/right-arrow.svg') no-repeat center;
+    --icon-run: url('../image/icon/run.svg') no-repeat center;
+    --icon-settings-close: url('../image/icon/settings-close.svg') no-repeat
+        center;
+    --icon-settings: url('../image/icon/settings.svg') no-repeat center;
+    --icon-side: url('../image/icon/side.svg') no-repeat center;
+    --icon-team: url('../image/icon/team.svg') no-repeat center;
+    --icon-txt: url('../image/icon/txt.svg') no-repeat center;
+    --icon-user: url('../image/icon/user.svg') no-repeat center;
+    --icon-version: url('../image/icon/version.svg') no-repeat center;
+    --icon-x: url('../image/icon/x.svg') no-repeat center;
+}
 
 /* main */
 
-.login_header{
-	display: flex;
-	margin-left : auto;
+button {
+	border: 0;
+	background: none;
+	cursor: pointer;
+}
+
+textarea {
+	resize: none;
 }
 
 html{
@@ -114,14 +148,12 @@ body{
 	outline : 3px solid var(--white);
 }
 
-.login_header .login_box img{
-	width : 20px;
-	height : 20px;
-	margin-right : 10px;
+.login_header {
+    display: flex;
+    margin-left: auto;
 }
 /* main */
-
-.main_content{
+.main_content {
 	width : 80%;
 	height: 100%;
 	display : flex;
@@ -131,12 +163,10 @@ body{
 	margin-bottom : 80px;
 }
 
-.main_text{
-	color : var(--white);
-	display : flex;
-	flex-direction : column;
-	justify-content: center;
-	text-align: center;
+.login_header .login_box img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
 
 .main_text h1{
@@ -231,11 +261,11 @@ body{
 }
 
 #nick {
-	color : var(--white);
-	font-size : 1rem;
-	margin-left : 10px;
-	margin-bottom : 2px;
-	line-height: 1;
+    color: var(--white);
+    font-size: 1rem;
+    margin-left: 10px;
+    margin-bottom: 2px;
+    line-height: 1;
 }
 
 /* content_mypage */
@@ -248,54 +278,51 @@ body{
     grid-template-columns: repeat(5, 1fr);
 }
 
-.calendar{
-	grid-row: 1 / 3;
-	grid-column: 1 / 4;
-	box-sizing: border-box;
-	width : 100%;
-	height : 100%;
-	display:flex;
-	flex-direction : column;
-	align-items: center;
-	justify-content: center;
+.calendar {
+    grid-row: 1 / 3;
+    grid-column: 1 / 4;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.calendar .contact{
-	margin-top : 10px;
-    align-self: flex-start; 
-    border-bottom : 1px solid gold;
+.calendar .contact {
+    margin-top: 10px;
+    align-self: flex-start;
+    border-bottom: 1px solid gold;
 }
 
-.calendar .contact:hover{
-    cursor : pointer;
+.calendar .contact:hover {
+    cursor: pointer;
 }
 
-.calendar_box{
-	box-sizing: border-box;
-	width : 90%;
-	height : 80%;
-	display : flex;
-	flex-direction : column;
+.calendar_box {
+    box-sizing: border-box;
+    width: 90%;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
 }
 
-
-.calendar_month{
-	border : 1px solid var(--white);
-	width : 100%;
-	height : 80%;
-	align-self: center; 
-	margin-top : 0;
+.calendar_month {
+    border: 1px solid var(--white);
+    width: 100%;
+    height: 80%;
+    align-self: center;
+    margin-top: 0;
 }
 
-.calendar_name{
-	color : var(--white);
-	font-size:2rem;
+.calendar_name {
+    color: var(--white);
+    font-size: 2rem;
 }
 
-
-
-.calendar_item:hover{
-	cursor : pointer;
+.calendar_item:hover {
+    cursor: pointer;
 }
 
 .plus {
@@ -303,9 +330,9 @@ body{
     height: 10px;
 }
 
-.calendar_item div:nth-child(1){
-	display: inline-flex;
-    align-items: center; 
+.calendar_item div:nth-child(1) {
+    display: inline-flex;
+    align-items: center;
     justify-content: center;
 }
 
@@ -326,7 +353,7 @@ body{
     flex-direction: column;
 }
 
-.calendar_box .calendar_name, 
+.calendar_box .calendar_name,
 .calendar_box .calendar_item {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -357,8 +384,8 @@ body{
 .plus {
     width: 25px;
     height: 25px;
-    margin-right : 10px;
-    margin-right : 10px;
+    margin-right: 10px;
+    margin-right: 10px;
 }
 .calendar_item div:nth-child(1) {
     display: inline-flex;
@@ -379,7 +406,7 @@ body{
     text-align: center;
     padding: 3px;
     line-height: 1;
-    margin-right : 5px;
+    margin-right: 5px;
 }
 
 .contact {
