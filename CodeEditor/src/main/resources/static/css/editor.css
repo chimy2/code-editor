@@ -53,9 +53,9 @@
     position: relative;
     width: 610px;
     height: 630px;
-    background-color: #666666;
+    background-color: var(--gray5);
     display: flex;
-    border: 1px solid #FFFFFF;
+    border: 1px solid var(--white);
     border-radius: 15px;
     flex-direction: column;
     align-items: center;
@@ -65,8 +65,8 @@
     position: absolute;
     top: 0;
     left: 0;
-    background-color: #45464A;
-    border-bottom: 1px solid #FFFFFF;
+    background-color: var(--gray3);
+    border-bottom: 1px solid var(--white);
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     height: 50px;
@@ -79,7 +79,7 @@
     margin-left: 30px;
     font-size: 24px;
     font-weight: 600;
-    color: #FFFFFF;
+    color: var(--white);
 }
 
 .settings-close-icon {
@@ -93,7 +93,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    border-top: 1px solid #FFFFFF;
+    border-top: 1px solid var(--white);
     border-bottom-left-radius: 15px;
     border-bottom-right-radius: 15px;
     height: 63px;
@@ -112,7 +112,7 @@
     margin: 0;
     width: 170px;
     height: 100%;
-    background-color: #1E1E1E;
+    background-color: var(--black2);
     color: white;
 }
 
@@ -130,11 +130,12 @@
     margin: 10px 0;
 }
 
+
 #theme-button,
 #template-button {
     background-color: transparent;
     border: none;
-    color: white;
+    color: var(--white);
     font-size: 18px;
     width: 100%;
     text-align: left;
@@ -161,22 +162,22 @@
 	margin-top: 10px;
 }
 
+/* ????????? */
+.settings-sub-menu li:hover .settings-sub-menu li {
+	cursor: pointer;
+}
+
 .settings-container img {
 	width: 14px;
 	height: 14px;
 }
 
 
-
 .theme-content {
     flex: 1;
-    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    box-sizing: border-box; 
-    padding: 0; 
-    margin: 0; 
 }
 
 
@@ -188,7 +189,7 @@
 
 .theme-content h2,
 .theme-content h3 {
-	color: #FFFFFF;
+	color: var(--white);
 	margin-left: 20px;
 	font-weight: 600;
 }
@@ -213,7 +214,7 @@
 	margin-left: 20px;
 }
 .theme-mode input[type="radio"] {
-   color: #666666;
+   color: var(--gray5);
 }
 
 .theme-mode {
@@ -223,12 +224,12 @@
     width: 130px;
     height: 50px;
     background-color: #FFF;
-    color: #666666;
+    color: var(--gray5);
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     border-radius: 5px;
-    border: 2px solid #666666;
+    border: 2px solid var(--gray5);
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
@@ -237,10 +238,20 @@
 }
 
 #dark-button:checked + label, 
-#dark-button:checked + label {
-    background-color: #666666; /* Dark 모드 색상 */
-    color: #FFFFFF; /* 텍스트 색상 */
+#light-button:checked + label {
+    background-color: var(--gray5); 
+    color: var(--white); 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 

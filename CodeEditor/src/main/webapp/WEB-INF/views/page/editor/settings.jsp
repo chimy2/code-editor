@@ -31,7 +31,7 @@
             </li>
         </ul>
         
-        <div class="theme-content" id="appearance-content" style="display: none;">
+        <div class="settings-content theme-content" id="appearance-content" style="display: none;">
 	        <h2>Appearance</h2>
 	        <hr>
 	        <h3>Theme</h3>
@@ -65,8 +65,7 @@
 </div>
 
 <script>
-	
- 
+
     function toggleSubMenu(menuId) {
         // 선택한 서브 메뉴와 버튼의 아이콘 찾기
         const menu = document.getElementById(menuId);
@@ -102,7 +101,7 @@
  	// Dark와 Light 버튼 클릭 시 선택 상태를 적용하는 함수
     function toggleThemeSelection(theme) {
         const darkButton = document.getElementById('dark-button');
-        const lightButton = document.getElementById('light-button');
+        const lightButton = document.getElementById('lightutton');
 
         if (theme === 'dark') {
             darkButton.classList.add('selected');
