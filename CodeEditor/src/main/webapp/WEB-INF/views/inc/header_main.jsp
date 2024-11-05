@@ -23,5 +23,4 @@
 		</div>
 
 	</div>
-	<div id="nick">test</div>
-</div>
+

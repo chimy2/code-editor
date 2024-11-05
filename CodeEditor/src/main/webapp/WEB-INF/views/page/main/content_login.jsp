@@ -5,13 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Sign up</title>
-	<tiles:insertAttribute name="asset"/>
-	<tiles:insertAttribute name="asset_main"/><!-- link, script 기본 세팅 -->
+<title>Content_login</title>
 </head>
 <body>
-	<!-- main_header -->
-	<tiles:insertAttribute name="header_main"/> 
-	<tiles:insertAttribute name="login"/> 
+
 </body>
 </html>
