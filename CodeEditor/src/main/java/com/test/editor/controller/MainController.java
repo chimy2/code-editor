@@ -15,4 +15,9 @@ public class MainController {
 	public String mypage() {
 		return "mypage";
 	}
+	
+	@GetMapping("/stats")
+	public String stats() {
+		return "stats";
+	}
 }

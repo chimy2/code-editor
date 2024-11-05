@@ -5,8 +5,12 @@
 <mapper namespace="com.test.bot.mapper.ChatMapper">
 
 	<insert id="add" parameterType="com.test.bot.dto.ChatDTO">
-		insert into Chatbot values (seqChatbot.nextval,1,#{usermsg},#{botmsg},sysdate)
+		insert into Chatbot values (seqChatbot.nextval,#{seq},#{membermsg},#{botmsg},sysdate)
 	</insert>
+	
+	<select id="list" resultType="com.test.bot.dto.ChatDTO">
+	    select * from Chatbot where member_seq = #{seq}
+	</select>
 	
 </mapper>
 

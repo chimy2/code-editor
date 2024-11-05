@@ -22,5 +22,9 @@
 		<tiles:insertAttribute name="settings"/>
 		<tiles:insertAttribute name="right_side"/>
 	</main>
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
+	<script>
+		
+	</script>
 </body>
 </html>
