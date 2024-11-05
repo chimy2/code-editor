@@ -1,1 +1,680 @@
 @charset "UTF-8";
+
+/* editor header */
+.header_editor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+    height: 30px;
+    background: var(--gray7);
+}
+
+.header_editor div {
+    display: flex;
+    height: 30px;
+}
+
+.header_editor div:first-child button {
+    margin-right: 5px;
+}
+
+.header_editor div:last-child button {
+    margin-left: 5px;
+}
+
+.header_editor div button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    border: 0;
+    width: 30px;
+    height: 30px;
+    background: none;
+    cursor: pointer;
+}
+
+/* editor */
+.editor {
+    height: calc(100vh - 60px);
+    background: tomato;
+}
+.editor.active_console {
+    height: calc(100vh - 360px);
+    background: tomato;
+}
+
+#tabs {
+    width: 600px;
+}
+#tabs ul {
+    overflow: hidden;
+}
+#tabs ul li {
+    float: left;
+    width: 100px;
+    position: relative;
+}
+.ui-tabs-active .tab-close {
+    display: inline;
+} /* 활성화된 탭에서만 x 표시 */
+.tab-close {
+    display: none;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    color: red;
+}
+#add-tab {
+    margin: 10px 0;
+}
+
+/* console */
+.console-container {
+	display: none;
+	height: 300px;
+}
+
+.editor.active_console + .console-container {
+	display: block;
+}
+
+.console-header {
+	display: flex;
+    justify-content: left;
+    align-items: center;
+    height: 36px;
+    background: var(--gray5);
+    
+}
+
+.console-header div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 2px;
+	padding: 0 5px;
+	width: 160px;
+	height: 34px;
+    background: var(--gray1);
+    font-size: 22px;
+    color: var(--white);
+}
+
+.console-header > div > img {
+	filter: invert(80%) sepia(97%) saturate(0%) hue-rotate(178deg) brightness(104%) contrast(93%);
+}
+
+.console-header .btn_console_close img {
+	width: 15px;
+	height: 15px;
+}
+
+.console-content .console-line {
+	margin: 1px 0;
+	height: 18px;
+    background: var(--gray3);
+}
+
+.console-content .console-area {
+	padding: 7px 12px;
+	height: 230px;
+    background: var(--gray1);
+    color: var(--white);
+    overflow: auto;
+    line-height: 25px;
+}
+
+/* popup */
+.popup-container {
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    cursor: not-allowed;
+}
+
+.popup-main {
+	
+    width: 610px;
+    height: 630px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    border: 1px solid var(--white);
+    border-radius: 15px;
+    background-color: var(--gray5);
+    
+    cursor: auto;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px 0 20px;
+    height: 50px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: var(--gray3);
+    border-bottom: 1px solid var(--white);
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.popup-content {
+	padding: 0 20px;
+    height: 450px;
+}
+
+.popup-content table.new-table tr {
+	height: 50px;
+}
+
+.popup-content table tr th {
+	display: block;
+	width: 140px;
+	height: 100%;
+	color: var(--white);
+	font-size: 20px;
+    font-weight: 400;
+}
+
+.popup-content table.new-table tr th {
+	display: table-cell;
+}
+
+.popup-content table.record-table tr td textarea {
+	width: 400px;
+	height: 400px;
+}
+
+.popup-footer {
+	display: flex;
+    justify-content: end;
+    align-items: center;
+    height: 63px;
+    border-top: 1px solid var(--white);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    
+	
+}
+
+.popup-footer button {
+	margin: 0 20px;
+    border: 1px solid var(--white);
+	width: 120px;
+	height: 35px; 
+    border-radius: 10px;
+	background: var(--gray3);
+    font-size: 20px;
+    color: var(--white);
+}
+
+
+/* settings */
+.settings-body {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    /* display: none; 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.settings-body .show {
+	display: flex;	
+}
+
+.settings-main {
+    position: relative;
+    width: 610px;
+    height: 630px;
+    background-color: var(--gray5);
+    display: flex;
+    border: 1px solid var(--white);
+    border-radius: 15px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.settings-main .settings-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: var(--gray3);
+    border-bottom: 1px solid var(--white);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.settings-main .settings-header div {
+    margin-left: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--white);
+}
+
+.settings-close-icon {
+    position: absolute;
+    top: 13px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.settings-main .settings-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid var(--white);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 63px;
+    width: 100%;
+}
+
+.settings-main .settings-footer img {
+    position: absolute;
+    right: 20px;
+    top: 13px;
+}
+
+.settings-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 170px;
+    height: 100%;
+    background-color: var(--black2);
+    color: white;
+}
+
+.settings-container {
+    display: flex;
+    height: calc(100% - 113px);
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 63px;
+    margin-left: 40px;
+    
+}
+
+.settings-main-item {
+    margin: 10px 0;
+}
+
+
+#theme-button,
+#template-button {
+    background-color: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 18px;
+    width: 100%;
+    text-align: left;
+    padding: 0px 20px;
+    font-size: 16px;
+}
+
+#theme-button {
+	margin-top: 20px;
+}
+
+#template-button {
+	margin-left: 19px;
+}
+
+.settings-sub-menu {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none; /* 기본적으로 숨김 */
+    margin-left: 30px; 
+}
+
+.settings-sub-menu li {
+	margin-top: 10px;
+}
+
+/* ????????? */
+.settings-sub-menu li:hover .settings-sub-menu li {
+	cursor: pointer;
+}
+
+.settings-container img {
+	width: 14px;
+	height: 14px;
+}
+
+
+.settings-content {
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+
+.settings-content hr {
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 22px); 
+}
+
+.settings-content h2,
+.settings-content h3 {
+	color: var(--white);
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+.settings-content h2 {
+	font-size: 20px;
+}
+
+.settings-content h3 {
+	font-size: 16px;
+}
+
+.theme-selector {
+    display: flex;
+    align-items: center;
+	width: 350px;
+	height: 90px;
+	background-color: #D9D9D9;
+	justify-content: space-around;
+	border: 0;
+	border-radius: 5px;
+	margin-left: 20px;
+}
+.theme-mode input[type="radio"] {
+	margin-right: 20px;
+}
+
+.theme-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 50px;
+    background-color: #FFF;
+    color: var(--gray5);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid var(--gray5);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.theme-mode span {
+	margin-left: 10px;
+}
+
+.theme-mode.selected {
+    background-color: var(--gray3);
+    color: var(--white);
+    border: 2px solid var(--gray3);
+}
+
+[type="radio"] {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: var(--gray5);
+}
+
+[type="radio"]:checked {
+  box-shadow: 0 0 0 1px var(--white);
+  border: 2px solid var(--white);
+  background-color: var(--orange);
+}
+
+
+
+/* colors */
+.colors-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+}
+
+.colors-selector {
+    display: flex;
+    align-items: left;
+    width: 300px;
+    height: 240px;
+    border: 0;
+    margin-left: 20px;
+    margin-top: 20px;
+    background-color: var(--black2);
+    color: var(--white);
+    flex-direction: column;
+}
+
+.colors {
+	margin-top: 10px;
+	margin-left: 20px;
+	font-weight: 400;
+	font-size: 15px; 
+}
+
+.colors:first-child {
+    margin-top: 20px;
+}
+
+
+.colors-selector [type="color"] {
+    width: 17px;
+    height: 17px;
+    margin-right: 10px;
+    border: none;
+    outline: none;         /* 포커스 보더 제거 */
+    -webkit-appearance: none;     /* 웹킷 브라우저 기본 스타일 제거 */
+    appearance: none;             /* 기본 스타일 제거 */
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+
+/* 색상 선택기 내부의 보더와 여백 제거 */
+.colors-selector [type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.colors-selector [type="color"]::-webkit-color-swatch {
+    border: 1px solid var(--white);
+}
+
+.btn-settings {
+	display: flex; 
+	margin-top: 21px;
+	margin-right: 35px;
+}
+
+.btn-settings button {
+	width: 70px;
+	height: 25px;
+	font-weight: bold;
+	font-size: 14px;
+	color: var(--white);
+	border: 1px solid var(--white);
+	border-radius: 5px;
+	background-color: var(--gray3);
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+
+.btn-settings button:hover {
+  	outline: 1.5px solid var(--white); 
+}
+
+
+/* font */
+#font-content {
+    padding: 0;
+    font-size: 12px;
+}
+
+.font-selection {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 20px;
+}
+
+.font-selection h3 {
+	margin: 0;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.font-family {
+    width: 170px;
+}
+
+.font-size  {
+	width: 140px;
+	margin-left: 60px;
+}
+
+.select-font-family, .select-font-size {
+    background-color: var(--black2);
+    color: var(--white);
+    border: 1px solid var(--white);
+    border-top: 0;
+    font-size: 14px;
+    height: 105px;
+    max-height: 105px;
+    overflow-y: auto;
+    padding: 0;
+    margin-top: 0;
+}
+
+#font-content li {
+    padding: 10px;
+    cursor: pointer;
+    list-style-type: none;
+    font-size: 12px;
+}
+
+
+#font-content li:hover {
+    background-color: var(--gray3);
+}
+
+.selected-font, .selected-size {
+	border: 1px solid var(--white);
+    background-color: var(--black2) ;
+    color: var(--white);
+    padding: 10px;
+    margin:0; 
+    cursor: pointer;
+    position: relative; /* 이미지 위치를 조정하기 위해 부모 요소를 relative로 설정 */
+    display: flex; /* 텍스트와 아이콘을 나란히 배치 */
+    align-items: center; /* 텍스트와 아이콘을 수직으로 정렬 */
+}
+
+.font-selection img {
+    position: absolute;
+    right: 10px; /* 오른쪽에 10px 여백을 줍니다. 원하는 만큼 조정 가능 */
+    top: 50%;
+    transform: translateY(-50%); /* 수직 중앙 정렬 */
+}
+
+
+
+.font-preview {
+	margin-left: 20px;
+	width: 370px;
+	height: 130px;
+	background-color: var(--black2);
+	color: var(--white);
+	font-size: 18px;
+	font-weight: bold;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+
+.select-font-family li.selected, .select-font-size li.selected {
+    background-color: var(--gray3); /* 원하는 선택 색상 */
+}
+
+.select-font-family li.selected:hover, .select-font-size li.selected:hover {
+    background-color: var(--gray3);
+}
+
+
+/* Template */
+.template-container {
+	margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+}
+
+.template-container .btn-settings {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+    margin: 0;
+    padding: 0; 
+    margin-right: 17px;
+}
+
+.template-table {
+	width: 300px;
+	height: 220px;
+	overflow: auto;
+	color: var(--white);
+	font-size: 12px;
+	font-weight: 400;
+	text-align: left;
+}
+
+.template-table th {
+	background-color: var(--gray1);	
+	font-weight: 400;
+	height: 25px;
+	min-width: 65px;
+	padding-left: 5px;
+}
+
+.template-table td {
+	background-color: var(--black2);
+	padding-left: 5px;
+	height: 25px;
+    max-width: 200px; /* 330 - 5 - 80에 해당하는 값 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.template-table td:first-child {
+	width: 65px;
+}
+
+.template-preview {
+	margin-left: 20px;
+	width: 380px;
+	height: 150px;
+	background-color: var(--black2);
+}

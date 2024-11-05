@@ -5,4 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class EditorController {
+	
+	@GetMapping("/code")
+	public String view() {
+		return "editor";
+	}
+
 }
