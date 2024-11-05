@@ -18,6 +18,7 @@ public class MainController {
 	
 	@GetMapping("/stats")
 	public String stats() {
+		
 		return "stats";
 	}
 	
