@@ -2,13 +2,25 @@
 pageEncoding="UTF-8"%>
 <div class="header_editor">
     <div>
-        <img src="/editor/resources/image/icon/run.svg" />
-        <img src="/editor/resources/image/icon/console.svg" />
-        <img src="/editor/resources/image/icon/download.svg" />
-        <img src="/editor/resources/image/icon/record.svg" />
+    	<button class="btn_run">
+	        <img src="/editor/resources/image/icon/run.svg" />
+    	</button>
+    	<button class="btn_console">
+	        <img src="/editor/resources/image/icon/console.svg" />
+    	</button>
+    	<button class="btn_download">
+	        <img src="/editor/resources/image/icon/download.svg" />
+    	</button>
+    	<button class="btn_record">
+	        <img src="/editor/resources/image/icon/record.svg" />
+    	</button>
     </div>
     <div>
-        <img src="/editor/resources/image/icon/version.svg" />
-        <img src="/editor/resources/image/icon/settings.svg" />
+    	<button class="btn_version">
+	        <img src="/editor/resources/image/icon/version.svg" />
+    	</button>
+    	<button class="btn_settings">
+	        <img src="/editor/resources/image/icon/settings.svg" />
+    	</button>
     </div>
 </div>
