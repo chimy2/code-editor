@@ -631,7 +631,7 @@
     align-items: flex-start; 
 }
 
-.btn-settings {
+.template-container .btn-settings {
     display: flex;
     flex-direction: column; 
     gap: 10px; 
@@ -650,7 +650,6 @@
 	text-align: left;
 }
 
-<<<<<<< HEAD
 .template-table th {
 	background-color: var(--gray1);	
 	font-weight: 400;
@@ -679,6 +678,3 @@
 	height: 150px;
 	background-color: var(--black2);
 }
-=======
->>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
->>>>>>> 24790f8ded21072dec009cfc1c69599ff85befca
