@@ -7,16 +7,7 @@
 <title>content_main</title>
 </head>
 <body>
-	<div class="login_header">
-		<div class="login_box">
-			<img class="user_box" src="/editor/resources/image/icon/user.svg">
-			Sign up
-		</div>
-		<div class="login_box">
-			<img class="login" src="/editor/resources/image/icon/login.svg">
-			Log in
-		</div>
-	</div>
+	
 	<div class="main_content">
 		<div class="main_text">
 			<h1>Zenith</h1>

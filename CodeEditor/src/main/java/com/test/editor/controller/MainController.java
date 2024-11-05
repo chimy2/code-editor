@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainController {
 	
 	@GetMapping("/main")
-	public String test() {
+	public String main() {
 		return "main";
 	}
 	
@@ -19,5 +19,15 @@ public class MainController {
 	@GetMapping("/stats")
 	public String stats() {
 		return "stats";
+	}
+	
+	@GetMapping("/login")
+	public String login() {
+		return "login";
+	}
+	
+	@GetMapping("/join")
+	public String join() {
+		return "join";
 	}
 }

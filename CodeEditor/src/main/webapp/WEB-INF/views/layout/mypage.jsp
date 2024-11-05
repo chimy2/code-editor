@@ -6,11 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>MyPage</title>
+	<tiles:insertAttribute name="asset"/>
 	<tiles:insertAttribute name="asset_main"/>
 </head>
 <body class="mypage">
 	<!-- mypage_header -->
-	<tiles:insertAttribute name="header_main"/> 
+	<tiles:insertAttribute name="header_mypage"/> 
 	<!-- mypage_content -->
 	<tiles:insertAttribute name="content_mypage"/> 
 </body>

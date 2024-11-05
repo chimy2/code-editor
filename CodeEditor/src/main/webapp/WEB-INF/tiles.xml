@@ -3,17 +3,36 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
+	<!-- join -->
+	<definition name="join" template="/WEB-INF/views/layout/join.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="content_join" value="/WEB-INF/views/page/main/content_join.jsp"></put-attribute>
+	</definition>
+	
+	<!-- login -->
+	<definition name="login" template="/WEB-INF/views/layout/login.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="content_login" value="/WEB-INF/views/page/main/content_login.jsp"></put-attribute>
+	</definition>
+	
 
 	<!-- main -->
 	<definition name="main" template="/WEB-INF/views/layout/main.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
 		<put-attribute name="content_main" value="/WEB-INF/views/page/main/content_main.jsp"></put-attribute>
 	</definition>
 	
 	<!-- mypage -->
 	<definition name="mypage" template="/WEB-INF/views/layout/mypage.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute><!-- 기본 세팅 링크 -->
-		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute><!-- 상단 메뉴 -->
+		<put-attribute name="header_mypage" value="/WEB-INF/views/inc/header_mypage.jsp"></put-attribute><!-- 상단 메뉴 -->
 		<put-attribute name="content_mypage" value="/WEB-INF/views/page/main/content_mypage.jsp"></put-attribute><!-- 캘린더, 팀, 프로젝트 -->
 	</definition>
 	
