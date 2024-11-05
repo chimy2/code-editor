@@ -9,12 +9,17 @@
 </head>
 <body>
 
-	<div class="header">
-		<div class = "headerImg">
-			<img src="/editor/resources/image/icon/home.svg">
-			<img src="/editor/resources/image/icon/edit.svg">
+	<div class="login_header">
+		<div class="logo">Zenith</div>
+	
+		<div class="login_box">
+			<img class="user_box" src="/editor/resources/image/icon/user_white.svg">
+			Sign up
 		</div>
-		<div id="nick">test</div>
+		<div class="login_box">
+			<img class="login" src="/editor/resources/image/icon/login.svg">
+			Log in
+		</div>
 	</div>
 	 
 </body>
