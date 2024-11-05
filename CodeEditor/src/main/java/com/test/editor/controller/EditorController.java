@@ -10,4 +10,5 @@ public class EditorController {
 	public String view() {
 		return "editor";
 	}
+
 }

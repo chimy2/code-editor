@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GPTResponse {
+public class GPTResponse { 
 	
 	private List<Choice> choices;
 	

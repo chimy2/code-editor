@@ -1,1 +1,242 @@
 @charset "UTF-8";
+
+.header_editor {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0 5px;
+	height: 30px;
+	background: var(--gray5);
+}
+
+.header_editor img {
+	color: var(--gray4);
+	padding: 0 2px;
+	cursor: pointer;
+}
+
+.editor {
+	height: calc(100vh - 60px);
+	background: tomato;
+}
+
+
+body {
+    font-family: "Nanum Gothic", sans-serif;
+    background-color: #1E1E1E;
+}
+
+/* header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+/* settings */
+.settings-html,
+.settings-body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.settings-main {
+    position: relative;
+    width: 610px;
+    height: 630px;
+    background-color: #666666;
+    display: flex;
+    border: 1px solid #FFFFFF;
+    border-radius: 15px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.settings-main header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #45464A;
+    border-bottom: 1px solid #FFFFFF;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.settings-main header div {
+    margin-left: 30px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.settings-close-icon {
+    position: absolute;
+    top: 13px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.settings-main footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    border-top: 1px solid #FFFFFF;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    height: 63px;
+    width: 100%;
+}
+
+.settings-main footer img {
+    position: absolute;
+    right: 20px;
+    top: 13px;
+}
+
+.settings-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 170px;
+    height: 100%;
+    background-color: #1E1E1E;
+    color: white;
+}
+
+.settings-container {
+    display: flex;
+    height: calc(100% - 113px);
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 63px;
+    margin-left: 40px;
+    
+}
+
+.settings-main-item {
+    margin: 10px 0;
+}
+
+#theme-button,
+#template-button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    width: 100%;
+    text-align: left;
+    padding: 0px 20px;
+    font-size: 16px;
+}
+
+#theme-button {
+	margin-top: 20px;
+}
+
+#template-button {
+	margin-left: 19px;
+}
+
+.settings-sub-menu {
+    list-style-type: none;
+    padding-left: 20px;
+    display: none; /* 기본적으로 숨김 */
+    margin-left: 30px; 
+}
+
+.settings-sub-menu li {
+	margin-top: 10px;
+}
+
+.settings-container img {
+	width: 14px;
+	height: 14px;
+}
+
+
+
+.theme-content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box; 
+    padding: 0; 
+    margin: 0; 
+}
+
+
+.theme-content hr {
+    margin: 0;
+    padding: 0;
+    width: calc(100% - 22px); 
+}
+
+.theme-content h2,
+.theme-content h3 {
+	color: #FFFFFF;
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+.theme-content h2 {
+	font-size: 20px;
+}
+
+.theme-content h3 {
+	font-size: 16px;
+}
+
+.theme-selector {
+    display: flex;
+    align-items: center;
+	width: 350px;
+	height: 90px;
+	background-color: #D9D9D9;
+	justify-content: space-around;
+	border: 0;
+	border-radius: 5px;
+	margin-left: 20px;
+}
+.theme-mode input[type="radio"] {
+   color: #666666;
+}
+
+.theme-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 130px;
+    height: 50px;
+    background-color: #FFF;
+    color: #666666;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 2px solid #666666;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.theme-mode span {
+	margin-left: 10px;
+}
+
+#dark-button:checked + label, 
+#dark-button:checked + label {
+    background-color: #666666; /* Dark 모드 색상 */
+    color: #FFFFFF; /* 텍스트 색상 */
+}
+
+
+
+

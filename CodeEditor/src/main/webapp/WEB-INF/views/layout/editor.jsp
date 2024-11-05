@@ -19,6 +19,7 @@
 	<main>
 		<tiles:insertAttribute name="left_side"/>
 		<tiles:insertAttribute name="content"/>
+		<tiles:insertAttribute name="settings"/>
 		<tiles:insertAttribute name="right_side"/>
 	</main>
 </body>
