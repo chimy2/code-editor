@@ -1,5 +1,7 @@
 package com.test.bot.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +18,11 @@ public class ChatDAO {
 	public int add(ChatDTO dto) {
 		
 		return mapper.add(dto);
+	}
+
+	public List<ChatDTO> list(String seq) {
+		
+		return mapper.list(seq);
 	}
 
 }

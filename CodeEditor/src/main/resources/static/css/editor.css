@@ -225,7 +225,8 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    display: none;
+    /* display: none; 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -355,19 +356,30 @@
     height: 14px;
 }
 
+<<<<<<< HEAD
 .theme-content {
+=======
+
+.settings-content {
+>>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
     flex: 1;
     justify-content: center;
     align-items: center;
     width: 100%;
 }
 
+<<<<<<< HEAD
 .theme-content hr {
+=======
+
+.settings-content hr {
+>>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
     margin: 0;
     padding: 0;
     width: calc(100% - 22px);
 }
 
+<<<<<<< HEAD
 .theme-content h2,
 .theme-content h3 {
     color: var(--white);
@@ -381,6 +393,21 @@
 
 .theme-content h3 {
     font-size: 16px;
+=======
+.settings-content h2,
+.settings-content h3 {
+	color: var(--white);
+	margin-left: 20px;
+	font-weight: 600;
+}
+
+.settings-content h2 {
+	font-size: 20px;
+}
+
+.settings-content h3 {
+	font-size: 16px;
+>>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
 }
 
 .theme-selector {
@@ -394,8 +421,13 @@
     border-radius: 5px;
     margin-left: 20px;
 }
+<<<<<<< HEAD
 .theme-mode input[type='radio'] {
     color: var(--gray5);
+=======
+.theme-mode input[type="radio"] {
+	margin-right: 20px;
+>>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
 }
 
 .theme-mode {
@@ -418,8 +450,211 @@
     margin-left: 10px;
 }
 
+<<<<<<< HEAD
 #dark-button:checked + label,
 #light-button:checked + label {
     background-color: var(--gray5);
     color: var(--white);
 }
+=======
+.theme-mode.selected {
+    background-color: var(--gray3);
+    color: var(--white);
+    border: 2px solid var(--gray3);
+}
+
+[type="radio"] {
+  appearance: none;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background-color: var(--gray5);
+}
+
+[type="radio"]:checked {
+  box-shadow: 0 0 0 1px var(--white);
+  border: 2px solid var(--white);
+  background-color: var(--orange);
+}
+
+
+/* colors */
+.colors-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+}
+
+.colors-selector {
+    display: flex;
+    align-items: left;
+    width: 300px;
+    height: 240px;
+    border: 0;
+    margin-left: 20px;
+    margin-top: 20px;
+    background-color: var(--black2);
+    color: var(--white);
+    flex-direction: column;
+}
+
+.colors {
+	margin-top: 10px;
+	margin-left: 20px;
+	font-weight: 400;
+	font-size: 15px; 
+}
+
+.colors:first-child {
+    margin-top: 20px;
+}
+
+
+.colors-selector [type="color"] {
+    width: 17px;
+    height: 17px;
+    margin-right: 10px;
+    border: none;
+    outline: none;         /* 포커스 보더 제거 */
+    -webkit-appearance: none;     /* 웹킷 브라우저 기본 스타일 제거 */
+    appearance: none;             /* 기본 스타일 제거 */
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+
+/* 색상 선택기 내부의 보더와 여백 제거 */
+.colors-selector [type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.colors-selector [type="color"]::-webkit-color-swatch {
+    border: 1px solid var(--white);
+}
+
+.btn-colors-edit {
+	display: flex; 
+	margin-top: 21px;
+	margin-right: 35px;
+}
+
+.btn-colors-edit button {
+	width: 70px;
+	height: 25px;
+	font-weight: bold;
+	font-size: 14px;
+	color: var(--white);
+	border: 1px solid var(--white);
+	border-radius: 5px;
+	background-color: var(--gray3);
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+
+.btn-colors-edit button:hover {
+  	outline: 1.5px solid var(--white); 
+}
+
+
+/* font */
+#font-content {
+    padding: 0;
+    font-size: 12px;
+}
+
+.font-selection {
+    display: flex;
+    justify-content: flex-start;
+    margin-left: 20px;
+}
+
+.font-selection h3 {
+	margin: 0;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.font-family {
+    width: 170px;
+}
+
+.font-size  {
+	width: 140px;
+	margin-left: 60px;
+}
+
+.select-font-family, .select-font-size {
+    background-color: var(--black2);
+    color: var(--white);
+    border: 1px solid var(--white);
+    border-top: 0;
+    font-size: 14px;
+    height: 105px;
+    max-height: 105px;
+    overflow-y: auto;
+    padding: 0;
+    margin-top: 0;
+}
+
+#font-content li {
+    padding: 10px;
+    cursor: pointer;
+    list-style-type: none;
+    font-size: 12px;
+}
+
+
+#font-content li:hover {
+    background-color: var(--gray3);
+}
+
+.selected-font, .selected-size {
+	border: 1px solid var(--white);
+    background-color: var(--black2) ;
+    color: var(--white);
+    padding: 10px;
+    margin:0; 
+    cursor: pointer;
+    position: relative; /* 이미지 위치를 조정하기 위해 부모 요소를 relative로 설정 */
+    display: flex; /* 텍스트와 아이콘을 나란히 배치 */
+    align-items: center; /* 텍스트와 아이콘을 수직으로 정렬 */
+}
+
+.font-selection img {
+    position: absolute;
+    right: 10px; /* 오른쪽에 10px 여백을 줍니다. 원하는 만큼 조정 가능 */
+    top: 50%;
+    transform: translateY(-50%); /* 수직 중앙 정렬 */
+}
+
+
+
+.font-preview {
+	margin-left: 20px;
+	width: 370px;
+	height: 130px;
+	background-color: var(--black2);
+	color: var(--white);
+	font-size: 18px;
+	font-weight: bold;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+
+.select-font-family li.selected, .select-font-size li.selected {
+    background-color: var(--gray3); /* 원하는 선택 색상 */
+}
+
+.select-font-family li.selected:hover, .select-font-size li.selected:hover {
+    background-color: var(--gray3);
+}
+
+
+
+
+
+>>>>>>> 5693b51e391554abd65708ad01ce47f9b12cdc16
