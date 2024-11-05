@@ -1,5 +1,5 @@
 @charset "UTF-8";
-
+/* editor header */
 .header_editor {
 	display: flex;
 	justify-content: space-between;
@@ -15,27 +15,32 @@
 	cursor: pointer;
 }
 
+/* editor */
+
 .editor {
 	height: calc(100vh - 60px);
 	background: tomato;
 }
 
+#tabs { width: 600px; margin: 20px auto; }
+#tabs ul { overflow: hidden; }
+#tabs ul li { float: left; width: 100px; position: relative; }
+.ui-tabs-active .tab-close { display: inline; } /* 활성화된 탭에서만 x 표시 */
+.tab-close { display: none; position: absolute; right: 5px; top: 5px; cursor: pointer; color: red; }
+#add-tab { margin: 10px 0; }
 
-body {
+/* body {
     font-family: "Nanum Gothic", sans-serif;
     background-color: #1E1E1E;
 }
-
-/* header */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
 }
-
+ */
 /* settings */
-.settings-html,
 .settings-body {
     height: 100%;
     margin: 0;
