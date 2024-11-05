@@ -92,7 +92,7 @@
 								color</label>
 						</div>
 					</div>
-					<div class="btn-colors-edit">
+					<div class="btn-settings">
 						<button>Edit</button>
 					</div>
 				</div>
@@ -134,10 +134,100 @@
 					<div class="font-preview">AaBbYyZz</div>
 				</div>
 			</div>
-			<div class="settings-content" id="template-content"
-				style="display: none;">
+			<div class="settings-content" id="template-content" style="display: none;">
 				<h2>Template</h2>
 				<hr>
+				<div class="template-container">
+					<div class="template-table">
+						<table>
+						    <tr>
+						        <th>Keyword</th>
+						        <th>Code</th>
+						    </tr>
+						    <tr>
+						        <td>catch</td>
+						        <td>catch (\${1:Exception} \${2:e}) {\n    \${3}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>dowhile</td>
+						        <td>do {\n    \${0}\n} while (\${1:condition});</td>
+						    </tr>
+						    <tr>
+						        <td>else</td>
+						        <td>else {\n    \${1}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>finally</td>
+						        <td>finally {\n    \${1}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>for</td>
+						        <td>for (int \${1:index} = 0; \${1:index} < \${2:array}.length; \${1:index}++) {\n    \${3}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>foreach</td>
+						        <td>for (\${1:Type} \${2:item} : \${3:collection}) {\n    \${0}\n}</td>
+						    </tr>
+						    <tr>
+						        <td>if</td>
+						        <td>if (\${1:condition}) {\n    \${2}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>ifelse</td>
+						        <td>if (\${1:condition}) {\n    \${2}\n} else {\n    \${2}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>ifelseif</td>
+						        <td>if (\${1:condition}) {\n    \${2}\n} else if (\${3:condition}) {\n    \${4}\n} else {\n    \${5}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>main</td>
+						        <td>public static void main(String[] args) {\n    \${0}\n}</td>
+						    </tr>
+						    <tr>
+						        <td>switch</td>
+						        <td>switch (\${1:key}) {\n    case \${2:value}:\n        \${0}\n        break;\n    default:\n        break;\n}</td>
+						    </tr>
+						    <tr>
+						        <td>syserr</td>
+						        <td>System.err.println(\${1});\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>sysout</td>
+						        <td>System.out.println(\${1});\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>tryfinally</td>
+						        <td>try {\n    \${1}\n} finally {\n    \${2}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>trycatch</td>
+						        <td>try {\n    \${1}\n} catch (\${2:Exception} \${3:e}) {\n    \${4}\n}\${0}</td>
+						    </tr>
+						    <tr>
+						        <td>while</td>
+						        <td>while (\${1:condition}) {\n    \${2}\n}\${0}</td>
+						    </tr>
+						</table>
+					</div>
+					<div class="btn-settings">
+						<div id="new-setting">
+							<button>New</button>
+						</div>
+						<div id="edit-setting">
+							<button>Edit</button>
+						</div>
+						<div id="delete-setting">
+							<button>Delete</button>
+						</div>
+					</div>
+				</div>
+				<div>
+					<h2>Preview</h2>
+					<div class="template-preview">
+						
+					</div>
+				</div>
 			</div>
 		</div>
 		<div class="settings-footer">
@@ -250,3 +340,24 @@
 </script>
 
 
+
+<!-- 
+
+System.out.println(\\${1});\\${0}
+try {\n    \\${1}\n} catch (\\${2:Exception} \\${3:e}) {\n    \\${4}\n}\\${0}
+try {\n    \\${1}\n} finally {\n    \\${2}\n}\\${0}
+public static void main(String[] args) {\n    \\${0}\n}
+if (\\${1:condition}) {\n    \\${2}\n}\\${0}
+else {\n    \\${1}\n}\\${0}
+catch (\\${1:Exception} \\${2:e}) {\n    \\${3}\n}\\${0}
+finally {\n    \\${1}\n}\\${0}
+switch (\\${1:key}) {\n    case \\${2:value}:\n        \\${0}\n        break;\n    default:\n        break;\n}
+while (\\${1:condition}) {\n    \\${2}\n}\\${0}
+do {\n    \\${0}\n} while (\\${1:condition});
+for (int \\${1:index} = 0; \\${1:index} < \\${2:array}.length; \\${1:index}++) {\n    \\${3}\n}\\${0}
+for (\\${1:Type} \\${2:item} : \\${3:collection}) {\n    \\${0}\n}
+System.err.println(\\${1});\\${0}
+if (\\${1:condition}) {\n    \\${2}\n} else {\n    \\${2}\n}\\${0}
+if (\\${1:condition}) {\n    \\${2}\n} else if (\\${3:condition}) {\n    \\${4}\n} else {\n    \\${5}\n}\\${0} 
+
+-->

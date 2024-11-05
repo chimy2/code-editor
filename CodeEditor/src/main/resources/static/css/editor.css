@@ -328,13 +328,13 @@ body {
     border: 1px solid var(--white);
 }
 
-.btn-colors-edit {
+.btn-settings {
 	display: flex; 
 	margin-top: 21px;
 	margin-right: 35px;
 }
 
-.btn-colors-edit button {
+.btn-settings button {
 	width: 70px;
 	height: 25px;
 	font-weight: bold;
@@ -348,7 +348,7 @@ body {
 }
 
 
-.btn-colors-edit button:hover {
+.btn-settings button:hover {
   	outline: 1.5px solid var(--white); 
 }
 
@@ -449,6 +449,58 @@ body {
 }
 
 
+/* Template */
+.template-container {
+	margin: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; 
+}
 
+.btn-settings {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px; 
+    margin: 0;
+    padding: 0; 
+    margin-right: 17px;
+}
 
+.template-table {
+	width: 300px;
+	height: 220px;
+	overflow: auto;
+	color: var(--white);
+	font-size: 12px;
+	font-weight: 400;
+	text-align: left;
+}
 
+.template-table th {
+	background-color: var(--gray1);	
+	font-weight: 400;
+	height: 25px;
+	min-width: 65px;
+	padding-left: 5px;
+}
+
+.template-table td {
+	background-color: var(--black2);
+	padding-left: 5px;
+	height: 25px;
+    max-width: 200px; /* 330 - 5 - 80에 해당하는 값 */
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.template-table td:first-child {
+	width: 65px;
+}
+
+.template-preview {
+	margin-left: 20px;
+	width: 380px;
+	height: 150px;
+	background-color: var(--black2);
+}
