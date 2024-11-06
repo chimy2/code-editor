@@ -18,7 +18,7 @@
 					<tr>
 						<th>Type</th>
 						<td>
-							<select name="type">
+							<select name="type" class="select_file_type">
 								<option value="package">Package</option>
 								<option value="class">Class</option>
 								<option value="interface">Interface</option>

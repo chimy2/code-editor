@@ -1,8 +1,4 @@
 
-/*메인 페이지 내 버튼 클릭 시 링크 이동*/
-document.querySelector('.logo').onclick = function(){
-	location.href = '/editor/main';
-}
 
 const loginbox = document.querySelectorAll('.login_header_box');
 loginbox[0].onclick = function(){
@@ -27,21 +23,27 @@ function redirectTo() {
     }else if(window.location.href == 'http://localhost:8090/editor/login'){
     	
 		document.querySelector('.setting_close').onclick = function() {
-        	location.href = '/editor/main';
+        	location.href = '/editor/';
         }
         document.querySelectorAll('.login_button button')[1].onclick = function() {
         	location.href = '/editor/join';
         }
            
-	}else if(window.location.href == 'http://localhost:8090/editor/main'){
+	}else if(window.location.href == 'http://localhost:8090/editor/'){
     	
 		document.querySelectorAll('.main_menu_box')[0].onclick = function() {
         	location.href = '/editor/document';
         }
+        
+        document.querySelectorAll('.main_menu_box')[1].onclick = function() {
+        	location.href = '/editor/code';
+        }
+        
+
     }else if(window.location.href == 'http://localhost:8090/editor/logout'){
     	
 		document.querySelectorAll('.logout_button')[0].onclick = function() {
-        	location.href = '/editor/main';
+        	location.href = '/editor';
         }
         
         document.querySelectorAll('.logout_button')[1].onclick = function() {

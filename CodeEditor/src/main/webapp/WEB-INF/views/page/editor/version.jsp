@@ -3,7 +3,12 @@
 <div class="popup-container version-container">
 	<div class="popup-main version-main">
 		<div class="popup-content version-content">
-			여기다가 넣으시오
+			<div>
+				여기다 explorer 넣으시오
+			</div>
+			<div>
+				여기다 선택하면 파일 내용 보이도록 넣으시오
+			</div>
 		</div>
 		<nav class="popup-nav version-nav">
 			<div class="version-header">
