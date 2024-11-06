@@ -42,8 +42,28 @@ public class MainController {
 		return "document";
 	}
 	
+	// 나중에 login이랑 security 처리할 예정
 	@GetMapping("/logout")
 	public String logout() {
 		return "logout";
 	}
+	
+	// 나중에 mypage랑 합칠 예정 -> ui 먼저 하는 중
+	@GetMapping("/mypage/membersetting")
+	public String membersetting() {
+		return "membersetting";
+	}
+	
+	@GetMapping("/mypage/teamsetting")
+	public String teamsetting() {
+		return "teamsetting";
+	}
+	
+	@GetMapping("/mypage/projectsetting")
+	public String projectsetting() {
+		return "projectsetting";
+	}
+	
+	
+	
 }

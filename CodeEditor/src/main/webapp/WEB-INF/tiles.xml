@@ -60,6 +60,20 @@
 		<put-attribute name="content_logout" value="/WEB-INF/views/page/main/content_logout.jsp"></put-attribute>
 	</definition>
 	
+	<!-- mypage에서 memberSetting, teamSetting, projectSetting -->
+	<definition name="membersetting" template="/WEB-INF/views/page/main/content_memberSetting.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+	</definition>
+	<definition name="teamsetting" template="/WEB-INF/views/page/main/content_teamSetting.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+	</definition>
+	<definition name="projectsetting" template="/WEB-INF/views/page/main/content_projectSetting.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+	</definition>
+	
 	
 	<definition name="editor" template="/WEB-INF/views/layout/editor.jsp">
 		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>

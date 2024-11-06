@@ -512,11 +512,11 @@ ul {
 
 .teamBox_icon div,
 .inner_box_header div:first-child{
-	width : 30px;
-	height : 30px;
+	width : 27px;
+	height : 27px;
 	border-radius: 50%;
 	background-color: var(--white);
-	margin-right : 5px;
+	margin-right : 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -526,8 +526,8 @@ ul {
 	outline : 1.2px solid var(--orange);
 }
 .teamBox_icon .team_icon{
-	width : 20px;
-	height : 20px;
+	width : 15px;
+	height : 15px;
 	object-fit: contain;
 }
 
@@ -542,8 +542,8 @@ ul {
 }
 
 .inner_box_header .team_icon{
-	width : 30px;
-	height : 30px;
+	width : 23px;
+	height : 23px;
 }
 .inner_box_header .team_project_plus{
 	margin-left : auto;
@@ -589,25 +589,30 @@ ul {
 .teamBox_icon{
 	display: flex;
 	height : 40px;
-	width : 150px;
+	width : 130px;
 	text-align: center;
 	align-items: center;
 	justify-items: start; 
+	font-size: 0.9rem;
 }
 
 
 .teamBox_icon div{
     background-color: var(--white);
 	border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    margin-right: 15px;
+    width: 38px;
+    height: 38px;
+    margin-right: 13px;
 }
 
+.projectBox_icon:hover,
+.teamBox_icon:hover{
+	cursor: pointer;	
+}
 
 .inner_box_content .team_icon {
-    width: 25px;
-    height: 25px;
+    width: 23px;
+    height: 23px;
 }
 
 /* mypage project_box */
@@ -615,10 +620,11 @@ ul {
 .projectBox_icon{
 	display: flex;
 	height : 40px;
-	width : 150px;
+	width : 140px;
 	text-align: center;
 	align-items: center;
 	justify-items: start; 
+	font-size: 0.9rem; 
 }
 
 
@@ -626,16 +632,16 @@ ul {
 	border: 1px solid var(--white);
     background-color: var(--orange);
 	border-radius: 5px;
-    width: 35px;
-    height: 35px;
-    margin-right: 11px;
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
     align-content: center;
 }
 
 
 .inner_box_content .projectBox_icon .project2_icon {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
 }
 
 /*content_join*/
@@ -875,8 +881,7 @@ ul {
     margin-left: auto;
     margin-top: 18px;
     margin-right: 18px;
-    filter: grayscale(1) brightness(0.15) sepia(1) hue-rotate(180deg)
-        saturate(4);
+    filter: grayscale(1) brightness(0.15) sepia(1) hue-rotate(180deg) saturate(4);
 }
 
 .login .setting_close:hover {
@@ -963,7 +968,6 @@ ul {
 	font-size: 1rem;
 	margin-top : 20px;
 	display: flex;
-
     align-items: center;
     justify-content: center;
 }
@@ -1095,4 +1099,125 @@ ul {
 	background: var(--orange);
     border: 1px solid var(--gray5);
 }
+
+/* 개인 설정 수정 */
+
+.content_memberSetting{
+	width : 550px;
+	height : 600px;
+	background-color: var(--white);
+	border-radius: 5px;
+}
+
+.content_memberSetting .header_member_setting{
+	width : 550px;
+	height : 40px;
+	color : var(--black);
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+	font-size: 1.2rem;
+}
+
+
+.content_memberSetting .info_member_setting{
+	width : 550px;
+	height : 70px;
+	border : 1px solid var(--gray6);
+	box-sizing: border-box;
+	text-align: center;
+	display : flex;
+	align-items: center;
+}
+
+.info_member_setting .setting_user_icon{
+	border : 1px solid var(--gray6);
+	border-radius: 50%;
+	width : 50px;
+	height : 50px;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+} 
+
+.info_member_setting .setting_user_icon img{
+	width : 30px;
+	height : 30px;
+}
+
+.info_member_setting .setting_user_nick{
+	width : 200px;
+	height : 30px;
+	box-sizing: border-box;
+}
+
+.info_member_setting img{
+	width : 20px;
+	height : 20px;
+}
+
+.info_member_setting .logout_member_setting{
+	background-color : var(--white);
+	border : 0;
+	outline : 0.5px solid var(--gray6);
+	border-radius : 5px;
+	width : 70px;
+	height : 20px; 
+	border-radius: 5px;
+	font-size: 0.6rem;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+	box-sizing: border-box;
+}
+
+.logout_member_setting img{
+	width : 12px;
+	height : 12px; 
+	margin-right: 8px;
+	filter: grayscale(1) brightness(0.15) sepia(1) hue-rotate(180deg) saturate(4);
+}
+
+.info_member_setting button:hover{
+	cursor : pointer;
+	color : var(--white);
+	outline : 0.5px solid var(--orange);
+	background-color : var(--orange);
+}
+
+
+.content_memberSetting .chat_member_setting{
+	color : var(--gray1);
+	height : 50px;
+}
+
+
+.content_memberSetting .button_member_setting{
+	width : 550px;
+	height : 50px;
+	box-sizing: border-box;
+}
+
+
+.button_member_setting {
+    display: flex;
+    justify-content: end;
+}
+
+.button_member_setting button {
+    background-color: var(--white);
+    border: 0;
+    outline: 0.5px solid var(--orange);
+    border-radius: 5px;
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    margin-right: 25px;
+}
+
+
+
+
+
 
