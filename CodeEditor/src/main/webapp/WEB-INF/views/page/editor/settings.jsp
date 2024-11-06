@@ -224,8 +224,8 @@
 				</div>
 				<div>
 					<h2>Preview</h2>
-					<div class="template-preview">
-						
+					<div class="template-preview" id="template-preview">
+					<div></div>
 					</div>
 				</div>
 			</div>
@@ -236,8 +236,68 @@
 	</div>
 </div>
 
-<script>
+<div class="template-body new-template-body">
+    <div class="template-main">
+        <div class="template-header">
+            <h2>New Template</h2>
+            <button class="template-close-icon">
+                <img src="/editor/resources/image/icon/settings-close.svg">
+            </button>
+        </div>
+        <div class="template-content">
+        	<table>
+        		<tr>
+        			<th>Name</th>
+        			<td>
+        				<input type="text" class="template-name-input"/>
+       				</td>
+        		</tr>
+        		<tr>
+        			<th>Code</th>
+       				<td>
+       					<textarea></textarea>
+       				</td>
+        		</tr>
+        	</table>
+        </div>
+        <div class="template-footer">
+            <img src="/editor/resources/image/icon/check-circle.svg">
+        </div>
+    </div>
+</div>
 
+<div class="template-body edit-template-body">
+    <div class="template-main">
+        <div class="template-header">
+            <h2>Edit Template</h2>
+            <button class="template-close-icon">
+                <img src="/editor/resources/image/icon/settings-close.svg">
+            </button>
+        </div>
+        <div class="template-content">
+        	<table>
+        		<tr>
+        			<th>Name</th>
+        			<td>
+        				<input type="text" class="template-name-input"/>
+       				</td>
+        		</tr>
+        		<tr>
+        			<th>Code</th>
+       				<td>
+       					<textarea></textarea>
+       				</td>
+        		</tr>
+        	</table>
+        </div>
+        <div class="template-footer">
+            <img src="/editor/resources/image/icon/check-circle.svg">
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
 
     function toggleSubMenu(menuId) {
         // 선택한 서브 메뉴와 버튼의 아이콘 찾기
@@ -333,7 +393,65 @@
 	    });
 	});
 
+	document.addEventListener("DOMContentLoaded", function() {
+	    const templatePreview = document.getElementById("template-preview");
+	    let selectedRow = null;
 
+	    document.querySelectorAll(".template-table tr").forEach(row => {
+	        const codeCell = row.cells[1];
+
+	        if (codeCell) {
+	            row.addEventListener("click", function() {
+	                if (selectedRow) {
+	                    selectedRow.classList.remove("selected-row");
+	                }
+
+	                selectedRow = row;
+	                row.classList.add("selected-row");
+
+	                // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
+	                const formattedContent = codeCell.innerHTML
+	                    .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
+	                    .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+	                templatePreview.innerHTML = formattedContent;
+	            });
+	        }
+	    });
+	});
+
+	let selectedRowData = null; 
+
+	// 테이블 행(tr) 클릭 시 선택한 데이터를 저장
+	$('.template-table tr').click(function() {
+		console.log('hello');
+	    const keyword = $(this).find('td').eq(0).text(); 
+	    const code = $(this).find('td').eq(1).text();   
+
+	    selectedRowData = { keyword, code };
+
+	    $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
+	    $(this).addClass('selected-row');                    // 현재 선택 추가
+	});
+
+	// Edit 버튼 클릭 시 처리
+	$('#edit-setting').click(() => {
+	    if (!selectedRowData) {
+	        alert('선택해 뭐하는거야');
+	        return;
+	    }
+
+	    // 선택된 항목이 있으면 Edit 모드로 전환
+	    toggleDisplay($('.edit-template-body'));
+
+	    const formattedContent = selectedRowData.code
+	        .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
+	        .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+	    
+	    // 선택된 항목의 데이터를 Edit 창에 표시
+	    $('.edit-template-body .template-name-input').val(selectedRowData.keyword); 
+	    $('.edit-template-body textarea').val(selectedRowData.code);  
+	    // // 개행을 유지하여 원본 코드 표시
+	});
 
 
 	

@@ -75,6 +75,7 @@
 .console-container {
 	display: none;
 	height: 300px;
+	font-family: 'D2Coding';
 }
 
 .editor.active_console + .console-container {
@@ -300,9 +301,9 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    display: none;
+    display: flex;
     /* 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
-    /* display: flex; */
+    /* display: none; */
     justify-content: center;
     align-items: center;
 }
@@ -749,7 +750,155 @@
 
 .template-preview {
 	margin-left: 20px;
-	width: 380px;
-	height: 150px;
+	width: 360px;
+	height: 130px;
 	background-color: var(--black2);
+	color: var(--white);
+	padding: 10px;
+	overflow: auto;
 }
+
+.selected-row td {
+    background-color: var(--orange); 
+}
+
+
+#template-preview {
+    white-space: pre;
+    font-family: 'D2Coding';
+}
+
+.template-body {
+	position: absolute;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.template-header {
+	width: 520px;
+	height: 50px;
+	
+}
+
+.template-main {
+	width: 520px;
+	height: 310px;
+	background-color: var(--gray5);
+	border: 1px solid var(--white);
+	border-radius: 10px;
+}
+
+.template-table tr:hover td {
+	background-color: var(--orange);
+	cursor: pointer;
+}
+
+
+/* template new, edit, delete */
+.template-body {
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /* cursor: not-allowed; */
+}
+
+.template-main {
+    width: 510px;
+    height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    border: 1px solid var(--white);
+    border-radius: 10px;
+    background-color: var(--gray5);
+    cursor: auto;
+}
+
+
+.template-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0 10px 0 20px; */
+    height: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: var(--gray3);
+    border-bottom: 1px solid var(--white);
+
+    color: var(--white);
+    width: 510px;
+}
+
+.template-body button {
+    display: flex; 
+    margin-right: 10px; 
+}
+
+.template-header h2 {
+	margin-left: 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.template-footer {
+	display: flex;
+	justify-content: end;
+	margin: 10px;
+}
+
+.template-content {
+    padding-left: 20px;
+    color: var(--white);
+}
+
+.template-name-input {
+	width: 350px;
+	height: 30px;
+	background: var(--black2);
+	color: var(--white);
+	border: 0;
+	padding: 0 10px;
+}
+
+.template-content textarea {
+	width: 350px;
+	height: 110px;
+	background: var(--black2);
+	color: var(--white);
+	padding: 10px;
+	font-family: 'D2Coding';
+	white-space: pre;
+}
+
+.template-content th {
+	padding-right: 10px;
+	text-align: start;
+	display: flex;
+}
+
+.template-content tr:first-child th {
+    align-items: center; /* 가운데 정렬 */
+    margin-top: 20px;
+}
+
+.template-content tr:last-child th {
+	align-items: flex-start;
+	margin-top: 5px;
+}
+
+.template-content tr:first-child {
+	height: 60px;
+}
+
+
+

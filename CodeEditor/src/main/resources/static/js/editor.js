@@ -101,6 +101,16 @@ $('.btn_settings').click(() => {
     toggleDisplay($('.settings-body'));
 });
 
+$('#new-setting').click(() => {
+    toggleDisplay($('.new-template-body'));
+}); 
+
+/*
+$('#edit-setting').click(() => {
+    toggleDisplay($('.edit-template-body'));
+}); 
+*/
+
 /* console button event */
 $('.btn_console_close').click(() => {
     $('.editor').removeClass('active_console');
@@ -115,6 +125,12 @@ $('.btn_popup_close').click(function () {
 $('.settings-close-icon').click(function () {
     $('.settings-body').hide();
 });
+
+$('.template-close-icon').click(function () {
+	console.log('hello?');
+    toggleDisplay($(this).parents('.template-body'));
+});
+
 
 /* function */
 function toggleDisplay(element) {
