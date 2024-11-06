@@ -65,7 +65,6 @@
 		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
 		<put-attribute name="content_logout" value="/WEB-INF/views/page/main/content_logout.jsp"></put-attribute>
 	</definition>
->>>>>>> branch 'main' of https://github.com/chimy2/code-editor.git
 	
 	<!-- mypage에서 memberSetting, teamSetting, projectSetting -->
 	<definition name="membersetting" template="/WEB-INF/views/page/main/content_memberSetting.jsp">
