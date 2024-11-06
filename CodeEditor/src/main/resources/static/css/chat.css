@@ -3,15 +3,15 @@
 @import url("main.css");
 
 
-  body {
+ .chat_body {
     z-index: 100;
   }
-  .menubar a {
+  .chat_menubar a {
     text-decoration: none;
    
   }
 
-  .container {
+  .chat_container {
     background: none;
     
   }
@@ -23,17 +23,17 @@
     margin: auto;
   } */
 
-  .content {
+ /*  .content {
     padding: 100px 20px 0 5Spx;
     position: relative;
     width: 200%;
   }
-
-  .nav-1 {
+ */
+  /* .nav-1 {
     display: flex;
   }
-
-   .nav-2 {
+ */
+   .chatnav {
     height: 40%;
     width: 100%;
     display: flex;
@@ -42,19 +42,19 @@
     
   } 
 
-  .home {
+/*   .home {
     display: flex;
     align-items: center;
     height: 22px;
   }
-
-  .my_account {
+ */
+/*   .my_account {
     margin-top: -15px;
     display: flex;
     align-items: center;
     height: 32px;
     border-radius: 100%;
-  }
+  } */
 
  /*  @font-face {
     font-family: 'Cafe24Ssurround';
@@ -63,14 +63,14 @@
     font-style: normal;
   } */
 
-  .word {
+/*   .word {
     margin-left: 15px;
     margin-top: -12px;
     font-size: 25px;
   
     color: black;
     cursor: pointer;
-  }
+  } */
 
 /*   @media (max-width: 768px) {
     .sidebar {
@@ -89,17 +89,15 @@
     }
   } */
 
-  .menubar .submenu {
-    display: none;
-    
-  }
 
-  .menubar {
+
+  .chat_menubar {
     position: relative;
+    display: none;
 
   }
 
-  .submenu {
+  .chatsubmenu {
  	
     display: none;
     position: fixed;
@@ -114,7 +112,7 @@
 	top:60px;
   }
 
-  .sidebar {
+  .chat_sidebar {
     background-color: var(--gray5);
     /* border-left: 3px solid var(--red1); */
     width:80px;
@@ -132,7 +130,7 @@
   }
   
   
-  .button {
+  .chatsidebutton {
     font-size: 30px;
     position: relative;
     right: 25px;
@@ -146,7 +144,7 @@
     border: none;
   }
   
-  .menubartitle {
+  .chat_menubartitle {
   color:white;
   
   }
@@ -166,26 +164,26 @@
     
      display: flex;
     flex-direction: column;
-  	
+  	border-bottom: 1px solid #555; 
 }
 
 /* 섹션 스타일 */
-.settings-section {
-    border-bottom: 1px solid #555;
+.audiosettings-section {
+    /* border-bottom: 1px solid #555; */
     padding: 10px 0;
-    
+     color: white;
 }
 
 /* 제목 스타일 */
-.settings-section h2,
-.settings-section h3 {
+.audiosettings-section h2,
+.micsettings-section h3 {
     margin: 0;
-    font-size: 16px;
-    color: #ccc;
+   
+     color: white;
 }
 
 /* 드롭다운 스타일 */
-.dropdown {
+.chatdropdown {
     width: 90%;
     padding: 5px;
     background-color: #333;
@@ -195,12 +193,12 @@
 }
 
 /* 슬라이더 스타일 */
-.slider {
+.chatslider {
     width: 90%;
     margin-top: 5px;
 }
 
-label {
+.chatlabel {
     font-size: 14px;
     color: #bbb;
 }
