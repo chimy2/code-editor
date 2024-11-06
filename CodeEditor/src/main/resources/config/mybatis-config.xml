@@ -13,4 +13,7 @@
 	<!-- <typeAliases>
 		<typeAlias type="com.test.code.dto.CodeDTO" alias="dto"/>
 	</typeAliases> -->
+	<typeAliases>
+		<typeAlias type="com.test.editor.model.ThemeDTO" alias="theme"/>
+	</typeAliases> 
 </configuration>

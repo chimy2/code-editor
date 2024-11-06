@@ -9,7 +9,7 @@
 	<tiles:insertAttribute name="asset"/>
 	<tiles:insertAttribute name="asset_main"/>
 </head>
-<body class="mypage">
+<body>
 	<!-- mypage_header -->
 	<tiles:insertAttribute name="header_mypage"/> 
 	<!-- mypage_content -->
