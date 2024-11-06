@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.test.editor.mapper.SecurityMapper;
 import com.test.editor.model.CustomUser;
-import com.test.editor.model.UserDTO;
+import com.test.editor.model.MemberDTO;
 
 public class CustomUserDetailsService implements UserDetailsService{
 
@@ -21,7 +21,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 		// 매개변수로 넘어오는 username은 customlogin에서 만든 username으로 넘어옴
 		
 		// username > DB > select
-		UserDTO dto = mapper.loadUser(username);
+		MemberDTO dto = mapper.loadUser(username);
 		
 		//return dto != null? new CustomUser(dto) : null; 
 		// null은 로그인 실패했다고 뜸
