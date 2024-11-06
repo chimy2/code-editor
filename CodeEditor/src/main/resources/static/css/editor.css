@@ -95,6 +95,12 @@
     width: 12px;
 }
 
+.cursorDecoration {
+    border-left: 2px solid red; /* or any color to identify users */
+    margin-left: -1px;
+    height: 1.2em;
+}
+
 /* 활성화된 탭에서만 x 표시 */
 .editor-tab .tab-close {
     display: none;

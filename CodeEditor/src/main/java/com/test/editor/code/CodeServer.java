@@ -1,5 +1,6 @@
 package com.test.editor.code;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,17 +15,17 @@ import javax.websocket.server.ServerEndpoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.editor.model.CodeDTO;
 
-import oracle.jdbc.driver.Message;
-
 @ServerEndpoint("/vs/code/{project_seq}")
 public class CodeServer {
 	
 	private static List<Session> sessionList;
 	private static HashMap<String, String> fileList;
+    private static ObjectMapper objectMapper;
 
 	static {
 		sessionList = new ArrayList<Session>();
 		fileList = new HashMap<String, String>();
+		objectMapper = new ObjectMapper();
 	}
 	
 	@OnOpen
@@ -38,7 +39,23 @@ public class CodeServer {
 	
 	@OnMessage
 	public void handleMessage(Session session, String message) {
-		System.out.println(message);
+	    try {
+	        // Deserialize incoming message to CodeDTO
+	        CodeDTO codeUpdate = objectMapper.readValue(message, CodeDTO.class);
+
+	        // Log message content
+	        System.out.println("Received message: " + codeUpdate);
+
+	        // Broadcast the received message to all other sessions
+	        for (Session s : sessionList) {
+	            if (!s.getId().equals(session.getId())) {  // Avoid sending back to sender
+	                s.getBasicRemote().sendText(objectMapper.writeValueAsString(codeUpdate));
+	            }
+	        }
+	    } catch (IOException e) {
+	        System.out.println("Error processing message: " + e.getMessage());
+	        handleError(e);
+	    }
 	}
 	
 	@OnError
