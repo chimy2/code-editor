@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<div class="editor">
-	<div id="tabs">
+<div class="editor-container">
+	<div class="editor-tab">
 	    <ul>
 	    </ul>
 	</div>
-	<button id="add-tab">Add Tab</button>
 </div>

@@ -1,12 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
 <div id="content_mypage">
 	<div class="calendar">
@@ -83,7 +76,7 @@
 		<div class="inner_box">
 			<div class="inner_box_header">
 				<div><img class="team_icon" src="/editor/resources/image/icon/team.svg"></div>
-					ssangyoung Project
+					ssangyoung
 				<div class="total_project">전체 프로젝트 관리</div>
 				<img class="team_project_plus" src="/editor/resources/image/icon/plus.svg">
 			</div>
@@ -134,5 +127,3 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
