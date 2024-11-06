@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>MyPage</title>
+<title>Document</title>
 	<tiles:insertAttribute name="asset"/>
 	<tiles:insertAttribute name="asset_main"/>
 </head>
 <body>
-	<!-- mypage_header -->
-	<tiles:insertAttribute name="header_mypage"/> 
-	<!-- mypage_content -->
-	<tiles:insertAttribute name="content_mypage"/> 
+	<!-- main_header -->
+	<tiles:insertAttribute name="header_main"/> 
+	<!-- content_document -->
+	<tiles:insertAttribute name="content_document"/> 
 </body>
 </html>

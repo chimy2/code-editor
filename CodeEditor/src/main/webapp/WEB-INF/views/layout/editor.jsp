@@ -27,6 +27,9 @@
 			<tiles:insertAttribute value="${item}" flush="true" />
 		</c:forEach>
 		<tiles:insertAttribute name="right_side"/>
+		
+		<tiles:insertAttribute name="chat_main"/>
+		
 	</main>
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" ></script>
 	<script>
