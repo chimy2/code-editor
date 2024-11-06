@@ -29,28 +29,28 @@
 				<div class="join_id">
 					이메일
 					<div class = "duplicate_check">
-						<input type="text" placeholder="이메일을 입력해주세요.">
+						<input type="email" placeholder="이메일을 입력해주세요." required>
 						<button type="button">중복체크</button>
 					</div>
 				</div>
 				<div class="join_nick">
 					닉네임
 					<div class = "duplicate_check">
-						<input type="text" placeholder="닉네임을 입력해주세요.">
+						<input type="text" placeholder="닉네임을 입력해주세요." required>
 						<button type="button">중복체크</button>
 					</div>
 				</div>
 				<div class="join_password">
 					비밀번호
-					<input type="password" placeholder="비밀번호를 입력해주세요.">
+					<input type="password" placeholder="영문,숫자,특수문자 중 2종류 이상 조합하여 8~12자리" required>
 				</div>
 				<div class="join_password_check">
 					비밀번호확인
-					<input type="password" placeholder="비밀번호를 확인해주세요.">
+					<input type="password" placeholder="비밀번호를 확인해주세요." required>
 				</div>
 			</div>
 			<div class="join_button"> 
-				<button type="button">회원가입</button>
+				<button type="button" disabled>회원가입</button>
 				<button type="button">취소</button>
 			</div>
 		</div>

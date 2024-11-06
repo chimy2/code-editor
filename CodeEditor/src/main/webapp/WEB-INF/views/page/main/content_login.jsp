@@ -15,14 +15,14 @@
 			<div class="login_inner_box">
 				<div class="login_id">
 					이메일
-					<input type="text" placeholder="이메일을 입력해주세요.">
+					<input type="email" placeholder="이메일을 입력해주세요." required>
 				</div>
 				<div class="login_password">
 					비밀번호
-					<input type="password" placeholder="비밀번호를 입력해주세요.">
+					<input type="password" placeholder="비밀번호를 입력해주세요." required>
 				</div>
 				<div  class="login_button">
-					<button type="button">로그인</button>
+					<button type="button" disabled>로그인</button>
 					<button type="button">회원가입</button>
 				</div>
 				

@@ -80,56 +80,75 @@
     --icon-x: url('../image/icon/x.svg') no-repeat center;
 }
 
-/* main */
+html {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    font-family: 'Nanum Gothic';
+    background-color: var(--gray11);
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    position: relative;
+}
+
+a {
+    color: var(--white);
+    text-decoration: none;
+    outline: none;
+}
+
+a:hover,
+a:active {
+    color: var(--white);
+    text-decoration: none;
+}
 
 button {
-	border: 0;
-	background: none;
-	cursor: pointer;
+    border: 0;
+    background: none;
+    cursor: pointer;
 }
 
 textarea {
-	resize: none;
+    resize: none;
 }
 
-html{
-	margin : 0;
-	width : 100%;
-	height : 100%;
+ul {
+	margin: 0;
+	padding: 0;	
+	list-style: none;
 }
 
-body{	
-	font-family: "Nanum Gothic";
-	background-color: var(--gray11);
-	margin : 0;
-	width : 100%;
-	height : 100%;
-	display : flex;
-	justify-content: center;
-    align-content: center;
-    flex-direction : column; 
-   	position: relative;
-}
+/* main */
 
 /* main_header */
-.login_header{
-	width: 100%;
-	height : 30px;
-	display: flex;
-	justify-content : center; 
-	align-self: center;
+.login_header {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
 }
 
-.logo{
-	color : var(--white);
-	text-align: center;
-	margin-left : 8px;
-	margin-top : 8px;
-	font-size : 1.2rem;	
+.logo {
+    color: var(--white);
+    text-align: center;
+    margin-left: 8px;
+    margin-top: 8px;
+    font-size: 1.2rem;
 }
-.logo:hover{
-	cursor : pointer;
+.logo:hover {
+    cursor: pointer;
 }
+
 
 
 .login_header .login_header_box{
@@ -143,37 +162,39 @@ body{
 	justify-content : center; 
 	align-items: center;
 	line-height: 1;
-	margin-top : 8px;
+	margin-top : 6px;
 	margin-right : 20px;
 	text-align: center;
 	margin-left : auto;
+
 }
-.login_header .login_header_box:nth-child(3){
-	margin-left : 0;
+.login_header .login_header_box:nth-child(3) {
+    margin-left: 0;
 }
 
 .login_header .login_header_box:hover{
 	cursor : pointer;
 	background-color: var(--black);
-	outline : 3px solid var(--white);
+	outline : 2.5px solid var(--white);
+
 }
 
-.login_header_box img{
-	width : 13px;
-	height : 13px;
-	margin-right : 10px;
+.login_header_box img {
+    width: 13px;
+    height: 13px;
+    margin-right: 10px;
 }
 /* main */
 .main_content {
-	width : 80%;
-	height: 100%;
-	display : flex;
-	flex-direction : column;
-	justify-content: center;
-	align-self: center;
-	margin-bottom : 80px;
-	text-align: center;
-	color : var(--white);
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    margin-bottom: 80px;
+    text-align: center;
+    color: var(--white);
 }
 
 .login_header .login_box img {
@@ -182,70 +203,68 @@ body{
     margin-right: 10px;
 }
 
-.main_text div{
-	font-size: 5.5rem;
-	margin-bottom : 40px;
-	margin-top : 0;
+.main_text div {
+    font-size: 5.5rem;
+    margin-bottom: 40px;
+    margin-top: 0;
 }
 
-.main_text small{
-	font-size: 1.5rem;
+.main_text small {
+    font-size: 1.5rem;
 }
 
-.main_menu{
-	width : 30%;
-	margin-top : 50px;
-	display : flex;
-	justify-content: space-around;
-	align-self : center;
+.main_menu {
+    width: 30%;
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-self: center;
 }
-.main_menu_box{
-	outline : 2.5px solid var(--orange);
-	border-radius: 50%;
-	width : 130px;
-	height : 130px;
-	color : var(--orange);
-	font-size : 1rem;
-	text-align: center;
-	justify-items: center;
-	display : flex;
-	flex-direction : column;
-	align-items: center;
-	justify-content: center;
-}
-
-.main_menu_box:hover{
-	cursor:pointer;
-	background-color: var(--black);
-	outline : 4px solid var(--orange);
+.main_menu_box {
+    outline: 2.5px solid var(--orange);
+    border-radius: 50%;
+    width: 130px;
+    height: 130px;
+    color: var(--orange);
+    font-size: 1rem;
+    text-align: center;
+    justify-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.main_menu_box .document{
-	width : 35px;
-	height : 35px;
-	margin-bottom : 8px;
+.main_menu_box:hover {
+    cursor: pointer;
+    background-color: var(--black);
+    outline: 4px solid var(--orange);
 }
 
-.main_menu_box .code{
-	width : 45px;
-	height : 45px;
+.main_menu_box .document {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 8px;
 }
 
-.main_menu_box:hover .document{
-	width : 38px;
-	height : 38px;
-	margin-bottom : 8px;
+.main_menu_box .code {
+    width: 45px;
+    height: 45px;
 }
 
-.main_menu_box:hover .code{
-	width : 48px;
-	height : 48px;
+.main_menu_box:hover .document {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 8px;
 }
 
+.main_menu_box:hover .code {
+    width: 48px;
+    height: 48px;
+}
 
-
-.main_menu{
-	display : flex;
+.main_menu {
+    display: flex;
 }
 
 /* header_main */
@@ -517,65 +536,62 @@ body{
 .content_join {
     width: 100%;
     height: calc(100vh - 30px);
-    display : felx;
+    display: felx;
     flex-direction: column;
     justify-items: center;
     align-content: center;
-    color : var(--white);
-    margin-bottom : 80px;
+    color: var(--white);
+    margin-bottom: 80px;
 }
 
-.join_text{
-	font-size : 5.5rem;
-	margin-bottom : 40px;
+.join_text {
+    font-size: 5.5rem;
+    margin-bottom: 40px;
 }
 
-.join_box{
-	outline : 1px solid var(--white);
-	background-color : var(--gray1);
-	width : 340px;
-	height : 55px;
-	display : flex;
-	align-content: center;
-	justify-content: center;
-	align-items: center;
-	color : var(--white);
-	border-radius: 5px;
-	margin-bottom : 28px;
-	font-size: 1.5rem;
-	box-sizing: border-box;
+.join_box {
+    outline: 1px solid var(--white);
+    background-color: var(--gray1);
+    width: 340px;
+    height: 55px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    color: var(--white);
+    border-radius: 5px;
+    margin-bottom: 28px;
+    font-size: 1.5rem;
+    box-sizing: border-box;
 }
 
-
-.join_box:hover{
-	cursor : pointer;
-	outline : 2.5px solid var(--white);
-	background-color : var(--black);
+.join_box:hover {
+    cursor: pointer;
+    outline: 2.5px solid var(--white);
+    background-color: var(--black);
 }
 
-
-.email_img{
-	width : 35px;
-	height : 35px;
-	margin-right : 15px;
+.email_img {
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
 }
 
-.kakao_img{
-	width : 35px;
-	height : 35px;
-	margin-right : 15px;
+.kakao_img {
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
 }
 
-.google_img{
-	width : 35px;
-	height : 35px;
-	margin-right : 26px;
+.google_img {
+    width: 35px;
+    height: 35px;
+    margin-right: 26px;
 }
 
-#google{
-	padding-right : 16px;
+#google {
+    padding-right: 16px;
 }
-
 
 /*join 창*/
 .email_join{
@@ -584,36 +600,41 @@ body{
 	width : 550px;
 	height : 600px;
 	position: absolute;
-	top : 15%;
-	left : 35%;
+	top : 17%;
+	left : 36%;
 	z-index : 1;
 	background-color: var(--white);
 	display : none; 
 	color : var(--black);
 	flex-direction: column;
+	
 }
 
 .email_join.active {
-	display: flex; 
+    display: flex;
 }
 
-.join_inner_box{
-	margin : 0 auto;
-	display : flex;
-	flex-direction : column;
-	justify-content : space-evenly;
-	width : 406px;
-	height : 350px; 
-	
+.join_inner_box {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 406px;
+    height: 350px;
 }
 
 .join_inner_box .join_id,
 .join_inner_box .join_nick,
 .join_inner_box .join_password,
-.join_inner_box .join_password_check
-{
-	display : flex;
-	flex-direction : column;	
+.join_inner_box .join_password_check {
+    display: flex;
+    flex-direction: column;
+}
+
+.join_id input,
+.join_nick input{
+	padding-left : 15px;
+	box-sizing : border-box;
 }
 
 .join_inner_box_text{
@@ -623,7 +644,304 @@ body{
 	text-align: center;
 }
 
-.join_button{
+.join_button {
+    margin: 0 auto;
+    width: 406px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-right: 0;
+}
+
+.join_button button {
+    background-color: var(--white);
+    border: 0;
+    outline: 0.5px solid var(--orange);
+    border-radius: 5px;
+    width: 160px;
+    height: 40px;
+    border-radius: 5px;
+    margin-top: 8px;
+}
+
+
+.join_button button:nth-child(1){
+	border : 0;
+	background-color : var(--gray6);
+	outline : 0.5px solid var(--gray4);
+	opacity: 0.6;
+	disabled;
+	color : var(--gray9);
+}
+.join_button button:first-child:hover{
+	cursor : default;
+}
+
+
+.join_button button:last-child:hover{
+	cursor : pointer;
+	color : var(--white);
+	outline : 0.5px solid var(--orange);
+	background-color : var(--orange);
+
+}
+
+.duplicate_check input {
+    background-color: var(--gray9);
+    border: 1px solid var(--gray2);
+    width: 295px;
+    height: 40px;
+    box-sizing: border-box;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.duplicate_check{
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+}
+
+.duplicate_check button{
+	outline : 1px solid var(--orange);
+	background-color : var(--orange);
+	color : var(--white);
+	width : 100px;
+	height: 40px;
+	border : 0;
+	border-radius: 5px;
+	margin-top : 8px;
+}
+
+
+.duplicate_check button:hover{
+	cursor : pointer;
+	outline : 2px solid var(--gray2);
+
+}
+
+.join_password input,
+.join_password_check input{
+	background-color : var(--gray9);
+	border : 1px solid var(--gray2);
+	width : 400px;
+	height: 40px;
+	border-radius: 5px;
+	margin-top : 8px;
+	padding-left : 15px;
+	box-sizing : border-box;
+}
+
+/*loin 창*/
+.content_login {
+    width: 100%;
+    height: calc(100vh - 30px);
+    display: felx;
+    flex-direction: column;
+    justify-items: center;
+    align-content: center;
+    color: var(--white);
+    margin-bottom: 80px;
+}
+
+.login{
+	border : 1px solid var(--white);
+	border-radius : 10px;
+	width : 550px;
+	height : 600px;
+	position: absolute;
+	top : 17%;
+	left : 36%;
+	background-color: var(--white);
+	color : var(--black);
+	flex-direction: column;
+	display: flex;
+	align-content: center;
+}
+
+.setting_close {
+    margin-left: auto;
+}
+
+.login .setting_close {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+    margin-top: 18px;
+    margin-right: 18px;
+    filter: grayscale(1) brightness(0.15) sepia(1) hue-rotate(180deg)
+        saturate(4);
+}
+
+.login .setting_close:hover {
+    cursor: pointer;
+    filter: grayscale(1) brightness(0) sepia(1) hue-rotate(180deg) saturate(4);
+}
+
+.login_inner_box_text {
+    font-size: 3rem;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login_inner_box {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 406px;
+    height: 350px;
+}
+
+.login_inner_box .login_id,
+.login_inner_box .login_password {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+.login_id input,
+.login_password input {
+    background-color: var(--gray9);
+    border: 1px solid var(--gray2);
+    width: 400px;
+    height: 40px;
+    border-radius: 5px;
+    margin-top: 8px;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+.login_button {
+    margin: 0 auto;
+    width: 406px;
+    margin-top: 15px;
+    padding-right: 0;
+}
+
+.login_button button {
+    background-color: var(--white);
+    border: 0;
+    outline: 0.5px solid var(--orange);
+    border-radius: 5px;
+    width: 406px;
+    height: 40px;
+    border-radius: 5px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.login_button button:hover {
+    cursor: pointer;
+    color: var(--white);
+    outline: 0.5px solid var(--orange);
+    background-color: var(--orange);
+}
+
+.login_button button:nth-child(1){
+	border : 0;
+	background-color : var(--gray6);
+	outline : 0.5px solid var(--gray4);
+	opacity: 0.6;
+	disabled;
+	color : var(--gray9);
+}
+.login_button button:first-child:hover{
+	cursor : default;
+}
+	
+
+.oAuth_line{
+	text-align: center;
+	font-size: 1rem;
+	margin-top : 20px;
+	display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.oAuth_line .login_line {
+    border-bottom: 2px solid var(--orange);
+    width: 144px;
+    height: 1px;
+}
+
+.oAuth_line .login_line:nth-child(1) {
+    margin-right: 20px;
+}
+
+.oAuth_line .login_line:nth-child(2) {
+    margin-left: 20px;
+}
+.oAuth_button {
+    width: 406px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.oAuth_button img {
+    width: 60px;
+    height: 60px;
+    margin: 0;
+}
+
+.oAuth_button:hover {
+    cursor: pointer;
+}
+
+/*document*/
+.document_content {
+    border: 1px solid var(--white);
+    width: 100%;
+    height: 100%;
+}
+.document_page {
+    font_size: 5rem;
+    color: var(--white);
+}
+
+/*logout 창*/
+.content_logout {
+    width: 100%;
+    height: calc(100vh - 30px);
+}
+
+.logout{
+	border : 1px solid var(--white);
+	border-radius : 10px;
+	width : 480px;
+	height : 260px;
+	position: absolute;
+	top : 35%;
+	left : 37%;
+	background-color: var(--white);
+	color : var(--black);
+	flex-direction: column;
+	display: flex;
+	align-content: center;
+}
+
+.logout_text{
+	margin-top : 35px;
+	margin-bottom : 20px;
+	text-align: center;
+}
+
+.logout_text div{
+	font-size: 3rem;
+	margin-bottom : 40px;
+	margin-top : 0;
+}
+
+.logout_text small{
+	font-size: 1rem;
+}
+
+
+.logout_button{
 	margin : 0 auto;
 	width : 406px;
 	display : flex;
@@ -632,7 +950,7 @@ body{
 	padding-right : 0;
 }
 
-.join_button button{
+.logout_button button{
 	background-color : var(--white);
 	border : 0;
 	outline : 0.5px solid var(--orange);
@@ -644,216 +962,24 @@ body{
 }
 
 
-.join_button button:hover{
+.logout_button button:hover{
 	cursor : pointer;
 	color : var(--white);
 	outline : 0.5px solid var(--orange);
 	background-color : var(--orange);
 }
 
-.duplicate_check input{
-	background-color : var(--gray9);
-	border : 1px solid var(--gray2);
-	width : 295px;
-	height: 40px;
-	box-sizing: border-box;
-	margin: 0;
-	border-radius: 5px;
-}
-.duplicate_check{
-	display: flex;
-	justify-content: space-around;
-	align-items: baseline;
-}
-
-.duplicate_check button{
-	outline : 1px solid var(--orange);
-	background-color : var(--orange);
-	color : var(--white);
-	width : 90px;
-	height: 40px;
-	border : 0;
-	border-radius: 5px;
-	margin-top : 8px;
-}
-
-.duplicate_check button:hover{
-	cursor : pointer;
-	outline : 2px solid var(--gray2);
-}
-
-.join_password input,
-.join_password_check input{
-	background-color : var(--gray9);
-	border : 1px solid var(--gray2);
-	width : 400px;
-	height: 40px;
-	border-radius: 5px;
-	margin-top : 8px;
+/* jquery ui */
+.ui-button:active {
+	border: revert;
+    background: var(--gray7);
+    font-weight: revert;
+    color: revert;
 }
 
 
-/*loin 창*/
-.content_login {
-    width: 100%;
-    height: calc(100vh - 30px);
-	display : felx;
-    flex-direction: column;
-    justify-items: center;
-    align-content: center;
-    color : var(--white);
-    margin-bottom : 80px;
+.ui-selectmenu-menu ul li div.ui-state-active {
+	background: var(--orange);
+    border: 1px solid var(--gray5);
 }
-
-.login{
-	border : 1px solid var(--white);
-	border-radius : 10px;
-	width : 550px;
-	height : 600px;
-	position: absolute;
-	top : 15%;
-	left : 35%;
-	background-color: var(--white);
-	color : var(--black);
-	flex-direction: column;
-	display: flex;
-	align-content: center;
-}
-
-.setting_close{
-	margin-left: auto;
-}
-
-.login .setting_close{
-	width : 20px;
-	height : 20px;
-	margin-left : auto;
-	margin-top : 18px;
-	margin-right : 18px;
-	filter: grayscale(1) brightness(0.15) sepia(1) hue-rotate(180deg) saturate(4);
-}
-
-.login .setting_close:hover{
-	cursor : pointer;
-	filter: grayscale(1) brightness(0) sepia(1) hue-rotate(180deg) saturate(4);
-}
-
-.login_inner_box_text{
-	font-size: 3rem;
-	margin-top : 35px;
-	margin-bottom : 20px;
-	text-align: center;
-}
-
-
-.login_inner_box{
-	margin : 0 auto;
-	display : flex;
-	flex-direction : column;
-	justify-content : space-evenly;
-	width : 406px;
-	height : 350px; 
-	
-}
-
-.login_inner_box .login_id,
-.login_inner_box .login_password
-{
-	display : flex;
-	flex-direction : column;	
-	margin-top : 15px;
-}
-
-.login_id input,
-.login_password input
-{
-	background-color : var(--gray9);
-	border : 1px solid var(--gray2);
-	width : 400px;
-	height: 40px;
-	border-radius: 5px;
-	margin-top : 8px;
-}
-
-.login_button{
-	margin : 0 auto;
-	width : 406px;
-	margin-top : 15px;
-	padding-right : 0;
-}
-
-.login_button button{
-	background-color : var(--white);
-	border : 0;
-	outline : 0.5px solid var(--orange);
-	border-radius : 5px;
-	width : 406px;
-	height : 40px; 
-	border-radius: 5px;
-	margin-top : 8px;
-	margin-bottom : 8px;
-}
-
-
-.login_button button:hover{
-	cursor : pointer;
-	color : var(--white);
-	outline : 0.5px solid var(--orange);
-	background-color : var(--orange);
-}
-.oAuth_line{
-	text-align: center;
-	font-size: 1rem;
-	margin-top : 20px;
-	display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.oAuth_line .login_line{
-	border-bottom : 2px solid var(--orange);
-	width : 144px;
-	height : 1px;
-}
-
-.oAuth_line .login_line:nth-child(1){
-	margin-right : 20px;
-}
-
-.oAuth_line .login_line:nth-child(2){
-	margin-left : 20px;
-}
-.oAuth_button{
-	width : 406px;
-	display:flex;
-	justify-content: space-around;
-	margin-top : 20px;
-}
-
-.oAuth_button img{
-	width: 60px;
-	height: 60px;	
-	margin : 0;
-}
-
-.oAuth_button:hover{
-	cursor : pointer;
-}
-
-/*document*/
-.document_content {
-	border : 1px solid var(--white);
-	width : 100%;
-	height: 100%;
-}
-.document_page{
-	font_size : 5rem;
-	color : var(--white);
-}
-
-
-
-
-
-
 

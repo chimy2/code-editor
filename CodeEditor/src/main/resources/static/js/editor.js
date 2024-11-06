@@ -118,7 +118,6 @@ $('.btn_console_close').click(() => {
 
 /* popup button event */
 $('.btn_popup_close').click(function () {
-	console.log('hello?');
     toggleDisplay($(this).parents('.popup-container'));
 });
 
@@ -142,3 +141,6 @@ function toggleDisplay(element) {
 		element.css('display', 'none');
 	}		
 }
+
+/* basic code */
+$('.select_file_type').selectmenu();
