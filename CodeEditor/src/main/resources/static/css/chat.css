@@ -1,0 +1,214 @@
+@charset "UTF-8";
+
+@import url("main.css");
+
+
+  body {
+    z-index: 100;
+  }
+  .menubar a {
+    text-decoration: none;
+   
+  }
+
+  .container {
+    background: none;
+    
+  }
+
+  
+  /* .x {
+    align-items: center;
+    color: black;
+    margin: auto;
+  } */
+
+  .content {
+    padding: 100px 20px 0 5Spx;
+    position: relative;
+    width: 200%;
+  }
+
+  .nav-1 {
+    display: flex;
+  }
+
+   .nav-2 {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    
+  } 
+
+  .home {
+    display: flex;
+    align-items: center;
+    height: 22px;
+  }
+
+  .my_account {
+    margin-top: -15px;
+    display: flex;
+    align-items: center;
+    height: 32px;
+    border-radius: 100%;
+  }
+
+ /*  @font-face {
+    font-family: 'Cafe24Ssurround';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  } */
+
+  .word {
+    margin-left: 15px;
+    margin-top: -12px;
+    font-size: 25px;
+    font-family: 'Cafe24Ssurround';
+    color: black;
+    cursor: pointer;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar {
+      right: -50px;
+      /* Move sidebar to the right */
+    }
+
+    .button {
+      right: 10px;
+      /* Move button to the right */
+    }
+
+    .content {
+      padding-right: 20px;
+      /* Adjust padding */
+    }
+  }
+
+  .menubar .submenu {
+    display: none;
+    
+  }
+
+  .menubar {
+    position: relative;
+
+  }
+
+  .submenu {
+ 	
+    display: none;
+    position: fixed;
+    
+    right: 80px; 
+    width: 270px;
+    height: 100%;
+    background-color: var(--gray5);
+    
+	transition: 0.4s ease; 
+	border-right: 3px solid var(--white);
+	top:60px;
+  }
+
+  .sidebar {
+    background-color: var(--gray5);
+    /* border-left: 3px solid var(--red1); */
+    width:80px;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    transition: 0.4s ease;
+ 
+    height: 100%;
+    z-index: 99;
+  	display: flex;
+  	top:60px;
+  	
+  }
+  
+  
+  .button {
+    font-size: 30px;
+    position: relative;
+    right: 25px;
+    top: 0px;
+    width: 30px;
+    height: 100%;
+    z-index: 99;
+    /* transition: 0.8s ease; */
+	
+  	background-color: var(--black);
+    border: none;
+  }
+  
+  .menubartitle {
+  color:white;
+  
+  }
+  
+ 
+ 
+ /*설정*/
+ 
+ /* 컨테이너 스타일 */
+.chat_settings-container {
+	position: relative;
+	top:50px;
+    width: 250px;
+    background-color: #3a3a3a;
+    color: white;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+     display: flex;
+    flex-direction: column;
+  	
+}
+
+/* 섹션 스타일 */
+.settings-section {
+    border-bottom: 1px solid #555;
+    padding: 10px 0;
+    
+}
+
+/* 제목 스타일 */
+.settings-section h2,
+.settings-section h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #ccc;
+}
+
+/* 드롭다운 스타일 */
+.dropdown {
+    width: 90%;
+    padding: 5px;
+    background-color: #333;
+    color: #ddd;
+    border: none;
+    margin-top: 5px;
+}
+
+/* 슬라이더 스타일 */
+.slider {
+    width: 90%;
+    margin-top: 5px;
+}
+
+label {
+    font-size: 14px;
+    color: #bbb;
+}
+
+.settingsidebar{
+	top:30px;
+}
+ 
+   
+   
+   

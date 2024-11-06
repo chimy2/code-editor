@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- DB 설정 파일 불러오기 -->
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+	    <property name="locations">
+	        <list>
+	            <value>classpath:application.properties</value>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- HikariCP -->
+	<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
+		<property name="driverClassName" value="${spring.datasource.driver-class-name}"></property>
+	    <property name="jdbcUrl" value="${spring.datasource.url}"/>
+	    <property name="username" value="${spring.datasource.username}"/>
+	    <property name="password" value="${spring.datasource.password}"/>
+	</bean>
+	
+	<bean class="com.zaxxer.hikari.HikariDataSource" id="dataSource">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
+	
+	<!-- 
+		MyBatis
+		
+		SqlSessionFactoryBean
+		- Connection (관리하는) 역할
+	 -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sessionFactory">
+		<!-- <property name="setMethod이름" ref="hikaricp아이디"></property> -->
+		<property name="dataSource" ref="dataSource"></property>
+		
+		<property name="mapperLocations" value="classpath*:mapper/*.xml"></property>
+		<!-- classpath*:mapper/*.xml > 모든 소스 폴더 밑의 mapper폴더의 xml을 불러옴 -->
+		
+		<property name="configLocation" value="classpath:config/mybatis-config.xml"></property>
+	</bean>
+	
+	<!-- 
+		JDBC > Statement(***) + ResultSet 역할
+	 -->
+	<bean class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sessionFactory"></constructor-arg>
+	</bean>
+
+	<!-- 
+		MyBatis SQL 실행 객체
+		1. SqlSessionTemplate
+		2. 인터페이스 매퍼
+	 -->
+	<mybatis-spring:scan base-package="com.test.bot.mapper"/>
+</beans>
