@@ -11,17 +11,17 @@
 	</div>
 	
 	<!-- 로그인 하기 전 -->
-	<sec:authorize access="isAnonymous()">
+	<%-- <sec:authorize access="isAnonymous()"> --%>
 		<div class="login_header_box">
 			<img class="main_login" src="/editor/resources/image/icon/login.svg">
 			Log in
 		</div>
-	</sec:authorize>
+	<%-- </sec:authorize> --%>
 	<!-- 로그인 한 후 -->
-	<sec:authorize access="isAuthenticated()">
+	<%-- <sec:authorize access="isAuthenticated()"> --%>
 		<div class="login_header_box">
 			<img class="main_logout" src="/editor/resources/image/icon/logout.svg">
 			Log out
 		</div>
-	</sec:authorize>
+<%-- 	</sec:authorize> --%>
 </div>
