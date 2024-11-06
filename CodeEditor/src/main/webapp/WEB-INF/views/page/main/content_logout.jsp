@@ -5,7 +5,7 @@
 		
 		<div class="logout_text">
 			<div>Zenith</div>
-			<small>로그아웃 하시겠습니까?</small>
+			<div>로그아웃 하시겠습니까?</div>
 		</div>
 		
 		<div class="logout_button"> 

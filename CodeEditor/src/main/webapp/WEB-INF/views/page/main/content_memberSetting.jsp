@@ -11,21 +11,25 @@
 </head>
 <body>
 	<div class="content_memberSetting">
-		<div class="header_member_setting">개인 설정 수정</div>
-		<div class="body_member_setting">
-			<div class="info_member_setting">
+		<div class="header_setting">개인 설정</div>
+		<div class="body_setting">
+			<div class="info_setting">
 				<div class="setting_user_icon"><img src="/editor/resources/image/icon/user.svg"></div>
 				<div class="setting_nick">
-					<input type="text" class="setting_user_nick" value="test">
-					<img class="setting_nick_close" src="/editor/resources/image/icon/settings-close.svg">
+					<input type="text" class="setting_name" value="test">
+					<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
 				</div>
 				<button class="logout_member_setting">
 					<img class="main_logout" src="/editor/resources/image/icon/logout.svg">
 					로그아웃
 				</button>
 			</div>
-			<div class="chat_member_setting">
-				마이 챗봇 통계 조회하기
+			<hr>
+			<div class="etc_setting">
+				<div class="chat_member_setting">
+					<img class="setting_bot" src="/editor/resources/image/icon/bot.svg">
+					마이 챗봇 통계 조회하기
+				</div>
 			</div>
 		</div>
 		<div class="button_member_setting">
