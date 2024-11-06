@@ -1,29 +1,59 @@
 /**
  *
  */
-
 const CODE_URL = 'ws://localhost:8090/editor/vs/code/1';
-let ws;
+let socket;
+let editorInstances = {}; // Store editor instances by tab ID
+let currentUserCursorPositions = {}; // Store each user's cursor position by tab
 
-/* test tab */
+// Initialize WebSocket connection
 $(document).ready(function () {
+    socket = new WebSocket(CODE_URL);
+
+    socket.onopen = function () {
+        console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+
+        const editorInstance = editorInstances[data.tabId];
+        if (editorInstance) {
+            // Apply received changes to the editor content
+            editorInstance.executeEdits(null, [{
+                range: new monaco.Range(
+                    data.range.startLineNumber,
+                    data.range.startColumn,
+                    data.range.endLineNumber,
+                    data.range.endColumn
+                ),
+                text: data.text
+            }]);
+
+            // Update the cursor position of other users
+            if (data.cursorPosition) {
+                renderUserCursor(data.userId, data.cursorPosition, data.tabId);
+            }
+        }
+    };
+
+    socket.onerror = function (error) {
+        console.log("WebSocket error: ", error);
+    };
+
+    socket.onclose = function () {
+        console.log("WebSocket connection closed");
+    };
+
     let tabCounter = 1;
 
     // Initialize tabs
     $('.editor-tab').tabs();
 
-    // Make tabs sortable within the tab container
+    // Make tabs sortable
     $('.editor-tab ul').sortable({
         axis: 'x',
         containment: 'parent',
-        helper: 'original',
-        start: function (event, ui) {
-            const tabIndex = ui.item.index();
-            $('.editor-tab').tabs('option', 'active', tabIndex);
-        },
-        stop: function () {
-            $('.editor-tab').tabs('refresh');
-        },
         scroll: false,
     });
 
@@ -33,13 +63,10 @@ $(document).ready(function () {
     // Add a new tab with Monaco editor
     $('#add-tab').on('click', function () {
         const tabId = 'tab' + tabCounter;
-        const tabTitle = 'Tab ' + tabCounter;
         const tabTemplate = `
         <li>
-            <a href="#${tabId}">${tabTitle}</a>
-            <span class="tab-close">
-                <img src='/editor/resources/image/icon/settings-close.svg'>
-            </span>
+            <a href="#${tabId}">Tab ${tabCounter}</a>
+            <span class="tab-close"><img src='/editor/resources/image/icon/settings-close.svg'></span>
         </li>`;
         const tabContent = `<div id="${tabId}" class="editor-container"></div>`;
 
@@ -47,18 +74,55 @@ $(document).ready(function () {
         $('.editor-tab ul').append(tabTemplate);
         $('.editor-tab').append(tabContent);
         $('.editor-tab').tabs('refresh');
+        $('.editor-tab').tabs('option', 'active', tabCounter - 1);
 
-        const newTabIndex = $('.editor-tab ul li').length - 1;
-        $('.editor-tab').tabs('option', 'active', newTabIndex);
-
-        // Initialize Monaco editor for the new tab
-        require(['vs/editor/editor.main'], function () {
-            monaco.editor.create(document.getElementById(tabId), {
-                value: '// Start coding here...',
-                language: 'java',
-                theme: 'vs-dark',
-            });
-        });
+        
+		require(['vs/editor/editor.main'], function () {
+		    const editor = monaco.editor.create(document.getElementById(tabId), {
+		        value: '// Start coding here...',
+		        language: 'java',
+		        theme: 'vs-dark',
+		    });
+		
+		    // Detect cursor position change
+		    editor.onDidChangeCursorPosition((event) => {
+		        const position = event.position;
+		        const cursorData = {
+		            tabId: tabId,
+		            cursorLine: position.lineNumber,
+		            cursorColumn: position.column,
+		            content: editor.getValue(),
+		            userId: 'User' + Math.floor(Math.random() * 1000) // Placeholder for user ID
+		        };
+		        
+		        if (socket.readyState === WebSocket.OPEN) {
+		            socket.send(JSON.stringify(cursorData));
+		        }
+		    });
+		
+		    // Handle WebSocket messages
+		    socket.onmessage = function(event) {
+		        const data = JSON.parse(event.data);
+		
+		        if (data.tabId === tabId) {
+		            const editorInstance = monaco.editor.getModels().find(model => model.uri.path.includes(data.tabId));
+		            if (editorInstance) {
+		                // Update content if changed
+		                editorInstance.setValue(data.content);
+		
+		                // Display cursor position for other users
+		                if (data.userId && data.userId !== 'currentUser') { // Replace with real user ID check
+		                    let range = new monaco.Range(data.cursorLine, data.cursorColumn, data.cursorLine, data.cursorColumn);
+		                    const decorationId = editor.deltaDecorations([], [{
+		                        range: range,
+		                        options: { className: 'cursorDecoration' }
+		                    }]);
+		                    cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
+		                }
+		            }
+		        }
+		    };
+		});
 
         // Update tab counter
         tabCounter++;
@@ -75,6 +139,22 @@ $(document).ready(function () {
     // Show close button for the active tab
     $('.editor-tab ul li.ui-tabs-active .tab-close').show();
 });
+
+// Function to render cursor for other users
+function renderUserCursor(userId, position, tabId) {
+    const editorInstance = editorInstances[tabId];
+    if (!editorInstance) return;
+
+    // Use monaco's decorations to render cursors
+    const decorations = [{
+        range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column + 1),
+        options: {
+            className: `cursor-${userId}`,
+            glyphMarginClassName: `user-cursor user-${userId}`, // Custom style for each user's cursor
+        }
+    }];
+    editorInstance.deltaDecorations([], decorations);
+}
 
 /* editor header button event */
 $('.btn_run').click(() => {
