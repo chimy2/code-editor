@@ -17,7 +17,7 @@
 							class="arrow-icon"> Theme
 					</button>
 					<ul class="settings-sub-menu" id="theme" style="display: none;">
-						<li onclick="showContent('appearance')">Appearance</li>
+						<li onclick="getThemeData(); showContent('appearance')">Appearance</li>
 						<li onclick="showContent('colors')">Colors</li>
 						<li onclick="showContent('font')">Font</li>
 					</ul>
@@ -38,7 +38,7 @@
 				<fieldset class="theme-selector">
 					<div>
 						<label for="dark-button" class="theme-mode"> <input
-							type="radio" name="theme" value="dark" id="dark-button" checked>
+							type="radio" name="theme" value="dark" id="dark-button">
 							Dark
 						</label>
 					</div>
@@ -224,140 +224,150 @@
 				</div>
 				<div>
 					<h2>Preview</h2>
-					<div class="template-preview">
-						
+					<div class="template-preview" id="template-preview">
+					<div></div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="settings-footer">
-			<img src="/editor/resources/image/icon/check-circle.svg">
+			<button><img src="/editor/resources/image/icon/check-circle.svg"></button>
 		</div>
 	</div>
 </div>
 
+<div class="template-body new-template-body">
+    <div class="template-main">
+        <div class="template-header">
+            <h2>New Template</h2>
+            <button class="template-close-icon">
+                <img src="/editor/resources/image/icon/settings-close.svg">
+            </button>
+        </div>
+        <div class="template-content">
+        	<table>
+        		<tr>
+        			<th>Name</th>
+        			<td>
+        				<input type="text" class="template-name-input"/>
+       				</td>
+        		</tr>
+        		<tr>
+        			<th>Code</th>
+       				<td>
+       					<textarea></textarea>
+       				</td>
+        		</tr>
+        	</table>
+        </div>
+        <div class="template-footer">
+            <img src="/editor/resources/image/icon/check-circle.svg">
+        </div>
+    </div>
+</div>
+
+<div class="template-body edit-template-body">
+    <div class="template-main">
+        <div class="template-header">
+            <h2>Edit Template</h2>
+            <button class="template-close-icon">
+                <img src="/editor/resources/image/icon/settings-close.svg">
+            </button>
+        </div>
+        <div class="template-content">
+        	<table>
+        		<tr>
+        			<th>Name</th>
+        			<td>
+        				<input type="text" class="template-name-input"/>
+       				</td>
+        		</tr>
+        		<tr>
+        			<th>Code</th>
+       				<td>
+       					<textarea></textarea>
+       				</td>
+        		</tr>
+        	</table>
+        </div>
+        <div class="template-footer">
+            <button><img src="/editor/resources/image/icon/check-circle.svg"></button>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-
-    function toggleSubMenu(menuId) {
-        // 선택한 서브 메뉴와 버튼의 아이콘 찾기
-        const menu = document.getElementById(menuId);
-        const button = document.getElementById(menuId + '-button');
-        const icon = button.querySelector('.arrow-icon');
-        
-        // 모든 서브 메뉴 숨기기 및 아이콘 초기화
-        document.querySelectorAll('.settings-sub-menu').forEach(subMenu => {
-            if (subMenu !== menu) {
-                subMenu.style.display = 'none';
-                const siblingIcon = subMenu.previousElementSibling.querySelector('.arrow-icon');
-                if (siblingIcon) siblingIcon.src = '/editor/resources/image/icon/right-arrow.svg';
-            }
-        });
-        
-        // 선택한 서브 메뉴 토글 및 아이콘 변경
-        if (menu.style.display === 'none') {
-            menu.style.display = 'block';
-            if (icon) icon.src = '/editor/resources/image/icon/bottom-arrow.svg'; // 아이콘 변경
-        } else {
-            menu.style.display = 'none';
-            if (icon) icon.src = '/editor/resources/image/icon/right-arrow.svg'; // 아이콘 복원
-        }
-    }
-
-    function showContent(contentId) {
-        // 모든 콘텐츠를 숨김
-        document.querySelectorAll('.settings-content').forEach(content => content.style.display = 'none');
-        // 선택한 콘텐츠만 보이게 설정
-        document.getElementById(contentId + '-content').style.display = 'block';
-    }
-    
- 	// Dark와 Light 버튼 클릭 시 선택 상태를 적용하는 함수
-	function toggleThemeSelection(theme) {
-	    const darkLabel = document.querySelector('label[for="dark-button"]');
-	    const lightLabel = document.querySelector('label[for="light-button"]');
 	
-	    if (theme === 'dark') {
-	        darkLabel.classList.add('selected');
-	        lightLabel.classList.remove('selected');
-	    } else if (theme === 'light') {
-	        lightLabel.classList.add('selected');
-	        darkLabel.classList.remove('selected');
-	    }
+let themeModified = false; // 설정 변경 여부 추적
+let isModified = false;
+
+//테마 선택 변경 시 변경 여부 설정
+$('input[name="theme"]').on('change', function() {
+ isModified = true;
+ themeModified = true;
+});
+
+//색상 변경 시 변경 여부 설정
+$('input[type="color"]').on('input', function() {
+ isModified = true;
+});
+
+//폰트 및 기타 설정 변경 시 변경 여부 설정
+$('.select-font-family li, .select-font-size li').on('click', function() {
+ isModified = true;
+});
+
+function closeSettings() {
+    $('.settings-body').hide(); // 창을 숨기거나 다른 방식으로 닫기 처리
+}
+
+//저장 버튼 클릭 시 동작
+$('.settings-footer button').on('click', function() {
+    if (isModified) {
+    	
+    	if(themeModified) {
+    		updateTheme(); 
+    	}
+        
+        alert('업데이트해 뭐하는거야');
+    } else {
+        closeSettings(); // 변경사항이 없으면 창만 닫음
+    }
+});
+
+
+
+//예: 테마 업데이트 요청
+function updateTheme(selectedTheme) {
+	
+	console.log($('input[name="theme"]:checked').val());
+	const theme = $('input[name="theme"]:checked').val();
+	let themeNumber;
+	
+	if (theme === 'dark') {
+		themeNumber = '0';
+	} else if (theme === 'light') {
+		themeNumber = '1';
 	}
- 	
-	window.addEventListener('DOMContentLoaded', () => {
-	    const initialTheme = document.querySelector('input[name="theme"]:checked').value;
-	    toggleThemeSelection(initialTheme);
-	});
 	
-	document.getElementById('dark-button').addEventListener('click', () => toggleThemeSelection('dark'));
-	document.getElementById('light-button').addEventListener('click', () => toggleThemeSelection('light'));
-
+	console.log('뭐하는 거야 왜 안 돼 ' + themeNumber);
 	
-	/* font */
-	document.addEventListener("DOMContentLoaded", function () {
-	    const fontItems = document.querySelectorAll(".select-font-family li");
-	    const sizeItems = document.querySelectorAll(".select-font-size li");
-	    
-	    const selectedFont = document.querySelector(".selected-font");
-	    const selectedFontText = selectedFont.querySelector("span"); // 텍스트 부분만 선택
-	    const selectedSize = document.querySelector(".selected-size");
-	    const selectedSizeText = selectedSize.querySelector("span"); // 텍스트 부분만 선택
-	    
-	    // 기본 선택 항목 설정 (예: 첫 번째 항목을 기본 선택으로 설정)
-	    const defaultFontItem = fontItems[0];
-	    const defaultSizeItem = sizeItems[1]; 
-	    
-	    // 기본 선택 항목에 selected 클래스 추가 및 텍스트 업데이트
-	    defaultFontItem.classList.add("selected");
-	    selectedFontText.textContent = defaultFontItem.textContent;
-	    
-	    defaultSizeItem.classList.add("selected");
-	    selectedSizeText.textContent = defaultSizeItem.textContent;
-	
-	    // 클릭 시 선택된 항목을 업데이트하는 이벤트 리스너
-	    fontItems.forEach(item => {
-	        item.addEventListener("click", () => {
-	            fontItems.forEach(el => el.classList.remove("selected"));
-	            item.classList.add("selected");
-	            selectedFontText.textContent = item.textContent;
-	        });
-	    });
-	    
-	    sizeItems.forEach(item => {
-	        item.addEventListener("click", () => {
-	            sizeItems.forEach(el => el.classList.remove("selected"));
-	            item.classList.add("selected");
-	            selectedSizeText.textContent = item.textContent;
-	        });
-	    });
-	});
+    $.ajax({
+        url: '/editor/theme',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ theme: themeNumber }),
+        success: function() {
+            console.log('Theme updated successfully.');
+        },
+        error: function(a,b,c) {
+            console.log(a, b, c);
+        }
+    });
+}
 
-
-
-
-	
 </script>
 
 
 
-<!-- 
-
-System.out.println(\\${1});\\${0}
-try {\n    \\${1}\n} catch (\\${2:Exception} \\${3:e}) {\n    \\${4}\n}\\${0}
-try {\n    \\${1}\n} finally {\n    \\${2}\n}\\${0}
-public static void main(String[] args) {\n    \\${0}\n}
-if (\\${1:condition}) {\n    \\${2}\n}\\${0}
-else {\n    \\${1}\n}\\${0}
-catch (\\${1:Exception} \\${2:e}) {\n    \\${3}\n}\\${0}
-finally {\n    \\${1}\n}\\${0}
-switch (\\${1:key}) {\n    case \\${2:value}:\n        \\${0}\n        break;\n    default:\n        break;\n}
-while (\\${1:condition}) {\n    \\${2}\n}\\${0}
-do {\n    \\${0}\n} while (\\${1:condition});
-for (int \\${1:index} = 0; \\${1:index} < \\${2:array}.length; \\${1:index}++) {\n    \\${3}\n}\\${0}
-for (\\${1:Type} \\${2:item} : \\${3:collection}) {\n    \\${0}\n}
-System.err.println(\\${1});\\${0}
-if (\\${1:condition}) {\n    \\${2}\n} else {\n    \\${2}\n}\\${0}
-if (\\${1:condition}) {\n    \\${2}\n} else if (\\${3:condition}) {\n    \\${4}\n} else {\n    \\${5}\n}\\${0} 
-
--->
