@@ -577,8 +577,8 @@ body{
 	width : 550px;
 	height : 600px;
 	position: absolute;
-	top : 15%;
-	left : 35%;
+	top : 16%;
+	left : 39%;
 	z-index : 1;
 	background-color: var(--white);
 	display : none; 
@@ -704,13 +704,15 @@ body{
 	width : 550px;
 	height : 600px;
 	position: absolute;
-	top : 15%;
-	left : 35%;
+	top : 16%;
+	left : 39%;
 	background-color: var(--white);
 	color : var(--black);
 	flex-direction: column;
 	display: flex;
 	align-content: center;
+	padding-left : 15px;
+	box-sizing : border-box;
 }
 
 .setting_close{
@@ -766,6 +768,8 @@ body{
 	height: 40px;
 	border-radius: 5px;
 	margin-top : 8px;
+	padding-left : 15px;
+	box-sizing : border-box;
 }
 
 .login_button{

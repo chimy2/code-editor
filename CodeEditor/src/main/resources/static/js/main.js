@@ -11,7 +11,7 @@ loginbox[1].onclick = function(){
 	location.href = '/editor/login';
 }
 
-window.onclick = function(event) {
+function redirectTo() {
 
 	if(window.location.href == 'http://localhost:8090/editor/join'){
     	document.querySelectorAll('.join_box')[0].onclick = function() {
@@ -38,6 +38,8 @@ window.onclick = function(event) {
         }
     }
 }
+
+setTimeout(redirectTo, 100);
 
 
 
