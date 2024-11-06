@@ -17,6 +17,9 @@ pageEncoding="UTF-8"%>
     	<button class="btn_new">
 	        test용 생성 버튼
     	</button>
+		<button id="add-tab">test용 Add Tab</button>
+		<button class="btn_open_file">test용 server 연결</button>
+		<button class="btn_close_file">test용 server 연결 끊기</button>
     </div>
     <div>
     	<button class="btn_version">

@@ -17,7 +17,7 @@
 							class="arrow-icon"> Theme
 					</button>
 					<ul class="settings-sub-menu" id="theme" style="display: none;">
-						<li onclick="showContent('appearance')">Appearance</li>
+						<li onclick="getThemeData(); showContent('appearance')">Appearance</li>
 						<li onclick="showContent('colors')">Colors</li>
 						<li onclick="showContent('font')">Font</li>
 					</ul>
@@ -38,7 +38,7 @@
 				<fieldset class="theme-selector">
 					<div>
 						<label for="dark-button" class="theme-mode"> <input
-							type="radio" name="theme" value="dark" id="dark-button" checked>
+							type="radio" name="theme" value="dark" id="dark-button">
 							Dark
 						</label>
 					</div>
@@ -231,7 +231,7 @@
 			</div>
 		</div>
 		<div class="settings-footer">
-			<img src="/editor/resources/image/icon/check-circle.svg">
+			<button><img src="/editor/resources/image/icon/check-circle.svg"></button>
 		</div>
 	</div>
 </div>
@@ -291,39 +291,83 @@
         	</table>
         </div>
         <div class="template-footer">
-            <img src="/editor/resources/image/icon/check-circle.svg">
+            <button><img src="/editor/resources/image/icon/check-circle.svg"></button>
         </div>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-
-
-
 	
+let themeModified = false; // 설정 변경 여부 추적
+let isModified = false;
+
+//테마 선택 변경 시 변경 여부 설정
+$('input[name="theme"]').on('change', function() {
+ isModified = true;
+ themeModified = true;
+});
+
+//색상 변경 시 변경 여부 설정
+$('input[type="color"]').on('input', function() {
+ isModified = true;
+});
+
+//폰트 및 기타 설정 변경 시 변경 여부 설정
+$('.select-font-family li, .select-font-size li').on('click', function() {
+ isModified = true;
+});
+
+function closeSettings() {
+    $('.settings-body').hide(); // 창을 숨기거나 다른 방식으로 닫기 처리
+}
+
+//저장 버튼 클릭 시 동작
+$('.settings-footer button').on('click', function() {
+    if (isModified) {
+    	
+    	if(themeModified) {
+    		updateTheme(); 
+    	}
+        
+        alert('업데이트해 뭐하는거야');
+    } else {
+        closeSettings(); // 변경사항이 없으면 창만 닫음
+    }
+});
+
+
+
+//예: 테마 업데이트 요청
+function updateTheme(selectedTheme) {
+	
+	console.log($('input[name="theme"]:checked').val());
+	const theme = $('input[name="theme"]:checked').val();
+	let themeNumber;
+	
+	if (theme === 'dark') {
+		themeNumber = '0';
+	} else if (theme === 'light') {
+		themeNumber = '1';
+	}
+	
+	console.log('뭐하는 거야 왜 안 돼 ' + themeNumber);
+	
+    $.ajax({
+        url: '/editor/theme',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ theme: themeNumber }),
+        success: function() {
+            console.log('Theme updated successfully.');
+        },
+        error: function(a,b,c) {
+            console.log(a, b, c);
+        }
+    });
+}
+
 </script>
 
 
 
-<!-- 
-
-System.out.println(\\${1});\\${0}
-try {\n    \\${1}\n} catch (\\${2:Exception} \\${3:e}) {\n    \\${4}\n}\\${0}
-try {\n    \\${1}\n} finally {\n    \\${2}\n}\\${0}
-public static void main(String[] args) {\n    \\${0}\n}
-if (\\${1:condition}) {\n    \\${2}\n}\\${0}
-else {\n    \\${1}\n}\\${0}
-catch (\\${1:Exception} \\${2:e}) {\n    \\${3}\n}\\${0}
-finally {\n    \\${1}\n}\\${0}
-switch (\\${1:key}) {\n    case \\${2:value}:\n        \\${0}\n        break;\n    default:\n        break;\n}
-while (\\${1:condition}) {\n    \\${2}\n}\\${0}
-do {\n    \\${0}\n} while (\\${1:condition});
-for (int \\${1:index} = 0; \\${1:index} < \\${2:array}.length; \\${1:index}++) {\n    \\${3}\n}\\${0}
-for (\\${1:Type} \\${2:item} : \\${3:collection}) {\n    \\${0}\n}
-System.err.println(\\${1});\\${0}
-if (\\${1:condition}) {\n    \\${2}\n} else {\n    \\${2}\n}\\${0}
-if (\\${1:condition}) {\n    \\${2}\n} else if (\\${3:condition}) {\n    \\${4}\n} else {\n    \\${5}\n}\\${0} 
-
--->
