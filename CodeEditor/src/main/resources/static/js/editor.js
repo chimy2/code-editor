@@ -2,83 +2,87 @@
  *
  */
 
-/* test tab */
-$('.add_class').click(() => {
-    console.log('class 추가');
-    $('.file_tab').append('<div>추가</div>');
-});
+const CODE_URL = 'ws://localhost:8090/editor/vs/code/1';
+let ws;
 
+/* test tab */
 $(document).ready(function () {
     let tabCounter = 1;
 
     // Initialize tabs
-    $('#tabs').tabs();
+    $('.editor-tab').tabs();
 
     // Make tabs sortable within the tab container
-    $('#tabs ul').sortable({
+    $('.editor-tab ul').sortable({
         axis: 'x',
-        containment: 'parent', // 탭 목록 내에서만 드래그 가능
-        helper: 'original', // 드래그 시 탭이 제자리에서 움직이지 않도록 설정
+        containment: 'parent',
+        helper: 'original',
         start: function (event, ui) {
-            // 드래그 시작 시 포커스 이동
             const tabIndex = ui.item.index();
-            $('#tabs').tabs('option', 'active', tabIndex);
+            $('.editor-tab').tabs('option', 'active', tabIndex);
         },
-        stop: function (event, ui) {
-            $('#tabs').tabs('refresh');
+        stop: function () {
+            $('.editor-tab').tabs('refresh');
         },
         scroll: false,
     });
-    // Add a new tab
+
+    // Configure Monaco path once
+    require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+
+    // Add a new tab with Monaco editor
     $('#add-tab').on('click', function () {
         const tabId = 'tab' + tabCounter;
         const tabTitle = 'Tab ' + tabCounter;
         const tabTemplate = `
-            <li>
-                <a href="#${tabId}">${tabTitle}</a>
-                <span class="tab-close">
-                    <img src='/editor/resources/image/icon/settings-close.svg'>
-                </span>
-            </li>`;
-        const tabContent = `<div id="${tabId}">모나코를 넣으세요${tabCounter}</div>`;
+        <li>
+            <a href="#${tabId}">${tabTitle}</a>
+            <span class="tab-close">
+                <img src='/editor/resources/image/icon/settings-close.svg'>
+            </span>
+        </li>`;
+        const tabContent = `<div id="${tabId}" class="editor-container"></div>`;
 
         // Append new tab and content
-        $('#tabs ul').append(tabTemplate);
-        $('#tabs').append(tabContent);
-        $('#tabs').tabs('refresh');
+        $('.editor-tab ul').append(tabTemplate);
+        $('.editor-tab').append(tabContent);
+        $('.editor-tab').tabs('refresh');
 
-        const newTabIndex = $('#tabs ul li').length - 1;
-        $('#tabs').tabs('option', 'active', newTabIndex);
+        const newTabIndex = $('.editor-tab ul li').length - 1;
+        $('.editor-tab').tabs('option', 'active', newTabIndex);
+
+        // Initialize Monaco editor for the new tab
+        require(['vs/editor/editor.main'], function () {
+            monaco.editor.create(document.getElementById(tabId), {
+                value: '// Start coding here...',
+                language: 'java',
+                theme: 'vs-dark',
+            });
+        });
 
         // Update tab counter
         tabCounter++;
     });
 
     // Close a tab on clicking 'x'
-    $('#tabs').on('click', '.tab-close', function () {
+    $('.editor-tab').on('click', '.tab-close', function () {
         const panelId = $(this).prev('a').attr('href');
         $(this).closest('li').remove();
         $(panelId).remove();
-        $('#tabs').tabs('refresh');
+        $('.editor-tab').tabs('refresh');
     });
 
-    // Refresh `x` button visibility on tab change
-    $('#tabs').on('tabsactivate', function (event, ui) {
-        $('.tab-close').hide(); // 모든 x 버튼 숨기기
-        ui.newTab.find('.tab-close').show(); // 활성화된 탭에만 x 버튼 표시
-    });
-
-    // Initialize visibility of close buttons
-    $('#tabs ul li.ui-tabs-active .tab-close').show();
+    // Show close button for the active tab
+    $('.editor-tab ul li.ui-tabs-active .tab-close').show();
 });
 
 /* editor header button event */
 $('.btn_run').click(() => {
-    $('.editor').addClass('active_console');
+    $('.editor-container').addClass('active_console');
 });
 
 $('.btn_console').click(() => {
-    $('.editor').toggleClass('active_console');
+    $('.editor-container').toggleClass('active_console');
 });
 
 $('.btn_download').click(() => {
@@ -103,7 +107,7 @@ $('.btn_settings').click(() => {
 
 /* console button event */
 $('.btn_console_close').click(() => {
-    $('.editor').removeClass('active_console');
+    $('.editor-container').removeClass('active_console');
 });
 
 /* popup button event */
@@ -117,13 +121,13 @@ $('.settings-close-icon').click(function () {
 
 /* function */
 function toggleDisplay(element) {
-	const display = element.css('display');
-	
-	if(display == 'none') {
-		element.css('display', 'flex');
-	} else {
-		element.css('display', 'none');
-	}		
+    const display = element.css('display');
+
+    if (display == 'none') {
+        element.css('display', 'flex');
+    } else {
+        element.css('display', 'none');
+    }
 }
 
 /* basic code */
