@@ -136,7 +136,7 @@ body{
 	justify-content : center; 
 	align-items: center;
 	line-height: 1;
-	margin-top : 8px;
+	margin-top : 6px;
 	margin-right : 20px;
 	text-align: center;
 	margin-left : auto;
@@ -148,7 +148,7 @@ body{
 .login_header .login_header_box:hover{
 	cursor : pointer;
 	background-color: var(--black);
-	outline : 3px solid var(--white);
+	outline : 2.5px solid var(--white);
 }
 
 .login_header_box img{
@@ -577,8 +577,8 @@ body{
 	width : 550px;
 	height : 600px;
 	position: absolute;
-	top : 16%;
-	left : 39%;
+	top : 17%;
+	left : 36%;
 	z-index : 1;
 	background-color: var(--white);
 	display : none; 
@@ -643,8 +643,20 @@ body{
 	margin-top : 8px;
 }
 
+.join_button button:nth-child(1){
+	border : 0;
+	background-color : var(--gray6);
+	outline : 0.5px solid var(--gray4);
+	opacity: 0.6;
+	disabled;
+	color : var(--gray9);
+}
+.join_button button:first-child:hover{
+	cursor : default;
+}
 
-.join_button button:hover{
+
+.join_button button:last-child:hover{
 	cursor : pointer;
 	color : var(--white);
 	outline : 0.5px solid var(--orange);
@@ -676,6 +688,7 @@ body{
 	border-radius: 5px;
 	margin-top : 8px;
 }
+
 
 .duplicate_check button:hover{
 	cursor : pointer;
@@ -713,8 +726,8 @@ body{
 	width : 550px;
 	height : 600px;
 	position: absolute;
-	top : 16%;
-	left : 39%;
+	top : 17%;
+	left : 36%;
 	background-color: var(--white);
 	color : var(--black);
 	flex-direction: column;
@@ -805,6 +818,20 @@ body{
 	outline : 0.5px solid var(--orange);
 	background-color : var(--orange);
 }
+
+.login_button button:nth-child(1){
+	border : 0;
+	background-color : var(--gray6);
+	outline : 0.5px solid var(--gray4);
+	opacity: 0.6;
+	disabled;
+	color : var(--gray9);
+}
+.login_button button:first-child:hover{
+	cursor : default;
+}
+	
+
 .oAuth_line{
 	text-align: center;
 	font-size: 1rem;
@@ -859,14 +886,67 @@ body{
 .content_logout {
     width: 100%;
     height: calc(100vh - 30px);
-	display : felx;
-    flex-direction: column;
-    justify-items: center;
-    align-content: center;
-    color : var(--white);
-    margin-bottom : 80px;
 }
 
+.logout{
+	border : 1px solid var(--white);
+	border-radius : 10px;
+	width : 480px;
+	height : 260px;
+	position: absolute;
+	top : 35%;
+	left : 37%;
+	background-color: var(--white);
+	color : var(--black);
+	flex-direction: column;
+	display: flex;
+	align-content: center;
+}
+
+.logout_text{
+	margin-top : 35px;
+	margin-bottom : 20px;
+	text-align: center;
+}
+
+.logout_text div{
+	font-size: 3rem;
+	margin-bottom : 40px;
+	margin-top : 0;
+}
+
+.logout_text small{
+	font-size: 1rem;
+}
+
+
+.logout_button{
+	margin : 0 auto;
+	width : 406px;
+	display : flex;
+	justify-content: space-between;
+	margin-top : 10px;
+	padding-right : 0;
+}
+
+.logout_button button{
+	background-color : var(--white);
+	border : 0;
+	outline : 0.5px solid var(--orange);
+	border-radius : 5px;
+	width : 160px;
+	height : 40px; 
+	border-radius: 5px;
+	margin-top : 8px;
+}
+
+
+.logout_button button:hover{
+	cursor : pointer;
+	color : var(--white);
+	outline : 0.5px solid var(--orange);
+	background-color : var(--orange);
+}
 
 
 
