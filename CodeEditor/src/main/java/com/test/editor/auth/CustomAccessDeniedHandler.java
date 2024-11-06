@@ -22,7 +22,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler{
 		// > 사용자 정의 페이지로 이동
 		
 		System.out.println("CustomAccessDeniedHandler가 호출되었습니다.");
-		response.sendRedirect("/editor/main");
+		//response.sendRedirect("/editor/main");
 		
 	}
 	
