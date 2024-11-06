@@ -51,6 +51,16 @@
 		<put-attribute name="content_document" value="/WEB-INF/views/page/main/content_document.jsp"></put-attribute>
 	</definition>
 	
+	
+	<!-- logout > login에 둘껀데 ui보려고 만듬 -->
+	<definition name="logout" template="/WEB-INF/views/layout/logout.jsp">
+		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
+		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
+		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="content_logout" value="/WEB-INF/views/page/main/content_logout.jsp"></put-attribute>
+	</definition>
+	
+	
 	<definition name="editor" template="/WEB-INF/views/layout/editor.jsp">
 		<put-attribute name="asset" value="/WEB-INF/views/inc/asset.jsp"></put-attribute>
 		<put-attribute name="asset_edtior" value="/WEB-INF/views/inc/asset_editor.jsp"></put-attribute>

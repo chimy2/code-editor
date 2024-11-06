@@ -1,8 +1,14 @@
 package com.test.editor.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.GetMapping;
 
+@ContextConfiguration(locations = {
+			"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
+			"file:src/main/webapp/WEB-INF/spring/security-context.xml"
+		})
 @Controller
 public class MainController {
 	
@@ -34,5 +40,10 @@ public class MainController {
 	@GetMapping("/document")
 	public String document() {
 		return "document";
+	}
+	
+	@GetMapping("/logout")
+	public String logout() {
+		return "logout";
 	}
 }

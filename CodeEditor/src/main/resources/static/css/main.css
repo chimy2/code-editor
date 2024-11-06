@@ -584,6 +584,7 @@ body{
 	display : none; 
 	color : var(--black);
 	flex-direction: column;
+	
 }
 
 .email_join.active {
@@ -607,6 +608,12 @@ body{
 {
 	display : flex;
 	flex-direction : column;	
+}
+
+.join_id input,
+.join_nick input{
+	padding-left : 15px;
+	box-sizing : border-box;
 }
 
 .join_inner_box_text{
@@ -655,7 +662,7 @@ body{
 }
 .duplicate_check{
 	display: flex;
-	justify-content: space-around;
+	justify-content: space-between;
 	align-items: baseline;
 }
 
@@ -663,7 +670,7 @@ body{
 	outline : 1px solid var(--orange);
 	background-color : var(--orange);
 	color : var(--white);
-	width : 90px;
+	width : 100px;
 	height: 40px;
 	border : 0;
 	border-radius: 5px;
@@ -683,6 +690,8 @@ body{
 	height: 40px;
 	border-radius: 5px;
 	margin-top : 8px;
+	padding-left : 15px;
+	box-sizing : border-box;
 }
 
 
@@ -711,8 +720,6 @@ body{
 	flex-direction: column;
 	display: flex;
 	align-content: center;
-	padding-left : 15px;
-	box-sizing : border-box;
 }
 
 .setting_close{
@@ -848,7 +855,17 @@ body{
 	color : var(--white);
 }
 
-
+/*logout 창*/
+.content_logout {
+    width: 100%;
+    height: calc(100vh - 30px);
+	display : felx;
+    flex-direction: column;
+    justify-items: center;
+    align-content: center;
+    color : var(--white);
+    margin-bottom : 80px;
+}
 
 
 
