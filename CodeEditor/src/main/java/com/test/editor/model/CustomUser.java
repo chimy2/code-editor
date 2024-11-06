@@ -11,7 +11,7 @@ import lombok.Getter;
 public class CustomUser {
 
 @Getter
-private UserDTO member;
+private MemberDTO member;
 	/*
 	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, authorities);
