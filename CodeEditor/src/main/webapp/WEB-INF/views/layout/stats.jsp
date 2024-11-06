@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Stats Page</title>
-    <tiles:insertAttribute name="asset_main" />
+    <%-- <tiles:insertAttribute name="asset_main" /> --%>
     <style>
         body {
             background-color: #000000;
@@ -41,7 +41,7 @@
     </style>
 </head>
 <body>
-    <tiles:insertAttribute name="header_main" />
+    <%-- <tiles:insertAttribute name="header_main" /> --%>
 
     <h1 style="text-align: center;">My ChatBot 통계</h1>
 

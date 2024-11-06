@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    String botImageUrl = request.getContextPath() + "/resources/asset/pic/bot.png";
-    String botIcon1 = request.getContextPath() + "/resources/asset/pic/sleepbot.png";
-    String botIcon2 = request.getContextPath() + "/resources/asset/pic/bot.png";
+	String contextPath = request.getContextPath();
+	String botIcon1 = contextPath + "/resources/asset/pic/sleepbot.png";
+	String botIcon2 = contextPath + "/resources/asset/pic/bot.png";
     String seq = request.getParameter("seq"); 
 %>
 
@@ -19,7 +19,7 @@
                         <div class="user-message">${message.content}</div>
                     </c:when>
                     <c:otherwise>
-                        <img src="<%= botImageUrl %>" class="bot-image" alt="Bot" />
+                        <img src="<%= botIcon2 %>" class="bot-image" alt="Bot" />
                         <div class="bot-message">${message.content}</div>
                     </c:otherwise>
                 </c:choose>
@@ -35,64 +35,65 @@
 
 <style>
     #chat-container {
-	    width: 400px;
-	    height: 750px;
-	    display: none;
-	    flex-direction: column;
-	    border: 1px solid #ccc;
-	    border-radius: 10px;
-	    overflow: hidden;
-	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	    background-color: white;
-	    position: fixed;
-	    bottom: 110px;
-	    right: 30px;
-	    z-index: 100;
-	}
-	#chat-messages {
-	    flex: 1;
-	    overflow-y: auto;
-	    padding: 10px;
-	    display: flex;
-	    flex-direction: column; /* 메시지를 시간 순으로 나열 */
-	}
-	.message {
-	    display: flex;
-	    align-items: center;
-	    gap: 10px;
-	    margin-top: 10px;
-	    width: 100%;
-	}
-	.user-message {
-	    align-self: flex-end;
-	    background-color: #1e88e5;
-	    color: white;
-	    border-radius: 10px 0 10px 10px;
-	    padding: 10px;
-	    max-width: 70%;
-	    word-wrap: break-word;
-	    margin-left: auto;
-	}
-	.bot-message {
-	    align-self: flex-start;
-	    background-color: #f1f1f1;
-	    border-radius: 0 10px 10px 10px;
-	    padding: 10px;
-	    max-width: 70%;
-	    word-wrap: break-word;
-	    position: relative;
-	}
-	.bot-message::after {
-	    content: "";
-	    position: absolute;
-	    top: 10px;
-	    left: -10px;
-	    width: 0;
-	    height: 0;
-	    border-style: solid;
-	    border-width: 10px 10px 10px 0;
-	    border-color: transparent #f1f1f1 transparent transparent;
-	}
+        width: 400px;
+        height: 750px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        position: fixed;
+        bottom: 110px;
+        right: 30px;
+        z-index: 100;
+    }
+    #chat-messages {
+        flex: 1;
+        overflow-y: scroll;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        max-height: 650px;
+    }
+    .message {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        width: 100%;
+    }
+    .user-message {
+        align-self: flex-end;
+        background-color: #1e88e5;
+        color: white;
+        border-radius: 10px 0 10px 10px;
+        padding: 10px;
+        max-width: 90%;
+        word-wrap: break-word;
+        margin-left: auto;
+    }
+    .bot-message {
+        align-self: flex-start;
+        background-color: #f1f1f1;
+        border-radius: 0 10px 10px 10px;
+        padding: 10px;
+        max-width: 90%;
+        word-wrap: break-word;
+        position: relative;
+    }
+    .bot-message::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent #f1f1f1 transparent transparent;
+    }
 	#user-input {
 	    display: flex;
 	    padding: 10px;
@@ -149,9 +150,9 @@
 	    max-width: 80%;
 	    word-wrap: break-word;
 	    position: relative;
-	    font-size: 14px; /* 글자 크기를 조금 더 작게 */
+	    font-size: 14px; 
 	    line-height: 1.6;
-	    color: #333; /* 글자 색상 */
+	    color: #333;
 	}
 
 	.bot-message::after {
@@ -171,38 +172,56 @@
 	    align-items: center;
 	}
 </style>
-
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
     const botIcon1 = "<%= botIcon1 %>";
     const botIcon2 = "<%= botIcon2 %>";
-    const botImageUrl = "<%= botImageUrl %>";
     const userSeq = "<%= seq %>";
     let chatOpen = false;
-
-    $('#toggle-chatbot').click(function() {
-        chatOpen = !chatOpen;
-        if (chatOpen) {
-            $('#chat-container').css('display', 'flex');
-            setTimeout(() => {
-                $('#chat-container').css('opacity', '1');
-                scrollToBottom();
-            }, 10);
-            $('#toggle-chatbot').attr('src', botIcon2);
-        } else {
-            $('#chat-container').css('opacity', '0');
-            setTimeout(() => {
-                $('#chat-container').css('display', 'none');
-            }, 300);
-            $('#toggle-chatbot').attr('src', botIcon1);
-        }
-    });
 
     function scrollToBottom() {
         const chatMessages = document.getElementById('chat-messages');
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    function checkScrollPosition() {
+        const chatMessages = document.getElementById('chat-messages');
+        const scrollButton = document.getElementById('scroll-button');
+        if (chatMessages.scrollTop + chatMessages.clientHeight < chatMessages.scrollHeight) {
+            scrollButton.style.display = 'block';
+        } else {
+            scrollButton.style.display = 'none';
+        }
+    }
+    function loadChatHistory() {
+    $.ajax({
+        type: "GET",
+        url: "/bot/gpt/chat",
+        data: { seq: userSeq },
+        dataType: "json",
+        success: function(response) {
+            const chatHistory = response.chatHistory || [];
+            $('#chat-messages').empty();
+
+            chatHistory.forEach(function(message, index) {
+                const messageHtml = message.role === 'user' 
+                    ? `<div class="message"><div class="user-message">\${message.content}</div></div>`
+                    : `<div class="message"><img src="\${botIcon2}" class="bot-image" alt="Bot" /><div class="bot-message">\${message.content}</div></div>`;
+                $('#chat-messages').append(messageHtml);
+            });
+
+
+            scrollToBottom();
+        },
+        error: function(xhr, status, error) {
+            console.error("Error loading chat history:", error);
+            alert("An error occurred while loading chat history: " + error);
+        }
+    });
+}
+
+
+	
     function sendMessage() {
         const prompt = $('#prompt').val();
         if (prompt.trim() === "") return;
@@ -210,25 +229,49 @@
         $('#chat-messages').append('<div class="message"><div class="user-message">' + prompt + '</div></div>');
         $('#prompt').val('');
 
+        console.log("Sending message:", prompt);
+
         $.ajax({
             type: 'POST',
             url: '/bot/gpt/chat',
             data: { prompt: prompt, seq: userSeq },
             dataType: 'json',
             success: function(result) {
+                console.log("Message sent successfully:", result);
                 const response = result.response;
-                $('#chat-messages').append('<div class="message"><img src="' + botImageUrl + '" class="bot-image" alt="Bot" /><div class="bot-message">' + response + '</div></div>');
-
+                $('#chat-messages').append('<div class="message"><img src="' + botIcon2 + '" class="bot-image" alt="Bot" /><div class="bot-message">' + response + '</div></div>');
                 scrollToBottom();
             },
-            error: function(a, b, c) {
-                alert("오류 발생");
-                console.log(a, b, c);
+            error: function(xhr, status, error) {
+                console.error("Error sending message:", error);
+                alert("Error occurred while sending message: " + error);
             }
         });
     }
 
     $(document).ready(function() {
+        loadChatHistory();
+
+        $('#toggle-chatbot').click(function() {
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                $('#chat-container').css('display', 'flex');
+                setTimeout(() => {
+                    $('#chat-container').css('opacity', '1');
+                    scrollToBottom();
+                }, 10);
+                $('#toggle-chatbot').attr('src', botIcon2);
+            } else {
+                $('#chat-container').css('opacity', '0');
+                setTimeout(() => {
+                    $('#chat-container').css('display', 'none');
+                }, 300);
+                $('#toggle-chatbot').attr('src', botIcon1);
+            }
+        });
+
+        $('#chat-messages').on('scroll', checkScrollPosition);
+
         $('#btn-send').click(sendMessage);
         $('#prompt').keydown(function(event) {
             if (event.key === "Enter") {
