@@ -77,6 +77,7 @@ public class GPTController {
         for (ChatDTO chat : list) {
             chatHistory.add(new Message("user", chat.getMembermsg()));
             chatHistory.add(new Message("assistant", chat.getBotmsg()));
+            chatHistory.add(new Message("botConversation",chat.getSeq()));
         }
 
         Map<String, Object> response = new HashMap<>();

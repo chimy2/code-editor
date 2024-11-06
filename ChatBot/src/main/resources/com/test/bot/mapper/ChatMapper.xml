@@ -9,7 +9,7 @@
 	</insert>
 	
 	<select id="list" resultType="com.test.bot.dto.ChatDTO">
-	    select * from Chatbot where member_seq = #{seq}
+	    select * from Chatbot where member_seq = #{seq} order by seq asc
 	</select>
 	
 </mapper>

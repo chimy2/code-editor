@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=expand_circle_down" />
 <%
 	String contextPath = request.getContextPath();
 	String botIcon1 = contextPath + "/resources/asset/pic/sleepbot.png";
@@ -26,7 +27,9 @@
             </div>
         </c:forEach>
     </div>
-    <button id="scroll-button" onclick="scrollToBottom()">맨 아래로</button>
+    <button id="scroll-button" onclick="scrollToBottom()">
+    	<span class="material-symbols-outlined">expand_circle_down</span>
+    </button>
     <div id="user-input">
         <input type="text" name="prompt" id="prompt" placeholder="메시지를 입력하세요." />
         <button type="button" id="btn-send">전송</button>
@@ -37,7 +40,7 @@
     #chat-container {
         width: 400px;
         height: 750px;
-        display: flex;
+        display: none;
         flex-direction: column;
         border: 1px solid #ccc;
         border-radius: 10px;
@@ -132,9 +135,9 @@
 	#scroll-button {
 	    display: none;
 	    position: absolute;
-	    bottom: 70px;
-	    right: 20px;
-	    padding: 10px 15px;
+	    bottom: 100px;
+	    right: 150px;
+	    padding: 10px 40px;
 	    background-color: #1e88e5;
 	    color: white;
 	    border: none;
@@ -194,34 +197,51 @@
         }
     }
     function loadChatHistory() {
-    $.ajax({
-        type: "GET",
-        url: "/bot/gpt/chat",
-        data: { seq: userSeq },
-        dataType: "json",
-        success: function(response) {
-            const chatHistory = response.chatHistory || [];
-            $('#chat-messages').empty();
+	    $.ajax({
+	        type: "GET",
+	        url: "/bot/gpt/chat",
+	        data: { seq: userSeq },
+	        dataType: "json",
+	        success: function(response) {
+	            const chatHistory = response.chatHistory || [];
+	            $('#chat-messages').empty();
+	            
+	            for (let i = 0; i < chatHistory.length; i++) {
+	                if (chatHistory[i].role === 'user') {
+	                    const userMessage = chatHistory[i].content;
+	                    const botMessage = (chatHistory[i + 1] && chatHistory[i + 1].role === 'assistant') ? chatHistory[i + 1].content : '';
 
-            chatHistory.forEach(function(message, index) {
-                const messageHtml = message.role === 'user' 
-                    ? `<div class="message"><div class="user-message">\${message.content}</div></div>`
-                    : `<div class="message"><img src="\${botIcon2}" class="bot-image" alt="Bot" /><div class="bot-message">\${message.content}</div></div>`;
-                $('#chat-messages').append(messageHtml);
-            });
+	                    const userMessageHtml = `
+	                        <div class="message">
+	                            <div class="user-message">\${userMessage}</div>
+	                        </div>
+	                    `;
 
+	                    let botMessageHtml = '';
+	                    if (botMessage) {
+	                        botMessageHtml = `
+	                            <div class="message">
+	                                <img src="\${botIcon2}" class="bot-image" alt="Bot" />
+	                                <div class="bot-message">\${botMessage}</div>
+	                            </div>
+	                        `;
+	                    }
 
-            scrollToBottom();
-        },
-        error: function(xhr, status, error) {
-            console.error("Error loading chat history:", error);
-            alert("An error occurred while loading chat history: " + error);
-        }
-    });
-}
+	                    $('#chat-messages').append(userMessageHtml + botMessageHtml);
 
-
+	                    i++;
+	                }
+	            }	
 	
+	            scrollToBottom();
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("Error loading chat history:", error);
+	            alert("An error occurred while loading chat history: " + error);
+	        }
+	    });
+	}
+
     function sendMessage() {
         const prompt = $('#prompt').val();
         if (prompt.trim() === "") return;
@@ -229,15 +249,12 @@
         $('#chat-messages').append('<div class="message"><div class="user-message">' + prompt + '</div></div>');
         $('#prompt').val('');
 
-        console.log("Sending message:", prompt);
-
         $.ajax({
             type: 'POST',
             url: '/bot/gpt/chat',
             data: { prompt: prompt, seq: userSeq },
             dataType: 'json',
             success: function(result) {
-                console.log("Message sent successfully:", result);
                 const response = result.response;
                 $('#chat-messages').append('<div class="message"><img src="' + botIcon2 + '" class="bot-image" alt="Bot" /><div class="bot-message">' + response + '</div></div>');
                 scrollToBottom();
