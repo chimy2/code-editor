@@ -10,11 +10,16 @@ button.addEventListener("click", () => {
     // 사이드바가 닫혀있을 때
     sidebar.style.width = "80px"; // 사이드바 열기
     isSidebarOpen = true; // 사이드바 상태 업데이트
+    
+    openSubmenu(".chat-submenu");//채팅창 디폴트설정
+    
   } else {
     // 사이드바가 열려있을 때
     if (!isSubmenuOpen) {
       // 서브메뉴가 열려있지 않다면
-      openSubmenu(); // 서브메뉴 열기
+      
+      openSubmenu(".chat-submenu");//채팅창 열기 
+      
       button.style.right = "296px"; // 버튼 위치 조정
     } else {
       // 서브메뉴가 열려있다면
@@ -25,15 +30,11 @@ button.addEventListener("click", () => {
   }
 });
 
-function openSubmenu() {
-  if (!isSubmenuOpen) {
-    // 이미 서브메뉴가 열려있는 경우에는 동작하지 않도록 방지
-    const submenus = document.querySelectorAll(".submenu");
-    submenus.forEach((submenu) => {
-      submenu.style.display = "block"; // 모든 서브메뉴 열기
-      // 채팅창이 디폴트로 들어갈거임
-    });
-
+function openSubmenu(selector) {
+  closeSubmenus(); // 다른 서브메뉴 닫기
+  const submenu = document.querySelector(selector);
+  if (submenu) {
+    submenu.style.display = "block"; // **지정한 서브메뉴 열기**
     isSubmenuOpen = true; // 서브메뉴 열림 상태 업데이트
     button.style.right = "296px"; // 버튼 위치 조정
   }

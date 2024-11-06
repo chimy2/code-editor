@@ -61,12 +61,35 @@
    		 		<div class="submenu">
    		 			<div id="chattingsidebar" class="chattingsidebar">
       					
-      					<div>
-      					구현 예정
+      							
+	     				<div class="chatting-container">
+							    <div class="chatting-section">
+							    
+							    		텍스트 출력 창
+							    		
+							        
+							   
+							    </div>
+			
+						    </div>
+						    
       					
-      					</div>
       					
-      		  	 		<input type="text" id="msg" placeholder="대화 내용을 입력하세요.">			
+      							
+	     				<div class="chattingform-container">
+							    <div class="chattingform-section">
+							    
+							    		
+							    		
+			      		  	 		<input type="text" id="msg" placeholder="대화 내용을 입력하세요.">			
+							        	
+							        	<button class="chatttingsendbutton">전송</button>
+							   
+							    </div>
+			
+						    </div>
+						    
+      					
 		 
 		 
 		 
@@ -79,19 +102,30 @@
    		 		<div class="submenu">
    		 			<div id="voicesidebar" class="voicesidebar">
       					
-      					<div>
-      					구현 예정
-      					
-      					</div>
-      					
-      		  	 
+      	      						
+	     				<div class="voiceonline-container">
+							    <div class="online-section">
+							        <h2>온라인</h2>
+							   
+							    </div>
+			
+						    </div>
+						    
+	     						
+
+						<div class="voiceoffline-container">
+							    <div class="offline-section">
+							        <h2>오프라인</h2>
+							   
+							    </div>
+			
+						    </div> 
 		 
-		 
+						</div>
 		 
     				</div>
 				</div>
-		</div>
-
+	
 
      <div class="menubar">
   	  		<a id="channelButton" class="menubartitle">채널</a>

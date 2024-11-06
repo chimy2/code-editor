@@ -34,7 +34,7 @@
   }
 
    .nav-2 {
-    height: 80%;
+    height: 40%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -67,27 +67,27 @@
     margin-left: 15px;
     margin-top: -12px;
     font-size: 25px;
-    font-family: 'Cafe24Ssurround';
+  
     color: black;
     cursor: pointer;
   }
 
-  @media (max-width: 768px) {
+/*   @media (max-width: 768px) {
     .sidebar {
       right: -50px;
-      /* Move sidebar to the right */
+      Move sidebar to the right
     }
 
     .button {
       right: 10px;
-      /* Move button to the right */
+      Move button to the right
     }
 
     .content {
       padding-right: 20px;
-      /* Adjust padding */
+      Adjust padding
     }
-  }
+  } */
 
   .menubar .submenu {
     display: none;
@@ -158,12 +158,12 @@
  /* 컨테이너 스타일 */
 .chat_settings-container {
 	position: relative;
-	top:50px;
+	top:25px;
     width: 250px;
     background-color: #3a3a3a;
     color: white;
     padding: 10px;
-    font-family: Arial, sans-serif;
+    
      display: flex;
     flex-direction: column;
   	
@@ -209,6 +209,126 @@ label {
 	top:30px;
 }
  
-   
-   
-   
+ 
+ 
+ 
+ 
+ 
+ /* 음성 */
+ 
+ .voicesidebar{
+  	height: 100%; 
+    display: flex;
+    flex-direction: column;
+ 
+ }
+ 
+ 
+ 
+.voiceonline-container, .voiceoffline-container {
+    width: 93%;
+    height: 50%; 
+    background-color: #3a3a3a;
+    color: white;
+    padding: 10px;
+    margin:10px;
+    margin-right:5px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; 
+    
+    
+    
+}
+
+
+
+
+ .online-section{
+	background-size:25px;
+	text-align:left;
+	font-size:15px;
+	background-color:var(--gray6);
+	
+	box-sizing: border-box;
+	margin-top:10px;
+	margin-bottom:10px;
+	box-shadow: inset -10px 0px 0px 10px #3a3a3a;;
+}
+
+
+.offline-section{
+	background-size:25px;
+	text-align:left;
+	font-size:15px;
+	background-color:var(--gray6);
+	
+	box-sizing: border-box;
+	margin-top:10px;
+	margin-bottom:10px;
+ box-shadow: inset -10px 0px 0px 10px #3a3a3a;;	
+} 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 채팅 */
+
+
+
+
+
+ .chattingsidebar{
+  	height: 100%; 
+    display: flex;
+    flex-direction: column;
+ 
+ }
+
+.chatting-container {
+	 width: 93%;
+    height: 85%; 
+    background-color: #3a3a3a;
+    color: white;
+    padding: 10px;
+    margin:10px;
+    margin-right:5px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; 
+	
+	
+}
+
+
+.chattingform-container{
+	 width: 93%;
+    height: 10%; 
+    background-color: #3a3a3a;
+    color: white;
+    padding: 10px;
+    margin:10px;
+    margin-right:5px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box; 
+	
+	
+}
+
+.chatttingsendbutton {
+	background-color: white;	
+		
+}
