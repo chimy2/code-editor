@@ -19,7 +19,7 @@
 					<ul class="settings-sub-menu" id="theme" style="display: none;">
 						<li onclick="getThemeData(); showContent('appearance')">Appearance</li>
 						<li onclick="showContent('colors')">Colors</li>
-						<li onclick="showContent('font')">Font</li>
+						<li onclick="getFontData(); showContent('font')">Font</li>
 					</ul>
 				</li>
 				<li class="settings-main-item">
@@ -113,7 +113,7 @@
 						<ul class="select-font-family">
 							<li>D2Coding</li>
 							<li>Nanum Gothic Coding</li>
-							<li>Intel One Mono</li>
+							<li>Monoplex KR</li>
 						</ul>
 					</div>
 					<div class="font-size">
@@ -131,7 +131,7 @@
 				</div>
 				<div class="font-preview-container">
 					<h3>보기</h3>
-					<div class="font-preview">AaBbYyZz</div>
+					<div class="font-preview">AaBbYyZz0oO</div>
 				</div>
 			</div>
 			<div class="settings-content" id="template-content" style="display: none;">
