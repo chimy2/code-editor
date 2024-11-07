@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<div class="join_button"> 
-			<button type="button" disabled>회원가입</button>
+			<button type="button">회원가입</button>
 			<button type="button">취소</button>
 		</div>
 	</div>

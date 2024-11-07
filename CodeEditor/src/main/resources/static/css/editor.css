@@ -99,18 +99,42 @@
     align-items: center;  
 }
 
-/* 사이드바 확장된 상태 */
+/* 기본 사이드바 확장된 상태 */
 .explorer_sidebar.expanded {
-    left: 0 !important; /* 왼쪽에 고정 */
-    width: 350px !important;
+    left: 0; /* 왼쪽에 고정 */
+    width: 25vw; /* 화면 너비의 25% */
+    max-width: 300px; /* 최대 너비 설정 */
+    min-width: 200px; /* 최소 너비 설정 */
     z-index: 1; /* 우선순위 조정 */
+    transition: width 0.3s ease, left 0.3s ease; /* 부드러운 전환 효과 */
 }
 
-/* 사이드탭 확장된 상태 */
+/* 기본 사이드탭 확장된 상태 */
 .explorer_sidetab.expanded {
-    left: 360px !important;
+    left: calc(25vw + 10px); /* 사이드바와 겹치지 않도록 상대 위치 (여유 공간 추가) */
     z-index: 1;
+    transition: left 0.3s ease; /* 부드러운 전환 효과 */
 }
+
+/* 작은 화면에서는 고정된 너비 적용 */
+@media (max-width: 768px) {
+    .explorer_sidebar.expanded {
+        width: 200px; /* 고정된 너비 설정 */
+    }
+    .explorer_sidetab.expanded {
+        left: 210px; /* 사이드바 옆에 위치 */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .explorer_sidebar.expanded {
+        width: 250px; /* 중간 크기에서 너비 조정 */
+    }
+    .explorer_sidetab.expanded {
+        left: 260px;
+    }
+}
+
 
 
 

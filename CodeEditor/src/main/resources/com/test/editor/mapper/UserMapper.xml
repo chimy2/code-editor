@@ -6,4 +6,28 @@
 
 <mapper namespace="com.test.editor.mapper.UserMapper">
 
+<!-- security 로그인 -->
+	<resultMap type="com.test.editor.model.MemberDTO" id="memberMap">
+		<!-- primary -->
+		<!-- column : m.memberid > property : dto의 setter의미  -->
+		<id property="id" column="id"/>
+		
+		<!-- primary 제외 모든것 -->
+		<result property="pw" column="pw"/>
+		<result property="nick" column="nick"/>
+		<result property="regdate" column="regdate"/>
+		<result property="ing" column="ing"/>
+		<result property="color" column="color"/>
+		<result property="oAuthType" column="oAuthType"/>
+		
+	</resultMap>
+
+
+	<select id="loadUser" resultMap="memberMap">
+		select * from member
+		 	where id = #{username}
+	</select>
+
+
+
 </mapper>
