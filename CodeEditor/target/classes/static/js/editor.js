@@ -505,83 +505,39 @@ function scrollToSelectedItem(container, selectedItem) {
 }
 
 
-
-
-// 패키지 익스플로러 탭 클릭 이벤트
-
-let clickCount = 0;
-
-document.querySelector('.explorer_sidetabButton').addEventListener('click', function () {
-    clickCount++;
-
-    const sidebar = document.querySelector('.explorer_sidebar');
-    const sidetab = document.querySelector('.explorer_sidetab');
-
-    if (clickCount === 1) {
-        // 첫 번째 클릭: 사이드바 확장 (400px)
-        sidebar.classList.add('expanded');
-        sidetab.classList.add('expanded');
-    } else if (clickCount === 2) {
-        // 두 번째 클릭: 사이드바 숨기기
-        sidebar.classList.remove('expanded');
-        sidetab.classList.remove('expanded');
-        clickCount = 0; // 클릭 횟수 초기화
-    }
-});
+	//사이드탭 확장 이벤트
+	let clickCount = 0;
+	
+	document.querySelector('.explorer_sidetabButton').addEventListener('click', function() {
+	    clickCount++;
+	
+	    const sidebar = document.querySelector('.explorer_sidebar');
+	    const sidetab = document.querySelector('.explorer_sidetab');
+	
+	    if (clickCount === 1) {
+	        // 첫 번째 클릭: 사이드바 확장 (400px)
+	        sidebar.classList.add('expanded');
+	        sidetab.classList.add('expanded');
+	    } else if (clickCount === 2) {
+	        // 두 번째 클릭: 사이드바 숨기기
+	        sidebar.classList.remove('expanded');
+	        sidetab.classList.remove('expanded');
+	        clickCount = 0; // 클릭 횟수 초기화
+	    }
+	});
 
 
 
 
-	document.addEventListener("DOMContentLoaded", function () {
-            const versionItems = document.querySelectorAll(".version-list-container li");
-            const fileContentDisplay = document.getElementById("fileContentDisplay");
 
-            // 버전 기록 클릭 시 선택된 항목 표시 및 파일 내용 표시
-            versionItems.forEach(item => {
-                item.addEventListener("click", function () {
-                    versionItems.forEach(i => i.classList.remove("selected"));
-                    this.classList.add("selected");
 
-                    const versionDate = this.querySelector(".version-date").innerText;
-                    const versionMessage = this.querySelector(".version-message").innerText;
 
-                    // 선택된 버전의 내용을 표시
-                    fileContentDisplay.innerHTML = `<h3>선택된 버전</h3><p>날짜: ${versionDate}</p><p>내용: ${versionMessage}</p>`;
-                });
-            });
 
-            // 복원 버튼 클릭 이벤트
-            const restoreButton = document.querySelector(".btn_submit_version");
-            restoreButton.addEventListener("click", function () {
-                const selectedVersion = document.querySelector(".version-list-container .selected");
-                if (selectedVersion) {
-                    const versionDate = selectedVersion.querySelector(".version-date").innerText;
-                    fetch("/restoreVersion", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ versionDate: versionDate })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert("Version restored successfully!");
-                        } else {
-                            alert("Failed to restore version.");
-                        }
-                    })
-                    .catch(error => console.error("Error restoring version:", error));
-                } else {
-                    alert("Please select a version to restore.");
-                }
-            });
-        });
 
-        function openVersionPopup() {
-            document.querySelector('.version-container').style.display = 'block';
-        }
 
-        function closeVersionPopup() {
-            document.querySelector('.version-container').style.display = 'none';
-        }
+
+
+
+
+
+	
