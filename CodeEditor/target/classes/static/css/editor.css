@@ -111,13 +111,7 @@
     z-index: 1;
 }
 
-<<<<<<< HEAD
-=======
 
-
-
-
->>>>>>> 5c6fe35db2df977167ef8cb24df46771977dea45
 /* 탐색기 항목 스타일 */
 .white-text {
     color: #ffffff;
@@ -573,7 +567,7 @@ div.file {
     margin: 0;
     /* display: flex; */
     /* 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
