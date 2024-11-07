@@ -1,5 +1,25 @@
 @charset "UTF-8";
 
+@font-face {
+    font-family: 'Monoplex KR';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'D2Coding';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/D2Coding.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.nanum-gothic-coding-regular {
+  font-family: "Nanum Gothic Coding", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* editor header */
 .header_editor {
     display: flex;
@@ -747,11 +767,12 @@
     height: 130px;
     background-color: var(--black2);
     color: var(--white);
-    font-size: 18px;
+    font-size: 10px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'Monoplex KR';
 }
 
 .select-font-family li.selected,
