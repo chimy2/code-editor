@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,6 @@
     body {
         background-color: #000;
         color: #fff;
-        font-family: Arial, sans-serif;
     }
     #chat-table {
         width: 80%;
@@ -40,8 +40,12 @@
     }
 </style>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=delete" />
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+<tiles:insertAttribute name="header_main" />
 </head>
 <body>
+	<tiles:insertAttribute name="asset_main" />
     <h1 style="text-align: center;">Chat History</h1>
     <table id="chat-table">
         <thead>
@@ -58,6 +62,10 @@
 	
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script>
+	
+		const token = $("meta[name='_csrf']").attr("content")
+		const header = $("meta[name='_csrf_header']").attr("content");
+		
 	    const userSeq = "<%= request.getParameter("seq") %>";
 	
 	    function loadChatHistory() {
@@ -83,7 +91,7 @@
 	                                <td>\${userMessage}</td>
 	                                <td>\${botMessage}</td>
 	                                <td>
-	                                    <button class="delete-button" onclick="deleteMessage(\${chatSeq})">
+	                                    <button class="delete-button" type="button" onclick="deleteMessage(\${chatSeq})">
 	                                        <span class="material-symbols-outlined">delete</span>
 	                                    </button>
 	                                </td>
@@ -104,16 +112,20 @@
 	
 	    function deleteMessage(chatseq) {
 	    	
-	        if (confirm("정말 삭제하시겠습니까?")) {
+	        if (confirm(`정말 삭제하시겠습니까?`)) {
 	            $.ajax({
 	                url: `/editor/delbot/\${chatseq}`,
-	                type: 'DELETE',
-	                success: function(response) {
-	                    alert('삭제에 성공했습니다.');
-	                    loadChatHistory(); 
+	                type: 'DELETE', 
+	                dataType : 'json',
+	                contentType: 'application/json; charset=utf-8',
+	                beforeSend : function(xhr) {
+	                    xhr.setRequestHeader(header, token);
 	                },
-	                error: function(error) {
-	                    alert('삭제를 실패했습니다.');
+	                success: function(response) {
+	                	location.reload();
+	                },
+	                error: function(a,b,c) {
+	                	location.reload();
 	                }
 	            });
 	        }

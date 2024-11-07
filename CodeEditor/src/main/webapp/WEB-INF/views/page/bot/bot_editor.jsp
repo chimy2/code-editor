@@ -38,8 +38,7 @@
 
 <style>
     #chat-container {
-        width: 400px;
-        height: 750px;
+        width: 350px;
         display: none;
         flex-direction: column;
         border: 1px solid #ccc;
