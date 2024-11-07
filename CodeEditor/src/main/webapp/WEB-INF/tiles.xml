@@ -26,6 +26,7 @@
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
 		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
 		<put-attribute name="content_main" value="/WEB-INF/views/page/main/content_main.jsp"></put-attribute>
+		<!-- <put-attribute name="editor_bot" value="/WEB-INF/views/page/bot/bot_editor.jsp"></put-attribute> -->
 	</definition>
 	
 	<!-- mypage -->
@@ -37,14 +38,14 @@
 	</definition>
 	
 	<!-- stats -->
-	<definition name="stats" template="/WEB-INF/views/layout/stats.jsp">
+	<definition name="stats" template="/WEB-INF/views/page/bot/stats.jsp">
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
 		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
 		<put-attribute name="asset_bot" value="/WEB-INF/views/page/bot/bot.jsp"></put-attribute>
 	</definition> 
 	
 	<!-- delbot -->
-	<definition name="delbot" template="/WEB-INF/views/layout/delbot.jsp">
+	<definition name="delbot" template="/WEB-INF/views/page/bot/delbot.jsp">
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
 		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
 	</definition> 
@@ -98,6 +99,7 @@
 		<put-attribute name="right_side" value="/WEB-INF/views/layout/right_side.jsp"></put-attribute>
 		<put-attribute name="chat_main" value="/WEB-INF/views/page/chat/chat_main.jsp"></put-attribute>
 		
+		<put-attribute name="editor_bot" value="/WEB-INF/views/page/bot/bot_editor.jsp"></put-attribute>
 		
 		<put-list-attribute name="popups">
 			<add-attribute value="/WEB-INF/views/page/editor/new.jsp" />

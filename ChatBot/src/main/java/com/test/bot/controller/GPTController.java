@@ -47,27 +47,6 @@ public class GPTController {
         this.restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
     
-    /*
-    @GetMapping("/chat")
-    public String chatPage(@RequestParam("seq") String seq, Model model) {
-        // seq에 해당하는 사용자의 기존 대화 내역을 DB에서 조회
-        List<ChatDTO> list = dao.list(seq);
-
-        // 조회한 대화 내역을 messages 리스트에 추가
-        messages.clear();
-        for (ChatDTO chat : list) {
-            messages.add(new Message("user", chat.getMembermsg()));
-            messages.add(new Message("assistant", chat.getBotmsg()));
-        }
-
-        // JSP로 전달하기 위해 모델에 이전 대화 내역을 추가
-        model.addAttribute("chatHistory", messages);
-        model.addAttribute("seq", seq);
-        
-        return "chatbot";
-    }
-    */
-    
     @GetMapping(value = "/chat", produces = "application/json")
     @ResponseBody
     public Map<String, Object> chatPage(@RequestParam("seq") String seq) {
