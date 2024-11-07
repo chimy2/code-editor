@@ -18,9 +18,9 @@ public class ChatController {
 	}
 
 
-	@GetMapping("/chatSocket")
-	public String chatSocket(Model model) {
-		 return "chatSocket";
+	@GetMapping("/chatScreen")
+	public String chatScreen(Model model) {
+		 return "chatScreen";
 	}
 
 

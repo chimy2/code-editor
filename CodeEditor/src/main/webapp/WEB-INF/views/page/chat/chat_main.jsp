@@ -93,7 +93,7 @@
 		//서버측 주소
 		//const url = 'ws://echo.websocket.org';
 		//const url = 'ws://demos.kaazing.com/echo';
-		const url = 'ws://localhost:8090/chat/server.do';
+		const url = 'ws://localhost:8090/chat/server';
 		
 		//웹 소켓 객체
 		let ws;
@@ -228,7 +228,7 @@
 	
 
      <div class="chatmenubar">
-  	  		<a id="channelButton" class="menubartitle">채널</a>
+  	  		<a id="channelButton" class="menubartitle">test</a>
    		
    		 		<div class="chatsubmenu">
    		 			<div id="channelsidebar" class="channelsidebar">
@@ -241,7 +241,7 @@
       		  	 	
 		  <h1>CodeEditorProject-chat-main</h1>
     <button id="load-chat-index">Load Chat Index</button>
-    <button id="load-chat-socket">Load Chat Socket</button>
+    <button id="load-chat-screen">Load ChatScreen</button>
     <div id="chat-content"></div>
 
     <script>
@@ -260,10 +260,10 @@
                 });
             });
 
-            // chatSocket 호출
-            $('#load-chat-socket').click(function() {
+            // chatScreen 채팅창 호출
+            $('#load-chat-screen').click(function() {
                 $.ajax({
-                    url: "http://localhost:8090/chat/chatSocket", // chatting 프로젝트의 URL
+                    url: "http://localhost:8090/chat/chatScreen.do", // chatting 프로젝트의 URL
                     method: "GET",
                     success: function(response) {
                         $('#chat-content').html(response); // 응답 데이터를 출력

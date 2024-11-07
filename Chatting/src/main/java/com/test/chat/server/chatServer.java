@@ -7,7 +7,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.server.ServerEndpoint;
 
 
-@ServerEndpoint("/server.do")
+@ServerEndpoint("/server")
 public class chatServer {
 
 	//클라이언트가 연결 요청을 했을떄

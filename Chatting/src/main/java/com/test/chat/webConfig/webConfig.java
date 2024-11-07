@@ -13,7 +13,7 @@ public class webConfig {
 	        registry.addMapping("/chatIndex")
 	                .allowedOrigins("http://localhost:8090/editor/code") // 다른 프로젝트의 주소 (codeeditor 프로젝트의 주소)
 	                .allowedMethods("GET");
-	        registry.addMapping("/chatSocket")
+	        registry.addMapping("/chatScreen")
 	                .allowedOrigins("http://localhost:8090/editor/code")
 	                .allowedMethods("GET");
 	    }

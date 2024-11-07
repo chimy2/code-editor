@@ -14,6 +14,7 @@ function openSubmenu(selector) {
     submenu.style.display = "block"; 
     isSubmenuOpen = true; // 서브메뉴 열림 상태 업데이트
     button.style.right = "296px"; // 버튼 위치 조정
+    
   }
 }
 
