@@ -64,7 +64,7 @@
 	     				<div class="chatting-container">
 							    <div class="chatting-section">
 							    
-							    	<h1> WebSocket TEST</h1>
+							    	<h1> CHAT TEST</h1>
 	
 	<div>
 		<button type="button" class="in" id="btn-connect">연결하기</button>
@@ -123,7 +123,7 @@
 			};
 			
 			ws.onmessage = evt => {
-				log('서버로부터 응답받은 데이터 chat_main >> ' + evt.data);
+				log('서버로부터 응답받은 데이터 >> ' + evt.data);
 			};
 			
 			ws.onerror = evt => {
@@ -234,18 +234,54 @@
    		 			<div id="channelsidebar" class="channelsidebar">
       					
       					<div>
-      					미구현
-      					
+      					미구현 인데 채팅창 ajax 용도로 사용
       					</div>
-      					
-      		  	 
-		 
+      					<div class="chatting-container">
+							    <div class="chatting-section">
+      		  	 	
+		  <h1>CodeEditorProject-chat-main</h1>
+    <button id="load-chat-index">Load Chat Index</button>
+    <button id="load-chat-socket">Load Chat Socket</button>
+    <div id="chat-content"></div>
+
+    <script>
+        $(document).ready(function() {
+            // chatIndex 호출
+            $('#load-chat-index').click(function() {
+                $.ajax({
+                    url: "http://localhost:8090/chat/chatIndex", // chatting 프로젝트의 URL
+                    method: "GET",
+                    success: function(response) {
+                        $('#chat-content').html(response); // 응답 데이터를 출력
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error occurred: " + error);
+                    }
+                });
+            });
+
+            // chatSocket 호출
+            $('#load-chat-socket').click(function() {
+                $.ajax({
+                    url: "http://localhost:8090/chat/chatSocket", // chatting 프로젝트의 URL
+                    method: "GET",
+                    success: function(response) {
+                        $('#chat-content').html(response); // 응답 데이터를 출력
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error occurred: " + error);
+                    }
+                });
+            });
+        });
+    </script>
 		 
 		 
     				</div>
 				</div>
 		</div>
-
+</div>
+</div>
 
      <div class="chatmenubar">
   	  		<a id="inviteButton" class="menubartitle">초대</a>

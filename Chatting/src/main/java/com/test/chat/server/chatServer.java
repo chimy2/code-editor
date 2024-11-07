@@ -14,7 +14,7 @@ public class chatServer {
 	
 	@OnOpen
 	public void handleopen() {
-		System.out.println("클라이언트가 접속했습니다");
+		System.out.println("클라이언트가 chatserver 접속했습니다");
 		
 	}
 	
