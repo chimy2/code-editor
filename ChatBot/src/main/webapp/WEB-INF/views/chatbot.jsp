@@ -111,7 +111,7 @@
             height: 75px;
         }
         #scroll-button {
-            display: none; /* 기본은 숨김 */
+            display: none;
             position: absolute;
             bottom: 70px;
             right: 20px;

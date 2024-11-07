@@ -1,84 +1,168 @@
 /**
  *
  */
+const CODE_URL = 'ws://localhost:8090/editor/vs/code/1';
+let socket;
+let editorInstances = {}; // Store editor instances by tab ID
+let currentUserCursorPositions = {}; // Store each user's cursor position by tab
 
-/* test tab */
-$('.add_class').click(() => {
-    console.log('class 추가');
-    $('.file_tab').append('<div>추가</div>');
-});
-
+// Initialize WebSocket connection
 $(document).ready(function () {
+    socket = new WebSocket(CODE_URL);
+
+    socket.onopen = function () {
+        console.log("WebSocket connection established");
+    };
+
+    socket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+
+        const editorInstance = editorInstances[data.tabId];
+        if (editorInstance) {
+            // Apply received changes to the editor content
+            editorInstance.executeEdits(null, [{
+                range: new monaco.Range(
+                    data.range.startLineNumber,
+                    data.range.startColumn,
+                    data.range.endLineNumber,
+                    data.range.endColumn
+                ),
+                text: data.text
+            }]);
+
+            // Update the cursor position of other users
+            if (data.cursorPosition) {
+                renderUserCursor(data.userId, data.cursorPosition, data.tabId);
+            }
+        }
+    };
+
+    socket.onerror = function (error) {
+        console.log("WebSocket error: ", error);
+    };
+
+    socket.onclose = function () {
+        console.log("WebSocket connection closed");
+    };
+
     let tabCounter = 1;
 
     // Initialize tabs
-    $('#tabs').tabs();
+    $('.editor-tab').tabs();
 
-    // Make tabs sortable within the tab container
-    $('#tabs ul').sortable({
+    // Make tabs sortable
+    $('.editor-tab ul').sortable({
         axis: 'x',
-        containment: 'parent', // 탭 목록 내에서만 드래그 가능
-        helper: 'original', // 드래그 시 탭이 제자리에서 움직이지 않도록 설정
-        start: function (event, ui) {
-            // 드래그 시작 시 포커스 이동
-            const tabIndex = ui.item.index();
-            $('#tabs').tabs('option', 'active', tabIndex);
-        },
-        stop: function (event, ui) {
-            $('#tabs').tabs('refresh');
-        },
+        containment: 'parent',
         scroll: false,
     });
-    // Add a new tab
+
+    // Configure Monaco path once
+    require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+
+    // Add a new tab with Monaco editor
     $('#add-tab').on('click', function () {
         const tabId = 'tab' + tabCounter;
-        const tabTitle = 'Tab ' + tabCounter;
         const tabTemplate = `
-            <li>
-                <a href="#${tabId}">${tabTitle}</a>
-                <span class="tab-close">
-                    <img src='/editor/resources/image/icon/settings-close.svg'>
-                </span>
-            </li>`;
-        const tabContent = `<div id="${tabId}">모나코를 넣으세요${tabCounter}</div>`;
+        <li>
+            <a href="#${tabId}">Tab ${tabCounter}</a>
+            <span class="tab-close"><img src='/editor/resources/image/icon/settings-close.svg'></span>
+        </li>`;
+        const tabContent = `<div id="${tabId}" class="editor-container"></div>`;
 
         // Append new tab and content
-        $('#tabs ul').append(tabTemplate);
-        $('#tabs').append(tabContent);
-        $('#tabs').tabs('refresh');
+        $('.editor-tab ul').append(tabTemplate);
+        $('.editor-tab').append(tabContent);
+        $('.editor-tab').tabs('refresh');
+        $('.editor-tab').tabs('option', 'active', tabCounter - 1);
 
-        const newTabIndex = $('#tabs ul li').length - 1;
-        $('#tabs').tabs('option', 'active', newTabIndex);
+        
+		require(['vs/editor/editor.main'], function () {
+		    const editor = monaco.editor.create(document.getElementById(tabId), {
+		        value: '// Start coding here...',
+		        language: 'java',
+		        theme: 'vs-dark',
+		    });
+		
+		    // Detect cursor position change
+		    editor.onDidChangeCursorPosition((event) => {
+		        const position = event.position;
+		        const cursorData = {
+		            tabId: tabId,
+		            cursorLine: position.lineNumber,
+		            cursorColumn: position.column,
+		            content: editor.getValue(),
+		            userId: 'User' + Math.floor(Math.random() * 1000) // Placeholder for user ID
+		        };
+		        
+		        if (socket.readyState === WebSocket.OPEN) {
+		            socket.send(JSON.stringify(cursorData));
+		        }
+		    });
+		
+		    // Handle WebSocket messages
+		    socket.onmessage = function(event) {
+		        const data = JSON.parse(event.data);
+		
+		        if (data.tabId === tabId) {
+		            const editorInstance = monaco.editor.getModels().find(model => model.uri.path.includes(data.tabId));
+		            if (editorInstance) {
+		                // Update content if changed
+		                editorInstance.setValue(data.content);
+		
+		                // Display cursor position for other users
+		                if (data.userId && data.userId !== 'currentUser') { // Replace with real user ID check
+		                    let range = new monaco.Range(data.cursorLine, data.cursorColumn, data.cursorLine, data.cursorColumn);
+		                    const decorationId = editor.deltaDecorations([], [{
+		                        range: range,
+		                        options: { className: 'cursorDecoration' }
+		                    }]);
+		                    cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
+		                }
+		            }
+		        }
+		    };
+		});
 
         // Update tab counter
         tabCounter++;
     });
 
     // Close a tab on clicking 'x'
-    $('#tabs').on('click', '.tab-close', function () {
+    $('.editor-tab').on('click', '.tab-close', function () {
         const panelId = $(this).prev('a').attr('href');
         $(this).closest('li').remove();
         $(panelId).remove();
-        $('#tabs').tabs('refresh');
+        $('.editor-tab').tabs('refresh');
     });
 
-    // Refresh `x` button visibility on tab change
-    $('#tabs').on('tabsactivate', function (event, ui) {
-        $('.tab-close').hide(); // 모든 x 버튼 숨기기
-        ui.newTab.find('.tab-close').show(); // 활성화된 탭에만 x 버튼 표시
-    });
-
-    // Initialize visibility of close buttons
-    $('#tabs ul li.ui-tabs-active .tab-close').show();
+    // Show close button for the active tab
+    $('.editor-tab ul li.ui-tabs-active .tab-close').show();
 });
+
+// Function to render cursor for other users
+function renderUserCursor(userId, position, tabId) {
+    const editorInstance = editorInstances[tabId];
+    if (!editorInstance) return;
+
+    // Use monaco's decorations to render cursors
+    const decorations = [{
+        range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column + 1),
+        options: {
+            className: `cursor-${userId}`,
+            glyphMarginClassName: `user-cursor user-${userId}`, // Custom style for each user's cursor
+        }
+    }];
+    editorInstance.deltaDecorations([], decorations);
+}
 
 /* editor header button event */
 $('.btn_run').click(() => {
-    $('.editor').addClass('active_console');
+    $('.editor-container').addClass('active_console');
 });
 
 $('.btn_console').click(() => {
-    $('.editor').toggleClass('active_console');
+    $('.editor-container').toggleClass('active_console');
 });
 
 $('.btn_download').click(() => {
@@ -113,7 +197,7 @@ $('#edit-setting').click(() => {
 
 /* console button event */
 $('.btn_console_close').click(() => {
-    $('.editor').removeClass('active_console');
+    $('.editor-container').removeClass('active_console');
 });
 
 /* popup button event */
@@ -133,13 +217,13 @@ $('.template-close-icon').click(function () {
 
 /* function */
 function toggleDisplay(element) {
-	const display = element.css('display');
-	
-	if(display == 'none') {
-		element.css('display', 'flex');
-	} else {
-		element.css('display', 'none');
-	}		
+    const display = element.css('display');
+
+    if (display == 'none') {
+        element.css('display', 'flex');
+    } else {
+        element.css('display', 'none');
+    }
 }
 
 /* basic code */
@@ -325,11 +409,6 @@ function getThemeData() {
 $(document).ready(function() {
     getThemeData();
 });
-
-
-
-
-
 
 
 

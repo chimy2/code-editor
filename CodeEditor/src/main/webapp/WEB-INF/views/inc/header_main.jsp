@@ -4,11 +4,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
 <div class="login_header">
 	<div class="logo"><a href="/editor">Zenith</a></div>
-
-	<div class="login_header_box">
-		<img class="user_box" src="/editor/resources/image/icon/user_white.svg">
-		Sign up
-	</div>
+	<div class="sign_login_header">
+		<div class="login_header_box">
+			<img class="user_box" src="/editor/resources/image/icon/user_white.svg">
+			Sign up
+		</div>
 	
 	<!-- 로그인 하기 전 -->
 	<%-- <sec:authorize access="isAnonymous()"> --%>
@@ -24,4 +24,5 @@
 			Log out
 		</div>
 <%-- 	</sec:authorize> --%>
+	</div>
 </div>
