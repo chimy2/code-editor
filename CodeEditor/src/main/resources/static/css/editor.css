@@ -15,7 +15,7 @@
 }
 
 .nanum-gothic-coding-regular {
-  font-family: "Nanum Gothic Coding", monospace;
+  font-family: "나눔 고딕 코딩", monospace;
   font-weight: 400;
   font-style: normal;
 }
@@ -781,7 +781,7 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     display: flex;
     align-items: left;
     width: 300px;
-    height: 240px;
+    height: 190px;
     border: 0;
     margin-left: 20px;
     margin-top: 20px;
@@ -929,7 +929,7 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Monoplex KR';
+    font-family: 'Monoplex KR'; 
 }
 
 .select-font-family li.selected,
