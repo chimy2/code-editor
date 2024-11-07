@@ -3,6 +3,7 @@ package com.test.editor.mapper;
 import java.util.List;
 
 import com.test.editor.model.StyleSettingDTO;
+import com.test.editor.model.TemplateDTO;
 import com.test.editor.model.ThemeDTO;
 
 public interface SettingsMapper {
@@ -12,6 +13,10 @@ public interface SettingsMapper {
 	String updateTheme(ThemeDTO theme);
 
 	List<StyleSettingDTO> getFont(String member_seq);
+
+	List<StyleSettingDTO> getColor(String member_seq);
+
+	List<TemplateDTO> getTemplate(String member_seq);
 
 	
 }

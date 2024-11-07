@@ -15,7 +15,7 @@
 	</update>
 	
 	
-	<resultMap id="StyleSettingResultMap" type="styleSetting">
+	<resultMap id="FontSettingResultMap" type="styleSetting">
 	    <id property="seq" column="seq"/>
 	    <result property="value" column="value"/>
 	    <result property="styleType_seq" column="styleType_seq"/>
@@ -27,7 +27,7 @@
 	    </association>
 	</resultMap>
 	
-	<select id="getFont" parameterType="String" resultMap="StyleSettingResultMap">
+	<select id="getFont" parameterType="String" resultMap="FontSettingResultMap">
 		select 
 			ss.seq, ss.value, ss.member_seq, ss.styleType_seq, st.category 
 		from styleSetting ss 
@@ -35,5 +35,30 @@
 		where category in ('fontSize', 'fontFamily') 
 			and member_seq = #{member_seq}
 	</select> 
+	
+	<resultMap id="ColorSettingResultMap" type="styleSetting">
+	    <id property="seq" column="seq"/>
+	    <result property="value" column="value"/>
+	    <result property="styleType_seq" column="styleType_seq"/>
+	    <result property="member_seq" column="member_seq"/>
+	    
+	    <!-- category 값을 styleType 필드에 매핑 -->
+	    <association property="styleType" javaType="styleType">
+	        <result property="category" column="category"/>
+	    </association>
+	</resultMap>
+	
+	<select id="getColor" parameterType="String" resultMap="ColorSettingResultMap">
+		select 
+			ss.seq, ss.value, ss.member_seq, ss.styleType_seq, st.category 
+		from styleSetting ss 
+		inner join styleType st on st.seq = ss.styleType_seq 
+		where st.seq between 3 and 7 
+			and member_seq = #{member_seq}
+	</select> 
+	
+	<select id="getTemplate" parameterType="String" resultType="template">
+		select * from template where member_seq = #{member_seq}
+	</select>
 
 </mapper>

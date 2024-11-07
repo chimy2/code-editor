@@ -15,9 +15,8 @@ public class MemberAccessDeniedHandler implements AccessDeniedHandler{
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
-		
 		System.out.println("MemberAccessDeniedHandler가 호출되었습니다.");
-		response.sendRedirect("/ediotr/login");
+		response.sendRedirect("/editor/login");
 		
 	}
 	
