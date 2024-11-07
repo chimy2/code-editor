@@ -9,5 +9,6 @@ public class StyleSettingDTO {
 	private String value;
 	private String styleType_seq;
 	private String member_seq;
-	
+	private StyleTypeDTO styleType;
+
 }

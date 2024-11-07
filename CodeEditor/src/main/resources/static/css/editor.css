@@ -1,5 +1,25 @@
 @charset "UTF-8";
 
+@font-face {
+    font-family: 'Monoplex KR';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_Monoplex-kr@1.0/MonoplexKR-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'D2Coding';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_three@1.0/D2Coding.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.nanum-gothic-coding-regular {
+  font-family: "Nanum Gothic Coding", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* editor header */
 .header_editor {
     display: flex;
@@ -79,18 +99,42 @@
     align-items: center;  
 }
 
-/* 사이드바 확장된 상태 */
+/* 기본 사이드바 확장된 상태 */
 .explorer_sidebar.expanded {
-    left: 0 !important; /* 왼쪽에 고정 */
-    width: 350px !important;
+    left: 0; /* 왼쪽에 고정 */
+    width: 25vw; /* 화면 너비의 25% */
+    max-width: 300px; /* 최대 너비 설정 */
+    min-width: 200px; /* 최소 너비 설정 */
     z-index: 1; /* 우선순위 조정 */
+    transition: width 0.3s ease, left 0.3s ease; /* 부드러운 전환 효과 */
 }
 
-/* 사이드탭 확장된 상태 */
+/* 기본 사이드탭 확장된 상태 */
 .explorer_sidetab.expanded {
-    left: 360px !important;
+    left: calc(25vw + 10px); /* 사이드바와 겹치지 않도록 상대 위치 (여유 공간 추가) */
     z-index: 1;
+    transition: left 0.3s ease; /* 부드러운 전환 효과 */
 }
+
+/* 작은 화면에서는 고정된 너비 적용 */
+@media (max-width: 768px) {
+    .explorer_sidebar.expanded {
+        width: 200px; /* 고정된 너비 설정 */
+    }
+    .explorer_sidetab.expanded {
+        left: 210px; /* 사이드바 옆에 위치 */
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .explorer_sidebar.expanded {
+        width: 250px; /* 중간 크기에서 너비 조정 */
+    }
+    .explorer_sidetab.expanded {
+        left: 260px;
+    }
+}
+
 
 
 
@@ -880,11 +924,12 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     height: 130px;
     background-color: var(--black2);
     color: var(--white);
-    font-size: 18px;
+    font-size: 10px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: 'Monoplex KR';
 }
 
 .select-font-family li.selected,

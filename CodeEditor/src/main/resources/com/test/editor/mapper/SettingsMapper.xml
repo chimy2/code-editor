@@ -13,5 +13,27 @@
 	<update id="updateTheme" parameterType="theme">
 		update theme set theme = #{theme} where seq = #{member_seq}
 	</update>
+	
+	
+	<resultMap id="StyleSettingResultMap" type="styleSetting">
+	    <id property="seq" column="seq"/>
+	    <result property="value" column="value"/>
+	    <result property="styleType_seq" column="styleType_seq"/>
+	    <result property="member_seq" column="member_seq"/>
+	    
+	    <!-- category 값을 styleType 필드에 매핑 -->
+	    <association property="styleType" javaType="styleType">
+	        <result property="category" column="category"/>
+	    </association>
+	</resultMap>
+	
+	<select id="getFont" parameterType="String" resultMap="StyleSettingResultMap">
+		select 
+			ss.seq, ss.value, ss.member_seq, ss.styleType_seq, st.category 
+		from styleSetting ss 
+		inner join styleType st on st.seq = ss.styleType_seq 
+		where category in ('fontSize', 'fontFamily') 
+			and member_seq = #{member_seq}
+	</select> 
 
 </mapper>
