@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.test.editor.mapper.SettingsMapper;
+import com.test.editor.model.StyleSettingDTO;
 import com.test.editor.model.ThemeDTO;
 
 @Repository
@@ -21,6 +22,13 @@ public class SettingsDAO {
 	public String updateTheme(ThemeDTO theme) {
 		return mapper.updateTheme(theme);
 	}
+
+	public List<StyleSettingDTO> getFont(String member_seq) {
+		return mapper.getFont(member_seq);
+		
+	}
+	
+	
 
 }
 

@@ -1,5 +1,7 @@
 package com.test.editor.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.editor.dao.SettingsDAO;
+import com.test.editor.model.StyleSettingDTO;
 import com.test.editor.model.ThemeDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -50,12 +53,13 @@ public class SettingsController {
 		return "update !!!!";
 	}
 	
-	@GetMapping("/font")
+	@GetMapping(value = "/font", produces = "application/json")
 	@ResponseBody
-	public String getFont(HttpSession session) {
-		
-		return null;
+	public List<StyleSettingDTO> getFont(HttpSession session) {
+	    String member_seq = "1";
+	    return dao.getFont(member_seq);
 	}
+
 	
 }
 

@@ -1,26 +1,28 @@
 package com.test.editor.model;
 
 import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.Collections;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 
 import lombok.Getter;
 
-public class CustomUser {
 
 @Getter
+public class CustomUser extends User {
+
 private MemberDTO member;
-	/*
-	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-		super(username, password, authorities);
+	
+	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> oAuthType){
+		super(username, password, oAuthType);
 	}
 
-	public CustomUser(UserDTO dto) {
-		super(dto.getMemberid(), dto.getMemberpw(), dto.getAuthList().stream().map(auth -> new SimpleGrantedAuthority(auth.getAuth())).collect(Collectors.toList()));
-		this.member = dto;	
+	public CustomUser(MemberDTO dto) {
+		super(dto.getId(), dto.getPw(), Collections.singletonList(new SimpleGrantedAuthority(dto.getOAuthType())));
+		this.member = dto;
 	}
-	*/
+	
 	
 }

@@ -3,7 +3,7 @@
 
 <div class="content_join">
 	<div class="join_text">회원가입</div>
-	<div class="join_box">
+	<div class="join_box" id="email_box">
 		<img class="email_img" src="/editor/resources/image/icon/mail.svg">
 		이메일로 회원가입
 	</div>
@@ -43,7 +43,7 @@
 			</div>
 		</div>
 		<div class="join_button"> 
-			<button type="button" disabled>회원가입</button>
+			<button type="submit">회원가입</button>
 			<button type="button">취소</button>
 		</div>
 	</div>
