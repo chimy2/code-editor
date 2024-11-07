@@ -14,8 +14,10 @@
 		<div class="header_setting">개인 설정</div>
 		<div class="body_setting">
 			<div class="info_setting">
-				<div class="setting_user_icon"><img src="/editor/resources/image/icon/user.svg"></div>
 				<div class="setting_nick">
+					<div class="setting_user_icon"><img src="/editor/resources/image/icon/user.svg"></div>
+				</div>
+				<div class="setting_name_edit">
 					<input type="text" class="setting_name" value="test">
 					<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
 				</div>
