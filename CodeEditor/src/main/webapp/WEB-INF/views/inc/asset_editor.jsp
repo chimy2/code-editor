@@ -5,6 +5,6 @@ pageEncoding="UTF-8"%>
 <script src="/editor/resources/js/editor.js" defer></script>
 <script src="/editor/resources/lib/monaco/loader.js" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding&display=swap" rel="stylesheet">
 
