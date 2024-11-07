@@ -1142,30 +1142,43 @@ ul {
 	margin-left: 20px;
 } 
 
+.setting_name_edit{
+	border : 1px solid var(--gray6);
+	border-radius : 5px;
+	width : 210px;
+	height : 30px;
+	display : flex;
+	justify-content: center;
+	align-items: center;
+	margin : 0 10px;
+}
+
+
+.setting_name_edit input {
+  outline: none;
+}
+
+
 .setting_user_icon img{
 	width : 30px;
 	height : 30px;
 }
 
 .setting_name{
-	width : 200px;
-	height : 30px;
+	width : 160px;
+	height : 27px;
 	box-sizing: border-box;
-	margin-left: 15px;
 	border-radius: 5px;
-	border: 1px solid var(--gray6);
-	padding-left : 10px;
-	position: relative;
+	border: 0;
+	margin-right:5px;
     display: inline-block;
 }
 
 .setting_name_close{
 	width : 14px;
 	height : 14px;
-	position: relative;
-    top: 50%;
-    right: 28px;
     cursor: pointer;
+    filter: brightness(0) saturate(100%) invert(16%) sepia(6%) saturate(211%) hue-rotate(174deg) brightness(96%) contrast(91%);
 }
 
 .logout_member_setting{
@@ -1173,21 +1186,22 @@ ul {
 	border : 0;
 	outline : 0.5px solid var(--gray6);
 	border-radius : 5px;
-	width : 75px;
-	height : 20px; 
+	width : 90px;
+	height : 30px; 
 	border-radius: 5px;
-	font-size: 0.6rem;
+	font-size: 0.8rem;
 	display : flex;
 	justify-content: center;
 	align-items: center;
 	box-sizing: border-box;
-	color : var(--gray7);
+	color : var(--gray6);
 }
 
 .logout_member_setting img{
-	width : 12px;
-	height : 12px; 
+	width : 16px;
+	height : 16px; 
 	margin-right: 6px;
+	filter: brightness(0) saturate(100%) invert(16%) sepia(6%) saturate(211%) hue-rotate(174deg) brightness(96%) contrast(91%);
 }
 
 .logout_member_setting:hover{
@@ -1195,7 +1209,7 @@ ul {
 	color : var(--white);
 	outline : 0.5px solid var(--orange);
 	background-color : var(--orange);
-	color : var(--gray7);
+	color : var(--black);
 }
 
 
@@ -1328,6 +1342,7 @@ ul {
 	width : 10px;
 	height: 10px;	
 	cursor : pointer;
+	filter: brightness(0) saturate(100%) invert(16%) sepia(6%) saturate(211%) hue-rotate(174deg) brightness(96%) contrast(91%);
 }
 
 /*프로젝트 설정*/
@@ -1338,17 +1353,16 @@ ul {
 	text-align: center;
 	display : flex;
 	padding-top : 20px;
+	align-items : center;
+	flex-wrap: wrap;
 }
 
 .info_project_setting .setting_name_close{
-	position: absolute;
-	top : 108px;
-    left: 262px;
     cursor: pointer;
 }
 .info_project_setting .setting_name{
 	box-sizing: border-box;
-	margin-top : 10px;
+	width : 175px;
 }
 
 .setting_project_icon{
@@ -1368,47 +1382,103 @@ ul {
 }
 .info_project_setting .setting_nick{
 	width : 400px;
-	display : grid;
-	grid-template-rows: repeat(2, 1fr);
+	display : flex;
 }
-.setting_project_explain{
+
+.setting_project_explain_edit{
+	width : 420px;
+	margin-left : 83px;
+	border : 1px solid var(--gray6);
+	border-radius: 5px;
+	box-sizing: border-box;
+	padding : 2px;
+	display: flex;
+	align-items: start;
+}
+
+.setting_project_explain_edit textarea{
 	border : 0;
 	text-align : start;
-	width : 100%;
-	margin-left : 18px;
-	box-sizing: border-box;
+	width : 390px;
 	color : var(--gray6);
+	outline : none;
+}
+
+.setting_project_explain_edit .setting_name_close{
+	padding-top : 6px;
+	width : 12px;
+	height : 12px;
 }
 
 .project_etc_setting{
 	box-sizing: border-box;
 	padding : 25px;
 	height : 350px;
+	padding-top : 0px;
 }
 
 .project_etc_setting ul{
 	display : flex;
 	flex-direction: column;
+}
+
+.project_etc_setting ul div{
 	border : 1px solid var(--gray6);
-	
+	width : 150px;
+	border-radius: 5px;
+	height : 30px;
+	text-align: center;
+	line-height: 1.7;
+	margin : 10px 0;
+}
+.project_etc_setting ul li{
+	margin : 5px 0;
 }
 
 
 .project_etc_setting ul ul{
 	display : grid;
-	grid-template-columns: repeat(3, 1fr);
-	border : 1px solid var(--gray6);
+	grid-template-columns: repeat(6, 1fr);
 	box-sizing: border-box;
-	padding : 5px;
+	font-size : 0.7rem;
+	text-align: center;
 }
-
 
 .project_etc_setting ul ul li{
-	border : 1px sold var(--gray6);
+	border : 1px solid var(--gray6);
+	height : 20px;
+	width : 70px;
+	border-radius: 5px;
+	line-height: 1.6;
 }
 
+.project_member li{
+	display:flex;
+	justify-content: center;
+	align-items: center;
+	justify-content: space-around; 
+}
 
+.project_member li img{
+	width : 7px;
+	height: 7px;
+	filter: brightness(0) saturate(100%) invert(16%) sepia(6%) saturate(211%) hue-rotate(174deg) brightness(96%) contrast(91%);
+	cursor : pointer;
+}
 
+.priority_color li{
+	cursor : pointer;
+}
+.priority_color li:nth-child(1){
+	background-color: var(--red4);
+}
+
+.priority_color li:nth-child(2){
+	background-color: var(--orange);
+}
+.priority_color li:nth-child(3){
+	background-color: var(--green2);
+}
 
 
 

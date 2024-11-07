@@ -15,7 +15,7 @@
 		<div class="body_setting">
 			<div class="info_setting">
 				<div class="setting_team_icon"><img src="/editor/resources/image/icon/team.svg"></div>
-				<div class="setting_nick">
+				<div class="setting_name_edit">
 					<input type="text" class="setting_name" value="ssangyoung">
 					<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
 				</div>
