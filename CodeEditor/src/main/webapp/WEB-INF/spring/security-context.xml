@@ -29,10 +29,10 @@
 		<security:access-denied-handler ref="customAccessDeniedHandler" />
 		
 		<!-- 폼인증 > 성공 핸들러 -->
-		<security:form-login login-page="/editor/login.do" authentication-success-handler-ref="customLoginSuccessHandler" />
+		<security:form-login login-page="/login" authentication-success-handler-ref="customLoginSuccessHandler" />
 		
 		<!-- 로그아웃 -->
-		<security:logout logout-url="/editor/logout.do" invalidate-session="true" logout-success-url="/editor/main.do" />
+		<security:logout logout-url="/logout" invalidate-session="true" logout-success-url="/" />
 		
 	</security:http>
 	

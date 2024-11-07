@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,8 +24,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainController {
 	
-	private final UserDAO dao;
-	
 	@GetMapping("/")
 	public String main() {
 		return "main";
@@ -41,26 +38,6 @@ public class MainController {
 	public String stats() {
 		
 		return "stats";
-	}
-	
-	@GetMapping("/delbot")
-	public String delbot(@RequestParam("seq") String seq, Model model) {
-		
-	    model.addAttribute("seq", seq);
-	    return "delbot";
-	}
-	
-	@DeleteMapping("/delbot/{seq}")
-	public ResponseEntity<Void> delbotdo(@PathVariable("seq") String seq) {
-	    int result = dao.delbot(seq);
-	    
-	    if (result > 0) {
-	        // 삭제가 성공한 경우 200 OK 응답을 반환
-	        return ResponseEntity.ok().build();
-	    } else {
-	        // 삭제가 실패한 경우 500 Internal Server Error 응답을 반환
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-	    }
 	}
 	
 	@GetMapping("/login")

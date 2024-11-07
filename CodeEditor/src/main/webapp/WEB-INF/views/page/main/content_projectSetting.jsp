@@ -15,10 +15,13 @@
 		<div class="body_setting">
 			<div class="info_project_setting">
 				<div class="setting_project_icon"><img src="/editor/resources/image/icon/project.svg"></div>
-				<div class="setting_nick">
+				<div class="setting_name_edit">
 					<input type="text" class="setting_name" value="spring project">
 					<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
-					<textarea class="setting_project_explain">스프링 프로젝트입니다.</textarea>
+				</div>
+				<div class="setting_project_explain_edit">
+					<textarea>스프링 프로젝트입니다.</textarea>
+					<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
 				</div>
 			</div>
 			<hr>
@@ -26,17 +29,17 @@
 				<ul>
 					<li>
 						<div>Member</div>
-						<ul>
+						<ul class="project_member">
 							<li>+</li>
 							<li>test</li>
-							<li>hong</li>
+							<li>hong <img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg"></li>
 						</ul>
 					</li>				
 					<li><div>Project Date</div></li>				
 					<li><div>Registration Date</div></li>				
 					<li>
 						<div>Priority</div>
-						<ul>
+						<ul class="priority_color">
 							<li>High</li>
 							<li>Medium</li>
 							<li>Low</li>
