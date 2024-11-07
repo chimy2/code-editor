@@ -26,7 +26,7 @@ public class MainController {
 	
 	private final UserDAO dao;
 	
-	@GetMapping("/main")
+	@GetMapping("/")
 	public String main() {
 		return "main";
 	}
