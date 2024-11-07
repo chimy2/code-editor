@@ -5,7 +5,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Stats Page</title>
-    <%-- <tiles:insertAttribute name="asset_main" /> --%>
     <style>
         body {
             background-color: #000000;
@@ -38,11 +37,14 @@
             font-size: 16px;
             line-height: 1.5;
         }
+        #delbot_rink {
+        	color: red;
+        }
     </style>
+    <tiles:insertAttribute name="header_main" />
 </head>
 <body>
-    <%-- <tiles:insertAttribute name="header_main" /> --%>
-
+	<tiles:insertAttribute name="asset_main" />
     <h1 style="text-align: center;">My ChatBot 통계</h1>
 
     <div class="content-container">
@@ -55,6 +57,12 @@
             <p>이 차트는 2024년 월별 챗봇 이용 횟수를 나타냅니다. 8월에 가장 많이 사용하였으며 이번달은 지난 대비 -50 건입니다</p>
         </div>
     </div>
+    
+    <div id="delbot_rink">
+	    <% String seq = request.getParameter("seq"); %>
+		<a href="http://localhost:8090/editor/delbot?seq=<%= seq %>" class="delete-button">채팅내역 삭제</a>
+	</div>
+    
     
 
 	<tiles:insertAttribute name="asset_bot" />
