@@ -43,15 +43,15 @@
 			return;
 		}
 		
-		//const child = window.open('/chat/chatScreen.do', 'chat', 'width=406 height=520');
+		const child = window.open('/chat/chatScreen.do', 'chat', 'width=406 height=520');
 		
 		$('#name').prop('readOnly', true);
 		$('.in').prop('disabled', true);
 		$('.in').css('opacity', .5);
 		
-		//setTimeout(()=>{
-		//	child.connect($('#name').val());	
-		//}, 3000);
+		setTimeout(()=>{
+			child.connect($('#name').val());	
+		}, 1000);
 		
 		child.addEventListener('load', ()=>{
 			child.connect($('#name').val());

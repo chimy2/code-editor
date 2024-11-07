@@ -242,7 +242,6 @@
 		  <h1>CodeEditorProject-chat-main</h1>
     <button id="load-chat-index">Load Chat Index</button>
     <button id="load-chat-screen">Load ChatScreen</button>
-    <div id="chat-content"></div>
 
     <script>
         $(document).ready(function() {
@@ -276,6 +275,7 @@
         });
     </script>
 		 
+    <div id="chat-content"></div>
 		 
     				</div>
 				</div>
@@ -290,8 +290,33 @@
    		 			<div id="invitesidebar" class="invitesidebar">
       					
       					<div>
-      					미구현
       					
+      					    <button id="load-chat-screen">Load ChatScreen</button>
+    <div id="chat-content"></div>
+      					
+      					
+      					
+      				    <script>
+      				    
+      				    
+        $(document).ready(function() {
+        
+
+            // chatScreen 채팅창 호출
+            $('#load-chat-screen').click(function() {
+                $.ajax({
+                    url: "http://localhost:8090/chat/chatScreen.do", // chatting 프로젝트의 URL
+                    method: "GET",
+                    success: function(response) {
+                        $('#chat-content').html(response); // 응답 데이터를 출력
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error occurred: " + error);
+                    }
+                });
+            });
+        });
+    </script>
       					</div>
       					
       		  	 
