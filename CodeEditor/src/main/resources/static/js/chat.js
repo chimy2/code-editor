@@ -14,6 +14,7 @@ function openSubmenu(selector) {
     submenu.style.display = "block"; 
     isSubmenuOpen = true; // 서브메뉴 열림 상태 업데이트
     button.style.right = "296px"; // 버튼 위치 조정
+    $('#toggle-chatbot').animate({ right: '390px'}, 300);
   }
 }
 
@@ -41,6 +42,7 @@ menuItems.forEach((menuItem) => {
         submenu.style.display = "block"; // 클릭한 서브메뉴 열기
         isSubmenuOpen = true; // 서브메뉴 상태 업데이트
         button.style.right = "296px"; // 버튼 위치 조정
+        $('#toggle-chatbot').animate({ right: '390px'}, 300);
       }
     }
   });
@@ -73,12 +75,14 @@ button.addEventListener("click", () => {
     // 사이드바가 닫혀있을 때
     sidebar.style.width = "80px"; // 사이드바 열기
     isSidebarOpen = true; // 사이드바 상태 업데이트
+    $('#toggle-chatbot').animate({ right: '120px'}, 300);
     
     
   } else {
     // 사이드바가 열려있을 때
     if (!isSubmenuOpen) {
       // 서브메뉴가 열려있지 않다면
+      
   		
   		
   		
@@ -88,11 +92,13 @@ button.addEventListener("click", () => {
    	
       button.style.right = "296px"; // 버튼 위치 조정
       openSubmenu(".chattingsidebar");//채팅창 디폴트설정
+      $('#toggle-chatbot').animate({ right: '390px'}, 300);
     } else {
       // 서브메뉴가 열려있다면
       closeSubmenus(); // 서브메뉴 닫기
       sidebar.style.width = "0"; // 사이드바도 닫기
       isSidebarOpen = false; // 사이드바 상태 업데이트
+      $('#toggle-chatbot').animate({ right: '40px'}, 300);
     }
   }
 });
