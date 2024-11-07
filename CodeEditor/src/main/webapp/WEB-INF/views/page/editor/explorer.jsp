@@ -32,28 +32,28 @@
 
                         <!-- 클래스, 인터페이스, 파일 항목들 -->
                         <div class="class">
-                            <button onclick="window.location.href='classPage.jsp'">
+                            <button>
                                 <img src="/editor/resources/image/icon/class.svg">
                                 <span class="white-text">test.java</span>
                             </button>
                         </div>
                         
                         <div class="interface">
-                            <button onclick="window.location.href='interfacePage.jsp'">
+                            <button onclick=>
                                 <img src="/editor/resources/image/icon/interface.svg">
                                 <span class="white-text">inter.java</span>
                             </button>
                         </div>
                         
                         <div class="txt-file">
-                            <button onclick="window.location.href='txt-filePage.jsp'">
+                            <button>
                                 <img src="/editor/resources/image/icon/txt.svg"> 
                                 <span class="white-text">test.txt</span>
                             </button>
                         </div>
                         
                         <div class="file">
-                            <button onclick="window.location.href='filePage.jsp'">
+                            <button>
                                 <img src="/editor/resources/image/icon/file.svg"> 
                                 <span class="white-text">file</span>
                             </button>
@@ -85,39 +85,9 @@
         <button class="explorer_sidetabButton">
             <img src="/editor/resources/image/icon/side.svg" alt="Scroll Icon" class="explorer_sidetabImg">
         </button>
-    </div>    
+    </div>
+
+
+    
+        
 </div>
-
-<!--
-	<div class="">
-		
-	</div>
-	
-  -->
-
-<script>
-	
-	let clickCount = 0;
-	
-	document.querySelector('.explorer_sidetabButton').addEventListener('click', function() {
-	    clickCount++;
-	
-	    const sidebar = document.querySelector('.explorer_sidebar');
-	    const sidetab = document.querySelector('.explorer_sidetab');
-	
-	    if (clickCount === 1) {
-	        // 첫 번째 클릭: 사이드바 확장 (400px)
-	        sidebar.classList.add('expanded');
-	        sidetab.classList.add('expanded');
-	    } else if (clickCount === 2) {
-	        // 두 번째 클릭: 사이드바 숨기기
-	        sidebar.classList.remove('expanded');
-	        sidetab.classList.remove('expanded');
-	        clickCount = 0; // 클릭 횟수 초기화
-	    }
-	});
-
-
-
-	
-</script>

@@ -64,6 +64,7 @@
     align-items: center;
     cursor: pointer;
     transition: left 0.3s ease;
+    z-index: 10; /* 사이드탭이 우선적으로 보이도록 설정 */
 }
 
 /* 사이드탭 버튼 스타일 */
@@ -78,17 +79,19 @@
     align-items: center;  
 }
 
-/* 사이드바 확장된 상태 (400px) */
+/* 사이드바 확장된 상태 */
 .explorer_sidebar.expanded {
-    left: 0; /* 사이드바가 화면 왼쪽에 위치하도록 설정 */
-    width: 400px; /* 1차 확장 상태 */
+    left: 0 !important; /* 왼쪽에 고정 */
+    width: 350px !important;
+    z-index: 1; /* 우선순위 조정 */
 }
 
-
-/* 사이드탭 위치 (확장된 사이드바에 맞게 조정) */
+/* 사이드탭 확장된 상태 */
 .explorer_sidetab.expanded {
-    left: 410px; /* 첫 번째 확장된 상태에서 사이드탭 위치 */
+    left: 360px !important;
+    z-index: 1;
 }
+
 
 
 /* 탐색기 항목 스타일 */
@@ -148,6 +151,15 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 .file > button:hover {
     background-color: #595959; 
 }
+
+/* .editor-container {
+    background-color: #1E1E1E; 검은색 배경
+    flex-grow: 1; 남은 공간을 채우도록 설정
+    transition: width 0.3s ease; 너비 전환 효과
+}
+  */
+
+
 
 
 
