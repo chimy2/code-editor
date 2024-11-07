@@ -5,9 +5,5 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.test.editor.mapper.UserMapper">
-	
-	<delete id="botdel">
-		delete from chatbot where seq = #{seq}
-	</delete>
 
 </mapper>

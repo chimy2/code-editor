@@ -55,6 +55,139 @@
     cursor: pointer;
 }
 
+
+/* explorer */
+/* 사이드바 스타일 */
+.explorer_sidebar {
+    width: 0; /* 기본 상태에서 사이드바는 보이지 않음 */
+    background-color: #26292F;
+    border-right: 1px solid #ddd;
+    padding: 10px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+    position: fixed;
+    top: 60px;
+    left: -400px; /* 사이드바가 기본적으로 화면 바깥에 위치 */
+    transition: left 0.3s ease, width 0.3s ease; /* 왼쪽과 너비에 대해 트랜지션 효과 */
+}
+
+/* 사이드탭 위치 변경 (사이드바와 함께 움직임) */
+.explorer_sidetab {
+    position: fixed;
+    top: 60px;
+    left: -4px; /* 사이드탭은 항상 화면 오른쪽 끝에 위치 */
+    width: 20px;
+    height: 100vh;
+    background-color: #eaeaea;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    z-index: 10; /* 사이드탭이 우선적으로 보이도록 설정 */
+}
+
+/* 사이드탭 버튼 스타일 */
+.explorer_sidetabButton {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex; 
+    justify-content: center;  
+    align-items: center;  
+}
+
+/* 사이드바 확장된 상태 */
+.explorer_sidebar.expanded {
+    left: 0 !important; /* 왼쪽에 고정 */
+    width: 350px !important;
+    z-index: 1; /* 우선순위 조정 */
+}
+
+/* 사이드탭 확장된 상태 */
+.explorer_sidetab.expanded {
+    left: 360px !important;
+    z-index: 1;
+}
+
+
+
+/* 탐색기 항목 스타일 */
+.white-text {
+    color: #FFFFFF;
+}
+
+/* .project 버튼 스타일 */
+button.project {
+    margin-top: 20px;
+    margin-left: 1px;
+}
+
+/* src 항목 */
+div.src {
+    margin-left: 15px !important;  /* 마진 왼쪽 설정 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 패키지 항목 */
+div.src .package {
+    margin-left: 25px !important;
+}
+
+/* 패키지 내 자식 항목들(클래스, 인터페이스, 파일 등) */
+div.src .class, div.src .interface, div.src .txt-file, div.src .file {
+    margin-left: 25px !important;
+}
+
+/* 각 항목의 구분을 위해 가독성 있는 스타일 추가 */
+div.package, div.class, div.interface, div.txt-file, div.file {
+    margin-bottom: 10px;
+}
+
+/* flex 컨테이너 내에서 margin을 명확히 적용 */
+div.src, div.package, div.class, div.interface, div.txt-file, div.file {
+    display: block; 
+    margin-left: 20px !important; /* !important로 우선순위 설정 */
+    margin-bottom: 10px;
+}
+
+/* 공통 스타일 - 모든 항목에 동일하게 적용 */
+.project, .src, .package, .class, .interface, .txt-file, .file {
+    cursor: pointer;
+    background-color: #26292F; /* 기본 배경색 */
+    border: none;
+    transition: background-color 0.3s; /* 색상 변경에 트랜지션 효과 추가 */
+}
+
+.project > button:hover,
+.src > button:hover,
+.package > button:hover,
+.class > button:hover,
+.interface > button:hover,
+.txt-file > button:hover,
+.file > button:hover {
+    background-color: #595959; 
+}
+
+/* .editor-container {
+    background-color: #1E1E1E; 검은색 배경
+    flex-grow: 1; 남은 공간을 채우도록 설정
+    transition: width 0.3s ease; 너비 전환 효과
+}
+  */
+
+
+
+
+
+
+
+
+
+
 /* editor */
 .editor-container {
     padding: 0;

@@ -5,7 +5,7 @@
 	String contextPath = request.getContextPath();
 	String botIcon1 = contextPath + "/resources/asset/pic/sleepbot.png";
 	String botIcon2 = contextPath + "/resources/asset/pic/bot.png";
-    String seq = request.getParameter("seq"); 
+    String seq = request.getParameter("seq");
 %>
 
 <!-- 챗봇 아이콘 및 대화창 -->
@@ -267,34 +267,36 @@
     }
 
     $(document).ready(function() {
-        loadChatHistory();
+        if (!userSeq || userSeq === "null") {
+            $('#toggle-chatbot').hide();
+        } else {
+            loadChatHistory();
+            $('#toggle-chatbot').click(function() {
+                chatOpen = !chatOpen;
+                if (chatOpen) {
+                    $('#chat-container').css('display', 'flex');
+                    setTimeout(() => {
+                        $('#chat-container').css('opacity', '1');
+                        scrollToBottom();
+                    }, 10);
+                    $('#toggle-chatbot').attr('src', botIcon2);
+                } else {
+                    $('#chat-container').css('opacity', '0');
+                    setTimeout(() => {
+                        $('#chat-container').css('display', 'none');
+                    }, 300);
+                    $('#toggle-chatbot').attr('src', botIcon1);
+                }
+            });
 
-        $('#toggle-chatbot').click(function() {
-            chatOpen = !chatOpen;
-            if (chatOpen) {
-                $('#chat-container').css('display', 'flex');
-                setTimeout(() => {
-                    $('#chat-container').css('opacity', '1');
-                    scrollToBottom();
-                }, 10);
-                $('#toggle-chatbot').attr('src', botIcon2);
-            } else {
-                $('#chat-container').css('opacity', '0');
-                setTimeout(() => {
-                    $('#chat-container').css('display', 'none');
-                }, 300);
-                $('#toggle-chatbot').attr('src', botIcon1);
-            }
-        });
-
-        $('#chat-messages').on('scroll', checkScrollPosition);
-
-        $('#btn-send').click(sendMessage);
-        $('#prompt').keydown(function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                sendMessage();
-            }
-        });
+            $('#chat-messages').on('scroll', checkScrollPosition);
+            $('#btn-send').click(sendMessage);
+            $('#prompt').keydown(function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
     });
 </script>
