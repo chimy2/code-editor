@@ -121,7 +121,20 @@
  <div class="popup-container version-container" id="versionPopup">
     <div class="popup-main version-main">
         <div class="popup-content version-content">
-            <div>여기다 explorer 넣으시오</div>
+            <div>
+                <div class="explorer">
+                    <ul>
+                        <!-- versionFiles 리스트에서 파일 구조 출력 -->
+                        <c:forEach var="file" items="${versionFiles}">
+                            <li>
+                                <div class="file-item">
+                                    <c:out value="${file.name}" />
+                                </div>
+                            </li>
+                        </c:forEach>
+                    </ul>
+                </div>
+            </div>
             <div id="fileContentDisplay">여기다 선택하면 파일 내용 보이도록 넣으시오</div>
         </div>
         <nav class="popup-nav version-nav">
@@ -140,14 +153,14 @@
                         <li>
                             <div>
                                 <div class="version-date">
-                                	<c:out value="${versionInfo.date}" />
+                                    <c:out value="${versionInfo.date}" />
                                 </div>
                                 <div class="version-member">
-                                	<c:out value="${versionInfo.member}" />
+                                    <c:out value="${versionInfo.member}" />
                                 </div>
                             </div>
                             <div class="version-message">
-                            	<c:out value="${versionInfo.message}" />
+                                <c:out value="${versionInfo.message}" />
                             </div>
                         </li>
                     </c:forEach>
@@ -160,9 +173,6 @@
     </div>
 </div>
 
-
-</body>
-</html>
  
 
  
