@@ -17,7 +17,7 @@ public class MemberAccessDeniedHandler implements AccessDeniedHandler{
 
 		
 		System.out.println("MemberAccessDeniedHandler가 호출되었습니다.");
-		response.sendRedirect("/ediotr/login");
+		response.sendRedirect("/editor/login");
 		
 	}
 	

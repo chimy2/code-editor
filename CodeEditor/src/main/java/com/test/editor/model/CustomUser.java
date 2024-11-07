@@ -24,5 +24,9 @@ private MemberDTO member;
 		this.member = dto;
 	}
 	
+	 public MemberDTO getMember() {
+	        return member;
+	 }
+	
 	
 }
