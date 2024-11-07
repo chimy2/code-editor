@@ -75,6 +75,7 @@
 .console-container {
 	display: none;
 	height: 300px;
+	font-family: 'D2Coding';
 }
 
 .editor.active_console + .console-container {
@@ -140,7 +141,6 @@
 }
 
 .popup-main {
-	
     width: 610px;
     height: 630px;
     display: flex;
@@ -209,9 +209,14 @@
 
 .popup-content table.new-table tr td select,
 .popup-content table.new-table tr td input {
+    border: 1px solid var(--gray8);
 	width: 350px;
 	height: 30px;
 	border-radius: 5px;
+}
+
+.popup-content table.new-table tr td #ui-id-1-button {
+	width: 322px;
 }
 
 .popup-content table.record-table tr td textarea {
@@ -223,7 +228,7 @@
 
 .popup-content.version-content {
 	padding: 20px;
-	width: 910px;
+	width: 860px;
     height: calc(100% - 40px);
 	border-top-left-radius: 15px;
 	border-bottom-left-radius: 15px;
@@ -234,8 +239,8 @@
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	padding: 20px 10px;
-	width: 230px;
+	padding: 20px;
+	width: 260px;
 	border-top-right-radius: 15px;
 	border-bottom-right-radius: 15px;
 	background: var(--gray8);
@@ -244,31 +249,70 @@
 .popup-nav.version-nav .version-header {
 	display: flex;
 	justify-content: space-between;
+    align-items: center;
 	font-size: 20px;
 	font-weight: 600;
 }
 
 .popup-nav.version-nav .version-list-container {
     height: 550px;
+	font-size: 14px;    
     overflow: auto;
 }
 
 .popup-nav.version-nav .version-list-container ul {
-	list-style: none;
-	padding: 5px;	
+}
+
+.popup-nav.version-nav .version-list-container ul li {
+	display: flex;
+	flex-direction: column;
+    margin-bottom: 5px;
+	padding: 5px 10px;
+	border-radius: 5px;	
+}
+
+.popup-nav.version-nav .version-list-container ul li:hover {
+    background: var(--gray7);
+}
+.popup-nav.version-nav .version-list-container ul li div {
+	height: 30px;
+}
+
+.popup-nav.version-nav .version-list-container ul li div:first-child {
+	display: flex;
+    justify-content: space-between;
+}
+
+.popup-nav.version-nav .version-list-container ul li div:first-child div {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-nav.version-nav .version-list-container ul li div:last-child {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+    line-height: 30px;
 }
 
 .popup-nav.version-nav .version-footer {
 	display: flex;
 	justify-content: end;
+    align-items: center;
+    height: 50px;
 	border-top: 1px solid var(--gray7);
 }
 
 .popup-nav.version-nav .version-footer button {
-	width: 100px;
-	borde: 1px solid var(--gray7);
+	border: 1px solid var(--gray7);
+	width: 60px;
+    height: 30px;
+	border-radius: 5px;	
 	background: var(--orange);
+	color: var(--white);
 	font-size: 14px;
+	font-weight: 400;
 }
 
 .popup-footer {
@@ -292,7 +336,6 @@
     color: var(--white);
 }
 
-
 /* settings */
 .settings-body {
     position: absolute;
@@ -300,9 +343,9 @@
     width: 100%;
     height: 100%;
     margin: 0;
-    display: none;
+    display: flex;
     /* 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
-    /* display: flex; */
+    /* display: none; */
     justify-content: center;
     align-items: center;
 }
@@ -749,7 +792,155 @@
 
 .template-preview {
 	margin-left: 20px;
-	width: 380px;
-	height: 150px;
+	width: 360px;
+	height: 130px;
 	background-color: var(--black2);
+	color: var(--white);
+	padding: 10px;
+	overflow: auto;
 }
+
+.selected-row td {
+    background-color: var(--orange); 
+}
+
+
+#template-preview {
+    white-space: pre;
+    font-family: 'D2Coding';
+}
+
+.template-body {
+	position: absolute;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.template-header {
+	width: 520px;
+	height: 50px;
+	
+}
+
+.template-main {
+	width: 520px;
+	height: 310px;
+	background-color: var(--gray5);
+	border: 1px solid var(--white);
+	border-radius: 10px;
+}
+
+.template-table tr:hover td {
+	background-color: var(--orange);
+	cursor: pointer;
+}
+
+
+/* template new, edit, delete */
+.template-body {
+    position: absolute;
+    top: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /* cursor: not-allowed; */
+}
+
+.template-main {
+    width: 510px;
+    height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    border: 1px solid var(--white);
+    border-radius: 10px;
+    background-color: var(--gray5);
+    cursor: auto;
+}
+
+
+.template-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 0 10px 0 20px; */
+    height: 50px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: var(--gray3);
+    border-bottom: 1px solid var(--white);
+
+    color: var(--white);
+    width: 510px;
+}
+
+.template-body button {
+    display: flex; 
+    margin-right: 10px; 
+}
+
+.template-header h2 {
+	margin-left: 20px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.template-footer {
+	display: flex;
+	justify-content: end;
+	margin: 10px;
+}
+
+.template-content {
+    padding-left: 20px;
+    color: var(--white);
+}
+
+.template-name-input {
+	width: 350px;
+	height: 30px;
+	background: var(--black2);
+	color: var(--white);
+	border: 0;
+	padding: 0 10px;
+}
+
+.template-content textarea {
+	width: 350px;
+	height: 110px;
+	background: var(--black2);
+	color: var(--white);
+	padding: 10px;
+	font-family: 'D2Coding';
+	white-space: pre;
+}
+
+.template-content th {
+	padding-right: 10px;
+	text-align: start;
+	display: flex;
+}
+
+.template-content tr:first-child th {
+    align-items: center; /* 가운데 정렬 */
+    margin-top: 20px;
+}
+
+.template-content tr:last-child th {
+	align-items: flex-start;
+	margin-top: 5px;
+}
+
+.template-content tr:first-child {
+	height: 60px;
+}
+
+
+
