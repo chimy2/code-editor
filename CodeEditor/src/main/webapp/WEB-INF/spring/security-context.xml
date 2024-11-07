@@ -6,30 +6,31 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- 403 처리 클래스 -->
-	<bean class="com.test.editor.auth.CustomAccessDeniedHandler" id="customAccessDeniedHandler"></bean>
+	<bean class="com.test.editor.auth.MemberAccessDeniedHandler" id="MemberAccessDeniedHandler"></bean>
 	
 	<!-- 로그인 성공 핸들러 클래스 -->
-	<bean class="com.test.editor.auth.CustomLoginSuccessHandler" id="customLoginSuccessHandler"></bean>
+	<bean class="com.test.editor.auth.MemberLoginSuccessHandler" id="MemberLoginSuccessHandler"></bean>
 		
 	<!-- 암호화 객체 : blowfish -->
 	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bCryptPasswordEncoder"></bean>
 	
 	<!-- 유저 정보 객체 -->
-	<bean class="com.test.editor.auth.CustomUserDetailsService" id="customUserDetailsService"></bean>
+	<bean class="com.test.editor.auth.MemberDetailsService" id="MemberDetailsService"></bean>
 	
 	<!-- 허가 설정 -->
 	<security:http>
 		
 		<!-- URI 허가 -->
-		<!-- <security:intercept-url pattern="/board/add.do" access="isAuthenticated()"/> -->
+		<security:intercept-url pattern="/editor" access="permitAll"/><!-- permitAll : 모두 접근 가능 -->
+		<!-- <security:intercept-url pattern="/editor/mypage" access="hasRole(1)"/> --><!-- 로그인 대상자만 접근 -->
 		<!-- 어노테이션으로 하는 방식 -->
 		<!-- BoardController에서 직접 + servlet-context.xml-->
 		
 		<!-- 403 처리 -->
-		<security:access-denied-handler ref="customAccessDeniedHandler" />
+		<security:access-denied-handler ref="MemberAccessDeniedHandler" />
 		
 		<!-- 폼인증 > 성공 핸들러 -->
-		<security:form-login login-page="/login" authentication-success-handler-ref="customLoginSuccessHandler" />
+		<security:form-login login-page="/login" authentication-success-handler-ref="MemberLoginSuccessHandler" />
 		
 		<!-- 로그아웃 -->
 		<security:logout logout-url="/logout" invalidate-session="true" logout-success-url="/" />
@@ -38,7 +39,7 @@
 	
 	<!-- 인증(계정 정보) 설정 -->
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="customUserDetailsService">
+		<security:authentication-provider user-service-ref="MemberDetailsService">
 			<security:password-encoder ref="bCryptPasswordEncoder"/>
 		</security:authentication-provider>
 	</security:authentication-manager>

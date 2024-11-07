@@ -25,7 +25,10 @@ public class SettingsDAO {
 
 	public List<StyleSettingDTO> getFont(String member_seq) {
 		return mapper.getFont(member_seq);
+		
 	}
+	
+	
 
 }
 

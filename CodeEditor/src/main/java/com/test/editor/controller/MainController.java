@@ -1,13 +1,12 @@
 package com.test.editor.controller;
 
-import org.springframework.http.HttpStatus; 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
-
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,6 +55,7 @@ public class MainController {
 	}
 	
 	// 나중에 login이랑 security 처리할 예정
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/logout")
 	public String logout() {
 		return "logout";

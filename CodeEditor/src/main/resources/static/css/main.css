@@ -770,7 +770,7 @@ ul {
     margin-top: 8px;
 }
 
-
+/*
 .join_button button:nth-child(1){
 	border : 0;
 	background-color : var(--gray6);
@@ -779,12 +779,15 @@ ul {
 	disabled;
 	color : var(--gray9);
 }
+*/
+/*
 .join_button button:first-child:hover{
 	cursor : default;
 }
+*/
 
 
-.join_button button:last-child:hover{
+.join_button button:hover{
 	cursor : pointer;
 	color : var(--white);
 	outline : 0.5px solid var(--orange);
@@ -943,7 +946,7 @@ ul {
     outline: 0.5px solid var(--orange);
     background-color: var(--orange);
 }
-
+/*
 .login_button button:nth-child(1){
 	border : 0;
 	background-color : var(--gray6);
@@ -952,10 +955,12 @@ ul {
 	disabled;
 	color : var(--gray9);
 }
+*/
+/*
 .login_button button:first-child:hover{
 	cursor : default;
 }
-	
+*/	
 
 .oAuth_line{
 	text-align: center;

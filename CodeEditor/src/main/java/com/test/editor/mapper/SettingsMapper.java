@@ -12,5 +12,6 @@ public interface SettingsMapper {
 	String updateTheme(ThemeDTO theme);
 
 	List<StyleSettingDTO> getFont(String member_seq);
-	 
+
+	
 }
