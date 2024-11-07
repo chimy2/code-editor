@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.bot.mapper.ChatMapper">
+
+	<insert id="add" parameterType="com.test.bot.dto.ChatDTO">
+		insert into Chatbot values (seqChatbot.nextval,#{seq},#{membermsg},#{botmsg},sysdate)
+	</insert>
+	
+	<select id="list" resultType="com.test.bot.dto.ChatDTO">
+	    select * from Chatbot where member_seq = #{seq} order by seq asc
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
