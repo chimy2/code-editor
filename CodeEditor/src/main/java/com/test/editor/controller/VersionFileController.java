@@ -62,5 +62,7 @@ public class VersionFileController {
         }
         model.addAttribute("versionInfos", versionInfos);
         return "version";
+        
+
     }
 }
