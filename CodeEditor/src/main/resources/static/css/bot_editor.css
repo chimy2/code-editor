@@ -10,7 +10,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
     position: fixed;
-    right: 25px;
+    right: 1px;
     bottom: 0px; /* 위치 확인 */
     z-index: 100;
 }
@@ -89,7 +89,6 @@
 #toggle-chatbot {
     position: fixed;
     bottom: 20px;
-    /* top: calc(-20px + var(--console-header-top)); */
     right: 40px;
     cursor: pointer;
     z-index: 101;
@@ -99,8 +98,8 @@
 #scroll-button {
     display: none;
     position: absolute;
-    bottom: 100px;
-    right: 150px;
+    bottom: 75px;
+    right: 100px;
     padding: 10px 40px;
     background-color: #1e88e5;
     color: white;

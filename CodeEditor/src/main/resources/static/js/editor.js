@@ -194,10 +194,12 @@ function renderUserCursor(userId, position, tabId) {
 
 /* editor header button event */
 $('.btn_run').click(() => {
+	$('#toggle-chatbot').animate({ bottom: '310px'}, 300);
     $('.editor-container').addClass('active_console');
 });
 
 $('.btn_console').click(() => {
+	$('#toggle-chatbot').animate({ bottom: '310px'}, 300);
     $('.editor-container').toggleClass('active_console');
 });
 
@@ -233,6 +235,7 @@ $('#edit-setting').click(() => {
 
 /* console button event */
 $('.btn_console_close').click(() => {
+	$('#toggle-chatbot').animate({ bottom: '20px'}, 300);
     $('.editor-container').removeClass('active_console');
 });
 
