@@ -267,7 +267,9 @@ function toggleDisplay(element) {
 /* basic code */
 $('.select_file_type').selectmenu();
 
-require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+document.addEventListener("DOMContentLoaded", function() {
+    require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+});
 
 /* settings */
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
@@ -713,4 +715,144 @@ function openVersionPopup() {
 
 function closeVersionPopup() {
     document.querySelector('.popup-container version-container').style.display = 'none';
+}
+
+
+
+//마우스 우클릭 바 생성해서 New / Delete 선택하기
+document.addEventListener("DOMContentLoaded", function() {
+    const explorerSidebar = document.querySelector(".explorer_sidebar");
+
+    // explorer_sidebar 내에서만 우클릭 메뉴 표시
+    explorerSidebar.addEventListener("contextmenu", function(event) {
+        event.preventDefault(); // 기본 우클릭 메뉴 비활성화
+        removeExistingCustomContextMenu(); // 기존 컨텍스트 메뉴 제거
+        showCustomContextMenu(event); // 새 컨텍스트 메뉴 표시
+    });
+
+    // 문서 클릭 시 컨텍스트 메뉴 제거
+    document.addEventListener("click", function() {
+        removeExistingCustomContextMenu();
+    });
+});
+
+// 기존 컨텍스트 메뉴 제거 함수
+function removeExistingCustomContextMenu() {
+    const existingMenu = document.querySelector(".custom-context-menu");
+    if (existingMenu) {
+        existingMenu.remove();
+    }
+}
+
+// 컨텍스트 메뉴 표시 함수
+function showCustomContextMenu(event) {
+    const contextMenu = document.createElement("div");
+    contextMenu.classList.add("custom-context-menu");
+
+    // New 메뉴 생성
+    const newMenuItem = document.createElement("div");
+    newMenuItem.classList.add("custom-context-menu-item");
+    newMenuItem.innerText = "New >";
+    
+    // 서브메뉴 생성
+    const submenu = document.createElement("div");
+    submenu.classList.add("custom-submenu");
+
+    // 서브메뉴 항목 추가
+    addCustomMenuItem(submenu, "Project", createNewProject, "/editor/resources/image/icon/project.svg");
+    addCustomMenuItem(submenu, "Package", createNewPackage, "/editor/resources/image/icon/package.svg");
+    addCustomMenuItem(submenu, "Class", () => createNewFile("class"), "/editor/resources/image/icon/class.svg");
+    addCustomMenuItem(submenu, "Interface", () => createNewFile("interface"), "/editor/resources/image/icon/interface.svg");
+    addCustomMenuItem(submenu, "Text-File", () => createNewFile("txt-file"), "/editor/resources/image/icon/txt.svg");
+    addCustomMenuItem(submenu, "File", () => createNewFile("file"), "/editor/resources/image/icon/file.svg");
+
+    // 서브메뉴를 New 항목에 추가
+    newMenuItem.appendChild(submenu);
+    contextMenu.appendChild(newMenuItem);
+
+    // Delete 메뉴 추가
+    addCustomMenuItem(contextMenu, "Delete", () => confirmAndDeleteItem(event.target));
+
+    // 컨텍스트 메뉴를 문서에 추가하고 위치 설정
+    document.body.appendChild(contextMenu);
+    contextMenu.style.top = `${event.clientY}px`;
+    contextMenu.style.left = `${event.clientX}px`;
+}
+
+// 메뉴 항목 추가 함수
+function addCustomMenuItem(menu, text, action, iconPath) {
+    const item = document.createElement("div");
+    item.classList.add("custom-context-menu-item");
+
+    // 아이콘이 있는 경우 추가
+    if (iconPath) {
+        const icon = document.createElement("img");
+        icon.src = iconPath;
+        icon.classList.add("custom-menu-icon");
+        item.appendChild(icon);
+    }
+    
+    // 메뉴 텍스트 추가
+    const itemText = document.createElement("span");
+    itemText.innerText = text;
+    item.appendChild(itemText);
+
+    // 클릭 이벤트 리스너 추가
+    item.addEventListener("click", (e) => {
+        e.stopPropagation();
+        action();
+        removeExistingCustomContextMenu();
+    });
+
+    // 메뉴 항목을 메뉴에 추가
+    menu.appendChild(item);
+}
+
+// 삭제 확인 후 삭제 함수
+function confirmAndDeleteItem(element) {
+    console.log("Element class list:", element.classList); // 클래스 목록 확인용
+
+    let itemName;
+
+    if (element.classList.contains("project")) {
+        itemName = "프로젝트 파일";
+    } else if (element.classList.contains("src")) {
+        itemName = "소스 파일";
+    } else if (element.classList.contains("package")) {
+        itemName = "패키지 파일";
+    } else if (element.classList.contains("class")) {
+        itemName = "클래스 파일";
+    } else if (element.classList.contains("interface")) {
+        itemName = "인터페이스 파일";
+    } else if (element.classList.contains("txt-file")) {
+        itemName = "텍스트 파일";
+    } else if (element.classList.contains("file")) {
+        itemName = "일반 파일";
+    } else {
+        itemName = element.querySelector("span")?.textContent || "item";
+    }
+
+    const isConfirmed = confirm(`${itemName}을(를) 삭제하시겠습니까?`);
+
+    if (isConfirmed) {
+        console.log(`${itemName} 삭제됨`);
+        // 실제 삭제 로직 추가
+    } else {
+        console.log(`${itemName} 삭제 취소됨`);
+    }
+}
+
+
+
+// 예제용 함수들
+function createNewProject() {
+    console.log("New Project created");
+}
+
+function createNewPackage() {
+    console.log("New Package created");
+}
+
+function createNewFile(type) {
+    console.log(`New ${type} created`);
 }
