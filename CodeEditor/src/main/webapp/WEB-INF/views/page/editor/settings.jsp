@@ -18,7 +18,7 @@
 					</button>
 					<ul class="settings-sub-menu" id="theme" style="display: none;">
 						<li onclick="getThemeData(); showContent('appearance')">Appearance</li>
-						<li onclick="showContent('colors')">Colors</li>
+						<li onclick="getColorData(); showContent('colors')">Colors</li>
 						<li onclick="getFontData(); showContent('font')">Font</li>
 					</ul>
 				</li>
@@ -140,74 +140,15 @@
 				<div class="template-container">
 					<div class="template-table">
 						<table>
-						    <tr>
-						        <th>Keyword</th>
-						        <th>Code</th>
-						    </tr>
-						    <tr>
-						        <td>catch</td>
-						        <td>catch (\${1:Exception} \${2:e}) {\n    \${3}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>dowhile</td>
-						        <td>do {\n    \${0}\n} while (\${1:condition});</td>
-						    </tr>
-						    <tr>
-						        <td>else</td>
-						        <td>else {\n    \${1}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>finally</td>
-						        <td>finally {\n    \${1}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>for</td>
-						        <td>for (int \${1:index} = 0; \${1:index} < \${2:array}.length; \${1:index}++) {\n    \${3}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>foreach</td>
-						        <td>for (\${1:Type} \${2:item} : \${3:collection}) {\n    \${0}\n}</td>
-						    </tr>
-						    <tr>
-						        <td>if</td>
-						        <td>if (\${1:condition}) {\n    \${2}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>ifelse</td>
-						        <td>if (\${1:condition}) {\n    \${2}\n} else {\n    \${2}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>ifelseif</td>
-						        <td>if (\${1:condition}) {\n    \${2}\n} else if (\${3:condition}) {\n    \${4}\n} else {\n    \${5}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>main</td>
-						        <td>public static void main(String[] args) {\n    \${0}\n}</td>
-						    </tr>
-						    <tr>
-						        <td>switch</td>
-						        <td>switch (\${1:key}) {\n    case \${2:value}:\n        \${0}\n        break;\n    default:\n        break;\n}</td>
-						    </tr>
-						    <tr>
-						        <td>syserr</td>
-						        <td>System.err.println(\${1});\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>sysout</td>
-						        <td>System.out.println(\${1});\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>tryfinally</td>
-						        <td>try {\n    \${1}\n} finally {\n    \${2}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>trycatch</td>
-						        <td>try {\n    \${1}\n} catch (\${2:Exception} \${3:e}) {\n    \${4}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>while</td>
-						        <td>while (\${1:condition}) {\n    \${2}\n}\${0}</td>
-						    </tr>
+							<thead>
+							    <tr>
+							        <th>Keyword</th>
+							        <th>Code</th>
+							    </tr>
+						 	</thead>	
+						 	<tbody>
+						 	
+						 	</tbody>
 						</table>
 					</div>
 					<div class="btn-settings">

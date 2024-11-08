@@ -57,6 +57,7 @@
 
 
 /* explorer */
+
 /* 사이드바 스타일 */
 .explorer_sidebar {
     width: 0; /* 기본 상태에서 사이드바는 보이지 않음 */
@@ -178,6 +179,7 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     transition: width 0.3s ease; 너비 전환 효과
 }
   */
+
 
 
 
@@ -957,7 +959,7 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     background-color: var(--black2);
     padding-left: 5px;
     height: 25px;
-    max-width: 200px; /* 330 - 5 - 80에 해당하는 값 */
+    max-width: 175px; /* 330 - 5 - 80에 해당하는 값 */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

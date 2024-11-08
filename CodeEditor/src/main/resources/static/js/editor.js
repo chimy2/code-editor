@@ -3,15 +3,19 @@
  */
 const CODE_URL = 'ws://localhost:8090/editor/vs/code/1';
 let socket;
+let tabCounter = 1;
 let editorInstances = {}; // Store editor instances by tab ID
 let currentUserCursorPositions = {}; // Store each user's cursor position by tab
+const exapleCode = {
+    class: 'public class HelloWorld {\n\n    public static void main(String[] args) {\n\n        System.out.println("Hello World!");\n\n    }\n\n}',
+    interface: 'public interface Hello {\n\n    void sayHello();\n\n}',
+    text: 'Hello, world!',
+    file: 'this is file',
+};
 
-// Initialize WebSocket connection
-$(document).ready(function () {
-    socket = new WebSocket(CODE_URL);
-
+function initSocketEvent() {
     socket.onopen = function () {
-        console.log("WebSocket connection established");
+        console.log('WebSocket connection established');
     };
 
     socket.onmessage = function (event) {
@@ -20,15 +24,17 @@ $(document).ready(function () {
         const editorInstance = editorInstances[data.tabId];
         if (editorInstance) {
             // Apply received changes to the editor content
-            editorInstance.executeEdits(null, [{
-                range: new monaco.Range(
-                    data.range.startLineNumber,
-                    data.range.startColumn,
-                    data.range.endLineNumber,
-                    data.range.endColumn
-                ),
-                text: data.text
-            }]);
+            editorInstance.executeEdits(null, [
+                {
+                    range: new monaco.Range(
+                        data.range.startLineNumber,
+                        data.range.startColumn,
+                        data.range.endLineNumber,
+                        data.range.endColumn
+                    ),
+                    text: data.text,
+                },
+            ]);
 
             // Update the cursor position of other users
             if (data.cursorPosition) {
@@ -38,107 +44,130 @@ $(document).ready(function () {
     };
 
     socket.onerror = function (error) {
-        console.log("WebSocket error: ", error);
+        console.log('WebSocket error: ', error);
     };
 
     socket.onclose = function () {
-        console.log("WebSocket connection closed");
+        console.log('WebSocket connection closed');
     };
+}
 
-    let tabCounter = 1;
+// Initialize tabs
+$('.editor-tab').tabs();
 
-    // Initialize tabs
-    $('.editor-tab').tabs();
+// Make tabs sortable
+$('.editor-tab ul').sortable({
+    axis: 'x',
+    containment: 'parent',
+    scroll: false,
+});
 
-    // Make tabs sortable
-    $('.editor-tab ul').sortable({
-        axis: 'x',
-        containment: 'parent',
-        scroll: false,
-    });
-
+// Add a new tab with Monaco editor
+$('.btn_open_editor').on('click', function () {
+    if (!socket) {
+        socket = new WebSocket(CODE_URL);
+    }
     // Configure Monaco path once
-    require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+    const fileName = $(this).find('span').text();
+    const tabCount = $('.monaco-editor').length;
+    const fileIcon = $(this).find('img').prop('outerHTML');
+    const tabId = 'file_path__' + fileName.replaceAll(/[.]/g, '__');
 
-    // Add a new tab with Monaco editor
-    $('#add-tab').on('click', function () {
-        const tabId = 'tab' + tabCounter;
-        const tabTemplate = `
-        <li>
-            <a href="#${tabId}">Tab ${tabCounter}</a>
-            <span class="tab-close"><img src='/editor/resources/image/icon/settings-close.svg'></span>
-        </li>`;
-        const tabContent = `<div id="${tabId}" class="editor-container"></div>`;
+    if ($('#' + tabId).length > 0) {
+        $(`a[href='#${tabId}']`).click();
+        return;
+    }
 
-        // Append new tab and content
-        $('.editor-tab ul').append(tabTemplate);
-        $('.editor-tab').append(tabContent);
-        $('.editor-tab').tabs('refresh');
-        $('.editor-tab').tabs('option', 'active', tabCounter - 1);
+    const tabTemplate = `
+    <li>
+        <a href="#${tabId}">${fileIcon}${fileName}</a>
+        <span class="tab-close"><img src='/editor/resources/image/icon/settings-close.svg'></span>
+    </li>`;
+    const tabContent = `<div id="${tabId}" class="editor-tab-container"></div>`;
 
+    // Append new tab and content
+    $('.editor-tab ul').append(tabTemplate);
+    $('.editor-tab').append(tabContent);
+    $('.editor-tab').tabs('refresh');
+    $('.editor-tab').tabs('option', 'active', tabCount);
 
-        require(['vs/editor/editor.main'], function () {
-            const editor = monaco.editor.create(document.getElementById(tabId), {
-                value: '// Start coding here...',
-                language: 'java',
-                theme: 'vs-dark',
-            });
-
-            // Detect cursor position change
-            editor.onDidChangeCursorPosition((event) => {
-                const position = event.position;
-                const cursorData = {
-                    tabId: tabId,
-                    cursorLine: position.lineNumber,
-                    cursorColumn: position.column,
-                    content: editor.getValue(),
-                    userId: 'User' + Math.floor(Math.random() * 1000) // Placeholder for user ID
-                };
-
-                if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify(cursorData));
-                }
-            });
-
-            // Handle WebSocket messages
-            socket.onmessage = function (event) {
-                const data = JSON.parse(event.data);
-
-                if (data.tabId === tabId) {
-                    const editorInstance = monaco.editor.getModels().find(model => model.uri.path.includes(data.tabId));
-                    if (editorInstance) {
-                        // Update content if changed
-                        editorInstance.setValue(data.content);
-
-                        // Display cursor position for other users
-                        if (data.userId && data.userId !== 'currentUser') { // Replace with real user ID check
-                            let range = new monaco.Range(data.cursorLine, data.cursorColumn, data.cursorLine, data.cursorColumn);
-                            const decorationId = editor.deltaDecorations([], [{
-                                range: range,
-                                options: { className: 'cursorDecoration' }
-                            }]);
-                            cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
-                        }
-                    }
-                }
-            };
+    require(['vs/editor/editor.main'], function () {
+        const editor = monaco.editor.create(document.getElementById(tabId), {
+            value: '// Start coding here...',
+            language: 'java',
+            theme: 'vs-dark',
+            minimap: {
+                enabled: false,
+            },
+            automaticLayout: true,
         });
 
-        // Update tab counter
-        tabCounter++;
+        // Detect cursor position change
+        editor.onDidChangeCursorPosition((event) => {
+            const position = event.position;
+            const cursorData = {
+                tabId: tabId,
+                cursorLine: position.lineNumber,
+                cursorColumn: position.column,
+                content: editor.getValue(),
+            };
+
+            if (socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify(cursorData));
+            }
+        });
+
+        // Handle WebSocket messages
+        socket.onmessage = function (event) {
+            const data = JSON.parse(event.data);
+
+            if (data.tabId === tabId) {
+                const editorInstance = monaco.editor
+                    .getModels()
+                    .find((model) => model.uri.path.includes(data.tabId));
+                if (editorInstance) {
+                    // Update content if changed
+                    editorInstance.setValue(data.content);
+
+                    // Display cursor position for other users
+                    if (data.userId && data.userId !== 'currentUser') {
+                        // Replace with real user ID check
+                        let range = new monaco.Range(
+                            data.cursorLine,
+                            data.cursorColumn,
+                            data.cursorLine,
+                            data.cursorColumn
+                        );
+                        const decorationId = editor.deltaDecorations(
+                            [],
+                            [
+                                {
+                                    range: range,
+                                    options: { className: 'cursorDecoration' },
+                                },
+                            ]
+                        );
+                        cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
+                    }
+                }
+            }
+        };
     });
 
-    // Close a tab on clicking 'x'
-    $('.editor-tab').on('click', '.tab-close', function () {
-        const panelId = $(this).prev('a').attr('href');
-        $(this).closest('li').remove();
-        $(panelId).remove();
-        $('.editor-tab').tabs('refresh');
-    });
-
-    // Show close button for the active tab
-    $('.editor-tab ul li.ui-tabs-active .tab-close').show();
+    // Update tab counter
+    tabCounter++;
 });
+
+// Close a tab on clicking 'x'
+$('.editor-tab').on('click', '.tab-close', function () {
+    const panelId = $(this).prev('a').attr('href');
+    $(this).closest('li').remove();
+    $(panelId).remove();
+    $('.editor-tab').tabs('refresh');
+});
+
+// Show close button for the active tab
+$('.editor-tab ul li.ui-tabs-active .tab-close').show();
 
 // Function to render cursor for other users
 function renderUserCursor(userId, position, tabId) {
@@ -146,13 +175,20 @@ function renderUserCursor(userId, position, tabId) {
     if (!editorInstance) return;
 
     // Use monaco's decorations to render cursors
-    const decorations = [{
-        range: new monaco.Range(position.lineNumber, position.column, position.lineNumber, position.column + 1),
-        options: {
-            className: `cursor-${userId}`,
-            glyphMarginClassName: `user-cursor user-${userId}`, // Custom style for each user's cursor
-        }
-    }];
+    const decorations = [
+        {
+            range: new monaco.Range(
+                position.lineNumber,
+                position.column,
+                position.lineNumber,
+                position.column + 1
+            ),
+            options: {
+                className: `cursor-${userId}`,
+                glyphMarginClassName: `user-cursor user-${userId}`, // Custom style for each user's cursor
+            },
+        },
+    ];
     editorInstance.deltaDecorations([], decorations);
 }
 
@@ -217,7 +253,6 @@ $('.template-close-icon').click(function () {
     toggleDisplay($(this).parents('.template-body'));
 });
 
-
 /* function */
 function toggleDisplay(element) {
     const display = element.css('display');
@@ -232,6 +267,10 @@ function toggleDisplay(element) {
 /* basic code */
 $('.select_file_type').selectmenu();
 
+require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+
+/* settings */
+//여기부터!!!!!!!!!!!!!!!!! 
 
 /* settings */
 function toggleSubMenu(menuId) {
@@ -281,40 +320,21 @@ function toggleThemeSelection(theme) {
 }
 
 window.addEventListener('DOMContentLoaded', () => {
-    const initialTheme = document.querySelector('input[name="theme"]:checked').value;
-    toggleThemeSelection(initialTheme);
+    const initialThemeInput = document.querySelector('input[name="theme"]:checked');
+    if (initialThemeInput) {
+        const initialTheme = initialThemeInput.value;
+        toggleThemeSelection(initialTheme);
+    } else {
+        console.log("Theme input not found.");
+    }
 });
+
 
 document.getElementById('dark-button').addEventListener('click', () => toggleThemeSelection('dark'));
 document.getElementById('light-button').addEventListener('click', () => toggleThemeSelection('light'));
 
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const templatePreview = document.getElementById("template-preview");
-    let selectedRow = null;
-
-    document.querySelectorAll(".template-table tr").forEach(row => {
-        const codeCell = row.cells[1];
-
-        if (codeCell) {
-            row.addEventListener("click", function () {
-                if (selectedRow) {
-                    selectedRow.classList.remove("selected-row");
-                }
-
-                selectedRow = row;
-                row.classList.add("selected-row");
-
-                // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
-                const formattedContent = codeCell.innerHTML
-                    .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-                    .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
-                templatePreview.innerHTML = formattedContent;
-            });
-        }
-    });
-});
 
 let selectedRowData = null;
 
@@ -472,6 +492,7 @@ function updateFontFamily(items, value, displayElement) {
         if (item.textContent === value) {
             item.classList.add("selected");
             displayElement.textContent = item.textContent;
+            scrollToSelectedItem(item.parentElement, item);
         } else {
             item.classList.remove("selected");
         }
@@ -506,9 +527,170 @@ function scrollToSelectedItem(container, selectedItem) {
 
 
 
+// 컬러 
+// 색상 데이터를 가져오는 함수
+function getColorData() {
+    $.ajax({
+        url: "/editor/color",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            if (data && data.length > 0) {
+                applyColorData(data);
+            }
+        },
+        error: function (a, b, c) {
+            console.error(a, b, c);
+        }
+    });
+}
 
-// 패키지 익스플로러 탭 클릭 이벤트
+// 색상 데이터를 적용하는 함수
+function applyColorData(data) {
+    // 모든 color input 요소를 선택
+    const colorInputs = document.querySelectorAll(".colors input[type='color']");
 
+    colorInputs.forEach(colorInput => {
+        // 이제 hidden input을 class로 쉽게 찾을 수 있습니다.
+        const hiddenInput = colorInput.closest(".colors").querySelector(".color-category");
+
+        if (hiddenInput) {
+            console.log('hiddenInput 찾음:', hiddenInput);
+            const category = hiddenInput.value; // hidden input의 value가 category
+
+            // 데이터에서 일치하는 항목을 찾기
+            const colorData = data.find(item => item.styleType.category === category);
+
+            // 일치하는 데이터가 있으면 color input의 value를 업데이트
+            if (colorData) {
+                colorInput.value = colorData.value;
+            }
+        } else {
+            console.log('hiddenInput을 찾을 수 없습니다.');
+        }
+    });
+
+}
+
+// DOMContentLoaded 이벤트가 발생했을 때 getColorData 함수 호출
+document.addEventListener("DOMContentLoaded", function () {
+    getColorData();
+});
+
+
+// 템플릿 데이터를 가져오는 함수
+function getTemplateData() {
+    $.ajax({
+        url: "/editor/template",
+        method: "GET",
+        dataType: "json",
+        success: function (data) {
+            console.log("successfully");
+
+            const tableBody = $(".template-table tbody");
+            tableBody.empty();
+
+            data.forEach(function (template) {
+                const row = `
+                    <tr>
+                        <td>${template.keyword}</td>
+                        <td>${template.code}</td>
+                    </tr>
+
+                `;
+                tableBody.append(row);
+            });
+
+            attachRowClickEvent();
+        },
+        error: function (a, b, c) {
+            console.error(a, b, c);
+        }
+    });
+}
+
+function attachRowClickEvent() {
+    const templatePreview = document.getElementById("template-preview");
+    let selectedRow = null;
+
+    // 새로 추가된 <tr> 요소에 대해 클릭 이벤트 리스너를 추가합니다.
+    document.querySelectorAll(".template-table tr").forEach(row => {
+        const codeCell = row.cells[1]; // index가 1이어야 코드 셀이 맞습니다
+
+        if (codeCell) {
+            row.addEventListener("click", function () {
+                console.log('click햇닫햇닫닫닫다ㅏㄷ'); // 클릭 이벤트 확인
+
+                if (selectedRow) {
+                    selectedRow.classList.remove("selected-row");
+                }
+
+                selectedRow = row;
+                row.classList.add("selected-row");
+
+                // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
+                const formattedContent = codeCell.innerHTML
+                    .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
+                    .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+                templatePreview.innerHTML = formattedContent;
+            });
+        }
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    getTemplateData();
+});
+
+
+//여기부터!!!!!!!!!!!!!!!!! 여까지 일단 지우지 말기!!!!! 돔 제거할거에요!!!!!!!!!!
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const versionItems = document.querySelectorAll(".version-list-container li");
+    const fileContentDisplay = document.getElementById("fileContentDisplay");
+
+    versionItems.forEach(item => {
+        item.addEventListener("click", function () {
+            versionItems.forEach(i => i.classList.remove("selected"));
+            this.classList.add("selected");
+
+            const versionDate = this.querySelector(".version-date").innerText;
+            const versionMessage = this.querySelector(".version-message").innerText;
+
+            fileContentDisplay.innerHTML = `<h3>선택된 버전</h3><p>날짜: ${versionDate}</p><p>내용: ${versionMessage}</p>`;
+        });
+    });
+
+    const restoreButton = document.querySelector(".btn_submit_version");
+    restoreButton.addEventListener("click", function () {
+        const selectedVersion = document.querySelector(".version-list-container .selected");
+        if (selectedVersion) {
+            const versionDate = selectedVersion.querySelector(".version-date").innerText;
+            fetch("/restoreVersion", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ versionDate: versionDate })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Version restored successfully!");
+                    } else {
+                        alert("Failed to restore version.");
+                    }
+                })
+                .catch(error => console.error("Error restoring version:", error));
+        } else {
+            alert("Please select a version to restore.");
+        }
+    });
+});
+
+// 사이드탭 확장 이벤트
 let clickCount = 0;
 
 document.querySelector('.explorer_sidetabButton').addEventListener('click', function () {
@@ -518,19 +700,19 @@ document.querySelector('.explorer_sidetabButton').addEventListener('click', func
     const sidetab = document.querySelector('.explorer_sidetab');
 
     if (clickCount === 1) {
-        // 첫 번째 클릭: 사이드바 확장 (400px)
         sidebar.classList.add('expanded');
         sidetab.classList.add('expanded');
     } else if (clickCount === 2) {
-        // 두 번째 클릭: 사이드바 숨기기
         sidebar.classList.remove('expanded');
         sidetab.classList.remove('expanded');
-        clickCount = 0; // 클릭 횟수 초기화
+        clickCount = 0;
     }
 });
 
+function openVersionPopup() {
+    document.querySelector('.version-container').style.display = 'block';
+}
 
-
-
-
-
+function closeVersionPopup() {
+    document.querySelector('.popup-container version-container').style.display = 'none';
+}

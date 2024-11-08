@@ -2,11 +2,17 @@
 if (window.location.pathname.startsWith("/editor/join")) {
 	document.querySelector('#email_duplicate button').onclick = function() { // 클릭 이벤트 핸들러 등록
 	    const email = $('#email_duplicate input[type=email]').val(); // 이메일 입력 값 가져오기
+	    
+	    const token = $("meta[name='_csrf']").attr("content")
+		const header = $("meta[name='_csrf_header']").attr("content");
 	
 	    $.ajax({
 	        type: 'POST',
 	        url: '/editor/join',
 	        data: { email: email }, 
+		    beforeSend : function(xhr) {
+		        xhr.setRequestHeader(header, token);
+		    },
 	        success: function(result) {
 	            if (result == 0) {
 	                $('#email_message').text('사용할 수 있는 아이디입니다.');
