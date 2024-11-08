@@ -813,38 +813,4 @@ document
                 });
             });
 
-            // 복원 버튼 클릭 이벤트
-            const restoreButton = document.querySelector(".btn_submit_version");
-            restoreButton.addEventListener("click", function () {
-                const selectedVersion = document.querySelector(".version-list-container .selected");
-                if (selectedVersion) {
-                    const versionDate = selectedVersion.querySelector(".version-date").innerText;
-                    fetch("/restoreVersion", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ versionDate: versionDate })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                alert("Version restored successfully!");
-                            } else {
-                                alert("Failed to restore version.");
-                            }
-                        })
-                        .catch(error => console.error("Error restoring version:", error));
-                } else {
-                    alert("Please select a version to restore.");
-                }
-            });
-        });
-
-        function openVersionPopup() {
-            document.querySelector('.version-container').style.display = 'block';
-        }
-
-        function closeVersionPopup() {
-            document.querySelector('.version-container').style.display = 'none';
-        }
+            
