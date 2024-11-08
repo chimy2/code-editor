@@ -5,14 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.test.editor.mapper.UserMapper;
+import com.test.editor.mapper.MemberMapper;
 import com.test.editor.model.CustomUser;
 import com.test.editor.model.MemberDTO;
 
 public class MemberDetailsService implements UserDetailsService{
 
 	@Autowired
-	private UserMapper mapper;
+	private MemberMapper mapper;
 	
 	
 	@Override

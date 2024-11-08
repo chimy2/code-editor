@@ -1,5 +1,6 @@
 
-if (window.location.pathname.startsWith("/editor/")) {
+if (window.location.pathname.startsWith("/editor/")||
+	window.location.pathname.startsWith("/editor/code")) {
 	
 		document.querySelector('#sign_up').onclick = function(){
 			location.href = '/editor/join';
@@ -160,3 +161,21 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
     }
 	
 }
+
+/*
+function duplicate_check(){
+	document.querySelector('.duplicate_check input[type=text]').val()
+
+
+}
+*/
+
+
+
+
+
+
+
+
+
+
