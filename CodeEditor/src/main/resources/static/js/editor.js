@@ -644,173 +644,72 @@ document.addEventListener("DOMContentLoaded", function () {
 //여기부터!!!!!!!!!!!!!!!!! 여까지 일단 지우지 말기!!!!! 돔 제거할거에요!!!!!!!!!!
 
 
-//사이드탭 확장 이벤트
-document
-    .querySelector('.explorer_sidetabButton')
-    .addEventListener('click', function () {
-        clickCount++;
+document.addEventListener("DOMContentLoaded", function () {
+    const versionItems = document.querySelectorAll(".version-list-container li");
+    const fileContentDisplay = document.getElementById("fileContentDisplay");
 
-        const sidebar = document.querySelector('.explorer_sidebar');
-        const sidetab = document.querySelector('.explorer_sidetab');
+    versionItems.forEach(item => {
+        item.addEventListener("click", function () {
+            versionItems.forEach(i => i.classList.remove("selected"));
+            this.classList.add("selected");
 
-        // 컬러 
-        // 색상 데이터를 가져오는 함수
-        function getColorData() {
-            $.ajax({
-                url: "/editor/color",
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-                    if (data && data.length > 0) {
-                        applyColorData(data);
-                    }
+            const versionDate = this.querySelector(".version-date").innerText;
+            const versionMessage = this.querySelector(".version-message").innerText;
+
+            fileContentDisplay.innerHTML = `<h3>선택된 버전</h3><p>날짜: ${versionDate}</p><p>내용: ${versionMessage}</p>`;
+        });
+    });
+
+    const restoreButton = document.querySelector(".btn_submit_version");
+    restoreButton.addEventListener("click", function () {
+        const selectedVersion = document.querySelector(".version-list-container .selected");
+        if (selectedVersion) {
+            const versionDate = selectedVersion.querySelector(".version-date").innerText;
+            fetch("/restoreVersion", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
                 },
-                error: function (a, b, c) {
-                    console.error(a, b, c);
-                }
-            });
-        }
-
-        // 색상 데이터를 적용하는 함수
-        function applyColorData(data) {
-            // 모든 color input 요소를 선택
-            const colorInputs = document.querySelectorAll(".colors input[type='color']");
-
-            colorInputs.forEach(colorInput => {
-                // 이제 hidden input을 class로 쉽게 찾을 수 있습니다.
-                const hiddenInput = colorInput.closest(".colors").querySelector(".color-category");
-
-                if (hiddenInput) {
-                    console.log('hiddenInput 찾음:', hiddenInput);
-                    const category = hiddenInput.value; // hidden input의 value가 category
-
-                    // 데이터에서 일치하는 항목을 찾기
-                    const colorData = data.find(item => item.styleType.category === category);
-
-                    // 일치하는 데이터가 있으면 color input의 value를 업데이트
-                    if (colorData) {
-                        colorInput.value = colorData.value;
+                body: JSON.stringify({ versionDate: versionDate })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("Version restored successfully!");
+                    } else {
+                        alert("Failed to restore version.");
                     }
-                } else {
-                    console.log('hiddenInput을 찾을 수 없습니다.');
-                }
-            });
-
+                })
+                .catch(error => console.error("Error restoring version:", error));
+        } else {
+            alert("Please select a version to restore.");
         }
+    });
+});
 
-        // DOMContentLoaded 이벤트가 발생했을 때 getColorData 함수 호출
-        document.addEventListener("DOMContentLoaded", function () {
-            getColorData();
-        });
+// 사이드탭 확장 이벤트
+let clickCount = 0;
 
+document.querySelector('.explorer_sidetabButton').addEventListener('click', function () {
+    clickCount++;
 
-        // 템플릿 데이터를 가져오는 함수
-        function getTemplateData() {
-            $.ajax({
-                url: "/editor/template",
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-                    console.log("successfully");
+    const sidebar = document.querySelector('.explorer_sidebar');
+    const sidetab = document.querySelector('.explorer_sidetab');
 
-                    const tableBody = $(".template-table tbody");
-                    tableBody.empty();
+    if (clickCount === 1) {
+        sidebar.classList.add('expanded');
+        sidetab.classList.add('expanded');
+    } else if (clickCount === 2) {
+        sidebar.classList.remove('expanded');
+        sidetab.classList.remove('expanded');
+        clickCount = 0;
+    }
+});
 
-                    data.forEach(function (template) {
-                        const row = `
-                    <tr>
-                        <td>${template.keyword}</td>
-                        <td>${template.code}</td>
-                    </tr>
+function openVersionPopup() {
+    document.querySelector('.version-container').style.display = 'block';
+}
 
-                `;
-                        tableBody.append(row);
-                    });
-
-                    attachRowClickEvent();
-                },
-                error: function (a, b, c) {
-                    console.error(a, b, c);
-                }
-            });
-        }
-
-        function attachRowClickEvent() {
-            const templatePreview = document.getElementById("template-preview");
-            let selectedRow = null;
-
-            // 새로 추가된 <tr> 요소에 대해 클릭 이벤트 리스너를 추가합니다.
-            document.querySelectorAll(".template-table tr").forEach(row => {
-                const codeCell = row.cells[1]; // index가 1이어야 코드 셀이 맞습니다
-
-                if (codeCell) {
-                    row.addEventListener("click", function () {
-                        console.log('click햇닫햇닫닫닫다ㅏㄷ'); // 클릭 이벤트 확인
-
-                        if (selectedRow) {
-                            selectedRow.classList.remove("selected-row");
-                        }
-
-                        selectedRow = row;
-                        row.classList.add("selected-row");
-
-                        // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
-                        const formattedContent = codeCell.innerHTML
-                            .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-                            .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
-                        templatePreview.innerHTML = formattedContent;
-                    });
-                }
-            });
-        }
-
-        // 페이지가 로드되면 템플릿 데이터를 가져옵니다.
-        document.addEventListener("DOMContentLoaded", function () {
-            getTemplateData();
-        });
-
-
-        // 패키지 익스플로러 탭 클릭 이벤트
-
-        let clickCount = 0;
-
-        document.querySelector('.explorer_sidetabButton').addEventListener('click', function () {
-            clickCount++;
-
-            const sidebar = document.querySelector('.explorer_sidebar');
-            const sidetab = document.querySelector('.explorer_sidetab');
-
-            if (clickCount === 1) {
-                // 첫 번째 클릭: 사이드바 확장 (400px)
-                sidebar.classList.add('expanded');
-                sidetab.classList.add('expanded');
-            } else if (clickCount === 2) {
-                // 두 번째 클릭: 사이드바 숨기기
-                sidebar.classList.remove('expanded');
-                sidetab.classList.remove('expanded');
-                clickCount = 0; // 클릭 횟수 초기화
-            }
-        });
-
-
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const versionItems = document.querySelectorAll(".version-list-container li");
-            const fileContentDisplay = document.getElementById("fileContentDisplay");
-
-            // 버전 기록 클릭 시 선택된 항목 표시 및 파일 내용 표시
-            versionItems.forEach(item => {
-                item.addEventListener("click", function () {
-                    versionItems.forEach(i => i.classList.remove("selected"));
-                    this.classList.add("selected");
-
-                    const versionDate = this.querySelector(".version-date").innerText;
-                    const versionMessage = this.querySelector(".version-message").innerText;
-
-                    // 선택된 버전의 내용을 표시
-                    fileContentDisplay.innerHTML = `<h3>선택된 버전</h3><p>날짜: ${versionDate}</p><p>내용: ${versionMessage}</p>`;
-                });
-            });
-
-            
+function closeVersionPopup() {
+    document.querySelector('.popup-container version-container').style.display = 'none';
+}

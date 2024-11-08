@@ -56,6 +56,7 @@
 }
 
 /* explorer */
+
 /* 사이드바 스타일 */
 .explorer_sidebar {
     width: 0; /* 기본 상태에서 사이드바는 보이지 않음 */
@@ -186,6 +187,7 @@ div.file {
 .file > button:hover {
     background-color: #595959;
 }
+
 
 
 
