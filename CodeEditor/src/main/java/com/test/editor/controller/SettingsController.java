@@ -36,32 +36,39 @@ public class SettingsController {
 
 		// String member_seq = (String) session.getAttribute("member_seq");
 		String member_seq = "1";
-		System.out.println("유정이 힘을내");
 		return dao.getTheme(member_seq);
 	}
 
-	@PutMapping(value = "/theme", produces = "application/json")
+	@PutMapping(value="/theme", produces="application/json")
 	@ResponseBody
 	public String updateTheme(@RequestBody ThemeDTO theme, HttpSession session) {
 
 		String member_seq = "1";
 		theme.setMember_seq(member_seq);
-
-		System.out.println(theme.toString());
-
 		dao.updateTheme(theme);
 
-		return "update !!!!";
+		return "update theme";
 	}
 
-	@GetMapping(value = "/font", produces = "application/json")
+	@GetMapping(value = "/font", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getFont(HttpSession session) {
 		String member_seq = "1";
 		return dao.getFont(member_seq);
 	}
+	
+	@PutMapping(value="/font", produces="application/json")
+	@ResponseBody
+	public String updateFont(@RequestBody StyleSettingDTO styleSetting,HttpSession session) {
+		String member_seq = "1";
+		styleSetting.setMember_seq(member_seq);
+		dao.updateFont(styleSetting);
+		
+		return "update font";
+	}
+	
 
-	@GetMapping(value = "/color", produces = "application/json")
+	@GetMapping(value="/color", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getColor(HttpSession session) {
 
@@ -69,22 +76,14 @@ public class SettingsController {
 		return dao.getColor(member_seq);
 	}
 
-	  @GetMapping(value = "/template", produces = "application/json")
-	  @ResponseBody 
-	  public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
-		  String member_seq = "1"; 
-		  List<TemplateDTO> template = dao.getTemplate(member_seq); 
-		  model.addAttribute("template", template);
-		  System.out.println("여기 >>>>>>>>>>>> " + template); 
-		  return template; 
-	  }
-
-//	@GetMapping("/template")
-//	public String getTemplate(Model model, HttpSession session) {
-//	    String member_seq = "1";
-//	    List<TemplateDTO> template = dao.getTemplate(member_seq);
-//	    model.addAttribute("template", template);
-//	    return "code"; 
-//	}
+    @GetMapping(value="/template", produces="application/json")
+    @ResponseBody 
+    public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
+	    String member_seq = "1"; 
+ 	    List<TemplateDTO> template = dao.getTemplate(member_seq); 
+	    model.addAttribute("template", template);
+	    return template; 
+    }
+ 
 
 }

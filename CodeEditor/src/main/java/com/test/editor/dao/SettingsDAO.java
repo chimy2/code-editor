@@ -20,7 +20,7 @@ public class SettingsDAO {
 		return mapper.getTheme(member_seq);
 	}
 
-	public String updateTheme(ThemeDTO theme) {
+	public int updateTheme(ThemeDTO theme) {
 		return mapper.updateTheme(theme);
 	}
 
@@ -35,6 +35,10 @@ public class SettingsDAO {
 
 	public List<TemplateDTO> getTemplate(String member_seq) {
 		return mapper.getTemplate(member_seq);
+	}
+
+	public int updateFont(StyleSettingDTO styleSetting) {
+		return mapper.updateFont(styleSetting);
 	}
 	
 	

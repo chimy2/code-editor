@@ -130,4 +130,4 @@
 	</div>
 </div>
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-<input type="hidden"  value="${list.seq}">
+<sec:authentication property="principal.member.seq"/>

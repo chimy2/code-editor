@@ -10,7 +10,7 @@ public interface SettingsMapper {
 
 	String getTheme(String member_seq);
 
-	String updateTheme(ThemeDTO theme);
+	int updateTheme(ThemeDTO theme);
 
 	List<StyleSettingDTO> getFont(String member_seq);
 
@@ -18,5 +18,6 @@ public interface SettingsMapper {
 
 	List<TemplateDTO> getTemplate(String member_seq);
 
+	int updateFont(StyleSettingDTO styleSetting);
 	
 }

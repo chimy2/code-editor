@@ -10,7 +10,7 @@
 		select theme from theme where member_seq = #{member_seq}
 	</select>
 
-	<update id="updateTheme" parameterType="theme">
+	<update id="updateTheme">
 		update theme set theme = #{theme} where seq = #{member_seq}
 	</update>
 	
@@ -35,6 +35,13 @@
 		where category in ('fontSize', 'fontFamily') 
 			and member_seq = #{member_seq}
 	</select> 
+	
+	<update id="updateFont" parameterType="styleSetting">
+	    BEGIN
+	       UPDATE styleSetting SET value =#{  WHERE styleType_seq = 2 AND member_seq = 1;
+	       UPDATE styleSetting SET value = '16' WHERE styleType_seq = 1 AND member_seq = 1;
+	    END; 
+	</update>
 	
 	<resultMap id="ColorSettingResultMap" type="styleSetting">
 	    <id property="seq" column="seq"/>

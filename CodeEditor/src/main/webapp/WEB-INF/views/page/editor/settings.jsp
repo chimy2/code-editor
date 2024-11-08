@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <div class="settings-body">
 	<div class="settings-main">
 		<div class="settings-header">
@@ -107,15 +110,15 @@
 					<div class="font-family">
 						<h3>글꼴</h3>
 						<div class="selected-font">
-							<span>D2Coding</span> <img
-								src="/editor/resources/image/icon/bottom-arrow.svg"
-								class="arrow-icon">
+							<span>D2Coding</span> 
+							<img src="/editor/resources/image/icon/bottom-arrow.svg" class="arrow-icon">
 						</div>
 						<ul class="select-font-family">
 							<li>Consolas</li>
 							<li>D2Coding</li>
 							<li>나눔 고딕 코딩</li>
 							<li>Monoplex KR</li>
+							<input type="hidden" id="styleTyle_seq" value="2">
 						</ul>
 					</div>
 					<div class="font-size">
@@ -125,6 +128,7 @@
 							<img src="/editor/resources/image/icon/bottom-arrow.svg" class="arrow-icon">
 						</div>
 						<ul class="select-font-size">
+							<input type="hidden" id="styleTyle_seq" value="1">
 							<c:forEach var="i" step="2" begin="8" end="30">
 								<li>${i}</li>
 							</c:forEach>
@@ -198,7 +202,7 @@
         		<tr>
         			<th>Code</th>
        				<td>
-       					<textarea></textarea>
+       					<textarea class="template-code-input"></textarea>
        				</td>
         		</tr>
         	</table>
@@ -238,51 +242,50 @@
         </div>
     </div>
 </div>
+<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+<sec:authentication property="principal.member.seq"/>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	
-let themeModified = false; // 설정 변경 여부 추적
+let themeModified = false; 
 let isModified = false;
 
-//테마 선택 변경 시 변경 여부 설정
 $('input[name="theme"]').on('change', function() {
  isModified = true;
  themeModified = true;
 });
 
-//색상 변경 시 변경 여부 설정
 $('input[type="color"]').on('input', function() {
  isModified = true;
 });
 
-//폰트 및 기타 설정 변경 시 변경 여부 설정
 $('.select-font-family li, .select-font-size li').on('click', function() {
  isModified = true;
 });
 
 function closeSettings() {
-    $('.settings-body').hide(); // 창을 숨기거나 다른 방식으로 닫기 처리
+    $('.settings-body').hide(); 
 }
 
-//저장 버튼 클릭 시 동작
 $('.settings-footer button').on('click', function() {
     if (isModified) {
     	
     	if(themeModified) {
-    		updateTheme(); 
+    		updateTheme();
+    		closeSettings();
     	}
         
-        alert('업데이트해 뭐하는거야');
     } else {
-        closeSettings(); // 변경사항이 없으면 창만 닫음
+        closeSettings(); 
     }
 });
 
 
-
-//예: 테마 업데이트 요청
 function updateTheme(selectedTheme) {
+	
+	const token = $("meta[name='_csrf']").attr("content")
+	const header = $("meta[name='_csrf_header']").attr("content");
 	
 	console.log($('input[name="theme"]:checked').val());
 	const theme = $('input[name="theme"]:checked').val();
@@ -294,21 +297,41 @@ function updateTheme(selectedTheme) {
 		themeNumber = '1';
 	}
 	
-	console.log('뭐하는 거야 왜 안 돼 ' + themeNumber);
-	
     $.ajax({
         url: '/editor/theme',
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ theme: themeNumber }),
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
         success: function() {
-            console.log('Theme updated successfully.');
+            console.log('업뎃 성공요');
         },
         error: function(a,b,c) {
             console.log(a, b, c);
         }
     });
 }
+
+
+function getSelFont() { 
+	
+	const selFont = document.querySelector(".selected-font span").textContent;
+	const selSize = document.querySelector(".selected-size span").textContent;
+
+	const fontSeq = document.querySelector(".select-font-family input[type='hidden']").value;
+	const sizeSeq = document.querySelector(".select-font-size input[type='hidden']").value;
+
+	console.log("폰트: ", selFont);
+	console.log("크기: ", selSize);	
+	console.log("폰트 seq: ", fontSeq);
+	console.log("크기 seq: ", sizeSeq);	
+
+	updateFont(selFont, selSize, fontSeq, sizeSeq);
+
+}
+
 
 </script>
 
