@@ -9,5 +9,15 @@
 	<delete id="botdel">
 		delete from chatbot where seq = #{seq}
 	</delete>
+	
+	<select id="stats" resultType="com.test.editor.model.BotStatsDTO">
+		select to_char(chatdate,'MM') as month, count(*) as count from chatbot
+		where member_seq = #{seq}
+		group by to_char(chatdate,'MM') order by month
+	</select>
+	
+	<select id="summary" resultType="com.test.editor.model.BotStatsDTO"> 
+		select membermsg , botmsg from Chatbot where member_seq=#{seq}
+	</select>
 
 </mapper>
