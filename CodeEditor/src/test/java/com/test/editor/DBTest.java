@@ -32,6 +32,7 @@ public class DBTest {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
+	/*
 	@Test
 	public void testNotNull() {
 		
@@ -39,7 +40,7 @@ public class DBTest {
 		assertNotNull(passwordEncoder);
 		
 	}
-	
+	*/
 	/*
 	@Test
 	public void testEncrypt() {

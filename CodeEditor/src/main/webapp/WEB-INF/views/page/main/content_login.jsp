@@ -9,11 +9,11 @@
 		<div class="login_inner_box">
 			<div class="login_id">
 				이메일
-				<input type="email" name ="username" placeholder="이메일을 입력해주세요." required>
+				<input type="email" name ="username" value="dog@naver.com" placeholder="이메일을 입력해주세요."required>
 			</div>
 			<div class="login_password">
 				비밀번호
-				<input type="password" name ="password" placeholder="비밀번호를 입력해주세요." required>
+				<input type="password" name ="password"  value="a1234567!" placeholder="비밀번호를 입력해주세요." required>
 			</div>
 			<div  class="login_button">
 				<button type="submit">로그인</button>
