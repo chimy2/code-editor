@@ -173,12 +173,64 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     background-color: #595959; 
 }
 
-/* .editor-container {
-    background-color: #1E1E1E; 검은색 배경
-    flex-grow: 1; 남은 공간을 채우도록 설정
-    transition: width 0.3s ease; 너비 전환 효과
+
+
+/* 왼쪽 메뉴 (context-menu) 스타일 */
+.custom-context-menu {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 80px; /* 왼쪽 메뉴 너비 고정 */
 }
-  */
+
+/* 각 메뉴 항목 스타일 */
+.custom-context-menu-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* 서브메뉴 스타일 - 기본적으로 숨김 */
+.custom-submenu {
+    position: absolute;
+    top: 0;
+    left: 80px; /* 왼쪽 메뉴와 서브메뉴가 정확히 붙도록 설정 */
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: none; /* 평상시에는 숨김 */
+    width: 120px; /* 서브메뉴 너비 고정 */
+    flex-direction: column; /* 서브메뉴 항목을 수직으로 정렬 */
+}
+
+/* New 항목에 호버할 때만 서브메뉴 표시 */
+.custom-context-menu-item:hover .custom-submenu {
+    display: flex;
+}
+
+/* 아이콘 스타일 */
+.custom-menu-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+/* 구분선 스타일 */
+.custom-submenu-separator {
+    height: 1px;
+    background-color: #555;
+    margin: 5px 0;
+}
+
 
 
 
