@@ -41,5 +41,9 @@
 		select count(*) from member where id = #{email}
 	</select>
 	
+	<!-- nick 중복 확인 -->
+	<select id="duplicatedNickCheck" resultType="Integer">
+		select count(*) from member where nick = #{email}
+	</select>
 	
 </mapper>
