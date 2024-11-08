@@ -671,6 +671,7 @@ ul {
     box-sizing: border-box;
 }
 
+
 .join_box:hover {
     cursor: pointer;
     outline: 2.5px solid var(--white);
@@ -826,8 +827,17 @@ ul {
 .duplicate_check button:hover{
 	cursor : pointer;
 	outline : 2px solid var(--gray2);
-
 }
+
+#duplicate_check_message{
+	width : 250px;
+	height : 15px;
+	font-size: 0.7rem;
+	margin-left : 5px;
+	margin-top : 2px;
+}
+
+
 
 .join_password input,
 .join_password_check input{

@@ -130,9 +130,4 @@
 	</div>
 </div>
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-${username }
-<sec:authentication property="principal.username"/>
-<div class="message" title="사용자 아이디"> 
-<sec:authentication property="principal.member.id"/> 
-<sec:authentication property="principal.member.nick"/> 
-</div>
+<input type="hidden"  value="${list.seq}">
