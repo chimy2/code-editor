@@ -19,6 +19,11 @@ public class MemberDAO  {
 		return mapper.list(nick);
 	}
 
+	public int duplicatedCheck(String email) {
+		
+		return mapper.duplicatedCheck(email);
+	}
+
 	
 	
 	

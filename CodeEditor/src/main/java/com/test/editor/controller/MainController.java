@@ -1,12 +1,11 @@
 package com.test.editor.controller;
 
-import java.util.List;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.editor.dao.MemberDAO;
@@ -53,6 +52,16 @@ public class MainController {
 	public String join() {
 		return "join";
 	}
+	
+	
+	@PostMapping("/join")
+	public String joinCheck(@RequestParam("email") String email,Model model) {
+		System.out.println(email);
+		int result = dao.duplicatedCheck(email);
+		model.addAttribute("result", result);
+		return "join";
+	}
+	
 	
 	@GetMapping("/document")
 	public String document() {
