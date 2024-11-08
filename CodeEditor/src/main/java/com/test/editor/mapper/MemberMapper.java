@@ -1,10 +1,10 @@
 package com.test.editor.mapper;
 
-import java.util.List;
-
 import com.test.editor.model.MemberDTO;
 
 public interface MemberMapper {
+
+	MemberDTO login(MemberDTO member);
 
 	MemberDTO loadUser(String username);
 
@@ -14,7 +14,7 @@ public interface MemberMapper {
 
 	int duplicatedNickCheck(String check);
 
-	
+
 	
 	
 }

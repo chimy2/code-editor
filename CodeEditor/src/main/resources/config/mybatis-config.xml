@@ -18,6 +18,5 @@
 		<typeAlias type="com.test.editor.model.ThemeDTO" alias="theme"/>
 		<typeAlias type="com.test.editor.model.StyleSettingDTO" alias="styleSetting"/>
 		<typeAlias type="com.test.editor.model.StyleTypeDTO" alias="styleType"/>
-		<typeAlias type="com.test.editor.model.TemplateDTO" alias="template"/>
 	</typeAliases> 
 </configuration>

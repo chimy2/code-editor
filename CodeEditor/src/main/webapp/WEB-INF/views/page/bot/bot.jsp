@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=expand_circle_down" />
-<link rel="stylesheet" href="/editor/resources/css/bot.css"/>
 <%
 	String contextPath = request.getContextPath();
-	String botIcon1 = "/editor/resources/image/bot/sleepbot.png";
-	String botIcon2 = "/editor/resources/image/bot/bot.png";
+	String botIcon1 = contextPath + "/resources/asset/pic/sleepbot.png";
+	String botIcon2 = contextPath + "/resources/asset/pic/bot.png";
     String seq = request.getParameter("seq");
 %>
+
 <!-- 챗봇 아이콘 및 대화창 -->
-<img src="/editor/resources/image/bot/sleepbot.png" id="toggle-chatbot" alt="챗봇 열기 아이콘" />
+<img src="<%= botIcon1 %>" id="toggle-chatbot" alt="챗봇 열기 아이콘" />
 
 <div id="chat-container">
     <div id="chat-messages">
@@ -20,7 +20,7 @@
                         <div class="user-message">${message.content}</div>
                     </c:when>
                     <c:otherwise>
-                        <img src="/editor/resources/image/bot/bot.png" class="bot-image" alt="Bot" />
+                        <img src="<%= botIcon2 %>" class="bot-image" alt="Bot" />
                         <div class="bot-message">${message.content}</div>
                     </c:otherwise>
                 </c:choose>
@@ -37,7 +37,143 @@
 </div>
 
 <style>
+    #chat-container {
+        width: 400px;
+        height: 750px;
+        display: none;
+        flex-direction: column;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        position: fixed;
+        bottom: 110px;
+        right: 30px;
+        z-index: 100;
+    }
+    #chat-messages {
+        flex: 1;
+        overflow-y: scroll;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        max-height: 650px;
+    }
+    .message {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+        width: 100%;
+    }
+    .user-message {
+        align-self: flex-end;
+        background-color: #1e88e5;
+        color: white;
+        border-radius: 10px 0 10px 10px;
+        padding: 10px;
+        max-width: 90%;
+        word-wrap: break-word;
+        margin-left: auto;
+    }
+    .bot-message {
+        align-self: flex-start;
+        background-color: #f1f1f1;
+        border-radius: 0 10px 10px 10px;
+        padding: 10px;
+        max-width: 90%;
+        word-wrap: break-word;
+        position: relative;
+    }
+    .bot-message::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: -10px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 10px 10px 10px 0;
+        border-color: transparent #f1f1f1 transparent transparent;
+    }
+	#user-input {
+	    display: flex;
+	    padding: 10px;
+	    border-top: 1px solid #ccc;
+	}
+	#user-input input {
+	    flex: 1;
+	    padding: 10px;
+	    border: 1px solid #ddd;
+	    border-radius: 8px;
+	    outline: none;
+	}
+	#user-input button {
+	    border: none;
+	    background-color: #1e88e5;
+	    color: white;
+	    padding: 10px 15px;
+	    border-radius: 8px;
+	    cursor: pointer;
+	    margin-left: 10px;
+	}
+	.bot-image {
+	    width: 40px;
+	    height: 40px;
+	    border-radius: 50%;
+	}
+	#toggle-chatbot {
+	    position: fixed;
+	    bottom: 20px;
+	    right: 30px;
+	    cursor: pointer;
+	    z-index: 101;
+	    width: 75px;
+	    height: 75px;
+	}
+	#scroll-button {
+	    display: none;
+	    position: absolute;
+	    bottom: 100px;
+	    right: 150px;
+	    padding: 10px 40px;
+	    background-color: #1e88e5;
+	    color: white;
+	    border: none;
+	    border-radius: 8px;
+	    cursor: pointer;
+	}
 	
+	.bot-message {
+	    align-self: flex-start;
+	    background-color: #f1f1f1;
+	    border-radius: 0 10px 10px 10px;
+	    padding: 10px;
+	    max-width: 80%;
+	    word-wrap: break-word;
+	    position: relative;
+	    font-size: 14px; 
+	    line-height: 1.6;
+	    color: #333;
+	}
+
+	.bot-message::after {
+	    content: "";
+	    position: absolute;
+	    top: 10px;
+	    left: -10px;
+	    width: 0;
+	    height: 0;
+	    border-style: solid;
+	    border-width: 10px 10px 10px 0;
+	    border-color: transparent #f1f1f1 transparent transparent;
+	}
+
+	.bot-message .message-content {
+	    display: flex;
+	    align-items: center;
+	}
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>

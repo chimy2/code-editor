@@ -5,12 +5,10 @@ import lombok.Data;
 @Data
 public class VersionInfoDTO {
 
-	private Integer seq;
+	private String seq;
 	private String regdate;
 	private String message;
-	private Integer project_seq;
-	private Integer member_seq;
-	
-	
+	private String project_seq;
+	private String member_seq;
 	
 }

@@ -9,7 +9,7 @@
         body {
             background-color: #000000;
             color: #ffffff;
-            font-family: Nanum Gothic;
+            font-family: Arial, sans-serif;
         }
         .content-container {
             display: flex;

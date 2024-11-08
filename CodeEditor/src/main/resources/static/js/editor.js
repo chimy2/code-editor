@@ -194,12 +194,12 @@ function renderUserCursor(userId, position, tabId) {
 
 /* editor header button event */
 $('.btn_run').click(() => {
-    $('#toggle-chatbot').animate({ bottom: '310px' }, 300);
+	$('#toggle-chatbot').animate({ bottom: '310px'}, 300);
     $('.editor-container').addClass('active_console');
 });
 
 $('.btn_console').click(() => {
-    $('#toggle-chatbot').animate({ bottom: '310px' }, 300);
+	$('#toggle-chatbot').animate({ bottom: '310px'}, 300);
     $('.editor-container').toggleClass('active_console');
 });
 
@@ -235,7 +235,7 @@ $('#edit-setting').click(() => {
 
 /* console button event */
 $('.btn_console_close').click(() => {
-    $('#toggle-chatbot').animate({ bottom: '20px' }, 300);
+	$('#toggle-chatbot').animate({ bottom: '20px'}, 300);
     $('.editor-container').removeClass('active_console');
 });
 
@@ -270,18 +270,9 @@ $('.select_file_type').selectmenu();
 require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
 
 /* settings */
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+//여기부터!!!!!!!!!!!!!!!!! 
 
-document.addEventListener("DOMContentLoaded", function () {
-    getTemplateData();
-    getColorData();
-    initializeFontSelection();
-    getFontData();
-    getThemeData();
-    initializeTheme();
-});
-
-
+/* settings */
 function toggleSubMenu(menuId) {
     // 선택한 서브 메뉴와 버튼의 아이콘 찾기
     const menu = document.getElementById(menuId);
@@ -328,7 +319,7 @@ function toggleThemeSelection(theme) {
     }
 }
 
-function initializeTheme() {
+window.addEventListener('DOMContentLoaded', () => {
     const initialThemeInput = document.querySelector('input[name="theme"]:checked');
     if (initialThemeInput) {
         const initialTheme = initialThemeInput.value;
@@ -336,11 +327,13 @@ function initializeTheme() {
     } else {
         console.log("Theme input not found.");
     }
-}
+});
 
 
 document.getElementById('dark-button').addEventListener('click', () => toggleThemeSelection('dark'));
 document.getElementById('light-button').addEventListener('click', () => toggleThemeSelection('light'));
+
+
 
 
 let selectedRowData = null;
@@ -398,10 +391,17 @@ function getThemeData() {
     });
 }
 
+$(document).ready(function () {
+    getThemeData();
+});
 
 
 
 /* font */
+document.addEventListener("DOMContentLoaded", function () {
+    initializeFontSelection();
+    getFontData();
+});
 
 // 폰트 선택 초기화 함수
 function initializeFontSelection() {
@@ -572,7 +572,10 @@ function applyColorData(data) {
 
 }
 
-
+// DOMContentLoaded 이벤트가 발생했을 때 getColorData 함수 호출
+document.addEventListener("DOMContentLoaded", function () {
+    getColorData();
+});
 
 
 // 템플릿 데이터를 가져오는 함수
@@ -636,10 +639,12 @@ function attachRowClickEvent() {
 }
 
 
+document.addEventListener("DOMContentLoaded", function () {
+    getTemplateData();
+});
 
 
-
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//여기부터!!!!!!!!!!!!!!!!! 여까지 일단 지우지 말기!!!!! 돔 제거할거에요!!!!!!!!!!
 
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -23,7 +23,7 @@
 					</ul>
 				</li>
 				<li class="settings-main-item">
-					<button onclick="getTemplateData(); showContent('template')" id="template-button">
+					<button onclick="showContent('template')" id="template-button">
 						Template</button>
 					<ul class="settings-sub-menu" id="template" style="display: none;">
 					</ul>
@@ -58,39 +58,38 @@
 				<div class="colors-container">
 					<div class="colors-selector">
 						<div class="colors">
-							<input type="color" id="editor-background" value="#1E1E1E">
-							<label>
-								Background color
-								<input type="hidden" class="color-category" value="editor.background">
-							</label>
+							<input type="color" id="text-color" value="#FFFFFF"> <label>font
+								foreground</label>
 						</div>
+
 						<div class="colors">
-							<input type="color" id="editor-foreground" value="#D4D4D4"> 
-							<label>
-								Font color
-								<input type="hidden" class="color-category" value="editor.foreground">
-							</label>
-						</div> 
-						<div class="colors">
-							<input type="color" id="java-comment" value="#608B4E">
-							<label>
-								Comment color
-								<input type="hidden" class="color-category" value="java.comment">
-							</label>
+							<input type="color" id="background-color" value="#000000">
+							<label>background</label>
 						</div>
+
 						<div class="colors">
-							<input type="color" id="java-keyword" value="#569CD6"> 
-							<label>
-								Keyword color
-								<input type="hidden" class="color-category" value="java.keyword">
-							</label>
+							<input type="color" id="cursor-color" value="#AEAFAD"> <label>Cursor
+								foreground</label>
 						</div>
+
 						<div class="colors">
-							<input type="color" id="java-String" value="#CE9178"> 
-							<label>
-								String Literal color
-								<input type="hidden" class="color-category" value="java.String">
-							</label>
+							<input type="color" id="active-line-color" value="#C6C6C6">
+							<label>Active Line Number Foreground</label>
+						</div>
+
+						<div class="colors">
+							<input type="color" id="line-number-color" value="#85857B">
+							<label>Line Number foreground</label>
+						</div>
+
+						<div class="colors">
+							<input type="color" id="selection-background-color"
+								value="#304F75"> <label>Selection Background</label>
+						</div>
+
+						<div class="colors">
+							<input type="color" id="comment-color" value="#54874A"> <label>Comment
+								color</label>
 						</div>
 					</div>
 					<div class="btn-settings">
@@ -112,9 +111,8 @@
 								class="arrow-icon">
 						</div>
 						<ul class="select-font-family">
-							<li>Consolas</li>
 							<li>D2Coding</li>
-							<li>나눔 고딕 코딩</li>
+							<li>Nanum Gothic Coding</li>
 							<li>Monoplex KR</li>
 						</ul>
 					</div>
