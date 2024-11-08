@@ -1,6 +1,7 @@
 package com.test.editor.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.test.editor.model.StyleSettingDTO;
 import com.test.editor.model.TemplateDTO;
@@ -17,7 +18,9 @@ public interface SettingsMapper {
 	List<StyleSettingDTO> getColor(String member_seq);
 
 	List<TemplateDTO> getTemplate(String member_seq);
+ 
+	int updateFont(Map<String, Object> fontStyle);
 
-	int updateFont(StyleSettingDTO styleSetting);
+	int updateColor(Map<String, Object> colorStyle);
 	
 }

@@ -280,6 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
     getFontData();
     getThemeData();
     initializeTheme();
+    handleRowClick();
+    handleEditButtonClick();
 });
 
 

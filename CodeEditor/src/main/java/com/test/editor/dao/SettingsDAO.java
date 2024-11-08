@@ -1,6 +1,7 @@
 package com.test.editor.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -36,9 +37,13 @@ public class SettingsDAO {
 	public List<TemplateDTO> getTemplate(String member_seq) {
 		return mapper.getTemplate(member_seq);
 	}
+   
+	public int updateFont(Map<String, Object> fontStyle) {
+		return mapper.updateFont(fontStyle);
+	}
 
-	public int updateFont(StyleSettingDTO styleSetting) {
-		return mapper.updateFont(styleSetting);
+	public int updateColor(Map<String, Object> colorStyle) {
+		return mapper.updateColor(colorStyle);
 	}
 	
 	

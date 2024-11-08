@@ -35,12 +35,15 @@
 		where category in ('fontSize', 'fontFamily') 
 			and member_seq = #{member_seq}
 	</select> 
-	
-	<update id="updateFont" parameterType="styleSetting">
-	    BEGIN
-	       UPDATE styleSetting SET value =#{  WHERE styleType_seq = 2 AND member_seq = 1;
-	       UPDATE styleSetting SET value = '16' WHERE styleType_seq = 1 AND member_seq = 1;
-	    END; 
+ 
+	<update id="updateFont" parameterType="map">
+		UPDATE styleSetting
+		SET value = 
+	        CASE 
+	            WHEN styleType_seq = 1 THEN #{fontSize.value}
+	            WHEN styleType_seq = 2 THEN #{fontFamily.value}
+	        END
+		WHERE styleType_seq IN (1, 2) AND member_seq = #{member_seq}
 	</update>
 	
 	<resultMap id="ColorSettingResultMap" type="styleSetting">
@@ -63,6 +66,21 @@
 		where st.seq between 3 and 7 
 			and member_seq = #{member_seq}
 	</select> 
+	
+	<update id="updateColor" parameterType="map">
+		UPDATE styleSetting
+		SET value = 
+		       CASE 
+		            WHEN styleType_seq = 3 THEN #{background.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 4 THEN #{foreground.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 5 THEN #{comment.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 6 THEN #{keyword.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 7 THEN #{String.value, jdbcType=VARCHAR}
+		       END
+		WHERE styleType_seq BETWEEN 3 AND 7 AND member_seq = #{member_seq}
+	</update>
+	
+	
 	
 	<select id="getTemplate" parameterType="String" resultType="template">
 		select * from template where member_seq = #{member_seq}

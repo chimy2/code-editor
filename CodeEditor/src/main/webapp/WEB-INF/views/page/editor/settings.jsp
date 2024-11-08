@@ -54,53 +54,53 @@
 					</div>
 				</fieldset>
 			</div>
-			<div class="settings-content" id="colors-content"
-				style="display: none;">
-				<h2>Colors</h2>
-				<hr>
-				<div class="colors-container">
-					<div class="colors-selector">
-						<div class="colors">
-							<input type="color" id="editor-background" value="#1E1E1E">
-							<label>
-								Background color
-								<input type="hidden" class="color-category" value="editor.background">
-							</label>
-						</div>
-						<div class="colors">
-							<input type="color" id="editor-foreground" value="#D4D4D4"> 
-							<label>
-								Font color
-								<input type="hidden" class="color-category" value="editor.foreground">
-							</label>
-						</div> 
-						<div class="colors">
-							<input type="color" id="java-comment" value="#608B4E">
-							<label>
-								Comment color
-								<input type="hidden" class="color-category" value="java.comment">
-							</label>
-						</div>
-						<div class="colors">
-							<input type="color" id="java-keyword" value="#569CD6"> 
-							<label>
-								Keyword color
-								<input type="hidden" class="color-category" value="java.keyword">
-							</label>
-						</div>
-						<div class="colors">
-							<input type="color" id="java-String" value="#CE9178"> 
-							<label>
-								String Literal color
-								<input type="hidden" class="color-category" value="java.String">
-							</label>
-						</div>
-					</div>
-					<div class="btn-settings">
-						<button>Edit</button>
-					</div>
-				</div>
-			</div>
+            <div class="settings-content" id="colors-content"
+                style="display: none;">
+                <h2>Colors</h2>
+                <hr>
+                <div class="colors-container">
+                    <div class="colors-selector">
+                        <div class="colors">
+                            <input type="color" id="editor-background" value="">
+                            <label>
+                                Background color
+                                <input type="hidden" class="color-category" value="editor.background">
+                            </label>
+                        </div>
+                        <div class="colors">
+                            <input type="color" id="editor-foreground" value=""> 
+                            <label>
+                                Font color
+                                <input type="hidden" class="color-category" value="editor.foreground">
+                            </label>
+                        </div> 
+                        <div class="colors">
+                            <input type="color" id="java-comment" value="">
+                            <label>
+                                Comment color
+                                <input type="hidden" class="color-category" value="java.comment">
+                            </label>
+                        </div>
+                        <div class="colors">
+                            <input type="color" id="java-keyword" value=""> 
+                            <label>
+                                Keyword color
+                                <input type="hidden" class="color-category" value="java.keyword">
+                            </label>
+                        </div>
+                        <div class="colors">
+                            <input type="color" id="java-String" value=""> 
+                            <label>
+                                String Literal color
+                                <input type="hidden" class="color-category" value="java.String">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="btn-settings">
+                        <button>Edit</button>
+                    </div>
+                </div>
+            </div>
 
 			<div class="settings-content" id="font-content"
 				style="display: none;">
@@ -118,7 +118,7 @@
 							<li>D2Coding</li>
 							<li>나눔 고딕 코딩</li>
 							<li>Monoplex KR</li>
-							<input type="hidden" id="styleTyle_seq" value="2">
+							<input type="hidden" id="styleType_seq" value="2">
 						</ul>
 					</div>
 					<div class="font-size">
@@ -128,7 +128,7 @@
 							<img src="/editor/resources/image/icon/bottom-arrow.svg" class="arrow-icon">
 						</div>
 						<ul class="select-font-size">
-							<input type="hidden" id="styleTyle_seq" value="1">
+							<input type="hidden" id="styleType_seq" value="1">
 							<c:forEach var="i" step="2" begin="8" end="30">
 								<li>${i}</li>
 							</c:forEach>
@@ -248,20 +248,24 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	
-let themeModified = false; 
+let themeModified = false;
+let fontModified = false; 
+let colorModified = false;
 let isModified = false;
 
 $('input[name="theme"]').on('change', function() {
- isModified = true;
- themeModified = true;
+	isModified = true;
+	themeModified = true;
 });
 
 $('input[type="color"]').on('input', function() {
- isModified = true;
+	isModified = true;
+	colorModified = true;
 });
 
 $('.select-font-family li, .select-font-size li').on('click', function() {
- isModified = true;
+	isModified = true;
+	fontModified = true;
 });
 
 function closeSettings() {
@@ -271,11 +275,20 @@ function closeSettings() {
 $('.settings-footer button').on('click', function() {
     if (isModified) {
     	
-    	if(themeModified) {
+    	if (themeModified) {
     		updateTheme();
-    		closeSettings();
     	}
+
+		if (fontModified) {
+			getSelFont();
+		}
+
+		if (colorModified) {
+			getSelColor();
+		}
         
+		closeSettings();
+		
     } else {
         closeSettings(); 
     }
@@ -330,6 +343,110 @@ function getSelFont() {
 
 	updateFont(selFont, selSize, fontSeq, sizeSeq);
 
+}
+
+function getSelColor() {
+
+    const backgroundElement = document.querySelector("#editor-background");
+    const foregroundElement = document.querySelector("#editor-foreground");
+    const commentElement = document.querySelector("#java-comment");
+    const keywordElement = document.querySelector("#java-keyword");
+    const stringElement = document.querySelector("#java-String");
+
+    // 요소가 존재하는지 확인
+    if (!backgroundElement) {
+	    console.error("backgroundElement not found!");
+	}
+    
+	if (!foregroundElement) {
+	    console.error("foregroundElement not found!");
+	}
+	
+	if (!commentElement) {
+	    console.error("commentElement not found!");
+	}
+	
+	if (!keywordElement) {
+	    console.error("keywordElement not found!");
+	}
+	
+	if (!stringElement) {
+	    console.error("stringElement not found!");
+	}
+	
+    if (!backgroundElement || !foregroundElement || !commentElement || !keywordElement || !stringElement) {
+        console.error("Some elements were not found!");
+        return;
+    }
+
+    const background = backgroundElement.value;
+    const foreground = foregroundElement.value;
+    const comment = commentElement.value;
+    const keyword = keywordElement.value;
+    const string = stringElement.value;
+    
+	console.log("background: ", background);
+	console.log("foreground: ", foreground);
+	console.log("comment: ", comment);
+	console.log("keyword: ", keyword);
+	console.log("string: ", string);
+
+	updateColor(background, foreground, comment, keyword, string);
+
+}
+
+function updateFont(selFont, selSize, fontSeq, sizeSeq) {
+	
+	const token = $("meta[name='_csrf']").attr("content")
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url: "/editor/font",
+		method: "PUT",
+		contentType: "application/json",
+		data: JSON.stringify([
+			{ value: selFont, styleType_seq: fontSeq },
+			{ value: selSize, styleType_seq: sizeSeq }
+		]),
+		beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+		success: function (data) {
+			console.log("업데이트 성공: ", data)
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+	});
+}
+
+
+function updateColor(background, foreground, comment, keyword, string) {
+	
+	const token = $("meta[name='_csrf']").attr("content")
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url: "/editor/color",
+		method: "PUT",
+		contentType: "application/json",
+		data: JSON.stringify([
+			{ value: background, styleType_seq: "3" },
+			{ value: foreground, styleType_seq: "4" },
+			{ value: comment, styleType_seq: "5" },
+			{ value: keyword, styleType_seq: "6" },
+			{ value: string, styleType_seq: "7" }
+		]),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success: function (data) {
+			console.log("업데이트 성공: ", data)
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+	});
 }
 
 

@@ -1,6 +1,8 @@
 package com.test.editor.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -59,15 +61,62 @@ public class SettingsController {
 	
 	@PutMapping(value="/font", produces="application/json")
 	@ResponseBody
-	public String updateFont(@RequestBody StyleSettingDTO styleSetting,HttpSession session) {
+	public String updateFont(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
+
 		String member_seq = "1";
-		styleSetting.setMember_seq(member_seq);
-		dao.updateFont(styleSetting);
-		
+ 
+	    Map<String, Object> fontStyle = new HashMap<>();
+	    
+	    for (StyleSettingDTO setting : styleSettings) {
+	        if ("1".equals(setting.getStyleType_seq())) {
+	        	fontStyle.put("fontSize", setting);
+	        } else if ("2".equals(setting.getStyleType_seq())) {
+	        	fontStyle.put("fontFamily", setting);
+	        }
+	    }
+	    
+	    fontStyle.put("member_seq", member_seq);
+	    
+	    dao.updateFont(fontStyle);
+	    
 		return "update font";
 	}
 	
-
+	
+	@PutMapping(value="/color", produces="application/json")
+	@ResponseBody
+	public String updateColor(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
+		
+		String member_seq = "1";
+		
+		Map<String, Object> colorStyle = new HashMap<>();
+		
+		for (StyleSettingDTO data : styleSettings) {
+			if ("3".equals(data.getStyleType_seq())) {
+			    colorStyle.put("background", data);
+			    System.out.println(data);
+			} else if ("4".equals(data.getStyleType_seq())) {
+			    colorStyle.put("foreground", data);
+			    System.out.println(data);
+			} else if ("5".equals(data.getStyleType_seq())) {
+			    colorStyle.put("comment", data);
+			    System.out.println(data);
+			} else if ("6".equals(data.getStyleType_seq())) {
+			    colorStyle.put("keyword", data);
+			    System.out.println(data);
+			} else if ("7".equals(data.getStyleType_seq())) {
+			    colorStyle.put("String", data);
+			    System.out.println(data);
+			} 
+			
+		}
+		
+		colorStyle.put("member_seq", member_seq);
+		dao.updateColor(colorStyle);
+		
+		return "update color";
+	}
+	
 	@GetMapping(value="/color", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getColor(HttpSession session) {
