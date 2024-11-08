@@ -15,7 +15,7 @@
 }
 
 .nanum-gothic-coding-regular {
-  font-family: "Nanum Gothic Coding", monospace;
+  font-family: "나눔 고딕 코딩", monospace;
   font-weight: 400;
   font-style: normal;
 }
@@ -55,13 +55,12 @@
     cursor: pointer;
 }
 
-
 /* explorer */
 
 /* 사이드바 스타일 */
 .explorer_sidebar {
     width: 0; /* 기본 상태에서 사이드바는 보이지 않음 */
-    background-color: #26292F;
+    background-color: #26292f;
     border-right: 1px solid #ddd;
     padding: 10px;
     height: calc(100vh - 60px);
@@ -69,7 +68,7 @@
     position: fixed;
     top: 60px;
     left: -400px; /* 사이드바가 기본적으로 화면 바깥에 위치 */
-    transition: left 0.3s ease, width 0.3s ease; /* 왼쪽과 너비에 대해 트랜지션 효과 */
+    transition: left 0.3s ease; /* 왼쪽과 너비에 대해 트랜지션 효과 */
 }
 
 /* 사이드탭 위치 변경 (사이드바와 함께 움직임) */
@@ -95,29 +94,27 @@
     background: transparent;
     border: none;
     cursor: pointer;
-    display: flex; 
-    justify-content: center;  
-    align-items: center;  
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* 사이드바 확장된 상태 */
 .explorer_sidebar.expanded {
     left: 0 !important; /* 왼쪽에 고정 */
-    width: 350px !important;
+    width: 300px !important;
     z-index: 1; /* 우선순위 조정 */
 }
 
 /* 사이드탭 확장된 상태 */
 .explorer_sidetab.expanded {
-    left: 360px !important;
+    left: 310px !important;
     z-index: 1;
 }
 
-
-
 /* 탐색기 항목 스타일 */
 .white-text {
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 /* .project 버튼 스타일 */
@@ -128,7 +125,7 @@ button.project {
 
 /* src 항목 */
 div.src {
-    margin-left: 15px !important;  /* 마진 왼쪽 설정 */
+    margin-left: 15px !important; /* 마진 왼쪽 설정 */
     display: flex;
     flex-direction: column;
 }
@@ -139,26 +136,44 @@ div.src .package {
 }
 
 /* 패키지 내 자식 항목들(클래스, 인터페이스, 파일 등) */
-div.src .class, div.src .interface, div.src .txt-file, div.src .file {
+div.src .class,
+div.src .interface,
+div.src .txt-file,
+div.src .file {
     margin-left: 25px !important;
 }
 
 /* 각 항목의 구분을 위해 가독성 있는 스타일 추가 */
-div.package, div.class, div.interface, div.txt-file, div.file {
+div.package,
+div.class,
+div.interface,
+div.txt-file,
+div.file {
     margin-bottom: 10px;
 }
 
 /* flex 컨테이너 내에서 margin을 명확히 적용 */
-div.src, div.package, div.class, div.interface, div.txt-file, div.file {
-    display: block; 
+div.src,
+div.package,
+div.class,
+div.interface,
+div.txt-file,
+div.file {
+    display: block;
     margin-left: 20px !important; /* !important로 우선순위 설정 */
     margin-bottom: 10px;
 }
 
 /* 공통 스타일 - 모든 항목에 동일하게 적용 */
-.project, .src, .package, .class, .interface, .txt-file, .file {
+.project,
+.src,
+.package,
+.class,
+.interface,
+.txt-file,
+.file {
     cursor: pointer;
-    background-color: #26292F; /* 기본 배경색 */
+    background-color: #26292f; /* 기본 배경색 */
     border: none;
     transition: background-color 0.3s; /* 색상 변경에 트랜지션 효과 추가 */
 }
@@ -170,22 +185,8 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 .interface > button:hover,
 .txt-file > button:hover,
 .file > button:hover {
-    background-color: #595959; 
+    background-color: #595959;
 }
-
-/* .editor-container {
-    background-color: #1E1E1E; 검은색 배경
-    flex-grow: 1; 남은 공간을 채우도록 설정
-    transition: width 0.3s ease; 너비 전환 효과
-}
-  */
-
-
-
-
-
-
-
 
 
 
@@ -213,13 +214,13 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 
 .editor-tab ul {
     border: 0;
-	height: 25px;
+    height: 25px;
     overflow: hidden;
 }
 
 .editor-tab ul li {
     float: left;
-    width: 100px;
+    width: 130px;
     position: relative;
 }
 
@@ -244,11 +245,43 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 
 .editor-tab.ui-tabs .ui-tabs-tab .ui-tabs-anchor {
     width: 100%;
+    display: flex;
+}
+
+.editor-tab.ui-tabs .ui-tabs-tab .ui-tabs-anchor img {
+    width: 15px;
+    margin-right: 3px;
 }
 
 .editor-tab.ui-tabs .ui-tabs-tab .tab-close img {
     width: 12px;
 }
+
+.ui-tabs .ui-tabs-nav {
+	padding: 0;
+}
+	
+/* editor size control */
+/* .monaco-editor,
+.overflow-guard,
+.monaco-mouse-cursor-text */
+.editor-container .editor-tab-container {
+    position: relative; /* absolute 대신 사용 */
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+.editor-container .editor-tab-container {
+	height: calc(100% - 25px) !important;
+}
+
+.editor-container .editor-tab-container .monaco-editor,
+.editor-container .editor-tab-container .monaco-editor .overflow-guard,
+.editor-container .editor-tab-container .monaco-editor .overflow-guard .margin
+.editor-container .editor-tab-container .monaco-editor .overflow-guard .monaco-scrollable-element {
+	height: 100% !important;
+}
+
 
 .cursorDecoration {
     border-left: 2px solid red; /* or any color to identify users */
@@ -264,9 +297,9 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 
 /* console */
 .console-container {
-	display: none;
-	height: 300px;
-	font-family: 'D2Coding';
+    display: none;
+    height: 300px;
+    font-family: 'D2Coding';
 }
 
 .editor-container.active_console + .console-container {
@@ -533,9 +566,9 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     width: 100%;
     height: 100%;
     margin: 0;
-    display: flex;
+    /* display: flex; */
     /* 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
-    /* display: none; */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -759,7 +792,7 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     display: flex;
     align-items: left;
     width: 300px;
-    height: 240px;
+    height: 190px;
     border: 0;
     margin-left: 20px;
     margin-top: 20px;
@@ -907,7 +940,7 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-family: 'Monoplex KR';
+    font-family: 'Monoplex KR'; 
 }
 
 .select-font-family li.selected,
@@ -970,19 +1003,18 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 }
 
 .template-preview {
-	margin-left: 20px;
-	width: 360px;
-	height: 130px;
-	background-color: var(--black2);
-	color: var(--white);
-	padding: 10px;
-	overflow: auto;
+    margin-left: 20px;
+    width: 360px;
+    height: 130px;
+    background-color: var(--black2);
+    color: var(--white);
+    padding: 10px;
+    overflow: auto;
 }
 
 .selected-row td {
-    background-color: var(--orange); 
+    background-color: var(--orange);
 }
-
 
 #template-preview {
     white-space: pre;
@@ -990,8 +1022,8 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 }
 
 .template-body {
-	position: absolute;
-	display: flex;
+    position: absolute;
+    display: flex;
     justify-content: center;
     align-items: center;
     top: 0;
@@ -1000,24 +1032,22 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 }
 
 .template-header {
-	width: 520px;
-	height: 50px;
-	
+    width: 520px;
+    height: 50px;
 }
 
 .template-main {
-	width: 520px;
-	height: 310px;
-	background-color: var(--gray5);
-	border: 1px solid var(--white);
-	border-radius: 10px;
+    width: 520px;
+    height: 310px;
+    background-color: var(--gray5);
+    border: 1px solid var(--white);
+    border-radius: 10px;
 }
 
 .template-table tr:hover td {
-	background-color: var(--orange);
-	cursor: pointer;
+    background-color: var(--orange);
+    cursor: pointer;
 }
-
 
 /* template new, edit, delete */
 .template-body {
@@ -1036,13 +1066,12 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
     height: 310px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between; 
+    justify-content: space-between;
     border: 1px solid var(--white);
     border-radius: 10px;
     background-color: var(--gray5);
     cursor: auto;
 }
-
 
 .template-header {
     display: flex;
@@ -1060,21 +1089,20 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 }
 
 .template-body button {
-    display: flex; 
-    margin-right: 10px; 
+    display: flex;
+    margin-right: 10px;
 }
 
 .template-header h2 {
-	margin-left: 20px;
+    margin-left: 20px;
     font-size: 20px;
     font-weight: 600;
 }
 
-
 .template-footer {
-	display: flex;
-	justify-content: end;
-	margin: 10px;
+    display: flex;
+    justify-content: end;
+    margin: 10px;
 }
 
 .template-content {
@@ -1083,28 +1111,28 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 }
 
 .template-name-input {
-	width: 350px;
-	height: 30px;
-	background: var(--black2);
-	color: var(--white);
-	border: 0;
-	padding: 0 10px;
+    width: 350px;
+    height: 30px;
+    background: var(--black2);
+    color: var(--white);
+    border: 0;
+    padding: 0 10px;
 }
 
 .template-content textarea {
-	width: 350px;
-	height: 110px;
-	background: var(--black2);
-	color: var(--white);
-	padding: 10px;
-	font-family: 'D2Coding';
-	white-space: pre;
+    width: 350px;
+    height: 110px;
+    background: var(--black2);
+    color: var(--white);
+    padding: 10px;
+    font-family: 'D2Coding';
+    white-space: pre;
 }
 
 .template-content th {
-	padding-right: 10px;
-	text-align: start;
-	display: flex;
+    padding-right: 10px;
+    text-align: start;
+    display: flex;
 }
 
 .template-content tr:first-child th {
@@ -1113,13 +1141,10 @@ div.src, div.package, div.class, div.interface, div.txt-file, div.file {
 }
 
 .template-content tr:last-child th {
-	align-items: flex-start;
-	margin-top: 5px;
+    align-items: flex-start;
+    margin-top: 5px;
 }
 
 .template-content tr:first-child {
-	height: 60px;
+    height: 60px;
 }
-
-
-

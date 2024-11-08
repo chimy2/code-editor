@@ -671,6 +671,7 @@ ul {
     box-sizing: border-box;
 }
 
+
 .join_box:hover {
     cursor: pointer;
     outline: 2.5px solid var(--white);
@@ -770,7 +771,7 @@ ul {
     margin-top: 8px;
 }
 
-
+/*
 .join_button button:nth-child(1){
 	border : 0;
 	background-color : var(--gray6);
@@ -779,12 +780,15 @@ ul {
 	disabled;
 	color : var(--gray9);
 }
+*/
+/*
 .join_button button:first-child:hover{
 	cursor : default;
 }
+*/
 
 
-.join_button button:last-child:hover{
+.join_button button:hover{
 	cursor : pointer;
 	color : var(--white);
 	outline : 0.5px solid var(--orange);
@@ -823,9 +827,7 @@ ul {
 .duplicate_check button:hover{
 	cursor : pointer;
 	outline : 2px solid var(--gray2);
-
 }
-
 
 .duplicate_check_message{
 	width : 250px;
@@ -835,6 +837,7 @@ ul {
 	margin-top : 2px;
 	margin-bottom : 4px;
 }
+
 
 
 .join_password input,
@@ -954,7 +957,7 @@ ul {
     outline: 0.5px solid var(--orange);
     background-color: var(--orange);
 }
-
+/*
 .login_button button:nth-child(1){
 	border : 0;
 	background-color : var(--gray6);
@@ -963,10 +966,12 @@ ul {
 	disabled;
 	color : var(--gray9);
 }
+*/
+/*
 .login_button button:first-child:hover{
 	cursor : default;
 }
-	
+*/	
 
 .oAuth_line{
 	text-align: center;
@@ -979,7 +984,7 @@ ul {
 
 .oAuth_line .login_line {
     border-bottom: 2px solid var(--orange);
-    width: 144px;
+    width: 143px;
     height: 1px;
 }
 

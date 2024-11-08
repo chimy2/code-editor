@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
+<form method="POST" action="/editor/login">
 <div class="content_login">
 	<div class="login">
 		<img class="setting_close" src="/editor/resources/image/icon/settings-close.svg">
@@ -8,14 +9,14 @@
 		<div class="login_inner_box">
 			<div class="login_id">
 				이메일
-				<input type="email" placeholder="이메일을 입력해주세요." required>
+				<input type="email" name ="username" value="dog@naver.com" placeholder="이메일을 입력해주세요."required>
 			</div>
 			<div class="login_password">
 				비밀번호
-				<input type="password" placeholder="비밀번호를 입력해주세요." required>
+				<input type="password" name ="password"  value="a1234567!" placeholder="비밀번호를 입력해주세요." required>
 			</div>
 			<div  class="login_button">
-				<button type="button" disabled>로그인</button>
+				<button type="submit">로그인</button>
 				<button type="button">회원가입</button>
 			</div>
 			
@@ -30,3 +31,7 @@
 		</div>
 	</div>
 </div>
+<!-- 22.b CSRF 토큰-->
+<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+
+</form>

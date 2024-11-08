@@ -12,7 +12,5 @@ public class MemberService {
 	@Autowired
 	private MemberDAO dao;
 
-	public MemberDTO login(MemberDTO member) {
-		return dao.login(member);
-	}
+	
 }

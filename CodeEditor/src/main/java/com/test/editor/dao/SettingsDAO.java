@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.test.editor.mapper.SettingsMapper;
 import com.test.editor.model.StyleSettingDTO;
+import com.test.editor.model.TemplateDTO;
 import com.test.editor.model.ThemeDTO;
 
 @Repository
@@ -25,7 +26,18 @@ public class SettingsDAO {
 
 	public List<StyleSettingDTO> getFont(String member_seq) {
 		return mapper.getFont(member_seq);
+		
 	}
+
+	public List<StyleSettingDTO> getColor(String member_seq) {
+		return mapper.getColor(member_seq);
+	}
+
+	public List<TemplateDTO> getTemplate(String member_seq) {
+		return mapper.getTemplate(member_seq);
+	}
+	
+	
 
 }
 
