@@ -249,7 +249,6 @@ $('.settings-close-icon').click(function () {
 });
 
 $('.template-close-icon').click(function () {
-    console.log('hello?');
     toggleDisplay($(this).parents('.template-body'));
 });
 
@@ -351,7 +350,6 @@ let selectedRowData = null;
 // 테이블 행 클릭 이벤트 핸들러
 function handleRowClick() {
     $('.template-table tr').click(function () {
-        console.log('hello');
         const keyword = $(this).find('td').eq(0).text();
         const code = $(this).find('td').eq(1).text();
 
@@ -562,7 +560,6 @@ function applyColorData(data) {
         const hiddenInput = colorInput.closest(".colors").querySelector(".color-category");
 
         if (hiddenInput) {
-            console.log('hiddenInput 찾음:', hiddenInput);
             const category = hiddenInput.value; // hidden input의 value가 category
 
             // 데이터에서 일치하는 항목을 찾기
@@ -589,7 +586,6 @@ function getTemplateData() {
         method: "GET",
         dataType: "json",
         success: function (data) {
-            console.log("successfully");
 
             const tableBody = $(".template-table tbody");
             tableBody.empty();
