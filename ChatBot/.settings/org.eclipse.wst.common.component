@@ -38,15 +38,14 @@
         
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
-<<<<<<< HEAD
+                
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/target/generated-sources/annotations"/>
-                                                                                        		
-=======
                                                                                                 		
         
->>>>>>> 558dba63ea6fb18052da8d88f0301cf658281470
         
         
         
@@ -58,7 +57,8 @@
         
         
         <property name="java-output-path" value="target/classes"/>
-                
+                        
+        
         <property name="context-root" value="bot"/>
                                                                                                 	
     
