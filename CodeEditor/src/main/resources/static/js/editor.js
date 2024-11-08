@@ -653,123 +653,6 @@ document
         const sidebar = document.querySelector('.explorer_sidebar');
         const sidetab = document.querySelector('.explorer_sidetab');
 
-        // 컬러 
-        // 색상 데이터를 가져오는 함수
-        function getColorData() {
-            $.ajax({
-                url: "/editor/color",
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-                    if (data && data.length > 0) {
-                        applyColorData(data);
-                    }
-                },
-                error: function (a, b, c) {
-                    console.error(a, b, c);
-                }
-            });
-        }
-
-        // 색상 데이터를 적용하는 함수
-        function applyColorData(data) {
-            // 모든 color input 요소를 선택
-            const colorInputs = document.querySelectorAll(".colors input[type='color']");
-
-            colorInputs.forEach(colorInput => {
-                // 이제 hidden input을 class로 쉽게 찾을 수 있습니다.
-                const hiddenInput = colorInput.closest(".colors").querySelector(".color-category");
-
-                if (hiddenInput) {
-                    console.log('hiddenInput 찾음:', hiddenInput);
-                    const category = hiddenInput.value; // hidden input의 value가 category
-
-                    // 데이터에서 일치하는 항목을 찾기
-                    const colorData = data.find(item => item.styleType.category === category);
-
-                    // 일치하는 데이터가 있으면 color input의 value를 업데이트
-                    if (colorData) {
-                        colorInput.value = colorData.value;
-                    }
-                } else {
-                    console.log('hiddenInput을 찾을 수 없습니다.');
-                }
-            });
-
-        }
-
-        // DOMContentLoaded 이벤트가 발생했을 때 getColorData 함수 호출
-        document.addEventListener("DOMContentLoaded", function () {
-            getColorData();
-        });
-
-
-        // 템플릿 데이터를 가져오는 함수
-        function getTemplateData() {
-            $.ajax({
-                url: "/editor/template",
-                method: "GET",
-                dataType: "json",
-                success: function (data) {
-                    console.log("successfully");
-
-                    const tableBody = $(".template-table tbody");
-                    tableBody.empty();
-
-                    data.forEach(function (template) {
-                        const row = `
-                    <tr>
-                        <td>${template.keyword}</td>
-                        <td>${template.code}</td>
-                    </tr>
-
-                `;
-                        tableBody.append(row);
-                    });
-
-                    attachRowClickEvent();
-                },
-                error: function (a, b, c) {
-                    console.error(a, b, c);
-                }
-            });
-        }
-
-        function attachRowClickEvent() {
-            const templatePreview = document.getElementById("template-preview");
-            let selectedRow = null;
-
-            // 새로 추가된 <tr> 요소에 대해 클릭 이벤트 리스너를 추가합니다.
-            document.querySelectorAll(".template-table tr").forEach(row => {
-                const codeCell = row.cells[1]; // index가 1이어야 코드 셀이 맞습니다
-
-                if (codeCell) {
-                    row.addEventListener("click", function () {
-                        console.log('click햇닫햇닫닫닫다ㅏㄷ'); // 클릭 이벤트 확인
-
-                        if (selectedRow) {
-                            selectedRow.classList.remove("selected-row");
-                        }
-
-                        selectedRow = row;
-                        row.classList.add("selected-row");
-
-                        // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
-                        const formattedContent = codeCell.innerHTML
-                            .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-                            .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
-                        templatePreview.innerHTML = formattedContent;
-                    });
-                }
-            });
-        }
-
-        // 페이지가 로드되면 템플릿 데이터를 가져옵니다.
-        document.addEventListener("DOMContentLoaded", function () {
-            getTemplateData();
-        });
-
-
         // 패키지 익스플로러 탭 클릭 이벤트
 
         let clickCount = 0;
@@ -841,10 +724,12 @@ document
             });
         });
 
-        function openVersionPopup() {
-            document.querySelector('.version-container').style.display = 'block';
-        }
+    }); 
 
-        function closeVersionPopup() {
-            document.querySelector('.version-container').style.display = 'none';
-        }
+function openVersionPopup() {
+    document.querySelector('.version-container').style.display = 'block';
+}
+
+function closeVersionPopup() {
+    document.querySelector('.version-container').style.display = 'none';
+}
