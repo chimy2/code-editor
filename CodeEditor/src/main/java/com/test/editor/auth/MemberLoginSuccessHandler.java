@@ -19,10 +19,13 @@ public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler{
 			Authentication authentication) throws IOException, ServletException {
 
 		System.out.println("로그인을 성공했습니다.");
-		CustomUser customUser = (CustomUser) authentication.getPrincipal();
-	    String nick = customUser.getMember().getNick();
+		/*
+		 CustomUser customUser = (CustomUser) authentication.getPrincipal(); String
+		 nick = customUser.getMember().getNick();
+		 */
 		
-		response.sendRedirect("/editor/mypage?nick=" + URLEncoder.encode(nick, "UTF-8"));
+		//response.sendRedirect("/editor/mypage?nick=" + URLEncoder.encode(nick, "UTF-8"));
+		response.sendRedirect("/editor/mypage");
 		
 	}
 }

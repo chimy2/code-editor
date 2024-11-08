@@ -13,10 +13,6 @@ import com.test.editor.model.MemberDTO;
 
 import lombok.RequiredArgsConstructor;
 
-@ContextConfiguration(locations = {
-			"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
-			"file:src/main/webapp/WEB-INF/spring/security-context.xml"
-		})
 @Controller
 @RequiredArgsConstructor
 public class MainController {
@@ -27,7 +23,7 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
-	
+	/*
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
 	public String mypage(@RequestParam("nick") String nick,Model model) {
@@ -36,6 +32,16 @@ public class MainController {
 		model.addAttribute("list", list);
 		return "mypage";
 	}
+	*/
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/mypage")
+	public String mypage() {
+		
+		return "mypage";
+	}
+	
+	
+	
 	
 	@GetMapping("/stats")
 	public String stats() {
@@ -54,13 +60,7 @@ public class MainController {
 	}
 	
 	
-	@PostMapping("/join")
-	public String joinCheck(@RequestParam("email") String email,Model model) {
-		System.out.println(email);
-		int result = dao.duplicatedCheck(email);
-		model.addAttribute("result", result);
-		return "join";
-	}
+	
 	
 	
 	@GetMapping("/document")

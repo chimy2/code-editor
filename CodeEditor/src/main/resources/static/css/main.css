@@ -829,12 +829,13 @@ ul {
 	outline : 2px solid var(--gray2);
 }
 
-#duplicate_check_message{
+.duplicate_check_message{
 	width : 250px;
 	height : 15px;
 	font-size: 0.7rem;
 	margin-left : 5px;
 	margin-top : 2px;
+	margin-bottom : 4px;
 }
 
 

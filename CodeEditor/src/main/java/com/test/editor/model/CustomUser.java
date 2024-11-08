@@ -13,7 +13,7 @@ import lombok.Getter;
 @Getter
 public class CustomUser extends User {
 
-private MemberDTO member;
+	private MemberDTO member;
 	
 	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> oAuthType){
 		super(username, password, oAuthType);
@@ -24,9 +24,10 @@ private MemberDTO member;
 		this.member = dto;
 	}
 	
+	/*
 	 public MemberDTO getMember() {
 	        return member;
 	 }
-	
+	*/
 	
 }

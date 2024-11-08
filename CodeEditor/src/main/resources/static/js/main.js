@@ -1,27 +1,92 @@
 
 if (window.location.pathname.startsWith("/editor/join")) {
-	document.querySelector('#email_duplicate button').onclick = function() { // 클릭 이벤트 핸들러 등록
-	    const email = $('#email_duplicate input[type=email]').val(); // 이메일 입력 값 가져오기
-	
-	    $.ajax({
-	        type: 'POST',
-	        url: '/editor/join',
-	        data: { email: email }, 
-	        success: function(result) {
-	            if (result == 0) {
-	                $('#email_message').text('사용할 수 있는 아이디입니다.');
-	                $('#email_message').css('color', 'green');
-	            } else if (result == 1) {
-	                $('#email_message').text('이미 있는 아이디입니다.');
-	                $('#email_message').css('color', 'red');
-	            }
-	        },
-	        error: function(a, b, c) {
-	            console.log(a, b, c);
-	        }
-	    });
-	};
+
+    document.querySelector('#email_duplicate button').onclick = function () {
+        const email = $('#email_duplicate input[type=email]').val();
+        duplicated_check(email, 'email');
+    };
+
+    document.querySelector('#nick_duplicate button').onclick = function () {
+        const nick = $('#nick_duplicate input[type=text]').val();
+        duplicated_check(nick, 'nick');
+    };
+    
+    document.querySelector('#password').addEventListener('input', function() {
+    const password = this.value;
+    const pwCheckDiv = document.querySelector('#pw_check');
+
+    // 비밀번호 규칙: 8~12자리, 영문, 숫자, 특수문자 중 2종류 이상
+    const pattern = /^(?=(.*[a-zA-Z]))(?=(.*\d))(?=(.*[^\w\d\s])).{8,12}$/;
+
+    // 비밀번호 규칙에 맞는지 검사
+    if (pattern.test(password)) {
+        pwCheckDiv.textContent = '사용할 수 있는 비밀번호입니다.';
+        pwCheckDiv.style.color = 'green'; // 글자 색을 초록색으로 설정
+    } else {
+        pwCheckDiv.textContent = '사용할 수 없는 비밀번호입니다.';
+        pwCheckDiv.style.color = 'red'; // 글자 색을 빨간색으로 설정
+    }
+});
+  
+document.querySelector('#password_check').addEventListener('input', function() {
+    const password = document.querySelector('#password').value;
+    const passwordCheck = this.value;
+    const pwAgainCheckDiv = document.querySelector('#pw_again_check');
+
+    // 비밀번호 확인이 일치하는지 확인
+    if (password == passwordCheck && passwordCheck != "") {
+        pwAgainCheckDiv.textContent = '비밀번호가 동일합니다.';
+        pwAgainCheckDiv.style.color = 'green'; // 글자 색을 초록색으로 설정
+    } else if (passwordCheck != "") {
+        pwAgainCheckDiv.textContent = '비밀번호가 일치하지 않습니다.';
+        pwAgainCheckDiv.style.color = 'red'; // 글자 색을 빨간색으로 설정
+    } else {
+        pwAgainCheckDiv.textContent = ''; // 비밀번호 확인이 비어 있으면 메시지 지우기
+    }
+});  
+    
+    
 }
+
+function duplicated_check(check, type){
+	    
+    const token = $("meta[name='_csrf']").attr("content")
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+    $.ajax({
+        type: 'POST',
+        url: '/editor/join',
+        dataType: 'json',
+        data: { check: check }, 
+	    beforeSend : function(xhr) {
+	        xhr.setRequestHeader(header, token);
+	    },
+        success: function(result) {
+        console.log(type);
+            if (result == 0) {
+            	if(type== 'email'){
+                	$('#duplicate_check_email').text('사용할 수 있는 아이디입니다.');
+                }else if(type== 'nick'){
+                	$('#duplicate_check_nick').text('사용할 수 있는 닉네임입니다.');
+                }
+                $('.duplicate_check_message').css('color', 'green');
+            } else if (result == 1) {
+                if(type== 'email'){
+                	$('#duplicate_check_email').text('이미 있는 아이디입니다.');
+                }else if(type== 'nick'){
+                	$('#duplicate_check_nick').text('이미 있는 닉네임입니다.');
+                }
+                $('.duplicate_check_message').css('color', 'red');
+            }
+        },
+        error: function(a, b, c) {
+            console.log(a, b, c);
+        }
+    });
+}
+
+
+
 
 if (window.location.pathname.startsWith("/editor/")||
 	window.location.pathname.startsWith("/editor/code")) {
@@ -30,58 +95,59 @@ if (window.location.pathname.startsWith("/editor/")||
 			location.href = '/editor/join';
 		}
 		
-		document.querySelector('#log_in').onclick = function(){
-			location.href = '/editor/login';
+		if(document.querySelector('#log_in')!=null){
+			document.querySelector('#log_in').onclick = function(){
+				location.href = '/editor/login';
+			}
+		}else{
+			document.querySelector('#log_out').onclick = function(){
+				location.href = '/editor/logout';
+			}
 		}
-		/*
-		document.querySelector('#log_out').onclick = function(){
-			location.href = '/editor/logout';
-		}
-		*/
 }	
-	function redirectTo() {
-	
-		if(window.location.href == 'http://localhost:8090/editor/join'){
-	    	document.querySelector('#email_box').onclick = function() {
-	            document.querySelector('.email_join').style.display = 'block';
-	        }
-	    	
-	        document.querySelector('.join_button button[type=button]').onclick = function() {
-	        	document.querySelector('.email_join').style.display = 'none';
-	        }
-	
-	    }else if(window.location.href == 'http://localhost:8090/editor/login'){
-	    	
-			document.querySelector('.setting_close').onclick = function() {
-	        	location.href = '/editor/';
-	        }
-	        document.querySelectorAll('.login_button button')[1].onclick = function() {
-	        	location.href = '/editor/join';
-	        }
-	           
-		}else if(window.location.href == 'http://localhost:8090/editor/'){
-	    	
-			document.querySelectorAll('.main_menu_box')[0].onclick = function() {
-	        	location.href = '/editor/document';
-	        }
-	        
-	        document.querySelectorAll('.main_menu_box')[1].onclick = function() {
-	        	location.href = '/editor/code';
-	        }
-	        
-	
-	    }else if(window.location.href == 'http://localhost:8090/editor/logout'){
-	        
-	        document.querySelectorAll('.logout_button button')[1].onclick = function() {
-	        	history.back();
-	        }
-	    }else if(window.location.href == 'http://localhost:8090/editor/document'){
-	    	
-			document.querySelector('.document_content .contactUs').onclick = function() {
-	        	location.href = 'https://github.com/chimy2/code-editor';
-	        }
-	    }
-	}
+function redirectTo() {
+
+	if(window.location.href == 'http://localhost:8090/editor/join'){
+    	document.querySelector('#email_box').onclick = function() {
+            document.querySelector('.email_join').style.display = 'block';
+        }
+    	
+        document.querySelector('.join_button button[type=button]').onclick = function() {
+        	document.querySelector('.email_join').style.display = 'none';
+        }
+
+    }else if(window.location.href == 'http://localhost:8090/editor/login'){
+    	
+		document.querySelector('.setting_close').onclick = function() {
+        	location.href = '/editor/';
+        }
+        document.querySelectorAll('.login_button button')[1].onclick = function() {
+        	location.href = '/editor/join';
+        }
+           
+	}else if(window.location.href == 'http://localhost:8090/editor/'){
+    	
+		document.querySelectorAll('.main_menu_box')[0].onclick = function() {
+        	location.href = '/editor/document';
+        }
+        
+        document.querySelectorAll('.main_menu_box')[1].onclick = function() {
+        	location.href = '/editor/code';
+        }
+        
+
+    }else if(window.location.href == 'http://localhost:8090/editor/logout'){
+        
+        document.querySelectorAll('.logout_button button')[1].onclick = function() {
+        	history.back();
+        }
+    }else if(window.location.href == 'http://localhost:8090/editor/document'){
+    	
+		document.querySelector('.document_content .contactUs').onclick = function() {
+        	location.href = 'https://github.com/chimy2/code-editor';
+        }
+    }
+}
 	
 	setTimeout(redirectTo, 100);
 	
