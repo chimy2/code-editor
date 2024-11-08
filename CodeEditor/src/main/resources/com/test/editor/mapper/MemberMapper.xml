@@ -5,7 +5,36 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.test.editor.mapper.MemberMapper">
-	<select id="login" resultType="member">
-		select id, nick, color from member where id = #{id} and pw = #{pw}
+
+	<!-- security 로그인 -->
+	<resultMap type="com.test.editor.model.MemberDTO" id="member">
+		<!-- primary -->
+		<!-- column : m.memberid > property : dto의 setter의미  -->
+		<id property="id" column="id"/>
+		
+		<!-- primary 제외 모든것 -->
+		<result property="pw" column="pw"/>
+		<result property="nick" column="nick"/>
+		<result property="regdate" column="regdate"/>
+		<result property="ing" column="ing"/>
+		<result property="color" column="color"/>
+		<result property="oAuthType" column="oAuthType"/>
+		
+	</resultMap>
+
+
+	<select id="loadUser" resultMap="member">
+		select * from member
+		 	where id = #{username}
 	</select>
+	
+	<!-- mypage -->
+	<select id="list" resultType="member">
+		select * from member where id=${nick}
+	</select>
+	
+	
+	
+	
+	
 </mapper>

@@ -1,17 +1,16 @@
 package com.test.editor.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.test.editor.dao.UserDAO;
+import com.test.editor.dao.MemberDAO;
+import com.test.editor.model.MemberDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,13 +22,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MainController {
 	
+	private final MemberDAO dao;
+	
 	@GetMapping("/")
 	public String main() {
 		return "main";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
-	public String mypage() {
+	public String mypage(@RequestParam("nick") String nick,Model model) {
+		
+		MemberDTO list = dao.list(nick);
+		model.addAttribute("list", list);
 		return "mypage";
 	}
 	

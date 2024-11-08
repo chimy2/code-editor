@@ -23,7 +23,7 @@
 					</ul>
 				</li>
 				<li class="settings-main-item">
-					<button onclick="showContent('template')" id="template-button">
+					<button onclick="getTemplateData(); showContent('template')" id="template-button">
 						Template</button>
 					<ul class="settings-sub-menu" id="template" style="display: none;">
 					</ul>
@@ -61,35 +61,35 @@
 							<input type="color" id="editor-background" value="#1E1E1E">
 							<label>
 								Background color
-								<input type="hidden" value="editor.background">
+								<input type="hidden" class="color-category" value="editor.background">
 							</label>
 						</div>
 						<div class="colors">
 							<input type="color" id="editor-foreground" value="#D4D4D4"> 
 							<label>
 								Font color
-								<input type="hidden" value="editor.foreground">
+								<input type="hidden" class="color-category" value="editor.foreground">
 							</label>
 						</div> 
 						<div class="colors">
 							<input type="color" id="java-comment" value="#608B4E">
 							<label>
 								Comment color
-								<input type="hidden" value="java.comment">
+								<input type="hidden" class="color-category" value="java.comment">
 							</label>
 						</div>
 						<div class="colors">
 							<input type="color" id="java-keyword" value="#569CD6"> 
 							<label>
 								Keyword color
-								<input type="hidden" value="java.keyword">
+								<input type="hidden" class="color-category" value="java.keyword">
 							</label>
 						</div>
 						<div class="colors">
 							<input type="color" id="java-String" value="#CE9178"> 
 							<label>
 								String Literal color
-								<input type="hidden" value="java.String">
+								<input type="hidden" class="color-category" value="java.String">
 							</label>
 						</div>
 					</div>
@@ -142,11 +142,23 @@
 				<div class="template-container">
 					<div class="template-table">
 						<table>
-						    <tr>
-						        <th>Keyword</th>
-						        <th>Code</th>
-						    </tr>
-						    <tr>
+							<thead>
+							    <tr>
+							        <th>Keyword</th>
+							        <th>Code</th>
+							    </tr>
+						 	</thead>	
+						 	<tbody>
+						 	
+						 	</tbody>
+<%-- 						    <c:forEach var="template" items="${template}">
+						    	<tr>
+									<td>${template.keyword}</td>
+									<td>${template.code}</td>
+									<td>왜안돼</td>
+						    	</tr>
+						    </c:forEach> --%>
+<%-- 						    <tr>
 						        <td>catch</td>
 						        <td>catch (\${1:Exception} \${2:e}) {\n    \${3}\n}\${0}</td>
 						    </tr>
@@ -209,7 +221,7 @@
 						    <tr>
 						        <td>while</td>
 						        <td>while (\${1:condition}) {\n    \${2}\n}\${0}</td>
-						    </tr>
+						    </tr> --%>
 						</table>
 					</div>
 					<div class="btn-settings">

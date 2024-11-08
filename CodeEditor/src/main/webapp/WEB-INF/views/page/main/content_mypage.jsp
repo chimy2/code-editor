@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>  
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <div id="content_mypage">
 	<div class="calendar">
@@ -27,7 +29,7 @@
 			<div class="inner_box_content">
 				<div class="teamBox_icon">
 					<div><img class="user_icon" src="/editor/resources/image/icon/user.svg"></div>
-					Test
+					<sec:authentication property="principal.member.nick"/> 
 				</div>
 				<div class="teamBox_icon">
 					<div><img class="team_icon" src="/editor/resources/image/icon/team.svg"></div>
@@ -128,3 +130,9 @@
 	</div>
 </div>
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+${username }
+<sec:authentication property="principal.username"/>
+<div class="message" title="사용자 아이디"> 
+<sec:authentication property="principal.member.id"/> 
+<sec:authentication property="principal.member.nick"/> 
+</div>
