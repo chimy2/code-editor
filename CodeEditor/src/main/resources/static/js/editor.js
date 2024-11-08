@@ -262,6 +262,7 @@ function toggleDisplay(element) {
     } else {
         element.css('display', 'none');
     }
+
 }
 
 /* basic code */
@@ -279,6 +280,8 @@ document.addEventListener("DOMContentLoaded", function () {
     getFontData();
     getThemeData();
     initializeTheme();
+    handleRowClick();
+    handleEditButtonClick();
 });
 
 
@@ -345,38 +348,42 @@ document.getElementById('light-button').addEventListener('click', () => toggleTh
 
 let selectedRowData = null;
 
-// 테이블 행(tr) 클릭 시 선택한 데이터를 저장
-$('.template-table tr').click(function () {
-    console.log('hello');
-    const keyword = $(this).find('td').eq(0).text();
-    const code = $(this).find('td').eq(1).text();
+// 테이블 행 클릭 이벤트 핸들러
+function handleRowClick() {
+    $('.template-table tr').click(function () {
+        console.log('hello');
+        const keyword = $(this).find('td').eq(0).text();
+        const code = $(this).find('td').eq(1).text();
 
-    selectedRowData = { keyword, code };
+        selectedRowData = { keyword, code };
 
-    $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
-    $(this).addClass('selected-row');                    // 현재 선택 추가
-});
+        $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
+        $(this).addClass('selected-row');                    // 현재 선택 추가
+    });
+}
 
-// Edit 버튼 클릭 시 처리
-$('#edit-setting').click(() => {
-    if (!selectedRowData) {
-        alert('선택해 뭐하는거야');
-        return;
-    }
+// Edit 버튼 클릭 이벤트 핸들러
+function handleEditButtonClick() {
 
-    // 선택된 항목이 있으면 Edit 모드로 전환
-    toggleDisplay($('.edit-template-body'));
+    $('#edit-setting').off('click');
 
-    const formattedContent = selectedRowData.code
-        .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-        .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+    $('#edit-setting').click(() => {
+        if (!selectedRowData) {
+            alert('선택해 뭐하는거야');
+            return;
+        }
 
-    // 선택된 항목의 데이터를 Edit 창에 표시
-    $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
-    $('.edit-template-body textarea').val(selectedRowData.code);
-    // // 개행을 유지하여 원본 코드 표시
-});
+        toggleDisplay($('.edit-template-body'));
 
+        const formattedContent = selectedRowData.code
+            .replace(/\\n/g, "<br>")
+            .replace(/\n/g, "<br>");
+
+
+        $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
+        $('.edit-template-body textarea').val(selectedRowData.code);
+    });
+}
 
 
 function getThemeData() {
@@ -599,6 +606,9 @@ function getTemplateData() {
             });
 
             attachRowClickEvent();
+            handleRowClick();
+            handleEditButtonClick();
+
         },
         error: function (a, b, c) {
             console.error(a, b, c);
@@ -610,13 +620,11 @@ function attachRowClickEvent() {
     const templatePreview = document.getElementById("template-preview");
     let selectedRow = null;
 
-    // 새로 추가된 <tr> 요소에 대해 클릭 이벤트 리스너를 추가합니다.
     document.querySelectorAll(".template-table tr").forEach(row => {
-        const codeCell = row.cells[1]; // index가 1이어야 코드 셀이 맞습니다
+        const codeCell = row.cells[1];
 
         if (codeCell) {
             row.addEventListener("click", function () {
-                console.log('click햇닫햇닫닫닫다ㅏㄷ'); // 클릭 이벤트 확인
 
                 if (selectedRow) {
                     selectedRow.classList.remove("selected-row");
@@ -625,10 +633,9 @@ function attachRowClickEvent() {
                 selectedRow = row;
                 row.classList.add("selected-row");
 
-                // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
                 const formattedContent = codeCell.innerHTML
-                    .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-                    .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+                    .replace(/\\n/g, "<br>")
+                    .replace(/\n/g, "<br>");
                 templatePreview.innerHTML = formattedContent;
             });
         }
