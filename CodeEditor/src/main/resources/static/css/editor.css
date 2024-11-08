@@ -992,7 +992,7 @@ div.file {
     background-color: var(--black2);
     padding-left: 5px;
     height: 25px;
-    max-width: 200px; /* 330 - 5 - 80에 해당하는 값 */
+    max-width: 175px; /* 330 - 5 - 80에 해당하는 값 */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;

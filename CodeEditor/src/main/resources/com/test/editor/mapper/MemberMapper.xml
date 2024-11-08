@@ -22,19 +22,24 @@
 		
 	</resultMap>
 
+	<!-- team과 project 정보 가져오기 -->
+	
+
+
 
 	<select id="loadUser" resultMap="member">
-		select * from member
-		 	where id = #{username}
+		select * from member where id = #{username}
 	</select>
 	
 	<!-- mypage -->
 	<select id="list" resultType="member">
-		select * from member where id=${nick}
+		select * from member where nick = #{username}
 	</select>
 	
-	
-	
+	<!-- email 중복 확인 -->
+	<select id="duplicatedCheck" resultType="Integer">
+		select count(*) from member where id = #{email}
+	</select>
 	
 	
 </mapper>

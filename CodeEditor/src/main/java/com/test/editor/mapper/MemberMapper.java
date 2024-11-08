@@ -10,6 +10,8 @@ public interface MemberMapper {
 
 	MemberDTO list(String nick);
 
+	int duplicatedCheck(String email);
+
 	
 	
 	

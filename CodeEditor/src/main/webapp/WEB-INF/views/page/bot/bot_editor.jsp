@@ -139,23 +139,36 @@
             $('#toggle-chatbot').click(function() {
                 chatOpen = !chatOpen;
                 if (chatOpen) {
-                	$('#toggle-chatbot').animate({ right: '370px' }, 300);
+                	$('#toggle-chatbot').animate({ right: '340px'}, 300);
                 	$('#chatbot-container').css({ display: 'flex', opacity: '0', right: '-330px' }).animate({
                         right: '10px',
                         opacity: '1'
                     }, 300);
                     $('#toggle-chatbot').attr('src', botIcon2);
                 } else {
-                	$('#toggle-chatbot').animate({ right: '20px' }, 300);
-
-                    $('#chatbot-container').animate({
-                        right: '-350px',
-                        opacity: '0'
-                    }, 300, function() {
-                        $(this).css('display', 'none');
-                    });
-
-                    $('#toggle-chatbot').attr('src', botIcon1);
+                	if(isSidebarOpen) {
+	                	$('#toggle-chatbot').animate({ right: '390px' }, 300);
+	
+	                    $('#chatbot-container').animate({
+	                        right: '-330px',
+	                        opacity: '0'
+	                    }, 300, function() {
+	                        $(this).css('display', 'none');
+	                    });
+	
+	                    $('#toggle-chatbot').attr('src', botIcon1);
+                	} else {
+                		$('#toggle-chatbot').animate({ right: '40px' }, 300);
+                		
+	                    $('#chatbot-container').animate({
+	                        right: '-330px',
+	                        opacity: '0'
+	                    }, 300, function() {
+	                        $(this).css('display', 'none');
+	                    });
+	
+	                    $('#toggle-chatbot').attr('src', botIcon1);
+                	}
                 }
             });
 

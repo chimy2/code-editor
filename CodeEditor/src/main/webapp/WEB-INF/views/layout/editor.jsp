@@ -21,6 +21,7 @@
 	<main>
 		<tiles:insertAttribute name="left_side"/>
 		<tiles:insertAttribute name="content"/>
+		
 		<tiles:insertAttribute name="console" />
 		<tilesx:useAttribute id="list" name="popups" classname="java.util.List" />
 		<c:forEach var="item" items="${list}">
