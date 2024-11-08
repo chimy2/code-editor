@@ -169,7 +169,7 @@
                 </ul>
             </div>
             <div class="version-footer">
-                <button class="btn_submit_version">복원</button>
+                <button class="btn_submit_version" onclick="">복원</button>
             </div>
         </nav>
     </div>
