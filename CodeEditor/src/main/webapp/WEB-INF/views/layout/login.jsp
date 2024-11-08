@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %> 
-<!-- 오류로 인한 잠시 주석 처리 -->
-<%-- <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>  --%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %> 
 <!DOCTYPE html>
 <html>
 <head>
