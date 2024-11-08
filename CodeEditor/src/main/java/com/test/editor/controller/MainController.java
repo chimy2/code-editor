@@ -27,7 +27,7 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
-	
+	/*
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
 	public String mypage(@RequestParam("nick") String nick,Model model) {
@@ -36,6 +36,16 @@ public class MainController {
 		model.addAttribute("list", list);
 		return "mypage";
 	}
+	*/
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/mypage")
+	public String mypage() {
+		
+		return "mypage";
+	}
+	
+	
+	
 	
 	@GetMapping("/stats")
 	public String stats() {
