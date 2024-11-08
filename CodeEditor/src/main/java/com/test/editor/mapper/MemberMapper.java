@@ -14,6 +14,8 @@ public interface MemberMapper {
 
 	int duplicatedNickCheck(String check);
 
+	int joinOk(MemberDTO dto);
+
 	
 	
 	

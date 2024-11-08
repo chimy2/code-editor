@@ -1,6 +1,9 @@
 package com.test.editor.controller;
 
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -32,36 +35,84 @@ public class SettingsController {
 
 	@GetMapping("/theme")
 	@ResponseBody
-	public String getTheme(HttpSession session) {
+	public String getTheme(Principal principal, HttpSession session) {
 
 		// String member_seq = (String) session.getAttribute("member_seq");
 		String member_seq = "1";
-		System.out.println("유정이 힘을내");
+		System.out.println(principal);
 		return dao.getTheme(member_seq);
 	}
 
-	@PutMapping(value = "/theme", produces = "application/json")
+	@PutMapping(value="/theme", produces="application/json")
 	@ResponseBody
 	public String updateTheme(@RequestBody ThemeDTO theme, HttpSession session) {
 
 		String member_seq = "1";
 		theme.setMember_seq(member_seq);
-
-		System.out.println(theme.toString());
-
 		dao.updateTheme(theme);
 
-		return "update !!!!";
+		return "update theme";
 	}
 
-	@GetMapping(value = "/font", produces = "application/json")
+	@GetMapping(value = "/font", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getFont(HttpSession session) {
 		String member_seq = "1";
 		return dao.getFont(member_seq);
 	}
+	
+	@PutMapping(value="/font", produces="application/json")
+	@ResponseBody
+	public String updateFont(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
 
-	@GetMapping(value = "/color", produces = "application/json")
+		String member_seq = "1";
+ 
+	    Map<String, Object> fontStyle = new HashMap<>();
+	    
+	    for (StyleSettingDTO setting : styleSettings) {
+	        if ("1".equals(setting.getStyleType_seq())) {
+	        	fontStyle.put("fontSize", setting);
+	        } else if ("2".equals(setting.getStyleType_seq())) {
+	        	fontStyle.put("fontFamily", setting);
+	        }
+	    }
+	    
+	    fontStyle.put("member_seq", member_seq);
+	    
+	    dao.updateFont(fontStyle);
+	    
+		return "update font";
+	}
+	
+	@PutMapping(value="/color", produces="application/json")
+	@ResponseBody
+	public String updateColor(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
+		
+		String member_seq = "1";
+		
+		Map<String, Object> colorStyle = new HashMap<>();
+		
+		for (StyleSettingDTO data : styleSettings) {
+			if ("3".equals(data.getStyleType_seq())) {
+			    colorStyle.put("background", data);
+			} else if ("4".equals(data.getStyleType_seq())) {
+			    colorStyle.put("foreground", data);
+			} else if ("5".equals(data.getStyleType_seq())) {
+			    colorStyle.put("comment", data);
+			} else if ("6".equals(data.getStyleType_seq())) {
+			    colorStyle.put("keyword", data);
+			} else if ("7".equals(data.getStyleType_seq())) {
+			    colorStyle.put("String", data);
+			} 
+			
+		}
+		colorStyle.put("member_seq", member_seq);
+		dao.updateColor(colorStyle);
+		
+		return "update color";
+	}
+	
+	@GetMapping(value="/color", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getColor(HttpSession session) {
 
@@ -69,22 +120,14 @@ public class SettingsController {
 		return dao.getColor(member_seq);
 	}
 
-	  @GetMapping(value = "/template", produces = "application/json")
-	  @ResponseBody 
-	  public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
-		  String member_seq = "1"; 
-		  List<TemplateDTO> template = dao.getTemplate(member_seq); 
-		  model.addAttribute("template", template);
-		  System.out.println("여기 >>>>>>>>>>>> " + template); 
-		  return template; 
-	  }
-
-//	@GetMapping("/template")
-//	public String getTemplate(Model model, HttpSession session) {
-//	    String member_seq = "1";
-//	    List<TemplateDTO> template = dao.getTemplate(member_seq);
-//	    model.addAttribute("template", template);
-//	    return "code"; 
-//	}
+    @GetMapping(value="/template", produces="application/json")
+    @ResponseBody 
+    public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
+	    String member_seq = "1"; 
+ 	    List<TemplateDTO> template = dao.getTemplate(member_seq); 
+	    model.addAttribute("template", template);
+	    return template; 
+    }
+ 
 
 }

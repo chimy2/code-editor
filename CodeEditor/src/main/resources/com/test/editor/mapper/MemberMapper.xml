@@ -46,4 +46,11 @@
 		select count(*) from member where nick = #{email}
 	</select>
 	
+	<!-- 회원가입 -->
+	<insert id="joinOk">
+		insert into member (seq, id, pw, nick, regdate, ing, color, oAuthType)
+	    values ((select (max(seq)) + 1 from member), #{id}, #{pw}, #{nick}, default, default, default, default)
+	</insert>
+	
+	
 </mapper>

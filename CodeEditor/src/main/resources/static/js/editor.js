@@ -118,8 +118,8 @@ $('.btn_open_editor').on('click', function () {
         });
 
         editor.onDidChangeModelContent((event) => {
-        	console.log(event);
-        
+            console.log(event);
+
             event.changes.forEach((change) => {
                 const changeData = {
                     text: change.text,
@@ -262,7 +262,6 @@ $('.settings-close-icon').click(function () {
 });
 
 $('.template-close-icon').click(function () {
-    console.log('hello?');
     toggleDisplay($(this).parents('.template-body'));
 });
 
@@ -280,7 +279,9 @@ function toggleDisplay(element) {
 /* basic code */
 $('.select_file_type').selectmenu();
 
-require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+document.addEventListener('DOMContentLoaded', function () {
+    require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
+});
 
 /* settings */
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -292,6 +293,8 @@ document.addEventListener('DOMContentLoaded', function () {
     getFontData();
     getThemeData();
     initializeTheme();
+    handleRowClick();
+    handleEditButtonClick();
 });
 
 function toggleSubMenu(menuId) {
@@ -366,37 +369,41 @@ document
 
 let selectedRowData = null;
 
-// 테이블 행(tr) 클릭 시 선택한 데이터를 저장
-$('.template-table tr').click(function () {
-    console.log('hello');
-    const keyword = $(this).find('td').eq(0).text();
-    const code = $(this).find('td').eq(1).text();
+// 테이블 행 클릭 이벤트 핸들러
+function handleRowClick() {
+    $('.template-table tr').click(function () {
+        const keyword = $(this).find('td').eq(0).text();
+        const code = $(this).find('td').eq(1).text();
 
-    selectedRowData = { keyword, code };
+        selectedRowData = { keyword, code };
 
-    $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
-    $(this).addClass('selected-row'); // 현재 선택 추가
-});
+        $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
+        $(this).addClass('selected-row'); // 현재 선택 추가
+    });
+}
 
-// Edit 버튼 클릭 시 처리
-$('#edit-setting').click(() => {
-    if (!selectedRowData) {
-        alert('선택해 뭐하는거야');
-        return;
-    }
+// Edit 버튼 클릭 이벤트 핸들러
+function handleEditButtonClick() {
+    $('#edit-setting').off('click');
 
-    // 선택된 항목이 있으면 Edit 모드로 전환
-    toggleDisplay($('.edit-template-body'));
+    $('#edit-setting').click(() => {
+        if (!selectedRowData) {
+            alert('선택해 뭐하는거야');
+            return;
+        }
 
-    const formattedContent = selectedRowData.code
-        .replace(/\\n/g, '<br>') // '\n' 그대로 사용된 경우
-        .replace(/\n/g, '<br>'); // 실제 개행 문자의 경우
+        toggleDisplay($('.edit-template-body'));
 
-    // 선택된 항목의 데이터를 Edit 창에 표시
-    $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
-    $('.edit-template-body textarea').val(selectedRowData.code);
-    // // 개행을 유지하여 원본 코드 표시
-});
+        const formattedContent = selectedRowData.code
+            .replace(/\\n/g, '<br>')
+            .replace(/\n/g, '<br>');
+
+        $('.edit-template-body .template-name-input').val(
+            selectedRowData.keyword
+        );
+        $('.edit-template-body textarea').val(selectedRowData.code);
+    });
+}
 
 function getThemeData() {
     $.ajax({
@@ -594,7 +601,6 @@ function applyColorData(data) {
             .querySelector('.color-category');
 
         if (hiddenInput) {
-            console.log('hiddenInput 찾음:', hiddenInput);
             const category = hiddenInput.value; // hidden input의 value가 category
 
             // 데이터에서 일치하는 항목을 찾기
@@ -619,8 +625,6 @@ function getTemplateData() {
         method: 'GET',
         dataType: 'json',
         success: function (data) {
-            console.log('successfully');
-
             const tableBody = $('.template-table tbody');
             tableBody.empty();
 
@@ -636,6 +640,8 @@ function getTemplateData() {
             });
 
             attachRowClickEvent();
+            handleRowClick();
+            handleEditButtonClick();
         },
         error: function (a, b, c) {
             console.error(a, b, c);
@@ -647,14 +653,11 @@ function attachRowClickEvent() {
     const templatePreview = document.getElementById('template-preview');
     let selectedRow = null;
 
-    // 새로 추가된 <tr> 요소에 대해 클릭 이벤트 리스너를 추가합니다.
     document.querySelectorAll('.template-table tr').forEach((row) => {
-        const codeCell = row.cells[1]; // index가 1이어야 코드 셀이 맞습니다
+        const codeCell = row.cells[1];
 
         if (codeCell) {
             row.addEventListener('click', function () {
-                console.log('click햇닫햇닫닫닫다ㅏㄷ'); // 클릭 이벤트 확인
-
                 if (selectedRow) {
                     selectedRow.classList.remove('selected-row');
                 }
@@ -662,10 +665,9 @@ function attachRowClickEvent() {
                 selectedRow = row;
                 row.classList.add('selected-row');
 
-                // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
                 const formattedContent = codeCell.innerHTML
-                    .replace(/\\n/g, '<br>') // '\n' 그대로 사용된 경우
-                    .replace(/\n/g, '<br>'); // 실제 개행 문자의 경우
+                    .replace(/\\n/g, '<br>')
+                    .replace(/\n/g, '<br>');
                 templatePreview.innerHTML = formattedContent;
             });
         }
@@ -753,4 +755,172 @@ function openVersionPopup() {
 function closeVersionPopup() {
     document.querySelector('.popup-container version-container').style.display =
         'none';
+}
+
+//마우스 우클릭 바 생성해서 New / Delete 선택하기
+document.addEventListener('DOMContentLoaded', function () {
+    const explorerSidebar = document.querySelector('.explorer_sidebar');
+
+    // explorer_sidebar 내에서만 우클릭 메뉴 표시
+    explorerSidebar.addEventListener('contextmenu', function (event) {
+        event.preventDefault(); // 기본 우클릭 메뉴 비활성화
+        removeExistingCustomContextMenu(); // 기존 컨텍스트 메뉴 제거
+        showCustomContextMenu(event); // 새 컨텍스트 메뉴 표시
+    });
+
+    // 문서 클릭 시 컨텍스트 메뉴 제거
+    document.addEventListener('click', function () {
+        removeExistingCustomContextMenu();
+    });
+});
+
+// 기존 컨텍스트 메뉴 제거 함수
+function removeExistingCustomContextMenu() {
+    const existingMenu = document.querySelector('.custom-context-menu');
+    if (existingMenu) {
+        existingMenu.remove();
+    }
+}
+
+// 컨텍스트 메뉴 표시 함수
+function showCustomContextMenu(event) {
+    const contextMenu = document.createElement('div');
+    contextMenu.classList.add('custom-context-menu');
+
+    // New 메뉴 생성
+    const newMenuItem = document.createElement('div');
+    newMenuItem.classList.add('custom-context-menu-item');
+    newMenuItem.innerText = 'New >';
+
+    // 서브메뉴 생성
+    const submenu = document.createElement('div');
+    submenu.classList.add('custom-submenu');
+
+    // 서브메뉴 항목 추가
+    addCustomMenuItem(
+        submenu,
+        'Project',
+        createNewProject,
+        '/editor/resources/image/icon/project.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Package',
+        createNewPackage,
+        '/editor/resources/image/icon/package.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Class',
+        () => createNewFile('class'),
+        '/editor/resources/image/icon/class.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Interface',
+        () => createNewFile('interface'),
+        '/editor/resources/image/icon/interface.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Text-File',
+        () => createNewFile('txt-file'),
+        '/editor/resources/image/icon/txt.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'File',
+        () => createNewFile('file'),
+        '/editor/resources/image/icon/file.svg'
+    );
+
+    // 서브메뉴를 New 항목에 추가
+    newMenuItem.appendChild(submenu);
+    contextMenu.appendChild(newMenuItem);
+
+    // Delete 메뉴 추가
+    addCustomMenuItem(contextMenu, 'Delete', () =>
+        confirmAndDeleteItem(event.target)
+    );
+
+    // 컨텍스트 메뉴를 문서에 추가하고 위치 설정
+    document.body.appendChild(contextMenu);
+    contextMenu.style.top = `${event.clientY}px`;
+    contextMenu.style.left = `${event.clientX}px`;
+}
+
+// 메뉴 항목 추가 함수
+function addCustomMenuItem(menu, text, action, iconPath) {
+    const item = document.createElement('div');
+    item.classList.add('custom-context-menu-item');
+
+    // 아이콘이 있는 경우 추가
+    if (iconPath) {
+        const icon = document.createElement('img');
+        icon.src = iconPath;
+        icon.classList.add('custom-menu-icon');
+        item.appendChild(icon);
+    }
+
+    // 메뉴 텍스트 추가
+    const itemText = document.createElement('span');
+    itemText.innerText = text;
+    item.appendChild(itemText);
+
+    // 클릭 이벤트 리스너 추가
+    item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        action();
+        removeExistingCustomContextMenu();
+    });
+
+    // 메뉴 항목을 메뉴에 추가
+    menu.appendChild(item);
+}
+
+// 삭제 확인 후 삭제 함수
+function confirmAndDeleteItem(element) {
+    console.log('Element class list:', element.classList); // 클래스 목록 확인용
+
+    let itemName;
+
+    if (element.classList.contains('project')) {
+        itemName = '프로젝트 파일';
+    } else if (element.classList.contains('src')) {
+        itemName = '소스 파일';
+    } else if (element.classList.contains('package')) {
+        itemName = '패키지 파일';
+    } else if (element.classList.contains('class')) {
+        itemName = '클래스 파일';
+    } else if (element.classList.contains('interface')) {
+        itemName = '인터페이스 파일';
+    } else if (element.classList.contains('txt-file')) {
+        itemName = '텍스트 파일';
+    } else if (element.classList.contains('file')) {
+        itemName = '일반 파일';
+    } else {
+        itemName = element.querySelector('span')?.textContent || 'item';
+    }
+
+    const isConfirmed = confirm(`${itemName}을(를) 삭제하시겠습니까?`);
+
+    if (isConfirmed) {
+        console.log(`${itemName} 삭제됨`);
+        // 실제 삭제 로직 추가
+    } else {
+        console.log(`${itemName} 삭제 취소됨`);
+    }
+}
+
+// 예제용 함수들
+function createNewProject() {
+    console.log('New Project created');
+}
+
+function createNewPackage() {
+    console.log('New Package created');
+}
+
+function createNewFile(type) {
+    console.log(`New ${type} created`);
 }
