@@ -13,18 +13,18 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.editor.model.CodeDTO;
+import com.test.editor.domain.Code;
 
 @ServerEndpoint("/vs/code/{project_seq}")
 public class CodeServer {
 	
 	private static List<Session> sessionList;
-	private static HashMap<String, String> fileList;
+	private static HashMap<String, List<Session>> fileList;
     private static ObjectMapper objectMapper;
 
 	static {
 		sessionList = new ArrayList<Session>();
-		fileList = new HashMap<String, String>();
+		fileList = new HashMap<String, List<Session>>();
 		objectMapper = new ObjectMapper();
 	}
 	
@@ -41,7 +41,7 @@ public class CodeServer {
 	public void handleMessage(Session session, String message) {
 	    try {
 	        // Deserialize incoming message to CodeDTO
-	        CodeDTO codeUpdate = objectMapper.readValue(message, CodeDTO.class);
+	        Code codeUpdate = objectMapper.readValue(message, Code.class);
 
 	        // Log message content
 	        System.out.println("Received message: " + codeUpdate);

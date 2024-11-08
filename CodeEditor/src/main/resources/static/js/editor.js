@@ -117,6 +117,19 @@ $('.btn_open_editor').on('click', function () {
             }
         });
 
+        editor.onDidChangeModelContent((event) => {
+        	console.log(event);
+        
+            event.changes.forEach((change) => {
+                const changeData = {
+                    text: change.text,
+                    range: change.range, // 변경 범위
+                };
+                // 변경 사항을 서버에 전송
+                // sendChangeToServer(changeData);
+            });
+        });
+
         // Handle WebSocket messages
         socket.onmessage = function (event) {
             const data = JSON.parse(event.data);
@@ -270,9 +283,9 @@ $('.select_file_type').selectmenu();
 require.config({ paths: { vs: '/editor/resources/lib/monaco' } });
 
 /* settings */
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener('DOMContentLoaded', function () {
     getTemplateData();
     getColorData();
     initializeFontSelection();
@@ -281,7 +294,6 @@ document.addEventListener("DOMContentLoaded", function () {
     initializeTheme();
 });
 
-
 function toggleSubMenu(menuId) {
     // 선택한 서브 메뉴와 버튼의 아이콘 찾기
     const menu = document.getElementById(menuId);
@@ -289,11 +301,14 @@ function toggleSubMenu(menuId) {
     const icon = button.querySelector('.arrow-icon');
 
     // 모든 서브 메뉴 숨기기 및 아이콘 초기화
-    document.querySelectorAll('.settings-sub-menu').forEach(subMenu => {
+    document.querySelectorAll('.settings-sub-menu').forEach((subMenu) => {
         if (subMenu !== menu) {
             subMenu.style.display = 'none';
-            const siblingIcon = subMenu.previousElementSibling.querySelector('.arrow-icon');
-            if (siblingIcon) siblingIcon.src = '/editor/resources/image/icon/right-arrow.svg';
+            const siblingIcon =
+                subMenu.previousElementSibling.querySelector('.arrow-icon');
+            if (siblingIcon)
+                siblingIcon.src =
+                    '/editor/resources/image/icon/right-arrow.svg';
         }
     });
 
@@ -309,7 +324,9 @@ function toggleSubMenu(menuId) {
 
 function showContent(contentId) {
     // 모든 콘텐츠를 숨김
-    document.querySelectorAll('.settings-content').forEach(content => content.style.display = 'none');
+    document
+        .querySelectorAll('.settings-content')
+        .forEach((content) => (content.style.display = 'none'));
     // 선택한 콘텐츠만 보이게 설정
     document.getElementById(contentId + '-content').style.display = 'block';
 }
@@ -329,19 +346,23 @@ function toggleThemeSelection(theme) {
 }
 
 function initializeTheme() {
-    const initialThemeInput = document.querySelector('input[name="theme"]:checked');
+    const initialThemeInput = document.querySelector(
+        'input[name="theme"]:checked'
+    );
     if (initialThemeInput) {
         const initialTheme = initialThemeInput.value;
         toggleThemeSelection(initialTheme);
     } else {
-        console.log("Theme input not found.");
+        console.log('Theme input not found.');
     }
 }
 
-
-document.getElementById('dark-button').addEventListener('click', () => toggleThemeSelection('dark'));
-document.getElementById('light-button').addEventListener('click', () => toggleThemeSelection('light'));
-
+document
+    .getElementById('dark-button')
+    .addEventListener('click', () => toggleThemeSelection('dark'));
+document
+    .getElementById('light-button')
+    .addEventListener('click', () => toggleThemeSelection('light'));
 
 let selectedRowData = null;
 
@@ -354,7 +375,7 @@ $('.template-table tr').click(function () {
     selectedRowData = { keyword, code };
 
     $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
-    $(this).addClass('selected-row');                    // 현재 선택 추가
+    $(this).addClass('selected-row'); // 현재 선택 추가
 });
 
 // Edit 버튼 클릭 시 처리
@@ -368,8 +389,8 @@ $('#edit-setting').click(() => {
     toggleDisplay($('.edit-template-body'));
 
     const formattedContent = selectedRowData.code
-        .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-        .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+        .replace(/\\n/g, '<br>') // '\n' 그대로 사용된 경우
+        .replace(/\n/g, '<br>'); // 실제 개행 문자의 경우
 
     // 선택된 항목의 데이터를 Edit 창에 표시
     $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
@@ -377,81 +398,88 @@ $('#edit-setting').click(() => {
     // // 개행을 유지하여 원본 코드 표시
 });
 
-
-
 function getThemeData() {
     $.ajax({
-        url: "/editor/theme", // URI를 그대로 유지
-        method: "GET",
+        url: '/editor/theme', // URI를 그대로 유지
+        method: 'GET',
         success: function (data) {
-            if (data === "0") {
-                $("#dark-button").prop("checked", true);
-                toggleThemeSelection("dark")
-            } else if (data === "1") {
-                $("#light-button").prop("checked", true);
-                toggleThemeSelection("light");
+            if (data === '0') {
+                $('#dark-button').prop('checked', true);
+                toggleThemeSelection('dark');
+            } else if (data === '1') {
+                $('#light-button').prop('checked', true);
+                toggleThemeSelection('light');
             }
         },
         error: function (a, b, c) {
             console.log(a, b, c);
-        }
+        },
     });
 }
-
-
-
 
 /* font */
 
 // 폰트 선택 초기화 함수
 function initializeFontSelection() {
-    const fontItems = document.querySelectorAll(".select-font-family li");
-    const sizeItems = document.querySelectorAll(".select-font-size li");
-    const selectedFont = document.querySelector(".selected-font span");
-    const selectedSize = document.querySelector(".selected-size span");
-    const fontPreview = document.querySelector(".font-preview");
+    const fontItems = document.querySelectorAll('.select-font-family li');
+    const sizeItems = document.querySelectorAll('.select-font-size li');
+    const selectedFont = document.querySelector('.selected-font span');
+    const selectedSize = document.querySelector('.selected-size span');
+    const fontPreview = document.querySelector('.font-preview');
 
     // 기본 선택 항목 설정
     const defaultFontItem = fontItems[0];
     const defaultSizeItem = sizeItems[0];
 
-    defaultFontItem.classList.add("selected");
+    defaultFontItem.classList.add('selected');
     selectedFont.textContent = defaultFontItem.textContent;
-    defaultSizeItem.classList.add("selected");
+    defaultSizeItem.classList.add('selected');
     selectedSize.textContent = defaultSizeItem.textContent;
 
     // 기본 폰트 크기를 즉시 미리 보기 요소에 적용
-    updateFontPreview(fontPreview, selectedFont.textContent, selectedSize.textContent);
+    updateFontPreview(
+        fontPreview,
+        selectedFont.textContent,
+        selectedSize.textContent
+    );
 
     // 클릭 시 선택된 항목 업데이트
-    fontItems.forEach(item => {
-        item.addEventListener("click", () => {
+    fontItems.forEach((item) => {
+        item.addEventListener('click', () => {
             updateSelectedItem(fontItems, item, selectedFont);
-            updateFontPreview(fontPreview, selectedFont.textContent, selectedSize.textContent);
+            updateFontPreview(
+                fontPreview,
+                selectedFont.textContent,
+                selectedSize.textContent
+            );
         });
     });
 
-    sizeItems.forEach(item => {
-        item.addEventListener("click", () => {
+    sizeItems.forEach((item) => {
+        item.addEventListener('click', () => {
             updateSelectedItem(sizeItems, item, selectedSize);
-            updateFontPreview(fontPreview, selectedFont.textContent, selectedSize.textContent);
+            updateFontPreview(
+                fontPreview,
+                selectedFont.textContent,
+                selectedSize.textContent
+            );
         });
     });
 }
 
 // 선택 항목 업데이트 함수
 function updateSelectedItem(items, selectedItem, displayElement) {
-    items.forEach(item => item.classList.remove("selected"));
-    selectedItem.classList.add("selected");
+    items.forEach((item) => item.classList.remove('selected'));
+    selectedItem.classList.add('selected');
     displayElement.textContent = selectedItem.textContent;
 }
 
 // 폰트 데이터 가져오는 함수
 function getFontData() {
     $.ajax({
-        url: "/editor/font",
-        method: "GET",
-        dataType: "json",
+        url: '/editor/font',
+        method: 'GET',
+        dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
                 applyFontData(data);
@@ -459,20 +487,24 @@ function getFontData() {
         },
         error: function (a, b, c) {
             console.error(a, b, c);
-        }
+        },
     });
 }
 
 // 폰트 데이터를 적용하는 함수
 function applyFontData(data) {
-    const fontSizeData = data.find(item => item.styleType.category === "fontSize");
-    const fontFamilyData = data.find(item => item.styleType.category === "fontFamily");
+    const fontSizeData = data.find(
+        (item) => item.styleType.category === 'fontSize'
+    );
+    const fontFamilyData = data.find(
+        (item) => item.styleType.category === 'fontFamily'
+    );
 
-    const fontItems = document.querySelectorAll(".select-font-family li");
-    const sizeItems = document.querySelectorAll(".select-font-size li");
-    const selectedFont = document.querySelector(".selected-font span");
-    const selectedSize = document.querySelector(".selected-size span");
-    const fontPreview = document.querySelector(".font-preview");
+    const fontItems = document.querySelectorAll('.select-font-family li');
+    const sizeItems = document.querySelectorAll('.select-font-size li');
+    const selectedFont = document.querySelector('.selected-font span');
+    const selectedSize = document.querySelector('.selected-size span');
+    const fontPreview = document.querySelector('.font-preview');
 
     if (fontFamilyData) {
         updateFontFamily(fontItems, fontFamilyData.value, selectedFont);
@@ -483,31 +515,35 @@ function applyFontData(data) {
     }
 
     // 미리 보기 업데이트
-    updateFontPreview(fontPreview, selectedFont.textContent, selectedSize.textContent);
+    updateFontPreview(
+        fontPreview,
+        selectedFont.textContent,
+        selectedSize.textContent
+    );
 }
 
 // 폰트 패밀리 업데이트 함수
 function updateFontFamily(items, value, displayElement) {
-    items.forEach(item => {
+    items.forEach((item) => {
         if (item.textContent === value) {
-            item.classList.add("selected");
+            item.classList.add('selected');
             displayElement.textContent = item.textContent;
             scrollToSelectedItem(item.parentElement, item);
         } else {
-            item.classList.remove("selected");
+            item.classList.remove('selected');
         }
     });
 }
 
 // 폰트 크기 업데이트 함수
 function updateFontSize(items, value, displayElement) {
-    items.forEach(item => {
+    items.forEach((item) => {
         if (item.textContent === value) {
-            item.classList.add("selected");
+            item.classList.add('selected');
             displayElement.textContent = item.textContent;
             scrollToSelectedItem(item.parentElement, item); // 스크롤 위치 조정
         } else {
-            item.classList.remove("selected");
+            item.classList.remove('selected');
         }
     });
 }
@@ -521,19 +557,18 @@ function updateFontPreview(previewElement, fontFamily, fontSize) {
 // 스크롤 위치 조정 함수
 function scrollToSelectedItem(container, selectedItem) {
     if (selectedItem) {
-        container.scrollTop = selectedItem.offsetTop - container.clientHeight * 2;
+        container.scrollTop =
+            selectedItem.offsetTop - container.clientHeight * 2;
     }
 }
 
-
-
-// 컬러 
+// 컬러
 // 색상 데이터를 가져오는 함수
 function getColorData() {
     $.ajax({
-        url: "/editor/color",
-        method: "GET",
-        dataType: "json",
+        url: '/editor/color',
+        method: 'GET',
+        dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
                 applyColorData(data);
@@ -541,25 +576,31 @@ function getColorData() {
         },
         error: function (a, b, c) {
             console.error(a, b, c);
-        }
+        },
     });
 }
 
 // 색상 데이터를 적용하는 함수
 function applyColorData(data) {
     // 모든 color input 요소를 선택
-    const colorInputs = document.querySelectorAll(".colors input[type='color']");
+    const colorInputs = document.querySelectorAll(
+        ".colors input[type='color']"
+    );
 
-    colorInputs.forEach(colorInput => {
+    colorInputs.forEach((colorInput) => {
         // 이제 hidden input을 class로 쉽게 찾을 수 있습니다.
-        const hiddenInput = colorInput.closest(".colors").querySelector(".color-category");
+        const hiddenInput = colorInput
+            .closest('.colors')
+            .querySelector('.color-category');
 
         if (hiddenInput) {
             console.log('hiddenInput 찾음:', hiddenInput);
             const category = hiddenInput.value; // hidden input의 value가 category
 
             // 데이터에서 일치하는 항목을 찾기
-            const colorData = data.find(item => item.styleType.category === category);
+            const colorData = data.find(
+                (item) => item.styleType.category === category
+            );
 
             // 일치하는 데이터가 있으면 color input의 value를 업데이트
             if (colorData) {
@@ -569,22 +610,18 @@ function applyColorData(data) {
             console.log('hiddenInput을 찾을 수 없습니다.');
         }
     });
-
 }
-
-
-
 
 // 템플릿 데이터를 가져오는 함수
 function getTemplateData() {
     $.ajax({
-        url: "/editor/template",
-        method: "GET",
-        dataType: "json",
+        url: '/editor/template',
+        method: 'GET',
+        dataType: 'json',
         success: function (data) {
-            console.log("successfully");
+            console.log('successfully');
 
-            const tableBody = $(".template-table tbody");
+            const tableBody = $('.template-table tbody');
             tableBody.empty();
 
             data.forEach(function (template) {
@@ -602,85 +639,88 @@ function getTemplateData() {
         },
         error: function (a, b, c) {
             console.error(a, b, c);
-        }
+        },
     });
 }
 
 function attachRowClickEvent() {
-    const templatePreview = document.getElementById("template-preview");
+    const templatePreview = document.getElementById('template-preview');
     let selectedRow = null;
 
     // 새로 추가된 <tr> 요소에 대해 클릭 이벤트 리스너를 추가합니다.
-    document.querySelectorAll(".template-table tr").forEach(row => {
+    document.querySelectorAll('.template-table tr').forEach((row) => {
         const codeCell = row.cells[1]; // index가 1이어야 코드 셀이 맞습니다
 
         if (codeCell) {
-            row.addEventListener("click", function () {
+            row.addEventListener('click', function () {
                 console.log('click햇닫햇닫닫닫다ㅏㄷ'); // 클릭 이벤트 확인
 
                 if (selectedRow) {
-                    selectedRow.classList.remove("selected-row");
+                    selectedRow.classList.remove('selected-row');
                 }
 
                 selectedRow = row;
-                row.classList.add("selected-row");
+                row.classList.add('selected-row');
 
                 // 개행을 <br> 태그로 변환하여 templatePreview에 HTML 형식으로 표시
                 const formattedContent = codeCell.innerHTML
-                    .replace(/\\n/g, "<br>")    // '\n' 그대로 사용된 경우
-                    .replace(/\n/g, "<br>");    // 실제 개행 문자의 경우
+                    .replace(/\\n/g, '<br>') // '\n' 그대로 사용된 경우
+                    .replace(/\n/g, '<br>'); // 실제 개행 문자의 경우
                 templatePreview.innerHTML = formattedContent;
             });
         }
     });
 }
 
-
-
-
-
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+document.addEventListener('DOMContentLoaded', function () {
+    const versionItems = document.querySelectorAll(
+        '.version-list-container li'
+    );
+    const fileContentDisplay = document.getElementById('fileContentDisplay');
 
-document.addEventListener("DOMContentLoaded", function () {
-    const versionItems = document.querySelectorAll(".version-list-container li");
-    const fileContentDisplay = document.getElementById("fileContentDisplay");
+    versionItems.forEach((item) => {
+        item.addEventListener('click', function () {
+            versionItems.forEach((i) => i.classList.remove('selected'));
+            this.classList.add('selected');
 
-    versionItems.forEach(item => {
-        item.addEventListener("click", function () {
-            versionItems.forEach(i => i.classList.remove("selected"));
-            this.classList.add("selected");
-
-            const versionDate = this.querySelector(".version-date").innerText;
-            const versionMessage = this.querySelector(".version-message").innerText;
+            const versionDate = this.querySelector('.version-date').innerText;
+            const versionMessage =
+                this.querySelector('.version-message').innerText;
 
             fileContentDisplay.innerHTML = `<h3>선택된 버전</h3><p>날짜: ${versionDate}</p><p>내용: ${versionMessage}</p>`;
         });
     });
 
-    const restoreButton = document.querySelector(".btn_submit_version");
-    restoreButton.addEventListener("click", function () {
-        const selectedVersion = document.querySelector(".version-list-container .selected");
+    const restoreButton = document.querySelector('.btn_submit_version');
+    restoreButton.addEventListener('click', function () {
+        const selectedVersion = document.querySelector(
+            '.version-list-container .selected'
+        );
         if (selectedVersion) {
-            const versionDate = selectedVersion.querySelector(".version-date").innerText;
-            fetch("/restoreVersion", {
-                method: "POST",
+            const versionDate =
+                selectedVersion.querySelector('.version-date').innerText;
+            fetch('/restoreVersion', {
+                method: 'POST',
                 headers: {
-                    "Content-Type": "application/json"
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ versionDate: versionDate })
+                body: JSON.stringify({ versionDate: versionDate }),
             })
-                .then(response => response.json())
-                .then(data => {
+                .then((response) => response.json())
+                .then((data) => {
                     if (data.success) {
-                        alert("Version restored successfully!");
+                        alert('Version restored successfully!');
                     } else {
-                        alert("Failed to restore version.");
+                        alert('Failed to restore version.');
                     }
                 })
-                .catch(error => console.error("Error restoring version:", error));
+                .catch((error) =>
+                    console.error('Error restoring version:', error)
+                );
         } else {
-            alert("Please select a version to restore.");
+            alert('Please select a version to restore.');
         }
     });
 });
@@ -688,26 +728,29 @@ document.addEventListener("DOMContentLoaded", function () {
 // 사이드탭 확장 이벤트
 let clickCount = 0;
 
-document.querySelector('.explorer_sidetabButton').addEventListener('click', function () {
-    clickCount++;
+document
+    .querySelector('.explorer_sidetabButton')
+    .addEventListener('click', function () {
+        clickCount++;
 
-    const sidebar = document.querySelector('.explorer_sidebar');
-    const sidetab = document.querySelector('.explorer_sidetab');
+        const sidebar = document.querySelector('.explorer_sidebar');
+        const sidetab = document.querySelector('.explorer_sidetab');
 
-    if (clickCount === 1) {
-        sidebar.classList.add('expanded');
-        sidetab.classList.add('expanded');
-    } else if (clickCount === 2) {
-        sidebar.classList.remove('expanded');
-        sidetab.classList.remove('expanded');
-        clickCount = 0;
-    }
-});
+        if (clickCount === 1) {
+            sidebar.classList.add('expanded');
+            sidetab.classList.add('expanded');
+        } else if (clickCount === 2) {
+            sidebar.classList.remove('expanded');
+            sidetab.classList.remove('expanded');
+            clickCount = 0;
+        }
+    });
 
 function openVersionPopup() {
     document.querySelector('.version-container').style.display = 'block';
 }
 
 function closeVersionPopup() {
-    document.querySelector('.popup-container version-container').style.display = 'none';
+    document.querySelector('.popup-container version-container').style.display =
+        'none';
 }
