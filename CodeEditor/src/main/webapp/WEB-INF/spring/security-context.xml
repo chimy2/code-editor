@@ -22,7 +22,8 @@
 		
 		<!-- URI 허가 -->
 		<security:intercept-url pattern="/editor/" access="permitAll"/>
-		<security:intercept-url pattern="/editor/join" access="permitAll"/><!-- permitAll : 모두 접근 가능 -->
+		<security:intercept-url pattern="/editor/join" access="permitAll"/>
+		<security:intercept-url pattern="/editor/login" access="permitAll"/><!-- permitAll : 모두 접근 가능 -->
 		<!-- <security:intercept-url pattern="/editor/mypage" access="hasRole(1)"/> --><!-- 로그인 대상자만 접근 -->
 		<!-- 어노테이션으로 하는 방식 -->
 		<!-- BoardController에서 직접 + servlet-context.xml-->

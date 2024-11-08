@@ -5,11 +5,33 @@ if (window.location.pathname.startsWith("/editor/join")) {
         const email = $('#email_duplicate input[type=email]').val();
         duplicated_check(email, 'email');
     };
-
+    
+    const emailInput = document.querySelector('#email_duplicate input[type=email]');
+    const duplicateEmailCheckMessage = document.querySelector('#duplicate_check_email');
+    
+	if (emailInput && duplicateEmailCheckMessage) {
+        emailInput.addEventListener('change', () => {
+            duplicateEmailCheckMessage.textContent = "중복 체크를 해주세요.";
+            duplicateEmailCheckMessage.style.color = "red";
+        });
+    }
+	
     document.querySelector('#nick_duplicate button').onclick = function () {
         const nick = $('#nick_duplicate input[type=text]').val();
         duplicated_check(nick, 'nick');
     };
+    
+    const nickInput = document.querySelector('#nick_duplicate input[type=text]');
+    const duplicateNickCheckMessage = document.getElementById('duplicate_check_nick');
+    
+	
+    if (nickInput && duplicateNickCheckMessage) {
+        nickInput.addEventListener('change', () => {
+            duplicateNickCheckMessage.textContent = "중복 체크를 해주세요.";
+            duplicateNickCheckMessage.style.color = "red";
+        });
+    }
+    
     
     document.querySelector('#password').addEventListener('input', function() {
     const password = this.value;
@@ -26,36 +48,96 @@ if (window.location.pathname.startsWith("/editor/join")) {
         pwCheckDiv.textContent = '사용할 수 없는 비밀번호입니다.';
         pwCheckDiv.style.color = 'red'; // 글자 색을 빨간색으로 설정
     }
-});
-  
-document.querySelector('#password_check').addEventListener('input', function() {
-    const password = document.querySelector('#password').value;
-    const passwordCheck = this.value;
-    const pwAgainCheckDiv = document.querySelector('#pw_again_check');
-
-    // 비밀번호 확인이 일치하는지 확인
-    if (password == passwordCheck && passwordCheck != "") {
-        pwAgainCheckDiv.textContent = '비밀번호가 동일합니다.';
-        pwAgainCheckDiv.style.color = 'green'; // 글자 색을 초록색으로 설정
-    } else if (passwordCheck != "") {
-        pwAgainCheckDiv.textContent = '비밀번호가 일치하지 않습니다.';
-        pwAgainCheckDiv.style.color = 'red'; // 글자 색을 빨간색으로 설정
-    } else {
-        pwAgainCheckDiv.textContent = ''; // 비밀번호 확인이 비어 있으면 메시지 지우기
+    
+    
+    
+	document.querySelector('#password_check').addEventListener('input', function() {
+	    const password = document.querySelector('#password').value;
+	    const passwordCheck = this.value;
+	    const pwAgainCheckDiv = document.querySelector('#pw_again_check');
+	
+	    // 비밀번호 확인이 일치하는지 확인
+	    if (password == passwordCheck && passwordCheck != "") {
+	        pwAgainCheckDiv.textContent = '비밀번호가 동일합니다.';
+	        pwAgainCheckDiv.style.color = 'green'; // 글자 색을 초록색으로 설정
+	    } else if (passwordCheck != "") {
+	        pwAgainCheckDiv.textContent = '비밀번호가 일치하지 않습니다.';
+	        pwAgainCheckDiv.style.color = 'red'; // 글자 색을 빨간색으로 설정
+	    } else {
+	        pwAgainCheckDiv.textContent = ''; // 비밀번호 확인이 비어 있으면 메시지 지우기
+	    }
+	});  
+    
+    const passwordChange = document.getElementById('password');
+    const passwordChange_check = document.getElementById('pw_again_check');
+    
+   
+     if (passwordChange && passwordChange_check) {
+        passwordChange.addEventListener('change', () => {
+            passwordChange_check.textContent = "비밀번호 체크를 해주세요.";
+            passwordChange_check.style.color = "red";
+        });
     }
-});  
+	}); 
     
     
+    /*회원가입 활성화*/
+    
+	// 요소와 버튼 선택
+	const emailCheckBox = document.querySelector('#duplicate_check_email');
+	const nickCheckBox = document.querySelector('#duplicate_check_nick');
+	const pwCheckBox = document.querySelector('#pw_check');
+	const pwAgainCheckCheckBox = document.querySelector('#pw_again_check');
+	const signupButton = document.querySelector('.join_button button[type=submit]');
+	
+	// 모든 요소의 색상이 초록색인지 확인하는 함수
+	function checkPwAgainColor() {
+	    const emailColor = getComputedStyle(emailCheckBox).color;
+	    const nickColor = getComputedStyle(nickCheckBox).color;
+	    const pwColor = getComputedStyle(pwCheckBox).color;
+	    const pwAgainColor = getComputedStyle(pwAgainCheckCheckBox).color;
+	
+	    if (emailColor == 'rgb(0, 128, 0)' &&
+	        nickColor == 'rgb(0, 128, 0)' &&
+	        pwColor == 'rgb(0, 128, 0)' &&
+	        pwAgainColor == 'rgb(0, 128, 0)') {
+	        signupButton.disabled = false;
+	        console.log('색이 모두 초록색입니다.');
+	    } else {
+	        signupButton.disabled = true;
+	        console.log('색이 모두 초록색이 아닙니다.');
+	    }
+	}
+	
+	if(!document.querySelector('.email_join').style.display){
+		// 일정 시간마다 색상 확인 (0.5초마다 확인)
+		const interval = setInterval(() => {
+		    checkPwAgainColor();
+		
+		    // 버튼이 활성화된 경우 더 이상 확인할 필요 없으므로 정지
+		    if (!signupButton.disabled) {
+		        clearInterval(interval);
+		    }
+		}, 500);
+    }
+    
+    /*회원가입 정보 */
+    document.querySelector('#join_button').onclick = function () {
+        const email = $('#email_duplicate input[type=email]').val();
+        const nick = $('#nick_duplicate input[type=text]').val();
+        const password = $('#password').val();
+        join(email, nick, password);
+    };
 }
 
 function duplicated_check(check, type){
 	    
-    const token = $("meta[name='_csrf']").attr("content")
+    const token = $("meta[name='_csrf']").attr("content");
 	const header = $("meta[name='_csrf_header']").attr("content");
 	
     $.ajax({
-        type: 'POST',
-        url: '/editor/join',
+        type: 'GET',
+        url: '/editor/duplicated/join',
         dataType: 'json',
         data: { check: check }, 
 	    beforeSend : function(xhr) {
@@ -66,17 +148,20 @@ function duplicated_check(check, type){
             if (result == 0) {
             	if(type== 'email'){
                 	$('#duplicate_check_email').text('사용할 수 있는 아이디입니다.');
+                	$('#duplicate_check_email').css('color', 'green');
                 }else if(type== 'nick'){
                 	$('#duplicate_check_nick').text('사용할 수 있는 닉네임입니다.');
+                	$('#duplicate_check_nick').css('color', 'green');
                 }
-                $('.duplicate_check_message').css('color', 'green');
+                
             } else if (result == 1) {
                 if(type== 'email'){
                 	$('#duplicate_check_email').text('이미 있는 아이디입니다.');
+                	$('#duplicate_check_email').css('color', 'red');
                 }else if(type== 'nick'){
                 	$('#duplicate_check_nick').text('이미 있는 닉네임입니다.');
+                	$('#duplicate_check_nick').css('color', 'red');
                 }
-                $('.duplicate_check_message').css('color', 'red');
             }
         },
         error: function(a, b, c) {
@@ -86,6 +171,40 @@ function duplicated_check(check, type){
 }
 
 
+
+
+function join(email, nick, password){
+	    
+    const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+    $.ajax({
+        type: 'POST',
+        url: '/editor/join',
+        dataType: 'json',
+        contentType: 'application/json', 
+        data: JSON.stringify({ 
+            id: email,
+            nick: nick,
+            pw: password
+        }), 
+	    beforeSend : function(xhr) {
+	        xhr.setRequestHeader(header, token);
+	    },
+        success: function(result) {
+        console.log(type);
+            if (result == 0) {
+            	console.log("회원가입 실패");
+            } else if (result == 1) {
+               console.log("회원가입 성공");
+               location.href = '/editor/login';
+            }
+        },
+        error: function(a, b, c) {
+            console.log(a, b, c);
+        }
+    });
+}
 
 
 if (window.location.pathname.startsWith("/editor/")||

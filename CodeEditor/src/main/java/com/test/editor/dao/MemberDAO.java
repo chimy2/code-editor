@@ -29,6 +29,11 @@ public class MemberDAO  {
 		return mapper.duplicatedNickCheck(check);
 	}
 
+	public int joinOk(MemberDTO dto) {
+
+		return mapper.joinOk(dto);
+	}
+
 	
 	
 	
