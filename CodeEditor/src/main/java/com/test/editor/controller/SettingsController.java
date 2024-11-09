@@ -35,8 +35,8 @@ public class SettingsController {
 	@ResponseBody
 	public String getTheme(Principal principal, HttpSession session) {
 
-		MemberDTO member = (MemberDTO) session.getAttribute("dto");
-		String member_seq = member.getSeq(); 
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq();  
 		
 		return dao.getTheme(member_seq);
 	}
@@ -45,7 +45,7 @@ public class SettingsController {
 	@ResponseBody
 	public String updateTheme(@RequestBody ThemeDTO theme, HttpSession session) {
 
-		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
 		theme.setMember_seq(member_seq);
@@ -58,7 +58,7 @@ public class SettingsController {
 	@ResponseBody
 	public List<StyleSettingDTO> getFont(HttpSession session) {
 
-		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
 		return dao.getFont(member_seq);
@@ -68,7 +68,7 @@ public class SettingsController {
 	@ResponseBody
 	public String updateFont(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
 
-		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
 	    Map<String, Object> fontStyle = new HashMap<>();
@@ -93,7 +93,7 @@ public class SettingsController {
 	@ResponseBody
 	public List<StyleSettingDTO> getColor(HttpSession session) {
 
-		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
 		return dao.getColor(member_seq);
@@ -103,7 +103,7 @@ public class SettingsController {
 	@ResponseBody
 	public String updateColor(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
 		
-		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
 		Map<String, Object> colorStyle = new HashMap<>();
@@ -132,7 +132,7 @@ public class SettingsController {
     @ResponseBody 
     public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
 
-    	MemberDTO member = (MemberDTO) session.getAttribute("dto");
+    	MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
     	List<TemplateDTO> template = dao.getTemplate(member_seq); 
@@ -150,7 +150,7 @@ public class SettingsController {
     @ResponseBody 
     public int addTemplate(@RequestBody TemplateDTO template, HttpSession session) {
     	
-    	MemberDTO member = (MemberDTO) session.getAttribute("dto");
+    	MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq(); 
 		
     	template.setMember_seq(member_seq);
@@ -164,12 +164,3 @@ public class SettingsController {
     }
 
 }
-
-
-
-
-
-
-
-
-

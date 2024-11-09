@@ -11,8 +11,6 @@ public interface SettingsMapper {
 
 	String getTheme(String member_seq);
 
-	int updateTheme(ThemeDTO theme);
-
 	List<StyleSettingDTO> getFont(String member_seq);
 
 	List<StyleSettingDTO> getColor(String member_seq);
@@ -28,5 +26,8 @@ public interface SettingsMapper {
 	int addTemplate(TemplateDTO template);
 
 	int delTemplate(String template_seq);
+
+	void callSwitchTheme(ThemeDTO theme);
+	void updateTheme(ThemeDTO theme);
 	
 }

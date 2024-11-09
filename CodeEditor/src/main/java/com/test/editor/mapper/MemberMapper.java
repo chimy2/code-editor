@@ -18,6 +18,10 @@ public interface MemberMapper {
 
 	List<MemberDTO> username();
 
+	void callInsertDefaultSettings(String member_seq);
+
+	String getMaxSeq();
+
 	
 	
 	

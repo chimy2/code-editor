@@ -21,8 +21,9 @@ public class SettingsDAO {
 		return mapper.getTheme(member_seq);
 	}
 
-	public int updateTheme(ThemeDTO theme) {
-		return mapper.updateTheme(theme);
+	public void updateTheme(ThemeDTO theme) {
+		mapper.updateTheme(theme);
+		mapper.callSwitchTheme(theme);
 	}
 
 	public List<StyleSettingDTO> getFont(String member_seq) {
@@ -61,18 +62,4 @@ public class SettingsDAO {
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

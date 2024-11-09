@@ -11,8 +11,12 @@
 	</select>
 
 	<update id="updateTheme">
-		update theme set theme = #{theme} where seq = #{member_seq}
+		update theme set theme = #{theme} where member_seq = #{member_seq} 
 	</update>
+	
+	<select id="callSwitchTheme" statementType="CALLABLE">
+	    { CALL switchTheme(#{theme, jdbcType=VARCHAR}, #{member_seq, jdbcType=VARCHAR}) }
+	</select>
 	
 	
 	<resultMap id="FontSettingResultMap" type="styleSetting">

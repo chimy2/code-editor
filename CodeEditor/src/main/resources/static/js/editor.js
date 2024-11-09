@@ -860,7 +860,6 @@ function handleEditButtonClick() {
 }
 
 // update, delete, create
-
 let themeModified = false;
 let fontModified = false; 
 let colorModified = false;
@@ -882,6 +881,7 @@ $('.select-font-family li, .select-font-size li').on('click', function() {
 	fontModified = true;
 });
 
+
 function closeSettings() {
     $('.settings-body').hide(); 
 }
@@ -895,27 +895,37 @@ $('.settings-footer button').on('click', function() {
     	
     	if (themeModified) {
     		updateTheme();
+            confiemReload();
     	}
 
 		if (fontModified) {
 			getSelFont();
+            confiemReload();
 		}
 
 		if (colorModified) {
 			getSelColor();
-		}
-		
-		if (templateModified) { 
-			console.log("업데이트 템플릿 호출 ");
-		}
-        
-		closeSettings();
+            confiemReload();
+		} 
+
+        if (templateModified) {  
+            confiemReload();
+        }
 		
     } else {
         closeSettings(); 
     }
 });
 
+function confiemReload() {
+    const confirmReload = confirm('설정 적용하려면 새로고침 해야되걸랑');
+
+    if (confirmReload) {
+        history.go(0);
+    } else {
+        closeSettings();
+    }
+}
 
 function updateTheme(selectedTheme) {
 	
@@ -1002,7 +1012,7 @@ function updateFont(selFont, selSize, fontSeq, sizeSeq) {
             xhr.setRequestHeader(header, token);
         },
 		success: function (data) {
-			console.log("업데이트 성공: ", data)
+			console.log("업데이트 성공: ", data);
 		},
 		error: function(a,b,c) {
 			console.log(a,b,c);
@@ -1068,10 +1078,12 @@ function updateTemplate(keyword, code, template_seq) {
 			xhr.setRequestHeader(header, token);
 		},
 		success: function(data) {
-			console.log("업데이트 성공 " + data);
+			console.log("업데이트 성공 " + data); 
 			$('.template-preview').empty();
 			getTemplateData();
-			closeTemplate();
+			closeTemplate(); 
+            isModified = true;
+            templateModified = true;
 		},
 		error: function(a,b,c) {
 			console.log(a,b,c);
@@ -1098,9 +1110,11 @@ function addTemplate() {
 			xhr.setRequestHeader(header, token);
 		}, 
 		success: function(data) {
-			console.log("업로드 성공 " + data); 
+			console.log("업로드 성공 " + data);  
 			getTemplateData(); 
 			closeTemplate();
+            isModified = true;
+            templateModified = true;
 		},
 		error: function(a,b,c) {
 			console.log(a,b,c);
@@ -1126,9 +1140,11 @@ function deleteTemplate(template_seq) {
 			xhr.setRequestHeader(header, token);
 		}, 
 		success: function(data) {
-			console.log("삭제 성공 " + template_seq); 
+			console.log("삭제 성공 " + template_seq);  
 			getTemplateData(); 
 			$('.template-preview').empty();
+            isModified = true;
+            templateModified = true;
 		},
 		error: function(a,b,c) {
 			console.log(a,b,c);

@@ -39,6 +39,14 @@ public class MemberDAO  {
 		return mapper.username();
 	}
 
+	public void callInsertDefaultSettings(String member_seq) {
+		mapper.callInsertDefaultSettings(member_seq);
+	}
+
+	public String getMaxSeq() {
+		return mapper.getMaxSeq();
+	}
+
 
 	
 	

@@ -49,6 +49,15 @@
 	    values ((select (max(seq)) + 1 from member), #{id}, #{pw}, #{nick}, default, default, default, default)
 	</insert>
 	
+	<select id="getMaxSeq" resultType="String">
+		select max(seq) from member
+	</select>
+	
+	<select id="callInsertDefaultSettings" statementType="CALLABLE">
+	    { CALL insert_default_settings(#{member_seq, jdbcType=VARCHAR}) }
+	</select>
+		
+	
 	<!-- 자동 로그인 -->
 	<select id="username" resultType="member">
 		select id from member

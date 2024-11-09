@@ -45,6 +45,13 @@ public class MemberController {
 		
 		int result = dao.joinOk(dto);
 	    System.out.println(result);
+	    
+	    if (result > 0) {
+	    	String member_seq = dao.getMaxSeq();
+	    	System.out.println(member_seq);
+	        dao.callInsertDefaultSettings(member_seq);
+	    }
+	    
 		return result;
 	}
 	
