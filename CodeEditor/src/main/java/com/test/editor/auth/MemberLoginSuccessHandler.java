@@ -28,11 +28,11 @@ public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler{
 		//response.sendRedirect("/editor/mypage?nick=" + URLEncoder.encode(nick, "UTF-8"));
 		
 		CustomUser customUser = (CustomUser) authentication.getPrincipal(); MemberDTO
-		dto = customUser.getMember();
-		request.setAttribute("dto", dto);
+		member = customUser.getMember();
+		request.setAttribute("member", member);
 		
 		HttpSession session = request.getSession();
-		session.setAttribute("dto", dto);
+		session.setAttribute("member", member);
 		
 		response.sendRedirect("/editor/mypage");
 	

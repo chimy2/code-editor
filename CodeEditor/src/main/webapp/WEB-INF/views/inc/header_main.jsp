@@ -10,21 +10,7 @@
 			Sign up
 		</div>
 		<div class="login_header_box">
-			<form method="POST" action="/editor/login">
-				<input type="hidden" name="username" value="test@google.com">			
-				<input type="hidden" name="password" value="a1234567!">			
-				<button style="color:white;" type="submit">자동 로그인: test</button>
-			</form>
-		</div>
-		<div class="login_header_box" style="color:white;">
-			<form method="POST" action="/editor/login">
-				<input type="hidden" name="username" value="dog@naver.com">		
-				<input type="hidden" name="password" value="a1234567!">	
-				<button style="color:white;" type="submit">자동 로그인: dog</button>
-			</form>
-		</div>
-		<div class="login_header_box">
-			${member}
+			${member.nick}
 		</div>
 	
 	<!-- 로그인 하기 전 -->
