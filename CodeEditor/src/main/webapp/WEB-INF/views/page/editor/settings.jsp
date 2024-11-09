@@ -89,10 +89,10 @@
                             </label>
                         </div>
                         <div class="colors">
-                            <input type="color" id="java-String" value=""> 
+                            <input type="color" id="java-string" value=""> 
                             <label>
                                 String Literal color
-                                <input type="hidden" class="color-category" value="java.String">
+                                <input type="hidden" class="color-category" value="java.string">
                             </label>
                         </div>
                     </div>
@@ -165,7 +165,7 @@
 							<button>Edit</button>
 						</div>
 						<div id="delete-setting">
-							<button>Delete</button>
+							<button onclick="selDeleteSeq();">Delete</button>
 						</div>
 					</div>
 				</div>
@@ -208,7 +208,7 @@
         	</table>
         </div>
         <div class="template-footer">
-            <img src="/editor/resources/image/icon/check-circle.svg">
+            <img src="/editor/resources/image/icon/check-circle.svg" onclick="addTemplate();">
         </div>
     </div>
 </div>
@@ -238,7 +238,7 @@
         	</table>
         </div>
         <div class="template-footer">
-            <button><img src="/editor/resources/image/icon/check-circle.svg"></button>
+            <button><img src="/editor/resources/image/icon/check-circle.svg" onclick="getTemplateVal();"></button>
         </div>
     </div>
 </div>
@@ -248,207 +248,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	
-let themeModified = false;
-let fontModified = false; 
-let colorModified = false;
-let isModified = false;
-
-$('input[name="theme"]').on('change', function() {
-	isModified = true;
-	themeModified = true;
-});
-
-$('input[type="color"]').on('input', function() {
-	isModified = true;
-	colorModified = true;
-});
-
-$('.select-font-family li, .select-font-size li').on('click', function() {
-	isModified = true;
-	fontModified = true;
-});
-
-function closeSettings() {
-    $('.settings-body').hide(); 
-}
-
-$('.settings-footer button').on('click', function() {
-    if (isModified) {
-    	
-    	if (themeModified) {
-    		updateTheme();
-    	}
-
-		if (fontModified) {
-			getSelFont();
-		}
-
-		if (colorModified) {
-			getSelColor();
-		}
-        
-		closeSettings();
-		
-    } else {
-        closeSettings(); 
-    }
-});
-
-
-function updateTheme(selectedTheme) {
-	
-	const token = $("meta[name='_csrf']").attr("content")
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	console.log($('input[name="theme"]:checked').val());
-	const theme = $('input[name="theme"]:checked').val();
-	let themeNumber;
-	
-	if (theme === 'dark') {
-		themeNumber = '0';
-	} else if (theme === 'light') {
-		themeNumber = '1';
-	}
-	
-    $.ajax({
-        url: '/editor/theme',
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ theme: themeNumber }),
-        beforeSend : function(xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-        success: function() {
-            console.log('업뎃 성공요');
-        },
-        error: function(a,b,c) {
-            console.log(a, b, c);
-        }
-    });
-}
-
-
-function getSelFont() { 
-	
-	const selFont = document.querySelector(".selected-font span").textContent;
-	const selSize = document.querySelector(".selected-size span").textContent;
-
-	const fontSeq = document.querySelector(".select-font-family input[type='hidden']").value;
-	const sizeSeq = document.querySelector(".select-font-size input[type='hidden']").value;
-
-	console.log("폰트: ", selFont);
-	console.log("크기: ", selSize);	
-	console.log("폰트 seq: ", fontSeq);
-	console.log("크기 seq: ", sizeSeq);	
-
-	updateFont(selFont, selSize, fontSeq, sizeSeq);
-
-}
-
-function getSelColor() {
-
-    const backgroundElement = document.querySelector("#editor-background");
-    const foregroundElement = document.querySelector("#editor-foreground");
-    const commentElement = document.querySelector("#java-comment");
-    const keywordElement = document.querySelector("#java-keyword");
-    const stringElement = document.querySelector("#java-String");
-
-    // 요소가 존재하는지 확인
-    if (!backgroundElement) {
-	    console.error("backgroundElement not found!");
-	}
-    
-	if (!foregroundElement) {
-	    console.error("foregroundElement not found!");
-	}
-	
-	if (!commentElement) {
-	    console.error("commentElement not found!");
-	}
-	
-	if (!keywordElement) {
-	    console.error("keywordElement not found!");
-	}
-	
-	if (!stringElement) {
-	    console.error("stringElement not found!");
-	}
-	
-    if (!backgroundElement || !foregroundElement || !commentElement || !keywordElement || !stringElement) {
-        console.error("Some elements were not found!");
-        return;
-    }
-
-    const background = backgroundElement.value;
-    const foreground = foregroundElement.value;
-    const comment = commentElement.value;
-    const keyword = keywordElement.value;
-    const string = stringElement.value;
-    
-	console.log("background: ", background);
-	console.log("foreground: ", foreground);
-	console.log("comment: ", comment);
-	console.log("keyword: ", keyword);
-	console.log("string: ", string);
-
-	updateColor(background, foreground, comment, keyword, string);
-
-}
-
-function updateFont(selFont, selSize, fontSeq, sizeSeq) {
-	
-	const token = $("meta[name='_csrf']").attr("content")
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: "/editor/font",
-		method: "PUT",
-		contentType: "application/json",
-		data: JSON.stringify([
-			{ value: selFont, styleType_seq: fontSeq },
-			{ value: selSize, styleType_seq: sizeSeq }
-		]),
-		beforeSend : function(xhr) {
-            xhr.setRequestHeader(header, token);
-        },
-		success: function (data) {
-			console.log("업데이트 성공: ", data)
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
-}
-
-
-function updateColor(background, foreground, comment, keyword, string) {
-	
-	const token = $("meta[name='_csrf']").attr("content")
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: "/editor/color",
-		method: "PUT",
-		contentType: "application/json",
-		data: JSON.stringify([
-			{ value: background, styleType_seq: "3" },
-			{ value: foreground, styleType_seq: "4" },
-			{ value: comment, styleType_seq: "5" },
-			{ value: keyword, styleType_seq: "6" },
-			{ value: string, styleType_seq: "7" }
-		]),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success: function (data) {
-			console.log("업데이트 성공: ", data)
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
-}
-
 
 </script>
 

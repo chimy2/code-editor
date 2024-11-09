@@ -16,6 +16,12 @@ public interface MemberMapper {
 
 	int joinOk(MemberDTO dto);
 
+	List<MemberDTO> username();
+
+	void callInsertDefaultSettings(String member_seq);
+
+	String getMaxSeq();
+
 	
 	
 	

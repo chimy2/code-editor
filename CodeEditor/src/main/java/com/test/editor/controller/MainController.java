@@ -1,12 +1,11 @@
 package com.test.editor.controller;
 
+import java.util.List;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.model.MemberDTO;
@@ -24,12 +23,11 @@ public class MainController {
 		return "main";
 	}
 	
-	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
 	public String mypage() {
-		
 		return "mypage";
 	}
+
 	
 	@GetMapping("/stats")
 	public String stats() {
@@ -38,7 +36,9 @@ public class MainController {
 	}
 	
 	@GetMapping("/login")
-	public String login() {
+	public String login(Model model) {
+		List<MemberDTO> username = dao.username();
+		model.addAttribute("username", username);
 		return "login";
 	}
 	

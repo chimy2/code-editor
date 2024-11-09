@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="header">
 	<div class = "headerImg">
-		<img src="/editor/resources/image/icon/home.svg">
+		<a href="/editor/"><img src="/editor/resources/image/icon/home.svg"></a>
 		<img src="/editor/resources/image/icon/edit.svg">
 	</div>
 	<div class="nick">

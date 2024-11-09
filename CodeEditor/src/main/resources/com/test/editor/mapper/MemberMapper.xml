@@ -24,9 +24,6 @@
 
 	<!-- team과 project 정보 가져오기 -->
 	
-
-
-
 	<select id="loadUser" resultMap="member">
 		select * from member where id = #{username}
 	</select>
@@ -51,6 +48,20 @@
 		insert into member (seq, id, pw, nick, regdate, ing, color, oAuthType)
 	    values ((select (max(seq)) + 1 from member), #{id}, #{pw}, #{nick}, default, default, default, default)
 	</insert>
+	
+	<select id="getMaxSeq" resultType="String">
+		select max(seq) from member
+	</select>
+	
+	<select id="callInsertDefaultSettings" statementType="CALLABLE">
+	    { CALL insert_default_settings(#{member_seq, jdbcType=VARCHAR}) }
+	</select>
+		
+	
+	<!-- 자동 로그인 -->
+	<select id="username" resultType="member">
+		select id from member
+	</select>
 	
 	
 </mapper>

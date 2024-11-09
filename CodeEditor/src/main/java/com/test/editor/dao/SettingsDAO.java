@@ -21,8 +21,9 @@ public class SettingsDAO {
 		return mapper.getTheme(member_seq);
 	}
 
-	public int updateTheme(ThemeDTO theme) {
-		return mapper.updateTheme(theme);
+	public void updateTheme(ThemeDTO theme) {
+		mapper.updateTheme(theme);
+		mapper.callSwitchTheme(theme);
 	}
 
 	public List<StyleSettingDTO> getFont(String member_seq) {
@@ -45,22 +46,20 @@ public class SettingsDAO {
 	public int updateColor(Map<String, Object> colorStyle) {
 		return mapper.updateColor(colorStyle);
 	}
+
+	public int updateTemplate(TemplateDTO template) {
+		return mapper.updateTemplate(template);
+	}
+
+	public int addTemplate(TemplateDTO template) {
+		return mapper.addTemplate(template);
+	}
+
+	public int delTemplate(String template_seq) {
+		return mapper.delTemplate(template_seq);
+	}
 	
 	
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

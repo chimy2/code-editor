@@ -11,8 +11,12 @@
 	</select>
 
 	<update id="updateTheme">
-		update theme set theme = #{theme} where seq = #{member_seq}
+		update theme set theme = #{theme} where member_seq = #{member_seq} 
 	</update>
+	
+	<select id="callSwitchTheme" statementType="CALLABLE">
+	    { CALL switchTheme(#{theme, jdbcType=VARCHAR}, #{member_seq, jdbcType=VARCHAR}) }
+	</select>
 	
 	
 	<resultMap id="FontSettingResultMap" type="styleSetting">
@@ -80,10 +84,20 @@
 		WHERE styleType_seq BETWEEN 3 AND 7 AND member_seq = #{member_seq}
 	</update>
 	
-	
-	
 	<select id="getTemplate" parameterType="String" resultType="template">
-		select * from template where member_seq = #{member_seq}
+		select * from template where member_seq = #{member_seq} order by keyword
 	</select>
+	
+	<update id="updateTemplate" parameterType="template">
+		update template set code = #{code}, keyword = #{keyword} where seq = #{seq}
+	</update>
+	
+	<insert id="addTemplate" parameterType="template">
+		INSERT INTO template (seq, member_seq, keyword, code) 
+		VALUES (seqTemplate.nextVal, #{member_seq}, #{keyword}, #{code})
+	</insert>
 
+	<delete id="delTemplate" parameterType="String">
+		DELETE FROM template WHERE seq = #{template_seq}	
+	</delete>
 </mapper>
