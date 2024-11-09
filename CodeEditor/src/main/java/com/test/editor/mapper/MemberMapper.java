@@ -16,6 +16,8 @@ public interface MemberMapper {
 
 	int joinOk(MemberDTO dto);
 
+	List<MemberDTO> username();
+
 	
 	
 	
