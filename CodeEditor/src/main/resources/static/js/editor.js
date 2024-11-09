@@ -290,18 +290,11 @@ $('.btn_open_editor').on('click', function () {
 
         let theme = 'vs-dark'; 
 
-        console.log("themeData (before check): ", themeData);
-
-        // 정확하게 문자열 '0' 또는 '1'로 비교
-        if (themeData == 0) {  // 숫자 비교
+        if (themeData == 0) {  
             theme = 'vs-dark';
-        } else if (themeData == 1) {  // 숫자 비교
+        } else if (themeData == 1) {  
             theme = 'vs';
         }
-    
-        // theme 값 확인
-        console.log("themeData (after check): ", themeData);
-        console.log("theme: ", theme); 
 
         data.forEach(item => {
             if (item.styleType.category === 'editor.background') {
