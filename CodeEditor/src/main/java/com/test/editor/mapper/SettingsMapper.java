@@ -22,5 +22,11 @@ public interface SettingsMapper {
 	int updateFont(Map<String, Object> fontStyle);
 
 	int updateColor(Map<String, Object> colorStyle);
+
+	int updateTemplate(TemplateDTO template);
+
+	int addTemplate(TemplateDTO template);
+
+	int delTemplate(String template_seq);
 	
 }
