@@ -62,6 +62,8 @@ $('.editor-tab ul').sortable({
     scroll: false,
 });
 
+let templates = [];
+
 // Add a new tab with Monaco editor
 $('.btn_open_editor').on('click', function () {
     if (!socket) {
@@ -91,16 +93,50 @@ $('.btn_open_editor').on('click', function () {
     $('.editor-tab').tabs('refresh');
     $('.editor-tab').tabs('option', 'active', tabCount);
 
+    let editor;
+     
     require(['vs/editor/editor.main'], function () {
-        const editor = monaco.editor.create(document.getElementById(tabId), {
+        getColorData();
+        getFontData(); 
+        getTemplateData();
+
+        // Create the editor and assign it to the global variable
+        editor = monaco.editor.create(document.getElementById(tabId), {
             value: '// Start coding here...',
             language: 'java',
-            theme: 'vs-dark',
+            theme: 'custom-theme',
             minimap: {
                 enabled: false,
-            },
+            }, 
             automaticLayout: true,
+            fontFamily: 'Courier', 
+            fontSize: 14, 
+            wordBasedSuggestions: true,
         });
+    
+        // Completion Item Provider 등록
+        monaco.languages.registerCompletionItemProvider('java', {
+            provideCompletionItems: function (model, position) {
+                const text = model.getValue();
+                const words = Array.from(new Set(text.match(/\b\w+\b/g)));
+                const wordSuggestions = words.map((word) => ({
+                    label: word,
+                    kind: monaco.languages.CompletionItemKind.Text,
+                    insertText: word,
+                }));
+
+                const templateSuggestions = templates.map((template) => ({
+                    label: template.keyword,
+                    kind: monaco.languages.CompletionItemKind.Snippet,
+                    insertText: template.code.replace(/\\n/g, '\n'),
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    documentation: `Insert ${template.code}`,
+                }));
+
+                return { suggestions: [...wordSuggestions, ...templateSuggestions] };
+            },
+        });
+
 
         // Detect cursor position change
         editor.onDidChangeCursorPosition((event) => {
@@ -166,6 +202,129 @@ $('.btn_open_editor').on('click', function () {
             }
         };
     });
+
+    function fetchSettings(url, onSuccess) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'json',
+            success: onSuccess,
+            error: function (a, b, c) {
+                console.error(a, b, c);
+            },
+        });
+    } 
+
+    function getColorData() {
+        fetchSettings('/editor/color', function (data) {
+            getColor(data);
+        });
+    }
+    
+    function getFontData() {
+        fetchSettings('/editor/font', function (data) {
+            getFont(data);
+        });
+    }
+    
+    function getTemplateData() {
+        fetchSettings('/editor/template', function (data) {
+            templates = data.map((template) => ({
+                keyword: template.keyword,
+                code: template.code,
+            }));
+            applyTemplateData(data);
+        });
+    }
+
+    function applyTemplateData(data) {
+        const templateList = $('.template-list'); 
+        templateList.empty(); 
+    
+        data.forEach((template) => {
+            const templateItem = `<li class="template-item" data-code="${template.code}">${template.keyword}</li>`;
+            templateList.append(templateItem);
+        });
+     
+        $('.template-item').on('click', function () {
+            let code = $(this).data('code');
+     
+            code = code.replace(/\\n/g, '\n');
+    
+            if (editor) {
+                editor.setValue(code); 
+            }
+        });
+    }
+    
+
+    function getColor(data) {
+        let background = '#FFFFFF';
+        let foreground = '#000000';
+        let comment = '#FF0000';
+        let keyword = '#FF0000';
+        let string = '#FF0000'; 
+
+        data.forEach(item => {
+            if (item.styleType.category === 'editor.background') {
+                background = item.value;
+            } else if (item.styleType.category === 'editor.foreground') {
+                foreground = item.value;
+            } else if (item.styleType.category === 'java.comment') {
+                comment = item.value;
+            } else if (item.styleType.category === 'java.keyword') {
+                keyword = item.value;
+            } else if (item.styleType.category === 'java.string') {
+                string = item.value;
+            }
+        });
+
+        console.log("background: ", background);
+        console.log("foreground: ", foreground);
+        console.log("comment: ", comment);
+        console.log("keyword: ", keyword);
+        console.log("string: ", string);    
+
+        monaco.editor.defineTheme('custom-theme', {
+            base: 'vs-dark',
+            inherit: true,
+            rules: [
+                { token: 'comment', foreground: comment },
+                { token: 'keyword', foreground: keyword },
+                { token: 'string', foreground: string },
+            ],
+            colors: {
+                'editor.background': background,
+                'editor.foreground': foreground,
+            },
+        });
+
+        // Apply the theme
+        monaco.editor.setTheme('custom-theme');
+    }
+
+    function getFont(data) {
+        let fontFamily = 'Courier'; // Default font
+        let fontSize = 14; // Default font size
+
+        data.forEach(item => {
+            if (item.styleType.category === 'fontFamily') {
+                fontFamily = item.value;
+            } else if (item.styleType.category === 'fontSize') {
+                fontSize = parseInt(item.value, 10);
+            }
+        });
+
+        console.log("fontFamily: ", fontFamily);
+        console.log("fontSize: ", fontSize);
+ 
+        if (editor) { 
+            editor.updateOptions({
+                fontFamily: fontFamily,
+                fontSize: fontSize
+            });
+        }
+    }
 
     // Update tab counter
     tabCounter++;
@@ -334,6 +493,8 @@ function showContent(contentId) {
     document.getElementById(contentId + '-content').style.display = 'block';
 }
 
+
+/* Theme */
 // Dark와 Light 버튼 클릭 시 선택 상태를 적용하는 함수
 function toggleThemeSelection(theme) {
     const darkLabel = document.querySelector('label[for="dark-button"]');
@@ -369,42 +530,6 @@ document
 
 let selectedRowData = null;
 
-// 테이블 행 클릭 이벤트 핸들러
-function handleRowClick() {
-    $('.template-table tr').click(function () {
-        const keyword = $(this).find('td').eq(0).text();
-        const code = $(this).find('td').eq(1).text();
-
-        selectedRowData = { keyword, code };
-
-        $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
-        $(this).addClass('selected-row'); // 현재 선택 추가
-    });
-}
-
-// Edit 버튼 클릭 이벤트 핸들러
-function handleEditButtonClick() {
-    $('#edit-setting').off('click');
-
-    $('#edit-setting').click(() => {
-        if (!selectedRowData) {
-            alert('선택해 뭐하는거야');
-            return;
-        }
-
-        toggleDisplay($('.edit-template-body'));
-
-        const formattedContent = selectedRowData.code
-            .replace(/\\n/g, '<br>')
-            .replace(/\n/g, '<br>');
-
-        $('.edit-template-body .template-name-input').val(
-            selectedRowData.keyword
-        );
-        $('.edit-template-body textarea').val(selectedRowData.code);
-    });
-}
-
 function getThemeData() {
     $.ajax({
         url: '/editor/theme', // URI를 그대로 유지
@@ -425,7 +550,6 @@ function getThemeData() {
 }
 
 /* font */
-
 // 폰트 선택 초기화 함수
 function initializeFontSelection() {
     const fontItems = document.querySelectorAll('.select-font-family li');
@@ -489,7 +613,7 @@ function getFontData() {
         dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
-                applyFontData(data);
+                applyFontData(data); 
             }
         },
         error: function (a, b, c) {
@@ -569,7 +693,7 @@ function scrollToSelectedItem(container, selectedItem) {
     }
 }
 
-// 컬러
+/* Color */
 // 색상 데이터를 가져오는 함수
 function getColorData() {
     $.ajax({
@@ -578,7 +702,7 @@ function getColorData() {
         dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
-                applyColorData(data);
+                applyColorData(data); 
             }
         },
         error: function (a, b, c) {
@@ -618,6 +742,8 @@ function applyColorData(data) {
     });
 }
 
+
+/* Template */
 // 템플릿 데이터를 가져오는 함수
 function getTemplateData() {
     $.ajax({
@@ -633,6 +759,9 @@ function getTemplateData() {
                     <tr>
                         <td>${template.keyword}</td>
                         <td>${template.code}</td>
+                        <td>
+                            <input type="hidden" class="template-seq" value="${template.seq}"> 
+                        </td>
                     </tr>
 
                 `;
@@ -673,6 +802,343 @@ function attachRowClickEvent() {
         }
     });
 }
+
+
+// 테이블 행 클릭 이벤트 핸들러
+function handleRowClick() {
+    $('.template-table tr').click(function () {
+        const keyword = $(this).find('td').eq(0).text();
+        const code = $(this).find('td').eq(1).text();
+        const seq = $(this).find('.template-seq').val(); // 수정된 부분
+
+        console.log(seq);
+        selectedRowData = { keyword, code, seq };
+
+        $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
+        $(this).addClass('selected-row'); // 현재 선택 추가
+    });
+}
+
+// Edit 버튼 클릭 이벤트 핸들러
+function handleEditButtonClick() {  
+    $('#edit-setting').off('click');
+
+    $('#edit-setting').click(() => {
+        if (!selectedRowData) {
+            alert('선택해 뭐하는거야');
+            return;
+        }
+
+        toggleDisplay($('.edit-template-body'));
+
+        const formattedContent = selectedRowData.code
+            .replace(/<br>/g, '\n')
+            .replace(/\\n/g, '\n');
+ 
+        $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
+        $('.edit-template-body textarea').val(formattedContent);
+        $('.template-table input[type="hidden"]').val(selectedRowData.seq);
+    });
+}
+
+// update, delete, create
+
+let themeModified = false;
+let fontModified = false; 
+let colorModified = false;
+let templateModified = false;
+let isModified = false;
+
+$('input[name="theme"]').on('change', function() {
+	isModified = true;
+	themeModified = true;
+});
+
+$('input[type="color"]').on('input', function() {
+	isModified = true;
+	colorModified = true;
+});
+
+$('.select-font-family li, .select-font-size li').on('click', function() {
+	isModified = true;
+	fontModified = true;
+});
+
+function closeSettings() {
+    $('.settings-body').hide(); 
+}
+
+function closeTemplate() {
+	$('.template-body').hide();
+}
+
+$('.settings-footer button').on('click', function() {
+    if (isModified) {
+    	
+    	if (themeModified) {
+    		updateTheme();
+    	}
+
+		if (fontModified) {
+			getSelFont();
+		}
+
+		if (colorModified) {
+			getSelColor();
+		}
+		
+		if (templateModified) { 
+			console.log("업데이트 템플릿 호출 ");
+		}
+        
+		closeSettings();
+		
+    } else {
+        closeSettings(); 
+    }
+});
+
+
+function updateTheme(selectedTheme) {
+	
+	const token = $("meta[name='_csrf']").attr("content")
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	console.log($('input[name="theme"]:checked').val());
+	const theme = $('input[name="theme"]:checked').val();
+	let themeNumber;
+	
+	if (theme === 'dark') {
+		themeNumber = '0';
+	} else if (theme === 'light') {
+		themeNumber = '1';
+	}
+	
+    $.ajax({
+        url: '/editor/theme',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify({ theme: themeNumber }),
+        beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function() {
+            console.log('업뎃 성공요');
+        },
+        error: function(a,b,c) {
+            console.log(a, b, c);
+        }
+    });
+}
+
+
+function getSelFont() { 
+	
+	const selFont = document.querySelector(".selected-font span").textContent;
+	const selSize = document.querySelector(".selected-size span").textContent;
+
+	const fontSeq = document.querySelector(".select-font-family input[type='hidden']").value;
+	const sizeSeq = document.querySelector(".select-font-size input[type='hidden']").value;
+
+	console.log("폰트: ", selFont);
+	console.log("크기: ", selSize);	
+	console.log("폰트 seq: ", fontSeq);
+	console.log("크기 seq: ", sizeSeq);	
+
+	updateFont(selFont, selSize, fontSeq, sizeSeq);
+
+}
+
+function getSelColor() {
+
+    const backgroundElement = document.querySelector("#editor-background");
+    const foregroundElement = document.querySelector("#editor-foreground");
+    const commentElement = document.querySelector("#java-comment");
+    const keywordElement = document.querySelector("#java-keyword");
+    const stringElement = document.querySelector("#java-string");
+
+    if (!backgroundElement || !foregroundElement || !commentElement || !keywordElement || !stringElement) {
+        console.error("Some elements were not found!");
+        return;
+    }
+
+    const background = backgroundElement.value;
+    const foreground = foregroundElement.value;
+    const comment = commentElement.value;
+    const keyword = keywordElement.value;
+    const string = stringElement.value;
+    
+	console.log("background: ", background);
+	console.log("foreground: ", foreground);
+	console.log("comment: ", comment);
+	console.log("keyword: ", keyword);
+	console.log("string: ", string);
+
+	updateColor(background, foreground, comment, keyword, string);
+
+}
+
+function updateFont(selFont, selSize, fontSeq, sizeSeq) {
+	
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url: "/editor/font",
+		method: "PUT",
+		contentType: "application/json",
+		data: JSON.stringify([
+			{ value: selFont, styleType_seq: fontSeq },
+			{ value: selSize, styleType_seq: sizeSeq }
+		]),
+		beforeSend : function(xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+		success: function (data) {
+			console.log("업데이트 성공: ", data)
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+	});
+}
+
+
+function updateColor(background, foreground, comment, keyword, string) {
+	
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url: "/editor/color",
+		method: "PUT",
+		contentType: "application/json",
+		data: JSON.stringify([
+			{ value: background, styleType_seq: "3" },
+			{ value: foreground, styleType_seq: "4" },
+			{ value: comment, styleType_seq: "5" },
+			{ value: keyword, styleType_seq: "6" },
+			{ value: string, styleType_seq: "7" }
+		]),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success: function (data) {
+			console.log("업데이트 성공: ", data)
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+	});
+}
+
+
+
+function getTemplateVal() {
+    const keyword = $('.edit-template-body .template-name-input').val();
+    const selCode = $('.edit-template-body textarea').val();
+	const template_seq = $('.template-table input[type="hidden"]').val();
+
+    console.log("keyword : " + keyword);
+    console.log("code : " + selCode);
+	console.log("template_seq : " + template_seq);
+
+    const code = selCode
+        .replace(/\n/g, '\\n');
+
+    console.log("editCode : " + code);
+
+	updateTemplate(keyword, code, template_seq);
+
+}
+
+
+function updateTemplate(keyword, code, template_seq) {
+
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+
+    $.ajax({
+        url: '/editor/template',
+        method: 'PUT',
+		contentType: 'application/json',
+		data: JSON.stringify({ keyword: keyword, code: code, seq: template_seq }),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		},
+		success: function(data) {
+			console.log("업데이트 성공 " + data);
+			$('.template-preview').empty();
+			getTemplateData();
+			closeTemplate();
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+    });
+}
+
+function addTemplate() {
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+
+	const keyword = $('.new-template-body .template-name-input').val();
+	const selCode = $('.new-template-body textarea').val();
+
+	const code = selCode
+		.replace(/\n/g, '\\n');
+
+	$.ajax({
+		url: '/editor/template',
+		method: 'POST',
+		contentType: 'application/json',
+		data: JSON.stringify({ keyword: keyword, code: code }),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		}, 
+		success: function(data) {
+			console.log("업로드 성공 " + data); 
+			getTemplateData(); 
+			closeTemplate();
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+	});
+}
+
+function selDeleteSeq() {
+    const template_seq = $('.template-table tr.selected-row').find('input[type="hidden"]').val();
+    deleteTemplate(template_seq)
+}
+
+function deleteTemplate(template_seq) {
+	const token = $("meta[name='_csrf']").attr("content");
+	const header = $("meta[name='_csrf_header']").attr("content");
+	
+	$.ajax({
+		url: '/editor/template/' + template_seq,
+		method: 'DELETE',
+		contentType: 'application/json',
+		data: JSON.stringify({ seq: template_seq }),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader(header, token);
+		}, 
+		success: function(data) {
+			console.log("삭제 성공 " + template_seq); 
+			getTemplateData(); 
+			$('.template-preview').empty();
+		},
+		error: function(a,b,c) {
+			console.log(a,b,c);
+		}
+	});
+}
+
+
+
+
+
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
