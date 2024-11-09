@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+
+
 pageEncoding="UTF-8"%> <%@ taglib prefix="tiles"
 uri="http://tiles.apache.org/tags-tiles"%>
 <style></style>
+>>>>>>> 4e5c69164798395fed72a89ea887de2df590f5d9
 <div class="explorer_container">
     <div class="explorer_sidebar">
         <div class="package-explorer" id="packageExplorer">

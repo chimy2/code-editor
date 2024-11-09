@@ -1,5 +1,6 @@
 package com.test.editor.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,10 +35,11 @@ public class SettingsController {
 
 	@GetMapping("/theme")
 	@ResponseBody
-	public String getTheme(HttpSession session) {
+	public String getTheme(Principal principal, HttpSession session) {
 
 		// String member_seq = (String) session.getAttribute("member_seq");
 		String member_seq = "1";
+		System.out.println(principal);
 		return dao.getTheme(member_seq);
 	}
 
@@ -82,7 +84,6 @@ public class SettingsController {
 		return "update font";
 	}
 	
-	
 	@PutMapping(value="/color", produces="application/json")
 	@ResponseBody
 	public String updateColor(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
@@ -94,23 +95,17 @@ public class SettingsController {
 		for (StyleSettingDTO data : styleSettings) {
 			if ("3".equals(data.getStyleType_seq())) {
 			    colorStyle.put("background", data);
-			    System.out.println(data);
 			} else if ("4".equals(data.getStyleType_seq())) {
 			    colorStyle.put("foreground", data);
-			    System.out.println(data);
 			} else if ("5".equals(data.getStyleType_seq())) {
 			    colorStyle.put("comment", data);
-			    System.out.println(data);
 			} else if ("6".equals(data.getStyleType_seq())) {
 			    colorStyle.put("keyword", data);
-			    System.out.println(data);
 			} else if ("7".equals(data.getStyleType_seq())) {
 			    colorStyle.put("String", data);
-			    System.out.println(data);
 			} 
 			
 		}
-		
 		colorStyle.put("member_seq", member_seq);
 		dao.updateColor(colorStyle);
 		
