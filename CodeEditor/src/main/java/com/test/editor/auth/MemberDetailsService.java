@@ -17,12 +17,19 @@ public class MemberDetailsService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
+		
 		MemberDTO dto = mapper.loadUser(username);
+		
 		return dto != null ? new CustomUser(dto) : null;
 		
 	}
 
+	
+	
+	
+	
+	
+	
 }
 
 

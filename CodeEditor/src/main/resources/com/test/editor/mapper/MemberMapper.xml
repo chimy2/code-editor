@@ -24,9 +24,6 @@
 
 	<!-- team과 project 정보 가져오기 -->
 	
-
-
-
 	<select id="loadUser" resultMap="member">
 		select * from member where id = #{username}
 	</select>

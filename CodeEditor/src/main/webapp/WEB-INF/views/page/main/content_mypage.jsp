@@ -14,7 +14,7 @@
 				<div class="calendar_item">보드</div>
 				<div class="calendar_item">날짜</div>
 			</div>
-			<div class="calendar_month"></div>
+			<div class="calendar_month" id ="calendar"></div>
 			<div class="contact">Contact us</div>
 		</div>
 		
@@ -129,7 +129,9 @@
 		</div>
 	</div>
 </div>
-<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+<%-- <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 <sec:authentication property="principal.member.seq"/>
-
-
+<div><sec:authentication property="principal.member"/></div>
+<input type="hidden" value="<sec:authentication property="principal.member"/>"> --%>
+${dto} 
+${sessionScope.dto} 
