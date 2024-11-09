@@ -96,9 +96,12 @@ $('.btn_open_editor').on('click', function () {
     let editor;
      
     require(['vs/editor/editor.main'], function () {
-        getColorData();
+    
         getFontData(); 
         getTemplateData();
+        getThemeData(function (themeData) {
+            getColorData(themeData); 
+        });
 
         // Create the editor and assign it to the global variable
         editor = monaco.editor.create(document.getElementById(tabId), {
@@ -215,9 +218,15 @@ $('.btn_open_editor').on('click', function () {
         });
     } 
 
-    function getColorData() {
+    function getThemeData(onComplete) {
+        fetchSettings('/editor/theme', function (themeData) {
+            onComplete(themeData);
+        });
+    }
+    
+    function getColorData(themeData) {
         fetchSettings('/editor/color', function (data) {
-            getColor(data);
+            getColor(themeData, data); // 두 값을 함께 넘겨줌
         });
     }
     
@@ -235,6 +244,19 @@ $('.btn_open_editor').on('click', function () {
             }));
             applyTemplateData(data);
         });
+    }
+
+
+    function getFont(data) {
+
+        const theme = 'vs-dark';
+
+        if (data === '0') {
+            theme = 'vs-dark';
+        } else if (data === '1') {
+            theme = 'vs';
+        }
+
     }
 
     function applyTemplateData(data) {
@@ -258,12 +280,28 @@ $('.btn_open_editor').on('click', function () {
     }
     
 
-    function getColor(data) {
+    function getColor(themeData, data) {
+
         let background = '#FFFFFF';
         let foreground = '#000000';
         let comment = '#FF0000';
         let keyword = '#FF0000';
         let string = '#FF0000'; 
+
+        let theme = 'vs-dark'; 
+
+        console.log("themeData (before check): ", themeData);
+
+        // 정확하게 문자열 '0' 또는 '1'로 비교
+        if (themeData == 0) {  // 숫자 비교
+            theme = 'vs-dark';
+        } else if (themeData == 1) {  // 숫자 비교
+            theme = 'vs';
+        }
+    
+        // theme 값 확인
+        console.log("themeData (after check): ", themeData);
+        console.log("theme: ", theme); 
 
         data.forEach(item => {
             if (item.styleType.category === 'editor.background') {
@@ -277,16 +315,10 @@ $('.btn_open_editor').on('click', function () {
             } else if (item.styleType.category === 'java.string') {
                 string = item.value;
             }
-        });
-
-        console.log("background: ", background);
-        console.log("foreground: ", foreground);
-        console.log("comment: ", comment);
-        console.log("keyword: ", keyword);
-        console.log("string: ", string);    
+        }); 
 
         monaco.editor.defineTheme('custom-theme', {
-            base: 'vs-dark',
+            base: theme,
             inherit: true,
             rules: [
                 { token: 'comment', foreground: comment },
@@ -314,9 +346,7 @@ $('.btn_open_editor').on('click', function () {
                 fontSize = parseInt(item.value, 10);
             }
         });
-
-        console.log("fontFamily: ", fontFamily);
-        console.log("fontSize: ", fontSize);
+ 
  
         if (editor) { 
             editor.updateOptions({
@@ -516,9 +546,7 @@ function initializeTheme() {
     if (initialThemeInput) {
         const initialTheme = initialThemeInput.value;
         toggleThemeSelection(initialTheme);
-    } else {
-        console.log('Theme input not found.');
-    }
+    } 
 }
 
 document
@@ -736,9 +764,7 @@ function applyColorData(data) {
             if (colorData) {
                 colorInput.value = colorData.value;
             }
-        } else {
-            console.log('hiddenInput을 찾을 수 없습니다.');
-        }
+        } 
     });
 }
 
@@ -810,8 +836,7 @@ function handleRowClick() {
         const keyword = $(this).find('td').eq(0).text();
         const code = $(this).find('td').eq(1).text();
         const seq = $(this).find('.template-seq').val(); // 수정된 부분
-
-        console.log(seq);
+ 
         selectedRowData = { keyword, code, seq };
 
         $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
@@ -940,11 +965,6 @@ function getSelFont() {
 	const fontSeq = document.querySelector(".select-font-family input[type='hidden']").value;
 	const sizeSeq = document.querySelector(".select-font-size input[type='hidden']").value;
 
-	console.log("폰트: ", selFont);
-	console.log("크기: ", selSize);	
-	console.log("폰트 seq: ", fontSeq);
-	console.log("크기 seq: ", sizeSeq);	
-
 	updateFont(selFont, selSize, fontSeq, sizeSeq);
 
 }
@@ -966,13 +986,7 @@ function getSelColor() {
     const foreground = foregroundElement.value;
     const comment = commentElement.value;
     const keyword = keywordElement.value;
-    const string = stringElement.value;
-    
-	console.log("background: ", background);
-	console.log("foreground: ", foreground);
-	console.log("comment: ", comment);
-	console.log("keyword: ", keyword);
-	console.log("string: ", string);
+    const string = stringElement.value; 
 
 	updateColor(background, foreground, comment, keyword, string);
 
@@ -1039,14 +1053,8 @@ function getTemplateVal() {
     const selCode = $('.edit-template-body textarea').val();
 	const template_seq = $('.template-table input[type="hidden"]').val();
 
-    console.log("keyword : " + keyword);
-    console.log("code : " + selCode);
-	console.log("template_seq : " + template_seq);
-
     const code = selCode
         .replace(/\n/g, '\\n');
-
-    console.log("editCode : " + code);
 
 	updateTemplate(keyword, code, template_seq);
 

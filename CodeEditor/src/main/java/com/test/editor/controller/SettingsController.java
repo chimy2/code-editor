@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.editor.dao.SettingsDAO;
+import com.test.editor.model.MemberDTO;
 import com.test.editor.model.StyleSettingDTO;
 import com.test.editor.model.TemplateDTO;
 import com.test.editor.model.ThemeDTO;
@@ -34,9 +35,9 @@ public class SettingsController {
 	@ResponseBody
 	public String getTheme(Principal principal, HttpSession session) {
 
-		// String member_seq = (String) session.getAttribute("member_seq");
-		String member_seq = "1";
-		System.out.println(principal);
+		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
 		return dao.getTheme(member_seq);
 	}
 
@@ -44,7 +45,9 @@ public class SettingsController {
 	@ResponseBody
 	public String updateTheme(@RequestBody ThemeDTO theme, HttpSession session) {
 
-		String member_seq = "1";
+		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
 		theme.setMember_seq(member_seq);
 		dao.updateTheme(theme);
 
@@ -54,7 +57,10 @@ public class SettingsController {
 	@GetMapping(value = "/font", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getFont(HttpSession session) {
-		String member_seq = "1";
+
+		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
 		return dao.getFont(member_seq);
 	}
 	
@@ -62,8 +68,9 @@ public class SettingsController {
 	@ResponseBody
 	public String updateFont(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
 
-		String member_seq = "1";
- 
+		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
 	    Map<String, Object> fontStyle = new HashMap<>();
 	    
 	    for (StyleSettingDTO setting : styleSettings) {
@@ -86,7 +93,9 @@ public class SettingsController {
 	@ResponseBody
 	public List<StyleSettingDTO> getColor(HttpSession session) {
 
-		String member_seq = "1";
+		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
 		return dao.getColor(member_seq);
 	}
 	
@@ -94,7 +103,8 @@ public class SettingsController {
 	@ResponseBody
 	public String updateColor(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
 		
-		String member_seq = "1";
+		MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
 		
 		Map<String, Object> colorStyle = new HashMap<>();
 		
@@ -121,8 +131,11 @@ public class SettingsController {
     @GetMapping(value="/template", produces="application/json")
     @ResponseBody 
     public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
-	    String member_seq = "1"; 
- 	    List<TemplateDTO> template = dao.getTemplate(member_seq); 
+
+    	MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
+    	List<TemplateDTO> template = dao.getTemplate(member_seq); 
 	    model.addAttribute("template", template);
 	    return template; 
     }
@@ -136,7 +149,10 @@ public class SettingsController {
     @PostMapping(value="/template", produces="application/json")
     @ResponseBody 
     public int addTemplate(@RequestBody TemplateDTO template, HttpSession session) {
-    	String member_seq = "1";
+    	
+    	MemberDTO member = (MemberDTO) session.getAttribute("dto");
+		String member_seq = member.getSeq(); 
+		
     	template.setMember_seq(member_seq);
     	return dao.addTemplate(template);
     }
