@@ -258,11 +258,9 @@ div.file {
 .editor-container {
     padding: 0;
     height: calc(100vh - 60px);
-    background: tomato;
 }
 .editor-container.active_console {
     height: calc(100vh - 360px);
-    background: tomato;
 }
 
 .editor-container.ui-tabs-panel {
