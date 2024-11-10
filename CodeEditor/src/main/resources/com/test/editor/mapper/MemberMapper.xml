@@ -7,12 +7,12 @@
 <mapper namespace="com.test.editor.mapper.MemberMapper">
 
 	<!-- security 로그인 -->
-	<resultMap type="com.test.editor.model.MemberDTO" id="member">
+	<resultMap type="member" id="member">
 		<!-- primary -->
-		<!-- column : m.memberid > property : dto의 setter의미  -->
-		<id property="id" column="id"/>
-		
+		<!-- column : m.memberid > property : dto의 setter의미  -->	
 		<!-- primary 제외 모든것 -->
+		<id property="seq" column="seq"/>
+		<result property="id" column="id"/>
 		<result property="pw" column="pw"/>
 		<result property="nick" column="nick"/>
 		<result property="regdate" column="regdate"/>
@@ -20,6 +20,31 @@
 		<result property="color" column="color"/>
 		<result property="oAuthType" column="oAuthType"/>
 		
+		<collection property="teamList" resultMap="team" />
+		<collection property="projectList" resultMap="project" />
+		<collection property="memberTeamList" resultMap="memberTeam" />
+	</resultMap>
+	
+	<resultMap type="team" id="team">
+		<result property="teamName"	column="teamName" />
+		<result property="teamEx" 	column="teamEx" />
+		<result property="teamType"	column="teamType" />
+		<result property="regdate" 	column="regdate" />
+	</resultMap>
+	
+	<resultMap type="project" id="project">
+		<result property="projectName"	column="projectName" />
+		<result property="projectEx" 	column="projectEx" />
+		<result property="startDate"	column="startDate" />
+		<result property="target" 	column="target" />
+		<result property="priority"	column="priority" />
+		<result property="regdate" 	column="regdate" />
+	</resultMap>
+	
+	<resultMap type="memberTeam" id="memberTeam">
+		<result property="team_seq"	column="team_seq" />
+		<result property="project_seq" 	column="project_seq" />
+		<result property="postion"	column="postion" />
 	</resultMap>
 
 	<!-- team과 project 정보 가져오기 -->
@@ -45,8 +70,10 @@
 	
 	<!-- 회원가입 -->
 	<insert id="joinOk">
-		insert into member (seq, id, pw, nick, regdate, ing, color, oAuthType)
-	    values ((select (max(seq)) + 1 from member), #{id}, #{pw}, #{nick}, default, default, default, default)
+		insert into member (seq, id, pw, nick, regdate, ing, color, oAuthType) 
+		values ((select max(seq) + 1 from member), #{id}, #{pw}, #{nick}, default, default,  
+    			(select case when max((select max(color) from member where seq = (select max(seq) from member))) >= 7 then 1 
+    							else max((select max(color) from member where seq = (select max(seq) from member)))+1 end from member), default) 
 	</insert>
 	
 	<select id="getMaxSeq" resultType="String">
@@ -63,5 +90,20 @@
 		select id from member
 	</select>
 	
+	<!-- 닉네임 수정하기 -->
+	<update id="nickEdit">
+		update member set nick = #{nick} where seq = #{seq}
+	</update>
 	
+	<!-- 닉네임 수정 후 마이페이지 정보 불러오기 -->
+	<select id="load" resultMap="member">
+		select m.seq as seq, m.id as id, m.nick as nick, m.color as color, m.oAuthType as oAuthType, m.ing as ing, 
+			t.teamName as teamName, t.teamEx as teamEx, t.teamType as teamType, mt.position as position 
+			from member m inner join memberTeam mt
+			on m.seq = mt.member_seq
+			inner join team t
+			on mt.team_seq = t.seq where m.seq = #{seq}
+	</select>
+	
+
 </mapper>

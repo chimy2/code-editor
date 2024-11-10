@@ -10,7 +10,7 @@
 	<tiles:insertAttribute name="asset_main"/>
 </head>
 <body>
-	<div class="content_memberSetting">
+	<div id="content_memberSetting">
 		<div class="header_setting">개인 설정</div>
 		<div class="body_setting">
 			<div class="info_setting">
