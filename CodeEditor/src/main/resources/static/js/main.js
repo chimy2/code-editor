@@ -438,7 +438,7 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 	    	document.querySelector('#nick_edit').onclick = function() {
 	    		const token = $("meta[name='_csrf']").attr("content");
 				const header = $("meta[name='_csrf_header']").attr("content");
-				const seq = document.querySelector('input[type = hidden]').value; 
+				const seq = document.querySelector('#mypageMemberSeq').value; 
 				const nick = document.querySelector('.setting_name_edit input[class = setting_name]').value; 
 	    		$.ajax({
 			        type: 'POST',

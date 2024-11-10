@@ -14,8 +14,10 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.editor.domain.Code;
+import com.test.editor.domain.Message;
+import com.test.editor.model.MemberDTO;
 
-@ServerEndpoint("/vs/code/{project_seq}")
+@ServerEndpoint("/vs/code/{projectSeq}")
 public class CodeServer {
 	
 	private static ArrayList<Session> sessionList;
@@ -40,21 +42,59 @@ public class CodeServer {
 	}
 	
 	@OnMessage
-	public void handleMessage(Session session, String message) {
+	public void handleMessage(Session session, String receiveMessage) {
+
+	    for (Session s : sessionList) {
+			try {
+				s.getBasicRemote().sendText("Hello from server!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
 	    try {
-	        // Deserialize incoming message to CodeDTO
-	        Code code = objectMapper.readValue(message, Code.class);
-
-	        // Log message content
-	        System.out.println("Received message: " + code);
-
-	        // Broadcast the received message to all other sessions
-	        for (Session s : sessionList) {
-	            if (!s.getId().equals(session.getId())) {  // Avoid sending back to sender
-	            	code.getReceiver().setId(message);
-	                s.getBasicRemote().sendText(objectMapper.writeValueAsString(code));
-	            }
+	    	Message message = objectMapper.readValue(receiveMessage, Message.class);
+	    	
+	    	message.setReceiver(new MemberDTO());
+	    	
+	        System.out.println("Received message: " + message);
+	        
+	        if (message.getType().equals("cursor")) {
+	        	
+	        } else if (message.getType().equals("code")) {
+	        	System.out.println("this is code");
+	        	System.out.println("sender: " + session);
+	        	
+	        	System.out.println("session size: " + sessionList.size());
+	        	
+		        // Broadcast the received message to all other sessions
+		        for (Session s : sessionList) {
+		        	System.out.println("session " + s);
+		            if (!s.getId().equals(session.getId())) {  // Avoid sending back to sender
+		            	
+		            	message.getReceiver().setId(s.getId());
+		                s.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
+		                if (s.isOpen()) {
+		                    s.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
+		                } else {
+		                    System.out.println("세션이 닫혀있음: " + s.getId());
+		                }
+		                System.out.println("동일하지 않은 session end");
+		            } else {
+		            	
+		            	message.getReceiver().setId("it is me");
+		            	s.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
+		            	if (s.isOpen()) {
+		            	    s.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
+		            	} else {
+		            	    System.out.println("세션이 닫혀있음: " + s.getId());
+		            	}
+		            	System.out.println("동일한 session end");
+		            	
+		            }
+		        }
 	        }
+	        System.out.println("this is end");
 	    } catch (IOException e) {
 	        System.out.println("Error processing message: " + e.getMessage());
 	        handleError(e);

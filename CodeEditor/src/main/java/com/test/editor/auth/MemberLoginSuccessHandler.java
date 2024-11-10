@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import com.test.editor.model.CustomUser;
 import com.test.editor.model.MemberDTO;
 
-public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler{
+public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -21,49 +21,23 @@ public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler{
 
 		System.out.println("로그인을 성공했습니다.");
 		/*
-		 CustomUser customUser = (CustomUser) authentication.getPrincipal(); String
-		 nick = customUser.getMember().getNick();
+		 * CustomUser customUser = (CustomUser) authentication.getPrincipal(); String
+		 * nick = customUser.getMember().getNick();
 		 */
+
+		// response.sendRedirect("/editor/mypage?nick=" + URLEncoder.encode(nick,
+		// "UTF-8"));
+
+		CustomUser customUser = (CustomUser) authentication.getPrincipal();
+		MemberDTO member = customUser.getMember();
+		// member.setPw(null);
 		
-		//response.sendRedirect("/editor/mypage?nick=" + URLEncoder.encode(nick, "UTF-8"));
-		
-		CustomUser customUser = (CustomUser) authentication.getPrincipal(); MemberDTO
-		member = customUser.getMember();
-		//member.setPw(null);
 		request.setAttribute("member", member);
-		
+
 		HttpSession session = request.getSession();
 		session.setAttribute("member", member);
-		
+
 		response.sendRedirect("/editor/mypage");
-	
+
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
