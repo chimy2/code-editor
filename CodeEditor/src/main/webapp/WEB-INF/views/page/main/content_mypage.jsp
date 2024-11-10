@@ -30,7 +30,7 @@
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
 					 <c:if test="${status.index == 0}"> 
-				        <div class="teamBox_icon">
+				        <div class="teamBox_icon" id="userBox" onclick="getSelProject('${team.teamSeq}')">
 				            <div>
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
@@ -39,7 +39,7 @@
 				        </div>
 				    </c:if>
  					<c:if test="${status.index > 0}"> 
-					    <div class="teamBox_icon" id="teamBox">
+					    <div class="teamBox_icon" id="teamBox" onclick="getSelProject('${team.teamSeq}')">
 					        <div>
 					            <img class="team_icon" src="/editor/resources/image/icon/team.svg">
 					        </div>
@@ -54,7 +54,8 @@
 	<div class="team_project">
 		<div class="inner_box">
 			<div class="inner_box_header">
-				<div>
+				<!-- teamBox에서 user와 팀 선택에 따라서 동적 변경 -->
+				<div class = "projectBoxHeaderIcon">
 					<img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				</div>
 				<div id="teamName">
@@ -229,49 +230,6 @@
 	</div>
 </div>
 <input type="hidden" id="mypageMemberSeq" value ="${sessionScope.member.seq}"> 
-
-
-
-<script>
-
-	function getMemberProject() {
-		$.ajax({
-			url: "/editor/mypage/project",
-			method: "GET",
-			dataType: "json",
-			success: function(data) {
-				console.log(data);
-				getProject(data);
-			},
-			error: function(a, b, c) {
-				console.log(a, b, c);
-			}
-		});
-	}
-	
-	window.onload = function() {
-		getMemberProject();
-	}
-
-	function getProject(data) { 
-
-		const innerBoxContent = document.querySelector('#project-container');
-		innerBoxContent.innerHTML = '';
- 
-		data.forEach(project => { 
-			const projectHTML = 
-				'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
-					'<div>' +
-						'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
-					'</div>' + project.projectName +
-				'</div>';
-			console.log(projectHTML);
-			innerBoxContent.innerHTML += projectHTML;
-		});
-	}
-
-
-</script>
 
 
 

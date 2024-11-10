@@ -1255,22 +1255,24 @@ function renderProjectStructure(data) {
     `;
     folderDiv.appendChild(srcDiv);
 
-    let packageDiv = document.createElement('div');
-    packageDiv.classList.add('package');
-    packageDiv.innerHTML =
-        `
-        <button>
-            <img src="/editor/resources/image/icon/package.svg" />
-            <span class="white-text">` +
-        data[2].name +
-        `</span>
-        </button>
-    `;
-    srcDiv.appendChild(packageDiv);
+    if(data[2] != null) {
+        let packageDiv = document.createElement('div');
+        packageDiv.classList.add('package');
+        packageDiv.innerHTML =
+            `
+            <button>
+                <img src="/editor/resources/image/icon/package.svg" />
+                <span class="white-text">` +
+            data[2].name +
+            `</span>
+            </button>
+        `;
+        srcDiv.appendChild(packageDiv);
 
-    for (let i = 3; i < data.length; i++) {
-        let fileDiv = createFileItem(data[i]);
-        packageDiv.appendChild(fileDiv);
+        for (let i = 3; i < data.length; i++) {
+            let fileDiv = createFileItem(data[i]);
+            packageDiv.appendChild(fileDiv);
+        }
     }
 
     // 모든 항목을 packageExplorer에 추가
