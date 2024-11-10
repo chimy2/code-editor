@@ -74,15 +74,15 @@ function initSocketEvent() {
     socket.onmessage = function (event) {
         console.log('message 받음');
         const data = JSON.parse(event.data);
-<<<<<<< HEAD
+
         console.log('socket on message', event);
-=======
+
         if (data.type == 'cursor') {
             const cursor = data.cursor;
         } else if (data.type == 'code') {
             const code = data.code;
             const editorInstance = editorInstances[code.tabId]; // Ensure you have the correct editor instance
->>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
+
 
             if (editorInstance) {
                 // Save current scroll position and cursor position
@@ -135,11 +135,8 @@ $('.editor-tab ul').sortable({
 
 let templates = [];
 
-<<<<<<< HEAD
-// Add a new tab with Monaco editor
 
-=======
->>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
+
 $('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
     const fileName = $(this).find('span').text();
@@ -197,7 +194,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             });
 
             editorInstances[tabId] = editor;
-<<<<<<< HEAD
+
             // Detect cursor position change
             // editor.onDidChangeCursorPosition((event) => {
             //     const position = event.position;
@@ -220,7 +217,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                         insertText: word,
                     }));
 
-=======
+
 
             getFontData();
 
@@ -235,7 +232,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                         insertText: word,
                     }));
 
->>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
+
                     const templateSuggestions = templates.map((template) => ({
                         label: template.keyword,
                         kind: monaco.languages.CompletionItemKind.Snippet,
@@ -271,15 +268,15 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             // });
 
             editor.onDidChangeModelContent((event) => {
-<<<<<<< HEAD
+
                 // console.log(this);
                 // console.log(editor);
                 // console.log(event);
                 // console.log(monaco);
                 const editorDomNode = editor.getDomNode();
 
-=======
->>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
+
+
                 event.changes.forEach((change) => {
                     const changeFileData = {
                         type: 'code',
@@ -1299,24 +1296,6 @@ function renderProjectStructure(data) {
     `;
     folderDiv.appendChild(srcDiv);
 
-<<<<<<< HEAD
-    let packageDiv = document.createElement('div');
-    packageDiv.classList.add('package');
-    packageDiv.innerHTML =
-        `
-        <button>
-            <img src="/editor/resources/image/icon/package.svg" />
-            <span class="white-text">` +
-        data[2].name +
-        `</span>
-        </button>
-    `;
-    srcDiv.appendChild(packageDiv);
-
-    for (let i = 3; i < data.length; i++) {
-        let fileDiv = createFileItem(data[i]);
-        packageDiv.appendChild(fileDiv);
-=======
     if(data[2] != null) {
         let packageDiv = document.createElement('div');
         packageDiv.classList.add('package');
@@ -1335,12 +1314,12 @@ function renderProjectStructure(data) {
             let fileDiv = createFileItem(data[i]);
             packageDiv.appendChild(fileDiv);
         }
->>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
     }
 
     // 모든 항목을 packageExplorer에 추가
     explorerContainer.appendChild(folderDiv);
 }
+
 
 function createFileItem(item) {
     let fileTypeClass = '';
