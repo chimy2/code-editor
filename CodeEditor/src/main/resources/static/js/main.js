@@ -471,6 +471,46 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
     	
     }
 	
+	function getMemberProject() {
+		$.ajax({
+			url: "/editor/mypage/project",
+			method: "GET",
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				getProject(data);
+			},
+			error: function(a, b, c) {
+				console.log(a, b, c);
+			}
+		});
+	}
+	
+	window.onload = function() {
+		getMemberProject();
+	}
+
+	function getProject(data) { 
+
+		const innerBoxContent = document.querySelector('#project-container');
+		innerBoxContent.innerHTML = '';
+ 
+		data.forEach(project => { 
+			const projectHTML = 
+				'<div class="projectBox_icon" id ="projectBox" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
+					'<div>' +
+						'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
+					'</div>' + project.projectName +
+				'</div>';
+			console.log(projectHTML);
+			innerBoxContent.innerHTML += projectHTML;
+		});
+	}
+	
+	
+	
+	
+	
 }
 
 
@@ -576,3 +616,70 @@ document.addEventListener('contextmenu', function(event) {
     }
   }
 });
+
+
+
+
+
+
+//project select
+function getMemberProject() {
+	$.ajax({
+		url: "/editor/mypage/project",
+		method: "GET",
+		dataType: "json",
+		success: function(data) {
+			console.log(data);
+			getProject(data);
+		},
+		error: function(a, b, c) {
+			console.log(a, b, c);
+		}
+	});
+}
+	
+window.onload = function() {
+	getMemberProject();
+}
+
+function getProject(data) { 
+
+	const innerBoxContent = document.querySelector('#project-container');
+	innerBoxContent.innerHTML = '';
+
+	data.forEach(project => { 
+		const projectHTML = 
+			'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
+			//'<div class="projectBox_icon" onclick="getExplorer(' + project.seq + ')' + '">' +
+				'<div>' +
+					'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
+				'</div>' + project.projectName +
+			'</div>';
+		console.log(projectHTML);
+		innerBoxContent.innerHTML += projectHTML;
+	});
+}
+
+function getSelProject(teamSeq) {
+	console.log(teamSeq);
+	$.ajax({
+		url: "/editor/mypage/project/" + teamSeq,
+		method: "GET",
+		dataType: "json",
+		success: function(data) {
+			console.log(data);
+			getProject(data);
+		},
+		error: function(a, b, c) {
+			console.log(a, b, c);
+		}
+	});
+}
+
+
+
+
+
+
+
+
