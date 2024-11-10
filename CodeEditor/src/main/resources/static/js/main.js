@@ -518,6 +518,7 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 document.addEventListener('contextmenu', function(event) {
   // 우클릭한 요소가 .teamBox_icon인지 확인
   const teamBoxIcon = event.target.closest('.teamBox_icon');
+  const projectBoxIcon = event.target.closest('.projectBox_icon');
   
   const teamDel = document.querySelector('#team_delete');
   const teamEdit = document.querySelector('#teamSetting');
@@ -529,6 +530,10 @@ document.addEventListener('contextmenu', function(event) {
     // 우클릭한 .teamBox_icon 요소의 텍스트를 가져오기
     const text = teamBoxIcon.textContent.trim();
     console.log('우클릭한 태그에서 텍스트:', text);
+  }else if (projectBoxIcon) {
+    // 우클릭한 .projectBoxIcon 요소의 텍스트를 가져오기
+    const text = projectBoxIcon.textContent.trim();
+    console.log('우클릭한 태그에서 텍스트:', text);
   }
 
   // 우클릭한 요소가 .team_project 내부일 때만 실행
@@ -536,8 +541,9 @@ document.addEventListener('contextmenu', function(event) {
     event.preventDefault(); // 기본 우클릭 메뉴를 막음
 
     let contextBox = document.querySelector('.teamcontextBox');
+   	let projectContextBox = document.querySelector('.projectcontextBox');
    
-    
+   	projectContextBox.style.display = 'none';
     teamDel.style.display = 'none';
     teamEdit.style.display = 'none';
     projectDel.style.display = 'none';
@@ -577,9 +583,11 @@ document.addEventListener('contextmenu', function(event) {
   // 우클릭한 요소가 .project_project 내부일 때만 실행
   if (event.target.closest('#projectBox')) {
     event.preventDefault(); // 기본 우클릭 메뉴를 막음
- 
+ 	
+ 	let teamContextBox = document.querySelector('.teamcontextBox');
   	let contextBox = document.querySelector('.projectcontextBox');
     
+    teamContextBox.style.display = 'none';
     projectDel.style.display = 'none';
     projectEdit.style.display = 'none'; // projectDel 중복을 수정
     teamDel.style.display = 'none';
@@ -616,9 +624,6 @@ document.addEventListener('contextmenu', function(event) {
     }
   }
 });
-
-
-
 
 
 
@@ -677,9 +682,28 @@ function getSelProject(teamSeq) {
 }
 
 
+//team선택에 따라서 project header 변경
+function projectHeaderChange(){
+	document.addEventListener('click', function(event) {
+		const teamBoxIcon = event.target.closest('.teamBox_icon');
+		const nick = teamBoxIcon.innerText.trim();
+		console.log('팀 닉네임:', nick);
+	});
+}
 
-
-
-
-
+document.addEventListener('click', function(event) {
+		const teamBoxIcon = event.target.closest('.teamBox_icon');
+		const nick = teamBoxIcon.innerText.trim();
+		const id = teamBoxIcon.id;
+		const projectBoxHeaderIcon = document.querySelector('.projectBoxHeaderIcon');
+		const teamName = document.querySelector('#teamName');
+		
+		if(id=='teamBox'){
+			projectBoxHeaderIcon.innerHTML = '<img class="team_icon" src="/editor/resources/image/icon/team.svg">';
+		}else if(id=='userBox'){
+			projectBoxHeaderIcon.innerHTML = '<img class="user_icon" src="/editor/resources/image/icon/user.svg">';
+		}
+		
+		teamName.innerHTML = nick;
+});
 

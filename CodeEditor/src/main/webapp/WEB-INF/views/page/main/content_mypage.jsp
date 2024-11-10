@@ -30,7 +30,7 @@
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
 					 <c:if test="${status.index == 0}"> 
-				        <div class="teamBox_icon" onclick="getSelProject('${team.teamSeq}')">
+				        <div class="teamBox_icon" id="userBox" onclick="getSelProject('${team.teamSeq}')">
 				            <div>
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
@@ -54,7 +54,8 @@
 	<div class="team_project">
 		<div class="inner_box">
 			<div class="inner_box_header">
-				<div>
+				<!-- teamBox에서 user와 팀 선택에 따라서 동적 변경 -->
+				<div class = "projectBoxHeaderIcon">
 					<img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				</div>
 				<div id="teamName">
