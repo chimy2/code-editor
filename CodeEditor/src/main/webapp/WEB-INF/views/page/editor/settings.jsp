@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
-<meta name="_csrf" content="${_csrf.token}"/>
-<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <div class="settings-body">
 	<div class="settings-main">
 		<div class="settings-header">
@@ -242,14 +240,3 @@
         </div>
     </div>
 </div>
-<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-<sec:authentication property="principal.member.seq"/>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-	
-
-</script>
-
-
-

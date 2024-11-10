@@ -1,11 +1,9 @@
 /**
  *
  */
-const CODE_URL = 'ws://localhost:8090/editor/vs/code/1';
 let socket;
-let tabCounter = 1;
-let editorInstances = {}; // Store editor instances by tab ID
-let currentUserCursorPositions = {}; // Store each user's cursor position by tab
+const editorInstances = {};
+
 const exapleCode = {
     class: 'public class HelloWorld {\n\n    public static void main(String[] args) {\n\n        System.out.println("Hello World!");\n\n    }\n\n}',
     interface: 'public interface Hello {\n\n    void sayHello();\n\n}',
@@ -13,13 +11,70 @@ const exapleCode = {
     file: 'this is file',
 };
 
+function startTabMonitoring() {
+    // URL 경로 예시: http://localhost:8090/editor/code/1
+    const pathname = window.location.pathname;
+
+    // 정규표현식을 사용하여 /editor/code/ 다음의 숫자 추출
+    const match = pathname.match(/\/editor\/code\/(\d+)/);
+    const projectSeq = match ? match[1] : null;
+    let CODE_URL = 'ws://localhost:8090/editor/vs/code/' + projectSeq;
+
+    // 감지할 부모 요소를 선택
+    const targetNode = document.querySelector('.editor-tab');
+    let childCount = targetNode.children.length;
+
+    // MutationObserver 생성
+    const observer = new MutationObserver((mutationsList) => {
+        mutationsList.forEach((mutation) => {
+            const addedNodes = mutation.addedNodes.length;
+            const removedNodes = mutation.removedNodes.length;
+
+            // 자식 요소가 추가된 경우
+            if (addedNodes) {
+                childCount += addedNodes; // 자식 추가 시 count 증가
+            }
+
+            // 자식 요소가 제거된 경우
+            if (removedNodes) {
+                childCount -= removedNodes; // 자식 제거 시 count 감소
+            }
+
+            // 자식 요소가 2개로 변경되면 WebSocket 연결
+            if (childCount === 2 && addedNodes) {
+                if (!socket) {
+                    socket = new WebSocket(CODE_URL); // WebSocket 연결
+                    initSocketEvent();
+                }
+            }
+
+            // 자식 요소가 1개로 변경되면 WebSocket 연결 종료
+            if (childCount === 1 && removedNodes) {
+                socket.close(); // WebSocket 연결 종료
+                socket = null; // socket 변수 초기화
+            }
+        });
+    });
+
+    // 감지할 설정 (자식 요소의 추가/제거를 감지, 자손의 감지는 제거)
+    const config = { childList: true, subtree: false };
+
+    // 감지 시작
+    if (targetNode) {
+        observer.observe(targetNode, config);
+    }
+}
+startTabMonitoring();
+
 function initSocketEvent() {
     socket.onopen = function () {
         console.log('WebSocket connection established');
     };
 
     socket.onmessage = function (event) {
+        console.log('message 받음');
         const data = JSON.parse(event.data);
+        console.log('socket on message', event);
 
         const editorInstance = editorInstances[data.tabId];
         if (editorInstance) {
@@ -66,9 +121,6 @@ let templates = [];
 
 // Add a new tab with Monaco editor
 $('.btn_open_editor').on('click', function () {
-    if (!socket) {
-        socket = new WebSocket(CODE_URL);
-    }
     // Configure Monaco path once
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
@@ -94,13 +146,12 @@ $('.btn_open_editor').on('click', function () {
     $('.editor-tab').tabs('option', 'active', tabCount);
 
     let editor;
-     
+
     require(['vs/editor/editor.main'], function () {
-    
-        getFontData(); 
+        getFontData();
         getTemplateData();
         getThemeData(function (themeData) {
-            getColorData(themeData); 
+            getColorData(themeData);
         });
 
         // Create the editor and assign it to the global variable
@@ -110,13 +161,15 @@ $('.btn_open_editor').on('click', function () {
             theme: 'custom-theme',
             minimap: {
                 enabled: false,
-            }, 
+            },
             automaticLayout: true,
-            fontFamily: 'Courier', 
-            fontSize: 14, 
+            fontFamily: 'Courier',
+            fontSize: 14,
             wordBasedSuggestions: true,
         });
-    
+
+        editorInstances[tabId] = editor;
+
         // Completion Item Provider 등록
         monaco.languages.registerCompletionItemProvider('java', {
             provideCompletionItems: function (model, position) {
@@ -132,14 +185,17 @@ $('.btn_open_editor').on('click', function () {
                     label: template.keyword,
                     kind: monaco.languages.CompletionItemKind.Snippet,
                     insertText: template.code.replace(/\\n/g, '\n'),
-                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                    insertTextRules:
+                        monaco.languages.CompletionItemInsertTextRule
+                            .InsertAsSnippet,
                     documentation: `Insert ${template.code}`,
                 }));
 
-                return { suggestions: [...wordSuggestions, ...templateSuggestions] };
+                return {
+                    suggestions: [...wordSuggestions, ...templateSuggestions],
+                };
             },
         });
-
 
         // Detect cursor position change
         // editor.onDidChangeCursorPosition((event) => {
@@ -159,67 +215,29 @@ $('.btn_open_editor').on('click', function () {
         editor.onDidChangeModelContent((event) => {
             // console.log(this);
             // console.log(editor);
-            console.log(event);
+            // console.log(event);
             // console.log(monaco);
             const editorDomNode = editor.getDomNode();
-            // const token = $("meta[name='_csrf']").attr('content');
-            const member = {
-                id: memberId,
-                nick: memberNick,
-            };
-            console.log('token', token);
 
             event.changes.forEach((change) => {
                 const changeFileData = {
-                    tabId: tabId,
+                    type: 'code',
                     sender: member,
-                    text: change.text,
-                    range: change.range, // 변경 범위
-                    sendDate: new Date(),
+                    code: {
+                        tabId: tabId,
+                        text: change.text,
+                        range: change.range, // 변경 범위
+                        sendDate: new Date(),
+                    },
                 };
+                console.log('ready to send server', changeFileData);
+
                 // 변경 사항을 서버에 전송
-                // sendChangeToServer(changeData);
                 if (socket.readyState === WebSocket.OPEN) {
                     socket.send(JSON.stringify(changeFileData));
                 }
             });
         });
-
-        // Handle WebSocket messages
-        socket.onmessage = function (event) {
-            const data = JSON.parse(event.data);
-
-            if (data.tabId === tabId) {
-                const editorInstance = monaco.editor
-                    .getModels()
-                    .find((model) => model.uri.path.includes(data.tabId));
-                if (editorInstance) {
-                    // Update content if changed
-                    editorInstance.setValue(data.content);
-
-                    // Display cursor position for other users
-                    if (data.userId && data.userId !== 'currentUser') {
-                        // Replace with real user ID check
-                        let range = new monaco.Range(
-                            data.cursorLine,
-                            data.cursorColumn,
-                            data.cursorLine,
-                            data.cursorColumn
-                        );
-                        const decorationId = editor.deltaDecorations(
-                            [],
-                            [
-                                {
-                                    range: range,
-                                    options: { className: 'cursorDecoration' },
-                                },
-                            ]
-                        );
-                        cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
-                    }
-                }
-            }
-        };
     });
 
     function fetchSettings(url, onSuccess) {
@@ -232,26 +250,26 @@ $('.btn_open_editor').on('click', function () {
                 console.error(a, b, c);
             },
         });
-    } 
+    }
 
     function getThemeData(onComplete) {
         fetchSettings('/editor/theme', function (themeData) {
             onComplete(themeData);
         });
     }
-    
+
     function getColorData(themeData) {
         fetchSettings('/editor/color', function (data) {
             getColor(themeData, data); // 두 값을 함께 넘겨줌
         });
     }
-    
+
     function getFontData() {
         fetchSettings('/editor/font', function (data) {
             getFont(data);
         });
     }
-    
+
     function getTemplateData() {
         fetchSettings('/editor/template', function (data) {
             templates = data.map((template) => ({
@@ -262,9 +280,7 @@ $('.btn_open_editor').on('click', function () {
         });
     }
 
-
     function getFont(data) {
-
         const theme = 'vs-dark';
 
         if (data === '0') {
@@ -272,47 +288,44 @@ $('.btn_open_editor').on('click', function () {
         } else if (data === '1') {
             theme = 'vs';
         }
-
     }
 
     function applyTemplateData(data) {
-        const templateList = $('.template-list'); 
-        templateList.empty(); 
-    
+        const templateList = $('.template-list');
+        templateList.empty();
+
         data.forEach((template) => {
             const templateItem = `<li class="template-item" data-code="${template.code}">${template.keyword}</li>`;
             templateList.append(templateItem);
         });
-     
+
         $('.template-item').on('click', function () {
             let code = $(this).data('code');
-     
+
             code = code.replace(/\\n/g, '\n');
-    
+
             if (editor) {
-                editor.setValue(code); 
+                editor.setValue(code);
             }
         });
     }
-    
 
     function getColor(themeData, data) {
-
         let background = '#FFFFFF';
         let foreground = '#000000';
         let comment = '#FF0000';
         let keyword = '#FF0000';
-        let string = '#FF0000'; 
+        let string = '#FF0000';
 
-        let theme = 'vs-dark'; 
+        let theme = 'vs-dark';
 
-        if (themeData == 0) {  
+        if (themeData == 0) {
             theme = 'vs-dark';
-        } else if (themeData == 1) {  
+        } else if (themeData == 1) {
             theme = 'vs';
         }
 
-        data.forEach(item => {
+        data.forEach((item) => {
             if (item.styleType.category === 'editor.background') {
                 background = item.value;
             } else if (item.styleType.category === 'editor.foreground') {
@@ -324,7 +337,7 @@ $('.btn_open_editor').on('click', function () {
             } else if (item.styleType.category === 'java.string') {
                 string = item.value;
             }
-        }); 
+        });
 
         monaco.editor.defineTheme('custom-theme', {
             base: theme,
@@ -348,25 +361,21 @@ $('.btn_open_editor').on('click', function () {
         let fontFamily = 'Courier'; // Default font
         let fontSize = 14; // Default font size
 
-        data.forEach(item => {
+        data.forEach((item) => {
             if (item.styleType.category === 'fontFamily') {
                 fontFamily = item.value;
             } else if (item.styleType.category === 'fontSize') {
                 fontSize = parseInt(item.value, 10);
             }
         });
- 
- 
-        if (editor) { 
+
+        if (editor) {
             editor.updateOptions({
                 fontFamily: fontFamily,
-                fontSize: fontSize
+                fontSize: fontSize,
             });
         }
     }
-
-    // Update tab counter
-    tabCounter++;
 });
 
 // Close a tab on clicking 'x'
@@ -532,7 +541,6 @@ function showContent(contentId) {
     document.getElementById(contentId + '-content').style.display = 'block';
 }
 
-
 /* Theme */
 // Dark와 Light 버튼 클릭 시 선택 상태를 적용하는 함수
 function toggleThemeSelection(theme) {
@@ -555,7 +563,7 @@ function initializeTheme() {
     if (initialThemeInput) {
         const initialTheme = initialThemeInput.value;
         toggleThemeSelection(initialTheme);
-    } 
+    }
 }
 
 document
@@ -650,7 +658,7 @@ function getFontData() {
         dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
-                applyFontData(data); 
+                applyFontData(data);
             }
         },
         error: function (a, b, c) {
@@ -739,7 +747,7 @@ function getColorData() {
         dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
-                applyColorData(data); 
+                applyColorData(data);
             }
         },
         error: function (a, b, c) {
@@ -773,10 +781,9 @@ function applyColorData(data) {
             if (colorData) {
                 colorInput.value = colorData.value;
             }
-        } 
+        }
     });
 }
-
 
 /* Template */
 // 템플릿 데이터를 가져오는 함수
@@ -838,14 +845,13 @@ function attachRowClickEvent() {
     });
 }
 
-
 // 테이블 행 클릭 이벤트 핸들러
 function handleRowClick() {
     $('.template-table tr').click(function () {
         const keyword = $(this).find('td').eq(0).text();
         const code = $(this).find('td').eq(1).text();
         const seq = $(this).find('.template-seq').val(); // 수정된 부분
- 
+
         selectedRowData = { keyword, code, seq };
 
         $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
@@ -854,7 +860,7 @@ function handleRowClick() {
 }
 
 // Edit 버튼 클릭 이벤트 핸들러
-function handleEditButtonClick() {  
+function handleEditButtonClick() {
     $('#edit-setting').off('click');
 
     $('#edit-setting').click(() => {
@@ -868,8 +874,10 @@ function handleEditButtonClick() {
         const formattedContent = selectedRowData.code
             .replace(/<br>/g, '\n')
             .replace(/\\n/g, '\n');
- 
-        $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
+
+        $('.edit-template-body .template-name-input').val(
+            selectedRowData.keyword
+        );
         $('.edit-template-body textarea').val(formattedContent);
         $('.template-table input[type="hidden"]').val(selectedRowData.seq);
     });
@@ -877,59 +885,56 @@ function handleEditButtonClick() {
 
 // update, delete, create
 let themeModified = false;
-let fontModified = false; 
+let fontModified = false;
 let colorModified = false;
 let templateModified = false;
 let isModified = false;
 
-$('input[name="theme"]').on('change', function() {
-	isModified = true;
-	themeModified = true;
+$('input[name="theme"]').on('change', function () {
+    isModified = true;
+    themeModified = true;
 });
 
-$('input[type="color"]').on('input', function() {
-	isModified = true;
-	colorModified = true;
+$('input[type="color"]').on('input', function () {
+    isModified = true;
+    colorModified = true;
 });
 
-$('.select-font-family li, .select-font-size li').on('click', function() {
-	isModified = true;
-	fontModified = true;
+$('.select-font-family li, .select-font-size li').on('click', function () {
+    isModified = true;
+    fontModified = true;
 });
-
 
 function closeSettings() {
-    $('.settings-body').hide(); 
+    $('.settings-body').hide();
 }
 
 function closeTemplate() {
-	$('.template-body').hide();
+    $('.template-body').hide();
 }
 
-$('.settings-footer button').on('click', function() {
+$('.settings-footer button').on('click', function () {
     if (isModified) {
-    	
-    	if (themeModified) {
-    		updateTheme();
-            confiemReload();
-    	}
-
-		if (fontModified) {
-			getSelFont();
-            confiemReload();
-		}
-
-		if (colorModified) {
-			getSelColor();
-            confiemReload();
-		} 
-
-        if (templateModified) {  
+        if (themeModified) {
+            updateTheme();
             confiemReload();
         }
-		
+
+        if (fontModified) {
+            getSelFont();
+            confiemReload();
+        }
+
+        if (colorModified) {
+            getSelColor();
+            confiemReload();
+        }
+
+        if (templateModified) {
+            confiemReload();
+        }
     } else {
-        closeSettings(); 
+        closeSettings();
     }
 });
 
@@ -944,60 +949,65 @@ function confiemReload() {
 }
 
 function updateTheme(selectedTheme) {
-	
-	const token = $("meta[name='_csrf']").attr("content")
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	console.log($('input[name="theme"]:checked').val());
-	const theme = $('input[name="theme"]:checked').val();
-	let themeNumber;
-	
-	if (theme === 'dark') {
-		themeNumber = '0';
-	} else if (theme === 'light') {
-		themeNumber = '1';
-	}
-	
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    console.log($('input[name="theme"]:checked').val());
+    const theme = $('input[name="theme"]:checked').val();
+    let themeNumber;
+
+    if (theme === 'dark') {
+        themeNumber = '0';
+    } else if (theme === 'light') {
+        themeNumber = '1';
+    }
+
     $.ajax({
         url: '/editor/theme',
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ theme: themeNumber }),
-        beforeSend : function(xhr) {
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success: function() {
+        success: function () {
             console.log('업뎃 성공요');
         },
-        error: function(a,b,c) {
+        error: function (a, b, c) {
             console.log(a, b, c);
-        }
+        },
     });
 }
 
+function getSelFont() {
+    const selFont = document.querySelector('.selected-font span').textContent;
+    const selSize = document.querySelector('.selected-size span').textContent;
 
-function getSelFont() { 
-	
-	const selFont = document.querySelector(".selected-font span").textContent;
-	const selSize = document.querySelector(".selected-size span").textContent;
+    const fontSeq = document.querySelector(
+        ".select-font-family input[type='hidden']"
+    ).value;
+    const sizeSeq = document.querySelector(
+        ".select-font-size input[type='hidden']"
+    ).value;
 
-	const fontSeq = document.querySelector(".select-font-family input[type='hidden']").value;
-	const sizeSeq = document.querySelector(".select-font-size input[type='hidden']").value;
-
-	updateFont(selFont, selSize, fontSeq, sizeSeq);
-
+    updateFont(selFont, selSize, fontSeq, sizeSeq);
 }
 
 function getSelColor() {
+    const backgroundElement = document.querySelector('#editor-background');
+    const foregroundElement = document.querySelector('#editor-foreground');
+    const commentElement = document.querySelector('#java-comment');
+    const keywordElement = document.querySelector('#java-keyword');
+    const stringElement = document.querySelector('#java-string');
 
-    const backgroundElement = document.querySelector("#editor-background");
-    const foregroundElement = document.querySelector("#editor-foreground");
-    const commentElement = document.querySelector("#java-comment");
-    const keywordElement = document.querySelector("#java-keyword");
-    const stringElement = document.querySelector("#java-string");
-
-    if (!backgroundElement || !foregroundElement || !commentElement || !keywordElement || !stringElement) {
-        console.error("Some elements were not found!");
+    if (
+        !backgroundElement ||
+        !foregroundElement ||
+        !commentElement ||
+        !keywordElement ||
+        !stringElement
+    ) {
+        console.error('Some elements were not found!');
         return;
     }
 
@@ -1005,173 +1015,163 @@ function getSelColor() {
     const foreground = foregroundElement.value;
     const comment = commentElement.value;
     const keyword = keywordElement.value;
-    const string = stringElement.value; 
+    const string = stringElement.value;
 
-	updateColor(background, foreground, comment, keyword, string);
-
+    updateColor(background, foreground, comment, keyword, string);
 }
 
 function updateFont(selFont, selSize, fontSeq, sizeSeq) {
-	
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: "/editor/font",
-		method: "PUT",
-		contentType: "application/json",
-		data: JSON.stringify([
-			{ value: selFont, styleType_seq: fontSeq },
-			{ value: selSize, styleType_seq: sizeSeq }
-		]),
-		beforeSend : function(xhr) {
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    $.ajax({
+        url: '/editor/font',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify([
+            { value: selFont, styleType_seq: fontSeq },
+            { value: selSize, styleType_seq: sizeSeq },
+        ]),
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-		success: function (data) {
-			console.log("업데이트 성공: ", data);
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+        success: function (data) {
+            console.log('업데이트 성공: ', data);
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
-
 
 function updateColor(background, foreground, comment, keyword, string) {
-	
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: "/editor/color",
-		method: "PUT",
-		contentType: "application/json",
-		data: JSON.stringify([
-			{ value: background, styleType_seq: "3" },
-			{ value: foreground, styleType_seq: "4" },
-			{ value: comment, styleType_seq: "5" },
-			{ value: keyword, styleType_seq: "6" },
-			{ value: string, styleType_seq: "7" }
-		]),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success: function (data) {
-			console.log("업데이트 성공: ", data)
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    $.ajax({
+        url: '/editor/color',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify([
+            { value: background, styleType_seq: '3' },
+            { value: foreground, styleType_seq: '4' },
+            { value: comment, styleType_seq: '5' },
+            { value: keyword, styleType_seq: '6' },
+            { value: string, styleType_seq: '7' },
+        ]),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('업데이트 성공: ', data);
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
-
-
 
 function getTemplateVal() {
     const keyword = $('.edit-template-body .template-name-input').val();
     const selCode = $('.edit-template-body textarea').val();
-	const template_seq = $('.template-table input[type="hidden"]').val();
+    const template_seq = $('.template-table input[type="hidden"]').val();
 
-    const code = selCode
-        .replace(/\n/g, '\\n');
+    const code = selCode.replace(/\n/g, '\\n');
 
-	updateTemplate(keyword, code, template_seq);
-
+    updateTemplate(keyword, code, template_seq);
 }
 
-
 function updateTemplate(keyword, code, template_seq) {
-
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
 
     $.ajax({
         url: '/editor/template',
         method: 'PUT',
-		contentType: 'application/json',
-		data: JSON.stringify({ keyword: keyword, code: code, seq: template_seq }),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success: function(data) {
-			console.log("업데이트 성공 " + data); 
-			$('.template-preview').empty();
-			getTemplateData();
-			closeTemplate(); 
+        contentType: 'application/json',
+        data: JSON.stringify({
+            keyword: keyword,
+            code: code,
+            seq: template_seq,
+        }),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('업데이트 성공 ' + data);
+            $('.template-preview').empty();
+            getTemplateData();
+            closeTemplate();
             isModified = true;
             templateModified = true;
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
     });
 }
 
 function addTemplate() {
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
 
-	const keyword = $('.new-template-body .template-name-input').val();
-	const selCode = $('.new-template-body textarea').val();
+    const keyword = $('.new-template-body .template-name-input').val();
+    const selCode = $('.new-template-body textarea').val();
 
-	const code = selCode
-		.replace(/\n/g, '\\n');
+    const code = selCode.replace(/\n/g, '\\n');
 
-	$.ajax({
-		url: '/editor/template',
-		method: 'POST',
-		contentType: 'application/json',
-		data: JSON.stringify({ keyword: keyword, code: code }),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		}, 
-		success: function(data) {
-			console.log("업로드 성공 " + data);  
-			getTemplateData(); 
-			closeTemplate();
+    $.ajax({
+        url: '/editor/template',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ keyword: keyword, code: code }),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('업로드 성공 ' + data);
+            getTemplateData();
+            closeTemplate();
             isModified = true;
             templateModified = true;
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
 
 function selDeleteSeq() {
-    const template_seq = $('.template-table tr.selected-row').find('input[type="hidden"]').val();
-    deleteTemplate(template_seq)
+    const template_seq = $('.template-table tr.selected-row')
+        .find('input[type="hidden"]')
+        .val();
+    deleteTemplate(template_seq);
 }
 
 function deleteTemplate(template_seq) {
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: '/editor/template/' + template_seq,
-		method: 'DELETE',
-		contentType: 'application/json',
-		data: JSON.stringify({ seq: template_seq }),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		}, 
-		success: function(data) {
-			console.log("삭제 성공 " + template_seq);  
-			getTemplateData(); 
-			$('.template-preview').empty();
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    $.ajax({
+        url: '/editor/template/' + template_seq,
+        method: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify({ seq: template_seq }),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('삭제 성공 ' + template_seq);
+            getTemplateData();
+            $('.template-preview').empty();
             isModified = true;
             templateModified = true;
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
-
-
-
-
-
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
