@@ -74,26 +74,42 @@ function initSocketEvent() {
     socket.onmessage = function (event) {
         console.log('message 받음');
         const data = JSON.parse(event.data);
+
         console.log('socket on message', event);
 
-        const editorInstance = editorInstances[data.tabId];
-        if (editorInstance) {
-            // Apply received changes to the editor content
-            editorInstance.executeEdits(null, [
-                {
-                    range: new monaco.Range(
-                        data.range.startLineNumber,
-                        data.range.startColumn,
-                        data.range.endLineNumber,
-                        data.range.endColumn
-                    ),
-                    text: data.text,
-                },
-            ]);
+        if (data.type == 'cursor') {
+            const cursor = data.cursor;
+        } else if (data.type == 'code') {
+            const code = data.code;
+            const editorInstance = editorInstances[code.tabId]; // Ensure you have the correct editor instance
 
-            // Update the cursor position of other users
-            if (data.cursorPosition) {
-                renderUserCursor(data.userId, data.cursorPosition, data.tabId);
+
+            if (editorInstance) {
+                // Save current scroll position and cursor position
+                const currentScrollTop = editorInstance.getScrollTop();
+                const currentScrollLeft = editorInstance.getScrollLeft();
+                const currentPosition = editorInstance.getPosition();
+
+                // Apply received changes to the editor content
+                editorInstance.executeEdits(null, [
+                    {
+                        range: new monaco.Range(
+                            code.range.startLineNumber,
+                            code.range.startColumn,
+                            code.range.endLineNumber,
+                            code.range.endColumn
+                        ),
+                        text: code.text,
+                        forceMoveMarkers: true, // Ensure markers like breakpoints move with the edit
+                    },
+                ]);
+
+                // Restore scroll and cursor positions
+                if (currentPosition) {
+                    editorInstance.setPosition(currentPosition);
+                }
+                editorInstance.setScrollTop(currentScrollTop);
+                editorInstance.setScrollLeft(currentScrollLeft);
             }
         }
     };
@@ -119,7 +135,7 @@ $('.editor-tab ul').sortable({
 
 let templates = [];
 
-// Add a new tab with Monaco editor
+
 
 $('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
@@ -178,6 +194,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             });
 
             editorInstances[tabId] = editor;
+
             // Detect cursor position change
             // editor.onDidChangeCursorPosition((event) => {
             //     const position = event.position;
@@ -199,6 +216,22 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                         kind: monaco.languages.CompletionItemKind.Text,
                         insertText: word,
                     }));
+
+
+
+            getFontData();
+
+            // Completion Item Provider 등록
+            monaco.languages.registerCompletionItemProvider('java', {
+                provideCompletionItems: function (model, position) {
+                    const text = model.getValue();
+                    const words = Array.from(new Set(text.match(/\b\w+\b/g)));
+                    const wordSuggestions = words.map((word) => ({
+                        label: word,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: word,
+                    }));
+
 
                     const templateSuggestions = templates.map((template) => ({
                         label: template.keyword,
@@ -235,11 +268,14 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             // });
 
             editor.onDidChangeModelContent((event) => {
+
                 // console.log(this);
                 // console.log(editor);
                 // console.log(event);
                 // console.log(monaco);
                 const editorDomNode = editor.getDomNode();
+
+
 
                 event.changes.forEach((change) => {
                     const changeFileData = {
@@ -1284,6 +1320,7 @@ function renderProjectStructure(data) {
     explorerContainer.appendChild(folderDiv);
 }
 
+
 function createFileItem(item) {
     let fileTypeClass = '';
     let fileTypeIcon = '';
@@ -1337,12 +1374,13 @@ function createFileItem(item) {
         </button>
     `;
     console.log(item.seq);
+
     return fileDiv;
 }
 
 window.onload = getProjectFile;
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const versionItems = document.querySelectorAll(
@@ -1591,4 +1629,232 @@ function createNewPackage() {
 
 function createNewFile(type) {
     console.log(`New ${type} created`);
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// 페이지 로드 후 컨텍스트 메뉴 이벤트 설정
+document.addEventListener('DOMContentLoaded', function () {
+    const explorerSidebar = document.querySelector('.explorer_sidebar');
+
+    // explorer_sidebar 내에서 우클릭 메뉴 표시
+    explorerSidebar.addEventListener('contextmenu', function (event) {
+        event.preventDefault(); // 기본 우클릭 메뉴 비활성화
+        removeExistingContextMenu(); // 기존 커스텀 메뉴 제거
+        showCustomContextMenu(event); // 커스텀 메뉴 표시
+    });
+
+    // 문서 클릭 시 커스텀 메뉴 제거
+    document.addEventListener('click', removeExistingContextMenu);
+});
+
+// 기존 커스텀 메뉴 제거 함수
+function removeExistingContextMenu() {
+    const existingMenu = document.querySelector('.custom-context-menu');
+    if (existingMenu) existingMenu.remove();
+}
+
+// 커스텀 컨텍스트 메뉴 표시 함수
+function showCustomContextMenu(event) {
+    const contextMenu = document.createElement('div');
+    contextMenu.classList.add('custom-context-menu');
+    contextMenu.style.top = `${event.clientY}px`;
+    contextMenu.style.left = `${event.clientX}px`;
+
+    // New 메뉴 생성
+    const newMenuItem = document.createElement('div');
+    newMenuItem.classList.add('custom-context-menu-item');
+    newMenuItem.innerText = 'New >';
+
+    // 서브메뉴 생성
+    const submenu = document.createElement('div');
+    submenu.classList.add('custom-submenu');
+
+    // 서브메뉴 항목 추가
+    addCustomMenuItem(submenu, 'Project', openProjectModal, '/editor/resources/image/icon/project.svg');
+    addCustomMenuItem(submenu, 'Package', () => createNewItem('package'), '/editor/resources/image/icon/package.svg');
+    addCustomMenuItem(submenu, 'Class', () => createNewFile('class'), '/editor/resources/image/icon/class.svg');
+    addCustomMenuItem(submenu, 'Interface', () => createNewFile('interface'), '/editor/resources/image/icon/interface.svg');
+    addCustomMenuItem(submenu, 'Text-File', () => createNewFile('txt-file'), '/editor/resources/image/icon/txt.svg');
+    addCustomMenuItem(submenu, 'File', () => createNewFile('file'), '/editor/resources/image/icon/file.svg');
+
+    // 서브메뉴를 New 항목에 추가
+    newMenuItem.appendChild(submenu);
+    contextMenu.appendChild(newMenuItem);
+
+    // Delete 메뉴 추가
+    addCustomMenuItem(contextMenu, 'Delete', confirmAndDeleteItem);
+
+    // 컨텍스트 메뉴를 문서에 추가하고 위치 설정
+    document.body.appendChild(contextMenu);
+}
+
+// 메뉴 항목 추가 함수
+function addCustomMenuItem(menu, text, action, iconPath) {
+    const item = document.createElement('div');
+    item.classList.add('custom-context-menu-item');
+
+    // 아이콘이 있는 경우 추가
+    if (iconPath) {
+        const icon = document.createElement('img');
+        icon.src = iconPath;
+        icon.classList.add('custom-menu-icon');
+        item.appendChild(icon);
+    }
+
+    // 메뉴 텍스트 추가
+    const itemText = document.createElement('span');
+    itemText.innerText = text;
+    item.appendChild(itemText);
+
+    // 클릭 이벤트 리스너 추가
+    item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        action();
+        removeExistingContextMenu();
+    });
+
+    // 메뉴 항목을 메뉴에 추가
+    menu.appendChild(item);
+}
+
+// 삭제 확인 후 삭제 함수
+function confirmAndDeleteItem(element) {
+    const isConfirmed = confirm('Are you sure you want to delete this item?');
+    if (isConfirmed && element) {
+        element.closest('.project-container, .source-folder, .package-folder, .file-item').remove();
+    }
+}
+
+// 모달 열기 함수
+function openProjectModal() {
+    document.getElementById('projectModal').style.display = 'block';
+}
+
+// 모달 닫기 함수
+function closeProjectModal() {
+    document.getElementById('projectModal').style.display = 'none';
+}
+
+// 프로젝트 생성 함수
+function createProject() {
+    const projectName = document.getElementById('projectNameInput').value;
+    if (projectName) {
+        const projectContainer = addProjectToExplorer(projectName); // 프로젝트 추가
+        addSourceFolderToProject(projectContainer); // 기본 src 디렉토리 추가
+        closeProjectModal(); // 모달 닫기
+    } else {
+        alert('Please enter a project name');
+    }
+}
+
+// 패키지 익스플로러에 프로젝트 추가 함수
+function addProjectToExplorer(projectName) {
+    const explorerPanel = document.querySelector('.explorer_sidebar #packageExplorer');
+
+    // 새로운 프로젝트 div 생성
+    const projectContainer = document.createElement('div');
+    projectContainer.classList.add('project-container');
+    projectContainer.style.marginLeft = '0px'; // 프로젝트 기본 들여쓰기 설정
+
+    // 프로젝트 버튼 생성 및 추가
+    const projectButton = document.createElement('button');
+    projectButton.classList.add('open-editor-button');
+    projectButton.innerHTML = `
+        <img src="/editor/resources/image/icon/project.svg" />
+        <span class="white-text">${projectName}</span>
+    `;
+    projectContainer.appendChild(projectButton);
+
+    // 프로젝트를 패키지 익스플로러에 추가
+    explorerPanel.appendChild(projectContainer);
+    return projectContainer;
+}
+
+// 프로젝트에 기본 src 디렉토리 추가 함수
+function addSourceFolderToProject(projectContainer) {
+    const sourceFolderDiv = document.createElement('div');
+    sourceFolderDiv.classList.add('source-folder');
+    sourceFolderDiv.style.marginLeft = '20px'; // src 들여쓰기 설정
+
+    // src 버튼 생성 및 추가
+    const sourceFolderButton = document.createElement('button');
+    sourceFolderButton.classList.add('open-editor-button');
+    sourceFolderButton.innerHTML = `
+        <img src="/editor/resources/image/icon/src.svg" />
+        <span class="white-text">src</span>
+    `;
+    sourceFolderDiv.appendChild(sourceFolderButton);
+
+    // src를 프로젝트에 추가
+    projectContainer.appendChild(sourceFolderDiv);
+}
+
+// 패키지 또는 파일 생성 함수
+function createNewItem(itemType) {
+    const srcContainer = document.querySelector('.source-folder'); // src에 패키지 생성
+    if (itemType === 'package' && srcContainer) {
+        const packageName = prompt("Enter package name:");
+        if (packageName) {
+            addPackageToSourceFolder(srcContainer, packageName);
+        }
+    }
+}
+
+// src 내에 패키지 추가 함수
+function addPackageToSourceFolder(srcDiv, packageName) {
+    const packageDiv = document.createElement('div');
+    packageDiv.classList.add('package-folder');
+    packageDiv.style.marginLeft = '40px'; // 패키지 들여쓰기 설정
+
+    // 패키지 버튼 생성 및 추가
+    const packageButton = document.createElement('button');
+    packageButton.classList.add('btn_open_editor');
+    packageButton.innerHTML = `
+        <img src="/editor/resources/image/icon/package.svg" />
+        <span class="white-text">${packageName}</span>
+    `;
+    packageDiv.appendChild(packageButton);
+
+    // 컨텍스트 메뉴에서 파일 추가 가능하게 설정
+    packageButton.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        showCustomContextMenu(event);
+    });
+
+    srcDiv.appendChild(packageDiv);
+}
+
+// 파일 생성 함수
+function createNewFile(fileType) {
+    const packageContainer = document.querySelector('.package-folder');
+    const fileName = prompt(`Enter ${fileType} name:`);
+    if (fileName && packageContainer) {
+        addFileToPackage(packageContainer, fileType, fileName);
+    }
+}
+
+// 패키지에 파일 추가 함수
+function addFileToPackage(packageDiv, fileType, fileName) {
+    let fileExtension = '';
+    switch (fileType) {
+        case 'class': fileExtension = '.java'; break;
+        case 'interface': fileExtension = '.inter'; break;
+        case 'txt-file': fileExtension = '.txt'; break;
+        case 'file': fileExtension = '.file'; break;
+    }
+
+    const fileDiv = document.createElement('div');
+    fileDiv.classList.add(`${fileType}-file`);
+    fileDiv.style.marginLeft = '60px'; // 파일 기본 들여쓰기 설정
+
+    const fileButton = document.createElement('button');
+    fileButton.classList.add('btn_open_editor');
+    fileButton.innerHTML = `
+        <img src="/editor/resources/image/icon/${fileType}.svg" />
+        <span class="white-text">${fileName}${fileExtension}</span>
+    `;
+    fileDiv.appendChild(fileButton);
+
+    packageDiv.appendChild(fileDiv);
 }
