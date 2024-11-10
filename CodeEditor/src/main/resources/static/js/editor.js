@@ -1,11 +1,9 @@
 /**
  *
  */
-const CODE_URL = 'ws://localhost:8090/editor/vs/code/1';
 let socket;
-let tabCounter = 1;
-let editorInstances = {}; // Store editor instances by tab ID
-let currentUserCursorPositions = {}; // Store each user's cursor position by tab
+const editorInstances = {};
+
 const exapleCode = {
     class: 'public class HelloWorld {\n\n    public static void main(String[] args) {\n\n        System.out.println("Hello World!");\n\n    }\n\n}',
     interface: 'public interface Hello {\n\n    void sayHello();\n\n}',
@@ -13,13 +11,70 @@ const exapleCode = {
     file: 'this is file',
 };
 
+function startTabMonitoring() {
+    // URL 경로 예시: http://localhost:8090/editor/code/1
+    const pathname = window.location.pathname;
+
+    // 정규표현식을 사용하여 /editor/code/ 다음의 숫자 추출
+    const match = pathname.match(/\/editor\/code\/(\d+)/);
+    const projectSeq = match ? match[1] : null;
+    let CODE_URL = 'ws://localhost:8090/editor/vs/code/' + projectSeq;
+
+    // 감지할 부모 요소를 선택
+    const targetNode = document.querySelector('.editor-tab');
+    let childCount = targetNode.children.length;
+
+    // MutationObserver 생성
+    const observer = new MutationObserver((mutationsList) => {
+        mutationsList.forEach((mutation) => {
+            const addedNodes = mutation.addedNodes.length;
+            const removedNodes = mutation.removedNodes.length;
+
+            // 자식 요소가 추가된 경우
+            if (addedNodes) {
+                childCount += addedNodes; // 자식 추가 시 count 증가
+            }
+
+            // 자식 요소가 제거된 경우
+            if (removedNodes) {
+                childCount -= removedNodes; // 자식 제거 시 count 감소
+            }
+
+            // 자식 요소가 2개로 변경되면 WebSocket 연결
+            if (childCount === 2 && addedNodes) {
+                if (!socket) {
+                    socket = new WebSocket(CODE_URL); // WebSocket 연결
+                    initSocketEvent();
+                }
+            }
+
+            // 자식 요소가 1개로 변경되면 WebSocket 연결 종료
+            if (childCount === 1 && removedNodes) {
+                socket.close(); // WebSocket 연결 종료
+                socket = null; // socket 변수 초기화
+            }
+        });
+    });
+
+    // 감지할 설정 (자식 요소의 추가/제거를 감지, 자손의 감지는 제거)
+    const config = { childList: true, subtree: false };
+
+    // 감지 시작
+    if (targetNode) {
+        observer.observe(targetNode, config);
+    }
+}
+startTabMonitoring();
+
 function initSocketEvent() {
     socket.onopen = function () {
         console.log('WebSocket connection established');
     };
 
     socket.onmessage = function (event) {
+        console.log('message 받음');
         const data = JSON.parse(event.data);
+        console.log('socket on message', event);
 
         const editorInstance = editorInstances[data.tabId];
         if (editorInstance) {
@@ -65,10 +120,8 @@ $('.editor-tab ul').sortable({
 let templates = [];
 
 // Add a new tab with Monaco editor
-$('.btn_open_editor').on('click', function () {
-    if (!socket) {
-        socket = new WebSocket(CODE_URL);
-    }
+
+$('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
@@ -94,279 +147,274 @@ $('.btn_open_editor').on('click', function () {
     $('.editor-tab').tabs('option', 'active', tabCount);
 
     let editor;
-     
+
     require(['vs/editor/editor.main'], function () {
-    
-        getFontData(); 
         getTemplateData();
         getThemeData(function (themeData) {
-            getColorData(themeData); 
+            getColorData(themeData);
         });
 
-        // Create the editor and assign it to the global variable
-        editor = monaco.editor.create(document.getElementById(tabId), {
-            value: '// Start coding here...',
-            language: 'java',
-            theme: 'custom-theme',
-            minimap: {
-                enabled: false,
-            }, 
-            automaticLayout: true,
-            fontFamily: 'Courier', 
-            fontSize: 14, 
-            wordBasedSuggestions: true,
-        });
-    
-        // Completion Item Provider 등록
-        monaco.languages.registerCompletionItemProvider('java', {
-            provideCompletionItems: function (model, position) {
-                const text = model.getValue();
-                const words = Array.from(new Set(text.match(/\b\w+\b/g)));
-                const wordSuggestions = words.map((word) => ({
-                    label: word,
-                    kind: monaco.languages.CompletionItemKind.Text,
-                    insertText: word,
-                }));
+        getProjectFileData(function (projectFileData) {
+            const currentFileData = projectFileData.find(
+                (file) => file.name === fileName
+            );
+            const codeValue =
+                currentFileData && currentFileData.code
+                    ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
+                    : '// Start coding here...';
 
-                const templateSuggestions = templates.map((template) => ({
-                    label: template.keyword,
-                    kind: monaco.languages.CompletionItemKind.Snippet,
-                    insertText: template.code.replace(/\\n/g, '\n'),
-                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                    documentation: `Insert ${template.code}`,
-                }));
-
-                return { suggestions: [...wordSuggestions, ...templateSuggestions] };
-            },
-        });
-
-
-        // Detect cursor position change
-        // editor.onDidChangeCursorPosition((event) => {
-        //     const position = event.position;
-        //     const cursorData = {
-        //         tabId: tabId,
-        //         cursorLine: position.lineNumber,
-        //         cursorColumn: position.column,
-        //         content: editor.getValue(),
-        //     };
-
-        //     if (socket.readyState === WebSocket.OPEN) {
-        //         socket.send(JSON.stringify(cursorData));
-        //     }
-        // });
-
-        editor.onDidChangeModelContent((event) => {
-            // console.log(this);
-            // console.log(editor);
-            console.log(event);
-            // console.log(monaco);
-            const editorDomNode = editor.getDomNode();
-            // const token = $("meta[name='_csrf']").attr('content');
-            const member = {
-                id: memberId,
-                nick: memberNick,
-            };
-            console.log('token', token);
-
-            event.changes.forEach((change) => {
-                const changeFileData = {
-                    tabId: tabId,
-                    sender: member,
-                    text: change.text,
-                    range: change.range, // 변경 범위
-                    sendDate: new Date(),
-                };
-                // 변경 사항을 서버에 전송
-                // sendChangeToServer(changeData);
-                if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify(changeFileData));
-                }
+            // Create the editor and assign it to the global variable
+            editor = monaco.editor.create(document.getElementById(tabId), {
+                value: codeValue,
+                language: 'java',
+                theme: 'custom-theme',
+                minimap: {
+                    enabled: false,
+                },
+                automaticLayout: true,
+                fontFamily: 'Courier',
+                fontSize: 14,
+                wordBasedSuggestions: true,
             });
-        });
 
-        // Handle WebSocket messages
-        socket.onmessage = function (event) {
-            const data = JSON.parse(event.data);
+            editorInstances[tabId] = editor;
+            // Detect cursor position change
+            // editor.onDidChangeCursorPosition((event) => {
+            //     const position = event.position;
+            //     const cursorData = {
+            //         tabId: tabId,
+            //         cursorLine: position.lineNumber,
+            //         cursorColumn: position.column,
+            //         content: editor.getValue(),
+            //     };
+            getFontData();
 
-            if (data.tabId === tabId) {
-                const editorInstance = monaco.editor
-                    .getModels()
-                    .find((model) => model.uri.path.includes(data.tabId));
-                if (editorInstance) {
-                    // Update content if changed
-                    editorInstance.setValue(data.content);
+            // Completion Item Provider 등록
+            monaco.languages.registerCompletionItemProvider('java', {
+                provideCompletionItems: function (model, position) {
+                    const text = model.getValue();
+                    const words = Array.from(new Set(text.match(/\b\w+\b/g)));
+                    const wordSuggestions = words.map((word) => ({
+                        label: word,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: word,
+                    }));
 
-                    // Display cursor position for other users
-                    if (data.userId && data.userId !== 'currentUser') {
-                        // Replace with real user ID check
-                        let range = new monaco.Range(
-                            data.cursorLine,
-                            data.cursorColumn,
-                            data.cursorLine,
-                            data.cursorColumn
-                        );
-                        const decorationId = editor.deltaDecorations(
-                            [],
-                            [
-                                {
-                                    range: range,
-                                    options: { className: 'cursorDecoration' },
-                                },
-                            ]
-                        );
-                        cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
+                    const templateSuggestions = templates.map((template) => ({
+                        label: template.keyword,
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: template.code.replace(/\\n/g, '\n'),
+                        insertTextRules:
+                            monaco.languages.CompletionItemInsertTextRule
+                                .InsertAsSnippet,
+                        documentation: `Insert ${template.code}`,
+                    }));
+
+                    return {
+                        suggestions: [
+                            ...wordSuggestions,
+                            ...templateSuggestions,
+                        ],
+                    };
+                },
+            });
+
+            // Detect cursor position change
+            // editor.onDidChangeCursorPosition((event) => {
+            //     const position = event.position;
+            //     const cursorData = {
+            //         tabId: tabId,
+            //         cursorLine: position.lineNumber,
+            //         cursorColumn: position.column,
+            //         content: editor.getValue(),
+            //     };
+
+            //     if (socket.readyState === WebSocket.OPEN) {
+            //         socket.send(JSON.stringify(cursorData));
+            //     }
+            // });
+
+            editor.onDidChangeModelContent((event) => {
+                // console.log(this);
+                // console.log(editor);
+                // console.log(event);
+                // console.log(monaco);
+                const editorDomNode = editor.getDomNode();
+
+                event.changes.forEach((change) => {
+                    const changeFileData = {
+                        type: 'code',
+                        sender: member,
+                        code: {
+                            tabId: tabId,
+                            text: change.text,
+                            range: change.range, // 변경 범위
+                            sendDate: new Date(),
+                        },
+                    };
+                    console.log('ready to send server', changeFileData);
+
+                    // 변경 사항을 서버에 전송
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify(changeFileData));
                     }
-                }
-            }
-        };
-    });
-
-    function fetchSettings(url, onSuccess) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            dataType: 'json',
-            success: onSuccess,
-            error: function (a, b, c) {
-                console.error(a, b, c);
-            },
-        });
-    } 
-
-    function getThemeData(onComplete) {
-        fetchSettings('/editor/theme', function (themeData) {
-            onComplete(themeData);
-        });
-    }
-    
-    function getColorData(themeData) {
-        fetchSettings('/editor/color', function (data) {
-            getColor(themeData, data); // 두 값을 함께 넘겨줌
-        });
-    }
-    
-    function getFontData() {
-        fetchSettings('/editor/font', function (data) {
-            getFont(data);
-        });
-    }
-    
-    function getTemplateData() {
-        fetchSettings('/editor/template', function (data) {
-            templates = data.map((template) => ({
-                keyword: template.keyword,
-                code: template.code,
-            }));
-            applyTemplateData(data);
-        });
-    }
-
-
-    function getFont(data) {
-
-        const theme = 'vs-dark';
-
-        if (data === '0') {
-            theme = 'vs-dark';
-        } else if (data === '1') {
-            theme = 'vs';
-        }
-
-    }
-
-    function applyTemplateData(data) {
-        const templateList = $('.template-list'); 
-        templateList.empty(); 
-    
-        data.forEach((template) => {
-            const templateItem = `<li class="template-item" data-code="${template.code}">${template.keyword}</li>`;
-            templateList.append(templateItem);
-        });
-     
-        $('.template-item').on('click', function () {
-            let code = $(this).data('code');
-     
-            code = code.replace(/\\n/g, '\n');
-    
-            if (editor) {
-                editor.setValue(code); 
-            }
-        });
-    }
-    
-
-    function getColor(themeData, data) {
-
-        let background = '#FFFFFF';
-        let foreground = '#000000';
-        let comment = '#FF0000';
-        let keyword = '#FF0000';
-        let string = '#FF0000'; 
-
-        let theme = 'vs-dark'; 
-
-        if (themeData == 0) {  
-            theme = 'vs-dark';
-        } else if (themeData == 1) {  
-            theme = 'vs';
-        }
-
-        data.forEach(item => {
-            if (item.styleType.category === 'editor.background') {
-                background = item.value;
-            } else if (item.styleType.category === 'editor.foreground') {
-                foreground = item.value;
-            } else if (item.styleType.category === 'java.comment') {
-                comment = item.value;
-            } else if (item.styleType.category === 'java.keyword') {
-                keyword = item.value;
-            } else if (item.styleType.category === 'java.string') {
-                string = item.value;
-            }
-        }); 
-
-        monaco.editor.defineTheme('custom-theme', {
-            base: theme,
-            inherit: true,
-            rules: [
-                { token: 'comment', foreground: comment },
-                { token: 'keyword', foreground: keyword },
-                { token: 'string', foreground: string },
-            ],
-            colors: {
-                'editor.background': background,
-                'editor.foreground': foreground,
-            },
+                });
+            });
         });
 
-        // Apply the theme
-        monaco.editor.setTheme('custom-theme');
-    }
-
-    function getFont(data) {
-        let fontFamily = 'Courier'; // Default font
-        let fontSize = 14; // Default font size
-
-        data.forEach(item => {
-            if (item.styleType.category === 'fontFamily') {
-                fontFamily = item.value;
-            } else if (item.styleType.category === 'fontSize') {
-                fontSize = parseInt(item.value, 10);
-            }
-        });
- 
- 
-        if (editor) { 
-            editor.updateOptions({
-                fontFamily: fontFamily,
-                fontSize: fontSize
+        function fetchSettings(url, onSuccess) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'json',
+                success: onSuccess,
+                error: function (a, b, c) {
+                    console.error(a, b, c);
+                },
             });
         }
-    }
 
-    // Update tab counter
-    tabCounter++;
+        function getThemeData(onComplete) {
+            fetchSettings('/editor/theme', function (themeData) {
+                onComplete(themeData);
+            });
+        }
+
+        function getColorData(themeData) {
+            fetchSettings('/editor/color', function (data) {
+                getColor(themeData, data); // 두 값을 함께 넘겨줌
+            });
+        }
+
+        function getFontData() {
+            fetchSettings('/editor/font', function (data) {
+                getFont(data);
+            });
+        }
+
+        function getTemplateData() {
+            fetchSettings('/editor/template', function (data) {
+                templates = data.map((template) => ({
+                    keyword: template.keyword,
+                    code: template.code,
+                }));
+                applyTemplateData(data);
+            });
+        }
+
+        function getProjectFileData(callback) {
+            $.ajax({
+                url: '/editor/explorer',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    callback(data);
+                },
+                error: function (a, b, c) {
+                    console.error(a, b, c);
+                },
+            });
+        }
+
+        function getFont(data) {
+            const theme = 'vs-dark';
+
+            if (data === '0') {
+                theme = 'vs-dark';
+            } else if (data === '1') {
+                theme = 'vs';
+            }
+        }
+
+        function applyTemplateData(data) {
+            const templateList = $('.template-list');
+            templateList.empty();
+
+            data.forEach((template) => {
+                const templateItem = `<li class="template-item" data-code="${template.code}">${template.keyword}</li>`;
+                templateList.append(templateItem);
+            });
+
+            $('.template-item').on('click', function () {
+                let code = $(this).data('code');
+
+                code = code.replace(/\\n/g, '\n');
+
+                if (editor) {
+                    editor.setValue(code);
+                }
+            });
+        }
+
+        function getColor(themeData, data) {
+            let background = '#FFFFFF';
+            let foreground = '#000000';
+            let comment = '#FF0000';
+            let keyword = '#FF0000';
+            let string = '#FF0000';
+
+            let theme = 'vs-dark';
+
+            if (themeData == 0) {
+                theme = 'vs-dark';
+            } else if (themeData == 1) {
+                theme = 'vs';
+            }
+
+            data.forEach((item) => {
+                if (item.styleType.category === 'editor.background') {
+                    background = item.value;
+                } else if (item.styleType.category === 'editor.foreground') {
+                    foreground = item.value;
+                } else if (item.styleType.category === 'java.comment') {
+                    comment = item.value;
+                } else if (item.styleType.category === 'java.keyword') {
+                    keyword = item.value;
+                } else if (item.styleType.category === 'java.string') {
+                    string = item.value;
+                }
+            });
+
+            monaco.editor.defineTheme('custom-theme', {
+                base: theme,
+                inherit: true,
+                rules: [
+                    { token: 'comment', foreground: comment },
+                    { token: 'keyword', foreground: keyword },
+                    { token: 'string', foreground: string },
+                ],
+                colors: {
+                    'editor.background': background,
+                    'editor.foreground': foreground,
+                },
+            });
+
+            // Apply the theme
+            monaco.editor.setTheme('custom-theme');
+        }
+
+        function getFont(data) {
+            let fontFamily = 'Courier'; // Default font
+            let fontSize = 14; // Default font size
+
+            data.forEach((item) => {
+                if (item.styleType.category === 'fontFamily') {
+                    fontFamily = item.value;
+                } else if (item.styleType.category === 'fontSize') {
+                    fontSize = parseInt(item.value, 10);
+                }
+            });
+
+            if (editor) {
+                editor.updateOptions({
+                    fontFamily: fontFamily,
+                    fontSize: fontSize,
+                });
+            } else {
+                console.error('Editor is not defined');
+            }
+        }
+    });
 });
 
 // Close a tab on clicking 'x'
@@ -493,6 +541,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeTheme();
     handleRowClick();
     handleEditButtonClick();
+    getProjectFile();
 });
 
 function toggleSubMenu(menuId) {
@@ -532,7 +581,6 @@ function showContent(contentId) {
     document.getElementById(contentId + '-content').style.display = 'block';
 }
 
-
 /* Theme */
 // Dark와 Light 버튼 클릭 시 선택 상태를 적용하는 함수
 function toggleThemeSelection(theme) {
@@ -555,7 +603,7 @@ function initializeTheme() {
     if (initialThemeInput) {
         const initialTheme = initialThemeInput.value;
         toggleThemeSelection(initialTheme);
-    } 
+    }
 }
 
 document
@@ -650,7 +698,7 @@ function getFontData() {
         dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
-                applyFontData(data); 
+                applyFontData(data);
             }
         },
         error: function (a, b, c) {
@@ -739,7 +787,7 @@ function getColorData() {
         dataType: 'json',
         success: function (data) {
             if (data && data.length > 0) {
-                applyColorData(data); 
+                applyColorData(data);
             }
         },
         error: function (a, b, c) {
@@ -773,10 +821,9 @@ function applyColorData(data) {
             if (colorData) {
                 colorInput.value = colorData.value;
             }
-        } 
+        }
     });
 }
-
 
 /* Template */
 // 템플릿 데이터를 가져오는 함수
@@ -838,14 +885,13 @@ function attachRowClickEvent() {
     });
 }
 
-
 // 테이블 행 클릭 이벤트 핸들러
 function handleRowClick() {
     $('.template-table tr').click(function () {
         const keyword = $(this).find('td').eq(0).text();
         const code = $(this).find('td').eq(1).text();
         const seq = $(this).find('.template-seq').val(); // 수정된 부분
- 
+
         selectedRowData = { keyword, code, seq };
 
         $('.template-table tr').removeClass('selected-row'); // 기존 선택 제거
@@ -854,7 +900,7 @@ function handleRowClick() {
 }
 
 // Edit 버튼 클릭 이벤트 핸들러
-function handleEditButtonClick() {  
+function handleEditButtonClick() {
     $('#edit-setting').off('click');
 
     $('#edit-setting').click(() => {
@@ -868,8 +914,10 @@ function handleEditButtonClick() {
         const formattedContent = selectedRowData.code
             .replace(/<br>/g, '\n')
             .replace(/\\n/g, '\n');
- 
-        $('.edit-template-body .template-name-input').val(selectedRowData.keyword);
+
+        $('.edit-template-body .template-name-input').val(
+            selectedRowData.keyword
+        );
         $('.edit-template-body textarea').val(formattedContent);
         $('.template-table input[type="hidden"]').val(selectedRowData.seq);
     });
@@ -877,59 +925,56 @@ function handleEditButtonClick() {
 
 // update, delete, create
 let themeModified = false;
-let fontModified = false; 
+let fontModified = false;
 let colorModified = false;
 let templateModified = false;
 let isModified = false;
 
-$('input[name="theme"]').on('change', function() {
-	isModified = true;
-	themeModified = true;
+$('input[name="theme"]').on('change', function () {
+    isModified = true;
+    themeModified = true;
 });
 
-$('input[type="color"]').on('input', function() {
-	isModified = true;
-	colorModified = true;
+$('input[type="color"]').on('input', function () {
+    isModified = true;
+    colorModified = true;
 });
 
-$('.select-font-family li, .select-font-size li').on('click', function() {
-	isModified = true;
-	fontModified = true;
+$('.select-font-family li, .select-font-size li').on('click', function () {
+    isModified = true;
+    fontModified = true;
 });
-
 
 function closeSettings() {
-    $('.settings-body').hide(); 
+    $('.settings-body').hide();
 }
 
 function closeTemplate() {
-	$('.template-body').hide();
+    $('.template-body').hide();
 }
 
-$('.settings-footer button').on('click', function() {
+$('.settings-footer button').on('click', function () {
     if (isModified) {
-    	
-    	if (themeModified) {
-    		updateTheme();
-            confiemReload();
-    	}
-
-		if (fontModified) {
-			getSelFont();
-            confiemReload();
-		}
-
-		if (colorModified) {
-			getSelColor();
-            confiemReload();
-		} 
-
-        if (templateModified) {  
+        if (themeModified) {
+            updateTheme();
             confiemReload();
         }
-		
+
+        if (fontModified) {
+            getSelFont();
+            confiemReload();
+        }
+
+        if (colorModified) {
+            getSelColor();
+            confiemReload();
+        }
+
+        if (templateModified) {
+            confiemReload();
+        }
     } else {
-        closeSettings(); 
+        closeSettings();
     }
 });
 
@@ -944,60 +989,65 @@ function confiemReload() {
 }
 
 function updateTheme(selectedTheme) {
-	
-	const token = $("meta[name='_csrf']").attr("content")
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	console.log($('input[name="theme"]:checked').val());
-	const theme = $('input[name="theme"]:checked').val();
-	let themeNumber;
-	
-	if (theme === 'dark') {
-		themeNumber = '0';
-	} else if (theme === 'light') {
-		themeNumber = '1';
-	}
-	
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    console.log($('input[name="theme"]:checked').val());
+    const theme = $('input[name="theme"]:checked').val();
+    let themeNumber;
+
+    if (theme === 'dark') {
+        themeNumber = '0';
+    } else if (theme === 'light') {
+        themeNumber = '1';
+    }
+
     $.ajax({
         url: '/editor/theme',
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({ theme: themeNumber }),
-        beforeSend : function(xhr) {
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-        success: function() {
+        success: function () {
             console.log('업뎃 성공요');
         },
-        error: function(a,b,c) {
+        error: function (a, b, c) {
             console.log(a, b, c);
-        }
+        },
     });
 }
 
+function getSelFont() {
+    const selFont = document.querySelector('.selected-font span').textContent;
+    const selSize = document.querySelector('.selected-size span').textContent;
 
-function getSelFont() { 
-	
-	const selFont = document.querySelector(".selected-font span").textContent;
-	const selSize = document.querySelector(".selected-size span").textContent;
+    const fontSeq = document.querySelector(
+        ".select-font-family input[type='hidden']"
+    ).value;
+    const sizeSeq = document.querySelector(
+        ".select-font-size input[type='hidden']"
+    ).value;
 
-	const fontSeq = document.querySelector(".select-font-family input[type='hidden']").value;
-	const sizeSeq = document.querySelector(".select-font-size input[type='hidden']").value;
-
-	updateFont(selFont, selSize, fontSeq, sizeSeq);
-
+    updateFont(selFont, selSize, fontSeq, sizeSeq);
 }
 
 function getSelColor() {
+    const backgroundElement = document.querySelector('#editor-background');
+    const foregroundElement = document.querySelector('#editor-foreground');
+    const commentElement = document.querySelector('#java-comment');
+    const keywordElement = document.querySelector('#java-keyword');
+    const stringElement = document.querySelector('#java-string');
 
-    const backgroundElement = document.querySelector("#editor-background");
-    const foregroundElement = document.querySelector("#editor-foreground");
-    const commentElement = document.querySelector("#java-comment");
-    const keywordElement = document.querySelector("#java-keyword");
-    const stringElement = document.querySelector("#java-string");
-
-    if (!backgroundElement || !foregroundElement || !commentElement || !keywordElement || !stringElement) {
-        console.error("Some elements were not found!");
+    if (
+        !backgroundElement ||
+        !foregroundElement ||
+        !commentElement ||
+        !keywordElement ||
+        !stringElement
+    ) {
+        console.error('Some elements were not found!');
         return;
     }
 
@@ -1005,173 +1055,290 @@ function getSelColor() {
     const foreground = foregroundElement.value;
     const comment = commentElement.value;
     const keyword = keywordElement.value;
-    const string = stringElement.value; 
+    const string = stringElement.value;
 
-	updateColor(background, foreground, comment, keyword, string);
-
+    updateColor(background, foreground, comment, keyword, string);
 }
 
 function updateFont(selFont, selSize, fontSeq, sizeSeq) {
-	
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: "/editor/font",
-		method: "PUT",
-		contentType: "application/json",
-		data: JSON.stringify([
-			{ value: selFont, styleType_seq: fontSeq },
-			{ value: selSize, styleType_seq: sizeSeq }
-		]),
-		beforeSend : function(xhr) {
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    $.ajax({
+        url: '/editor/font',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify([
+            { value: selFont, styleType_seq: fontSeq },
+            { value: selSize, styleType_seq: sizeSeq },
+        ]),
+        beforeSend: function (xhr) {
             xhr.setRequestHeader(header, token);
         },
-		success: function (data) {
-			console.log("업데이트 성공: ", data);
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+        success: function (data) {
+            console.log('업데이트 성공: ', data);
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
-
 
 function updateColor(background, foreground, comment, keyword, string) {
-	
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: "/editor/color",
-		method: "PUT",
-		contentType: "application/json",
-		data: JSON.stringify([
-			{ value: background, styleType_seq: "3" },
-			{ value: foreground, styleType_seq: "4" },
-			{ value: comment, styleType_seq: "5" },
-			{ value: keyword, styleType_seq: "6" },
-			{ value: string, styleType_seq: "7" }
-		]),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success: function (data) {
-			console.log("업데이트 성공: ", data)
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    $.ajax({
+        url: '/editor/color',
+        method: 'PUT',
+        contentType: 'application/json',
+        data: JSON.stringify([
+            { value: background, styleType_seq: '3' },
+            { value: foreground, styleType_seq: '4' },
+            { value: comment, styleType_seq: '5' },
+            { value: keyword, styleType_seq: '6' },
+            { value: string, styleType_seq: '7' },
+        ]),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('업데이트 성공: ', data);
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
-
-
 
 function getTemplateVal() {
     const keyword = $('.edit-template-body .template-name-input').val();
     const selCode = $('.edit-template-body textarea').val();
-	const template_seq = $('.template-table input[type="hidden"]').val();
+    const template_seq = $('.template-table input[type="hidden"]').val();
 
-    const code = selCode
-        .replace(/\n/g, '\\n');
+    const code = selCode.replace(/\n/g, '\\n');
 
-	updateTemplate(keyword, code, template_seq);
-
+    updateTemplate(keyword, code, template_seq);
 }
 
-
 function updateTemplate(keyword, code, template_seq) {
-
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
 
     $.ajax({
         url: '/editor/template',
         method: 'PUT',
-		contentType: 'application/json',
-		data: JSON.stringify({ keyword: keyword, code: code, seq: template_seq }),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		},
-		success: function(data) {
-			console.log("업데이트 성공 " + data); 
-			$('.template-preview').empty();
-			getTemplateData();
-			closeTemplate(); 
+        contentType: 'application/json',
+        data: JSON.stringify({
+            keyword: keyword,
+            code: code,
+            seq: template_seq,
+        }),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('업데이트 성공 ' + data);
+            $('.template-preview').empty();
+            getTemplateData();
+            closeTemplate();
             isModified = true;
             templateModified = true;
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
     });
 }
 
 function addTemplate() {
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
 
-	const keyword = $('.new-template-body .template-name-input').val();
-	const selCode = $('.new-template-body textarea').val();
+    const keyword = $('.new-template-body .template-name-input').val();
+    const selCode = $('.new-template-body textarea').val();
 
-	const code = selCode
-		.replace(/\n/g, '\\n');
+    const code = selCode.replace(/\n/g, '\\n');
 
-	$.ajax({
-		url: '/editor/template',
-		method: 'POST',
-		contentType: 'application/json',
-		data: JSON.stringify({ keyword: keyword, code: code }),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		}, 
-		success: function(data) {
-			console.log("업로드 성공 " + data);  
-			getTemplateData(); 
-			closeTemplate();
+    $.ajax({
+        url: '/editor/template',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ keyword: keyword, code: code }),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('업로드 성공 ' + data);
+            getTemplateData();
+            closeTemplate();
             isModified = true;
             templateModified = true;
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
 
 function selDeleteSeq() {
-    const template_seq = $('.template-table tr.selected-row').find('input[type="hidden"]').val();
-    deleteTemplate(template_seq)
+    const template_seq = $('.template-table tr.selected-row')
+        .find('input[type="hidden"]')
+        .val();
+    deleteTemplate(template_seq);
 }
 
 function deleteTemplate(template_seq) {
-	const token = $("meta[name='_csrf']").attr("content");
-	const header = $("meta[name='_csrf_header']").attr("content");
-	
-	$.ajax({
-		url: '/editor/template/' + template_seq,
-		method: 'DELETE',
-		contentType: 'application/json',
-		data: JSON.stringify({ seq: template_seq }),
-		beforeSend : function(xhr) {
-			xhr.setRequestHeader(header, token);
-		}, 
-		success: function(data) {
-			console.log("삭제 성공 " + template_seq);  
-			getTemplateData(); 
-			$('.template-preview').empty();
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+
+    $.ajax({
+        url: '/editor/template/' + template_seq,
+        method: 'DELETE',
+        contentType: 'application/json',
+        data: JSON.stringify({ seq: template_seq }),
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            console.log('삭제 성공 ' + template_seq);
+            getTemplateData();
+            $('.template-preview').empty();
             isModified = true;
             templateModified = true;
-		},
-		error: function(a,b,c) {
-			console.log(a,b,c);
-		}
-	});
+        },
+        error: function (a, b, c) {
+            console.log(a, b, c);
+        },
+    });
 }
 
+function getProjectFile() {
+    $.ajax({
+        url: '/editor/explorer',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            renderProjectStructure(data);
+        },
+        error: function (a, b, c) {
+            console.error(a, b, c);
+        },
+    });
+}
 
+function renderProjectStructure(data) {
+    let explorerContainer = document.getElementById('packageExplorer');
+    explorerContainer.innerHTML = '';
 
+    let folderDiv = document.createElement('div');
+    folderDiv.classList.add('folder');
 
+    let projectDiv = document.createElement('div');
+    projectDiv.classList.add('project');
+    projectDiv.innerHTML =
+        `
+        <button>
+            <img src="/editor/resources/image/icon/project.svg" />
+            <span class="white-text">` +
+        data[0].name +
+        `</span>
+        </button>
+    `;
+    folderDiv.appendChild(projectDiv);
 
+    let srcDiv = document.createElement('div');
+    srcDiv.classList.add('src');
+    srcDiv.innerHTML =
+        `
+        <button>
+            <img src="/editor/resources/image/icon/src.svg" />
+            <span class="white-text">` +
+        data[1].name +
+        `</span>
+        </button>
+    `;
+    folderDiv.appendChild(srcDiv);
+
+    let packageDiv = document.createElement('div');
+    packageDiv.classList.add('package');
+    packageDiv.innerHTML =
+        `
+        <button>
+            <img src="/editor/resources/image/icon/package.svg" />
+            <span class="white-text">` +
+        data[2].name +
+        `</span>
+        </button>
+    `;
+    srcDiv.appendChild(packageDiv);
+
+    for (let i = 3; i < data.length; i++) {
+        let fileDiv = createFileItem(data[i]);
+        packageDiv.appendChild(fileDiv);
+    }
+
+    // 모든 항목을 packageExplorer에 추가
+    explorerContainer.appendChild(folderDiv);
+}
+
+function createFileItem(item) {
+    let fileTypeClass = '';
+    let fileTypeIcon = '';
+    let fileName = item.name ? item.name : 'Unnamed File';
+    let fileType = item.fileType_seq ? parseInt(item.fileType_seq) : -1;
+
+    switch (fileType) {
+        case 4:
+            fileTypeClass = 'class';
+            fileTypeIcon = 'class.svg';
+            break;
+        case 5:
+            fileTypeClass = 'interface';
+            fileTypeIcon = 'interface.svg';
+            break;
+        case 6:
+            fileTypeClass = 'txt-file';
+            fileTypeIcon = 'txt.svg';
+            break;
+        case 7:
+            fileTypeClass = 'file';
+            fileTypeIcon = 'file.svg';
+            break;
+        default:
+            fileTypeClass = 'file';
+            fileTypeIcon = 'file.svg';
+            break;
+    }
+
+    let fileDiv = document.createElement('div');
+    fileDiv.classList.add(fileTypeClass);
+
+    fileDiv.innerHTML =
+        `
+        <button class="btn_open_editor" data-file-type="` +
+        fileTypeClass +
+        `" data-file-name="` +
+        fileName +
+        `">
+            <img src="/editor/resources/image/icon/` +
+        fileTypeIcon +
+        `" alt="` +
+        fileTypeClass +
+        `">
+            <span class="white-text">` +
+        fileName +
+        `</span>
+            <input type="hidden" class="file-seq" value="` +
+        item.seq +
+        `">
+        </button>
+    `;
+    console.log(item.seq);
+    return fileDiv;
+}
+
+window.onload = getProjectFile;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -1422,4 +1589,232 @@ function createNewPackage() {
 
 function createNewFile(type) {
     console.log(`New ${type} created`);
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+// 페이지 로드 후 컨텍스트 메뉴 이벤트 설정
+document.addEventListener('DOMContentLoaded', function () {
+    const explorerSidebar = document.querySelector('.explorer_sidebar');
+
+    // explorer_sidebar 내에서 우클릭 메뉴 표시
+    explorerSidebar.addEventListener('contextmenu', function (event) {
+        event.preventDefault(); // 기본 우클릭 메뉴 비활성화
+        removeExistingContextMenu(); // 기존 커스텀 메뉴 제거
+        showCustomContextMenu(event); // 커스텀 메뉴 표시
+    });
+
+    // 문서 클릭 시 커스텀 메뉴 제거
+    document.addEventListener('click', removeExistingContextMenu);
+});
+
+// 기존 커스텀 메뉴 제거 함수
+function removeExistingContextMenu() {
+    const existingMenu = document.querySelector('.custom-context-menu');
+    if (existingMenu) existingMenu.remove();
+}
+
+// 커스텀 컨텍스트 메뉴 표시 함수
+function showCustomContextMenu(event) {
+    const contextMenu = document.createElement('div');
+    contextMenu.classList.add('custom-context-menu');
+    contextMenu.style.top = `${event.clientY}px`;
+    contextMenu.style.left = `${event.clientX}px`;
+
+    // New 메뉴 생성
+    const newMenuItem = document.createElement('div');
+    newMenuItem.classList.add('custom-context-menu-item');
+    newMenuItem.innerText = 'New >';
+
+    // 서브메뉴 생성
+    const submenu = document.createElement('div');
+    submenu.classList.add('custom-submenu');
+
+    // 서브메뉴 항목 추가
+    addCustomMenuItem(submenu, 'Project', openProjectModal, '/editor/resources/image/icon/project.svg');
+    addCustomMenuItem(submenu, 'Package', () => createNewItem('package'), '/editor/resources/image/icon/package.svg');
+    addCustomMenuItem(submenu, 'Class', () => createNewFile('class'), '/editor/resources/image/icon/class.svg');
+    addCustomMenuItem(submenu, 'Interface', () => createNewFile('interface'), '/editor/resources/image/icon/interface.svg');
+    addCustomMenuItem(submenu, 'Text-File', () => createNewFile('txt-file'), '/editor/resources/image/icon/txt.svg');
+    addCustomMenuItem(submenu, 'File', () => createNewFile('file'), '/editor/resources/image/icon/file.svg');
+
+    // 서브메뉴를 New 항목에 추가
+    newMenuItem.appendChild(submenu);
+    contextMenu.appendChild(newMenuItem);
+
+    // Delete 메뉴 추가
+    addCustomMenuItem(contextMenu, 'Delete', confirmAndDeleteItem);
+
+    // 컨텍스트 메뉴를 문서에 추가하고 위치 설정
+    document.body.appendChild(contextMenu);
+}
+
+// 메뉴 항목 추가 함수
+function addCustomMenuItem(menu, text, action, iconPath) {
+    const item = document.createElement('div');
+    item.classList.add('custom-context-menu-item');
+
+    // 아이콘이 있는 경우 추가
+    if (iconPath) {
+        const icon = document.createElement('img');
+        icon.src = iconPath;
+        icon.classList.add('custom-menu-icon');
+        item.appendChild(icon);
+    }
+
+    // 메뉴 텍스트 추가
+    const itemText = document.createElement('span');
+    itemText.innerText = text;
+    item.appendChild(itemText);
+
+    // 클릭 이벤트 리스너 추가
+    item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        action();
+        removeExistingContextMenu();
+    });
+
+    // 메뉴 항목을 메뉴에 추가
+    menu.appendChild(item);
+}
+
+// 삭제 확인 후 삭제 함수
+function confirmAndDeleteItem(element) {
+    const isConfirmed = confirm('Are you sure you want to delete this item?');
+    if (isConfirmed && element) {
+        element.closest('.project-container, .source-folder, .package-folder, .file-item').remove();
+    }
+}
+
+// 모달 열기 함수
+function openProjectModal() {
+    document.getElementById('projectModal').style.display = 'block';
+}
+
+// 모달 닫기 함수
+function closeProjectModal() {
+    document.getElementById('projectModal').style.display = 'none';
+}
+
+// 프로젝트 생성 함수
+function createProject() {
+    const projectName = document.getElementById('projectNameInput').value;
+    if (projectName) {
+        const projectContainer = addProjectToExplorer(projectName); // 프로젝트 추가
+        addSourceFolderToProject(projectContainer); // 기본 src 디렉토리 추가
+        closeProjectModal(); // 모달 닫기
+    } else {
+        alert('Please enter a project name');
+    }
+}
+
+// 패키지 익스플로러에 프로젝트 추가 함수
+function addProjectToExplorer(projectName) {
+    const explorerPanel = document.querySelector('.explorer_sidebar #packageExplorer');
+
+    // 새로운 프로젝트 div 생성
+    const projectContainer = document.createElement('div');
+    projectContainer.classList.add('project-container');
+    projectContainer.style.marginLeft = '0px'; // 프로젝트 기본 들여쓰기 설정
+
+    // 프로젝트 버튼 생성 및 추가
+    const projectButton = document.createElement('button');
+    projectButton.classList.add('open-editor-button');
+    projectButton.innerHTML = `
+        <img src="/editor/resources/image/icon/project.svg" />
+        <span class="white-text">${projectName}</span>
+    `;
+    projectContainer.appendChild(projectButton);
+
+    // 프로젝트를 패키지 익스플로러에 추가
+    explorerPanel.appendChild(projectContainer);
+    return projectContainer;
+}
+
+// 프로젝트에 기본 src 디렉토리 추가 함수
+function addSourceFolderToProject(projectContainer) {
+    const sourceFolderDiv = document.createElement('div');
+    sourceFolderDiv.classList.add('source-folder');
+    sourceFolderDiv.style.marginLeft = '20px'; // src 들여쓰기 설정
+
+    // src 버튼 생성 및 추가
+    const sourceFolderButton = document.createElement('button');
+    sourceFolderButton.classList.add('open-editor-button');
+    sourceFolderButton.innerHTML = `
+        <img src="/editor/resources/image/icon/src.svg" />
+        <span class="white-text">src</span>
+    `;
+    sourceFolderDiv.appendChild(sourceFolderButton);
+
+    // src를 프로젝트에 추가
+    projectContainer.appendChild(sourceFolderDiv);
+}
+
+// 패키지 또는 파일 생성 함수
+function createNewItem(itemType) {
+    const srcContainer = document.querySelector('.source-folder'); // src에 패키지 생성
+    if (itemType === 'package' && srcContainer) {
+        const packageName = prompt("Enter package name:");
+        if (packageName) {
+            addPackageToSourceFolder(srcContainer, packageName);
+        }
+    }
+}
+
+// src 내에 패키지 추가 함수
+function addPackageToSourceFolder(srcDiv, packageName) {
+    const packageDiv = document.createElement('div');
+    packageDiv.classList.add('package-folder');
+    packageDiv.style.marginLeft = '40px'; // 패키지 들여쓰기 설정
+
+    // 패키지 버튼 생성 및 추가
+    const packageButton = document.createElement('button');
+    packageButton.classList.add('btn_open_editor');
+    packageButton.innerHTML = `
+        <img src="/editor/resources/image/icon/package.svg" />
+        <span class="white-text">${packageName}</span>
+    `;
+    packageDiv.appendChild(packageButton);
+
+    // 컨텍스트 메뉴에서 파일 추가 가능하게 설정
+    packageButton.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        showCustomContextMenu(event);
+    });
+
+    srcDiv.appendChild(packageDiv);
+}
+
+// 파일 생성 함수
+function createNewFile(fileType) {
+    const packageContainer = document.querySelector('.package-folder');
+    const fileName = prompt(`Enter ${fileType} name:`);
+    if (fileName && packageContainer) {
+        addFileToPackage(packageContainer, fileType, fileName);
+    }
+}
+
+// 패키지에 파일 추가 함수
+function addFileToPackage(packageDiv, fileType, fileName) {
+    let fileExtension = '';
+    switch (fileType) {
+        case 'class': fileExtension = '.java'; break;
+        case 'interface': fileExtension = '.inter'; break;
+        case 'txt-file': fileExtension = '.txt'; break;
+        case 'file': fileExtension = '.file'; break;
+    }
+
+    const fileDiv = document.createElement('div');
+    fileDiv.classList.add(`${fileType}-file`);
+    fileDiv.style.marginLeft = '60px'; // 파일 기본 들여쓰기 설정
+
+    const fileButton = document.createElement('button');
+    fileButton.classList.add('btn_open_editor');
+    fileButton.innerHTML = `
+        <img src="/editor/resources/image/icon/${fileType}.svg" />
+        <span class="white-text">${fileName}${fileExtension}</span>
+    `;
+    fileDiv.appendChild(fileButton);
+
+    packageDiv.appendChild(fileDiv);
 }

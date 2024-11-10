@@ -60,26 +60,6 @@
 						</div>
 
                     </div>
-
-                    <!-- 추가 패키지 -->
-                    <div class="package">
-                        <button>
-                            <img
-                                src="/editor/resources/image/icon/package.svg"
-                            />
-                            <span class="white-text">com.test.main.aaa</span>
-                        </button>
-
-                        <!-- 클래스 항목 -->
-                        <div class="class">
-                            <button class="btn_open_editor">
-                                <img
-                                    src="/editor/resources/image/icon/class.svg"
-                                />
-                                <span class="white-text">AAA.java</span>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -95,4 +75,22 @@
             />
         </button>
     </div>
+    
+	<!-- 모달 -->
+  <button id="newProjectButton" style="display: none;" onclick="openProjectModal()">New Project</button>
+	<div id="projectModal" class="project-modal">
+	  <div class="project-modal-content">
+	    <span class="project-modal-close" onclick="closeProjectModal()">&times;</span>
+	    <h2>Create New Project</h2>
+	    <input type="text" id="projectNameInput" placeholder="Enter project name" />
+	    <button onclick="createProject()">Create</button>
+	  </div>
+	</div>
+
+
 </div>
+
+
+
+
+
