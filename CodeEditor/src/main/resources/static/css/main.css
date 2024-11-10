@@ -160,7 +160,6 @@ ul {
 	margin-right : 20px;
 	text-align: center;
 	margin-left : auto;
-
 }
 
 .sign_login_header {
@@ -180,6 +179,7 @@ ul {
     height: 13px;
     margin-right: 10px;
 }
+
 /* main */
 .main_content {
     width: 80%;
