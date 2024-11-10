@@ -72,28 +72,39 @@ function initSocketEvent() {
     };
 
     socket.onmessage = function (event) {
-        console.log('message 받음');
         const data = JSON.parse(event.data);
-        console.log('socket on message', event);
+        if (data.type == 'cursor') {
+            const cursor = data.cursor;
+        } else if (data.type == 'code') {
+            const code = data.code;
+            const editorInstance = editorInstances[code.tabId]; // Ensure you have the correct editor instance
 
-        const editorInstance = editorInstances[data.tabId];
-        if (editorInstance) {
-            // Apply received changes to the editor content
-            editorInstance.executeEdits(null, [
-                {
-                    range: new monaco.Range(
-                        data.range.startLineNumber,
-                        data.range.startColumn,
-                        data.range.endLineNumber,
-                        data.range.endColumn
-                    ),
-                    text: data.text,
-                },
-            ]);
+            if (editorInstance) {
+                // Save current scroll position and cursor position
+                const currentScrollTop = editorInstance.getScrollTop();
+                const currentScrollLeft = editorInstance.getScrollLeft();
+                const currentPosition = editorInstance.getPosition();
 
-            // Update the cursor position of other users
-            if (data.cursorPosition) {
-                renderUserCursor(data.userId, data.cursorPosition, data.tabId);
+                // Apply received changes to the editor content
+                editorInstance.executeEdits(null, [
+                    {
+                        range: new monaco.Range(
+                            code.range.startLineNumber,
+                            code.range.startColumn,
+                            code.range.endLineNumber,
+                            code.range.endColumn
+                        ),
+                        text: code.text,
+                        forceMoveMarkers: true, // Ensure markers like breakpoints move with the edit
+                    },
+                ]);
+
+                // Restore scroll and cursor positions
+                if (currentPosition) {
+                    editorInstance.setPosition(currentPosition);
+                }
+                editorInstance.setScrollTop(currentScrollTop);
+                editorInstance.setScrollLeft(currentScrollLeft);
             }
         }
     };
@@ -118,8 +129,6 @@ $('.editor-tab ul').sortable({
 });
 
 let templates = [];
-
-// Add a new tab with Monaco editor
 
 $('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
@@ -178,15 +187,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             });
 
             editorInstances[tabId] = editor;
-            // Detect cursor position change
-            // editor.onDidChangeCursorPosition((event) => {
-            //     const position = event.position;
-            //     const cursorData = {
-            //         tabId: tabId,
-            //         cursorLine: position.lineNumber,
-            //         cursorColumn: position.column,
-            //         content: editor.getValue(),
-            //     };
+
             getFontData();
 
             // Completion Item Provider 등록
@@ -235,12 +236,6 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             // });
 
             editor.onDidChangeModelContent((event) => {
-                // console.log(this);
-                // console.log(editor);
-                // console.log(event);
-                // console.log(monaco);
-                const editorDomNode = editor.getDomNode();
-
                 event.changes.forEach((change) => {
                     const changeFileData = {
                         type: 'code',
@@ -1334,7 +1329,6 @@ function createFileItem(item) {
         `">
         </button>
     `;
-    console.log(item.seq);
     return fileDiv;
 }
 
