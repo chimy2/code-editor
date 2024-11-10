@@ -79,6 +79,7 @@ public class MainController {
 	public String logout() {
 		return "logout";
 	}
+
 	
 	// 나중에 mypage랑 합칠 예정 -> ui 먼저 하는 중
 	@GetMapping("/mypage/membersetting")
@@ -106,4 +107,5 @@ public class MainController {
 		
 		return dao.getMemberProject(member_seq);
 	}
+
 }
