@@ -575,6 +575,7 @@ ul {
     grid-auto-rows: minmax(90px, auto); 
     grid-auto-flow: row;
     grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 100px);
     color : var(--white);
     overflow-y: auto; 
     overflow-x: hidden;
@@ -1456,9 +1457,11 @@ ul {
 	text-align: center;
 	line-height: 1.7;
 	margin : 10px 0;
+	background-color: var(--gray9);
 }
 .project_etc_setting ul li{
 	margin : 5px 0;
+	border-bottom : 1px solid var(--gray7);
 }
 
 
