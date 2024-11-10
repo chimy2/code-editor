@@ -207,18 +207,19 @@ function join(email, nick, password){
 }
 
 
-if (window.location.pathname.startsWith("/editor/")||
-	window.location.pathname.startsWith("/editor/code")) {
-	
-		document.querySelector('#sign_up').onclick = function(){
-			location.href = '/editor/join';
+if (window.location.pathname.startsWith("/editor/code")||
+	window.location.pathname.startsWith("/editor/")){
+		if(document.querySelector('#sign_up')!=null){
+			document.querySelector('#sign_up').onclick = function(){
+				location.href = '/editor/join';
+			}
 		}
 		
 		if(document.querySelector('#log_in')!=null){
 			document.querySelector('#log_in').onclick = function(){
 				location.href = '/editor/login';
 			}
-		}else{
+		}else if(document.querySelector('#log_out')!=null){
 			document.querySelector('#log_out').onclick = function(){
 				location.href = '/editor/logout';
 			}
@@ -367,6 +368,107 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 	
 	document.querySelector('.calendar_box .contact').onclick = function() {
     	location.href = 'https://github.com/chimy2/code-editor';
+    }
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+	    /*
+	    const calendarEl = document.getElementById('calendar')
+	    const calendar = new FullCalendar.Calendar(calendarEl, {
+	      initialView: 'dayGridMonth'
+	    })
+	    */
+	    var calendarEl = document.getElementById('calendar');
+
+	  var calendar = new FullCalendar.Calendar(calendarEl, {
+	    initialView: 'dayGridMonth',
+	    headerToolbar: {
+	      center: 'addEventButton'
+	    },
+	    customButtons: {
+	      addEventButton: {
+	        text: '일정 추가',
+	        click: function() {
+	          var dateStr = prompt('날짜를 입력해주세요. (날짜 형식 : YYYY-MM-DD)');
+	          var date = new Date(dateStr + 'T00:00:00'); // will be in local time
+	
+	          if (!isNaN(date.valueOf())) { // valid?
+	            calendar.addEvent({
+	              title: 'UI 작업 완료하기',
+	              start: date,
+	              backgroundColor : 'gold',
+	              textColor : 'black',
+	              allDay: true
+	            });
+	            alert('Great. Now, update your database...');
+	          } else {
+	            alert('Invalid date.');
+	          }
+	        }
+	      }
+	    }
+	  });
+	    
+	    
+	    
+	    calendar.render()
+	  })
+    
+    document.querySelector('#member_setting_box').onclick = function() {
+    	document.querySelector('#mypage_setting_box').style.display = 'block';
+    	document.querySelector('#content_memberSetting').style.display = 'block';
+    	document.querySelector('.setting_name_edit input[class=setting_name]').focus();
+    	
+		document.querySelector('.setting_name_edit .setting_name_close').onclick = function() {
+    		document.querySelector('.setting_name_edit input[class=setting_name]').value ='';
+    	}
+
+    	
+    	if(document.querySelector('#content_memberSetting')!=null){
+    		document.querySelector('.logout_member_setting').onclick = function() {
+    		location.href = 'http://localhost:8090/editor/logout';
+    		}
+    	
+	    	document.querySelector('.button_member_setting').onclick = function() {
+	    		document.querySelector('#mypage_setting_box').style.display = 'none';
+	    		document.querySelector('#content_memberSetting').style.display = 'none';
+	    	}
+	    	
+	    	
+	    	document.querySelector('#nick_edit').onclick = function() {
+	    		const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				const seq = document.querySelector('input[type = hidden]').value; 
+				const nick = document.querySelector('.setting_name_edit input[class = setting_name]').value; 
+	    		$.ajax({
+			        type: 'POST',
+			        url: '/editor/nickEdit/mypage',
+			        dataType: 'json',
+			        contentType: 'application/json', 
+			        data: JSON.stringify({ 
+			            nick : nick, 
+			            seq : seq
+			        }), 
+				    beforeSend : function(xhr) {
+				        xhr.setRequestHeader(header, token);
+				    },
+			        success: function(result) {
+			            if (result == 0) {
+			            	console.log("닉네임 업데이트 실패");
+			            } else if (result == 1) {
+			               	console.log("닉네입 업데이트 성공");
+			               	location.href = '/editor/mypage';
+			            }
+			        },
+			        error: function(a, b, c) {
+			            console.log(a, b, c);
+			        }
+			    });
+	    	}
+	    	
+    	
+    	}
+    	
     }
 	
 }

@@ -22,6 +22,12 @@ public interface MemberMapper {
 
 	String getMaxSeq();
 
+	int nickEdit(MemberDTO dto);
+
+	List<MemberDTO> load(String seq);
+
+	
+
 	
 	
 	

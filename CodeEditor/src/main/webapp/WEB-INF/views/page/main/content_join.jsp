@@ -24,7 +24,7 @@
 				<div class="join_id" id="email_duplicate">
 					이메일
 					<div class="duplicate_check">
-						<input type="email" name="username" placeholder="이메일을 입력해주세요." value="dog@naver.com" required >
+						<input type="email" name="username" placeholder="이메일을 입력해주세요." required >
 						<button type="button">중복체크</button>
 					</div>
 					<div id="duplicate_check_email" class="duplicate_check_message"></div>
@@ -32,7 +32,7 @@
 				<div class="join_nick" id="nick_duplicate">
 					닉네임
 					<div class="duplicate_check">
-						<input type="text" name="nick" placeholder="닉네임을 입력해주세요." value="dog" required>
+						<input type="text" name="nick" placeholder="닉네임을 입력해주세요." required>
 						<button type="button">중복체크</button>
 					</div>
 					<div id="duplicate_check_nick" class="duplicate_check_message"></div>

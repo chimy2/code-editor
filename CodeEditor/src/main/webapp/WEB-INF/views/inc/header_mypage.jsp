@@ -4,10 +4,11 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="header">
 	<div class = "headerImg">
-		<a href="/editor/"><img src="/editor/resources/image/icon/home.svg"></a>
-		<img src="/editor/resources/image/icon/edit.svg">
+		<a href="/editor/mypage"><img src="/editor/resources/image/icon/home.svg"></a>
+		<img id="member_setting_box" src="/editor/resources/image/icon/edit.svg">
 	</div>
 	<div class="nick">
+
 		<!-- 로그인 하기 전 -->
 		<sec:authorize access="isAnonymous()">
 			Guest
@@ -15,8 +16,9 @@
 		
 		<!-- 로그인 한 후 -->
 		<sec:authorize access="isAuthenticated()">
-			<sec:authentication property="principal.member.nick"/> 
+			${dto[0].nick}
 		</sec:authorize>
+
 	</div>
 	<div class="header_project">
 		<div class="header_project_icon"><img src="/editor/resources/image/icon/project2.svg"></div>

@@ -2,6 +2,8 @@ package com.test.editor.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.model.MemberDTO;
+import com.test.editor.model.TeamDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,13 +21,26 @@ public class MainController {
 	
 	private final MemberDAO dao;
 	
+	@PreAuthorize("isAnonymous() or isAuthenticated()")
 	@GetMapping("/")
 	public String main() {
 		return "main";
 	}
 	
+	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
-	public String mypage() {
+	public String mypage(HttpSession session,Model model) {
+		System.out.println(session.getAttribute("member"));
+		//MemberDTO dto = dao.loadUser()
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		
+		 if (member != null) {
+	        String seq = member.getSeq(); 
+	        List<MemberDTO> dto = dao.load(seq);
+	        System.out.println(dto);
+	        model.addAttribute("dto",dto);
+	    }
+		
 		return "mypage";
 	}
 
@@ -35,6 +51,7 @@ public class MainController {
 		return "stats";
 	}
 	
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/login")
 	public String login(Model model) {
 		List<MemberDTO> username = dao.username();
@@ -42,6 +59,7 @@ public class MainController {
 		return "login";
 	}
 	
+	@PreAuthorize("isAnonymous()")
 	@GetMapping("/join")
 	public String join() {
 		return "join";
@@ -52,7 +70,7 @@ public class MainController {
 		return "document";
 	}
 	
-	// 나중에 login이랑 security 처리할 예정
+	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/logout")
 	public String logout() {

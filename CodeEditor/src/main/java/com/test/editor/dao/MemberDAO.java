@@ -15,7 +15,7 @@ public class MemberDAO  {
 	private MemberMapper mapper;
 
 	public MemberDTO list(String nick) {
-		// TODO Auto-generated method stub
+	
 		return mapper.list(nick);
 	}
 
@@ -46,6 +46,19 @@ public class MemberDAO  {
 	public String getMaxSeq() {
 		return mapper.getMaxSeq();
 	}
+
+
+	public int nickEdit(MemberDTO dto) {
+		
+		return mapper.nickEdit(dto);
+	}
+
+	public List<MemberDTO> load(String seq) {
+		// TODO Auto-generated method stub
+		return mapper.load(seq);
+	}
+
+
 
 
 	
