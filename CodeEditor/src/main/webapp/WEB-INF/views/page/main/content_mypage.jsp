@@ -30,7 +30,7 @@
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
 					 <c:if test="${status.index == 0}"> 
-				        <div class="teamBox_icon" >
+				        <div class="teamBox_icon" onclick="getSelProject('${team.teamSeq}')">
 				            <div>
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
@@ -39,7 +39,7 @@
 				        </div>
 				    </c:if>
  					<c:if test="${status.index > 0}"> 
-					    <div class="teamBox_icon" id="teamBox">
+					    <div class="teamBox_icon" id="teamBox" onclick="getSelProject('${team.teamSeq}')">
 					        <div>
 					            <img class="team_icon" src="/editor/resources/image/icon/team.svg">
 					        </div>
@@ -261,6 +261,7 @@
 		data.forEach(project => { 
 			const projectHTML = 
 				'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
+				//'<div class="projectBox_icon" onclick="getExplorer(' + project.seq + ')' + '">' +
 					'<div>' +
 						'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
 					'</div>' + project.projectName +
@@ -270,6 +271,21 @@
 		});
 	}
 
+	function getSelProject(teamSeq) {
+		console.log(teamSeq);
+		$.ajax({
+			url: "/editor/mypage/project/" + teamSeq,
+			method: "GET",
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				getProject(data);
+			},
+			error: function(a, b, c) {
+				console.log(a, b, c);
+			}
+		});
+	}
 
 </script>
 

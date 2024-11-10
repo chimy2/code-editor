@@ -1,6 +1,7 @@
 package com.test.editor.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -62,6 +63,11 @@ public class MemberDAO  {
 
 	public List<MemberProject> getMemberProject(String member_seq) {
 		return mapper.getMemberProject(member_seq);
+	}
+
+
+	public List<MemberProject> getSelProject(Map<String, String> selTeam) {
+		return mapper.getSelProject(selTeam);
 	}
 
 
