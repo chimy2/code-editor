@@ -110,13 +110,13 @@
 					src="/editor/resources/image/icon/plus.svg">
 			</div>
 			<div class="inner_box_content">
-				<div class="projectBox_icon">
+				<button class="projectBox_icon" onclick="location.href='/editor/code/1';">
 					<div>
 						<img class="project2_icon"
 							src="/editor/resources/image/icon/project2.svg">
 					</div>
 					Spring project
-				</div>
+				</button>
 				<div class="projectBox_icon">
 					<div>
 						<img class="project2_icon"
