@@ -35,6 +35,7 @@
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
 				            ${team.teamName}
+				            <input type="hidden" id="teamSeq" value="${team.teamSeq}">
 				        </div>
 				    </c:if>
  					<c:if test="${status.index > 0}"> 
@@ -43,6 +44,7 @@
 					            <img class="team_icon" src="/editor/resources/image/icon/team.svg">
 					        </div>
 					        ${team.teamName}
+							<input type="hidden" id="teamSeq" value="${team.teamSeq}">
 					    </div>
 				    </c:if>
 				</c:forEach>
@@ -55,84 +57,15 @@
 				<div>
 					<img class="team_icon" src="/editor/resources/image/icon/team.svg">
 				</div>
-				ssangyoung
+				<div id="teamName">
+					ssangyoung
+				</div> 
 				<div class="total_project">전체 프로젝트 관리</div>
 				<img class="team_project_plus"
 					src="/editor/resources/image/icon/plus.svg">
 			</div>
-			<div class="inner_box_content">
-				<button class="projectBox_icon" onclick="location.href='/editor/code/1';">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</button>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-
-
+			<div class="inner_box_content" id="project-container">
+				<!-- 동적 추가 --> 
 			</div>
 		</div>
 	</div>
@@ -182,3 +115,55 @@
 <input type="hidden" value="<sec:authentication property="principal.member"/>"> --%>
 <%-- <input type="hidden" value ="${sessionScope.member}">  --%>
 <input type="hidden" value ="${sessionScope.member.seq}"> 
+
+
+
+<script>
+
+	function getMemberProject() {
+		$.ajax({
+			url: "/editor/mypage/project",
+			method: "GET",
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				getProject(data);
+			},
+			error: function(a, b, c) {
+				console.log(a, b, c);
+			}
+		});
+	}
+	
+	window.onload = function() {
+		getMemberProject();
+	}
+
+	function getProject(data) { 
+
+		const innerBoxContent = document.querySelector('#project-container');
+		innerBoxContent.innerHTML = '';
+ 
+		data.forEach(project => { 
+			const projectHTML = 
+				'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
+					'<div>' +
+						'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
+					'</div>' + project.projectName +
+				'</div>';
+			console.log(projectHTML);
+			innerBoxContent.innerHTML += projectHTML;
+		});
+	}
+
+
+</script>
+
+
+
+
+
+
+
+
+

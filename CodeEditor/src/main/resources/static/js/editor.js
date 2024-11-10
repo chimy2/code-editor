@@ -193,42 +193,6 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                     }
                 });
             });
-
-            // Handle WebSocket messages
-            socket.onmessage = function (event) {
-                const data = JSON.parse(event.data);
-
-                if (data.tabId === tabId) {
-                    const editorInstance = monaco.editor
-                        .getModels()
-                        .find((model) => model.uri.path.includes(data.tabId));
-                    if (editorInstance) {
-                        // Update content if changed
-                        editorInstance.setValue(data.content);
-
-                        // Display cursor position for other users
-                        if (data.userId && data.userId !== 'currentUser') {
-                            // Replace with real user ID check
-                            let range = new monaco.Range(
-                                data.cursorLine,
-                                data.cursorColumn,
-                                data.cursorLine,
-                                data.cursorColumn
-                            );
-                            const decorationId = editor.deltaDecorations(
-                                [],
-                                [
-                                    {
-                                        range: range,
-                                        options: { className: 'cursorDecoration' },
-                                    },
-                                ]
-                            );
-                            cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
-                        }
-                    }
-                }
-            };
         });
     });
 
