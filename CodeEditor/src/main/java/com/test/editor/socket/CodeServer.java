@@ -1,4 +1,4 @@
-package com.test.editor.code;
+package com.test.editor.socket;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,12 +18,14 @@ import com.test.editor.domain.Code;
 @ServerEndpoint("/vs/code/{project_seq}")
 public class CodeServer {
 	
-	private static List<Session> sessionList;
+	private static ArrayList<Session> sessionList;
+//	private static HashMap<Session, MemberDTO> sessionList;
 	private static HashMap<String, List<Session>> fileList;
     private static ObjectMapper objectMapper;
 
 	static {
 		sessionList = new ArrayList<Session>();
+//		sessionList = new HashMap<Session, MemberDTO>();
 		fileList = new HashMap<String, List<Session>>();
 		objectMapper = new ObjectMapper();
 	}
@@ -41,15 +43,16 @@ public class CodeServer {
 	public void handleMessage(Session session, String message) {
 	    try {
 	        // Deserialize incoming message to CodeDTO
-	        Code codeUpdate = objectMapper.readValue(message, Code.class);
+	        Code code = objectMapper.readValue(message, Code.class);
 
 	        // Log message content
-	        System.out.println("Received message: " + codeUpdate);
+	        System.out.println("Received message: " + code);
 
 	        // Broadcast the received message to all other sessions
 	        for (Session s : sessionList) {
 	            if (!s.getId().equals(session.getId())) {  // Avoid sending back to sender
-	                s.getBasicRemote().sendText(objectMapper.writeValueAsString(codeUpdate));
+	            	code.getReceiver().setId(message);
+	                s.getBasicRemote().sendText(objectMapper.writeValueAsString(code));
 	            }
 	        }
 	    } catch (IOException e) {

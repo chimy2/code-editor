@@ -472,9 +472,3 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
     }
 	
 }
-
-
-
-
-
-

@@ -142,30 +142,46 @@ $('.btn_open_editor').on('click', function () {
 
 
         // Detect cursor position change
-        editor.onDidChangeCursorPosition((event) => {
-            const position = event.position;
-            const cursorData = {
-                tabId: tabId,
-                cursorLine: position.lineNumber,
-                cursorColumn: position.column,
-                content: editor.getValue(),
-            };
+        // editor.onDidChangeCursorPosition((event) => {
+        //     const position = event.position;
+        //     const cursorData = {
+        //         tabId: tabId,
+        //         cursorLine: position.lineNumber,
+        //         cursorColumn: position.column,
+        //         content: editor.getValue(),
+        //     };
 
-            if (socket.readyState === WebSocket.OPEN) {
-                socket.send(JSON.stringify(cursorData));
-            }
-        });
+        //     if (socket.readyState === WebSocket.OPEN) {
+        //         socket.send(JSON.stringify(cursorData));
+        //     }
+        // });
 
         editor.onDidChangeModelContent((event) => {
+            // console.log(this);
+            // console.log(editor);
             console.log(event);
+            // console.log(monaco);
+            const editorDomNode = editor.getDomNode();
+            // const token = $("meta[name='_csrf']").attr('content');
+            const member = {
+                id: memberId,
+                nick: memberNick,
+            };
+            console.log('token', token);
 
             event.changes.forEach((change) => {
-                const changeData = {
+                const changeFileData = {
+                    tabId: tabId,
+                    sender: member,
                     text: change.text,
                     range: change.range, // 변경 범위
+                    sendDate: new Date(),
                 };
                 // 변경 사항을 서버에 전송
                 // sendChangeToServer(changeData);
+                if (socket.readyState === WebSocket.OPEN) {
+                    socket.send(JSON.stringify(changeFileData));
+                }
             });
         });
 
