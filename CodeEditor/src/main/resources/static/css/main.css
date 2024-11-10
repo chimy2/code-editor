@@ -579,6 +579,10 @@ ul {
     overflow-y: auto; 
     overflow-x: hidden;
 }
+.inner_box_content .teamBox_icon:nth-child(1) div{
+	outline : 4px solid var(--orange);
+}
+
 
 .teamBox_icon{
 	display: flex;
@@ -1117,16 +1121,17 @@ ul {
 	width : 50px;
 	height : 50px;
 	display : none;
-	
 }
-#content_memberSetting{
+.content_memberSetting{
 	width : 550px;
 	height : 600px;
 	background-color: var(--white);
 	border-radius: 5px;
 	display : none;
 	z-index : 1;
-	position : relative;
+	position : absolute;
+	top : 15%;
+	left : 35%;
 }
 
 .header_setting{
@@ -1502,17 +1507,83 @@ ul {
 }
 
 
+/*팀과 프로젝트 박스 우클릭*/
+.teamcontextBox,
+.projectcontextBox{
+	background-color: var(--white);
+	display : none;
+	border-radius : 5px;
+}
+
+.teamContextSetting,
+.teamContextDelete{
+	width : 100px;
+	height : 30px;
+	color : var(--black);
+	border : 1px solid var(--black);
+	text-align : center;
+	line-height : 30px;
+	box-sizing: boder-box;
+}
+
+.teamContextSetting{
+	border-top-left-radius : 5px;
+	border-top-right-radius : 5px;
+}
+
+.teamContextDelete{
+	border-bottom-left-radius : 5px;
+	border-bottom-right-radius : 5px;
+}
+.teamContextSetting:hover,
+.teamContextDelete:hover{
+	cursor : pointer;
+	background-color: var(--gray7);
+}
+
+/* 프로젝트 */
+.projectContextSetting,
+.projectContextDelete{
+	width : 150px;
+	height : 30px;
+	color : var(--black);
+	border : 1px solid var(--black);
+	text-align : center;
+	line-height : 30px;
+	box-sizing: boder-box;
+}
+
+.projectContextSetting{
+	border-top-left-radius : 5px;
+	border-top-right-radius : 5px;
+}
+
+.projectContextDelete{
+	border-bottom-left-radius : 5px;
+	border-bottom-right-radius : 5px;
+}
+.projectContextSetting:hover,
+.projectContextDelete:hover{
+	cursor : pointer;
+	background-color: var(--gray7);
+}
 
 
+/* 팀 삭제 */
+#team_delete{
+	position : absolute;
+	left : 35%;
+	display : none;
+	z-index:1;
+}
 
-
-
-
-
-
-
-
-
+/* 프로젝트 삭제 */
+#project_delete{
+	position : absolute;
+	left : 35%;
+	display : none;
+	z-index:1;
+}
 
 
 
