@@ -30,7 +30,7 @@
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
 					 <c:if test="${status.index == 0}"> 
-				        <div class="teamBox_icon">
+				        <div class="teamBox_icon" >
 				            <div>
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
