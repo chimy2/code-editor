@@ -332,12 +332,12 @@ ul {
     display: grid;
     place-items: center;
     grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .calendar {
     grid-row: 1 / 3;
-    grid-column: 1 / 4;
+    grid-column: 1 / 3;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -472,7 +472,7 @@ ul {
 }
 
 .team_project {
-    grid-column: 4 / 6;
+    grid-column: 3 / 5;
     box-sizing: border-box;
     width: 100%;
     height: 100%;
@@ -483,7 +483,7 @@ ul {
 }
 
 .inner_box {
-    width: 70%;
+    width: 80%;
     height: 60%;
 }
 
@@ -539,6 +539,12 @@ ul {
 	width : 23px;
 	height : 23px;
 }
+
+.inner_box_header .user_icon{
+	width : 18px;
+	height : 18px;
+}
+
 .inner_box_header .team_project_plus{
 	margin-left : auto;
 	margin-right: 10px;
@@ -588,7 +594,7 @@ ul {
 .teamBox_icon{
 	display: flex;
 	height : 40px;
-	width : 130px;
+	width : 200px;
 	text-align: center;
 	align-items: center;
 	justify-items: start; 
@@ -619,7 +625,7 @@ ul {
 .projectBox_icon{
 	display: flex;
 	height : 40px;
-	width : 140px;
+	width : 200px;
 	text-align: center;
 	align-items: center;
 	justify-items: start; 
@@ -1123,7 +1129,7 @@ ul {
 	height : 50px;
 	display : none;
 }
-.content_memberSetting{
+#content_memberSetting{
 	width : 550px;
 	height : 600px;
 	background-color: var(--white);
@@ -1511,6 +1517,19 @@ ul {
 
 
 /*팀과 프로젝트 박스 우클릭*/
+.content_memberSetting{
+	width : 550px;
+	height : 600px;
+	background-color: var(--white);
+	border-radius: 5px;
+	display : none;
+	z-index : 1;
+	position : absolute;
+	top : 15%;
+	left : 35%;
+}
+
+
 .teamcontextBox,
 .projectcontextBox{
 	background-color: var(--white);
