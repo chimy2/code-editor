@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.test.editor.mapper.MemberMapper;
 import com.test.editor.model.MemberDTO;
+import com.test.editor.model.MemberProject;
 
 @Repository
 public class MemberDAO  {
@@ -15,7 +16,7 @@ public class MemberDAO  {
 	private MemberMapper mapper;
 
 	public MemberDTO list(String nick) {
-		// TODO Auto-generated method stub
+	
 		return mapper.list(nick);
 	}
 
@@ -46,6 +47,24 @@ public class MemberDAO  {
 	public String getMaxSeq() {
 		return mapper.getMaxSeq();
 	}
+
+
+	public int nickEdit(MemberDTO dto) {
+		
+		return mapper.nickEdit(dto);
+	}
+
+	public List<MemberDTO> load(String seq) {
+		// TODO Auto-generated method stub
+		return mapper.load(seq);
+	}
+
+
+	public List<MemberProject> getMemberProject(String member_seq) {
+		return mapper.getMemberProject(member_seq);
+	}
+
+
 
 
 	

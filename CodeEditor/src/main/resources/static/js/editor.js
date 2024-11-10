@@ -120,7 +120,8 @@ $('.editor-tab ul').sortable({
 let templates = [];
 
 // Add a new tab with Monaco editor
-$('.btn_open_editor').on('click', function () {
+
+$('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
@@ -148,234 +149,272 @@ $('.btn_open_editor').on('click', function () {
     let editor;
 
     require(['vs/editor/editor.main'], function () {
-        getFontData();
         getTemplateData();
         getThemeData(function (themeData) {
             getColorData(themeData);
         });
 
-        // Create the editor and assign it to the global variable
-        editor = monaco.editor.create(document.getElementById(tabId), {
-            value: '// Start coding here...',
-            language: 'java',
-            theme: 'custom-theme',
-            minimap: {
-                enabled: false,
-            },
-            automaticLayout: true,
-            fontFamily: 'Courier',
-            fontSize: 14,
-            wordBasedSuggestions: true,
+        getProjectFileData(function (projectFileData) {
+            const currentFileData = projectFileData.find(
+                (file) => file.name === fileName
+            );
+            const codeValue =
+                currentFileData && currentFileData.code
+                    ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
+                    : '// Start coding here...';
+
+            // Create the editor and assign it to the global variable
+            editor = monaco.editor.create(document.getElementById(tabId), {
+                value: codeValue,
+                language: 'java',
+                theme: 'custom-theme',
+                minimap: {
+                    enabled: false,
+                },
+                automaticLayout: true,
+                fontFamily: 'Courier',
+                fontSize: 14,
+                wordBasedSuggestions: true,
+            });
+
+            editorInstances[tabId] = editor;
+            // Detect cursor position change
+            // editor.onDidChangeCursorPosition((event) => {
+            //     const position = event.position;
+            //     const cursorData = {
+            //         tabId: tabId,
+            //         cursorLine: position.lineNumber,
+            //         cursorColumn: position.column,
+            //         content: editor.getValue(),
+            //     };
+            getFontData();
+
+            // Completion Item Provider 등록
+            monaco.languages.registerCompletionItemProvider('java', {
+                provideCompletionItems: function (model, position) {
+                    const text = model.getValue();
+                    const words = Array.from(new Set(text.match(/\b\w+\b/g)));
+                    const wordSuggestions = words.map((word) => ({
+                        label: word,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: word,
+                    }));
+
+                    const templateSuggestions = templates.map((template) => ({
+                        label: template.keyword,
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: template.code.replace(/\\n/g, '\n'),
+                        insertTextRules:
+                            monaco.languages.CompletionItemInsertTextRule
+                                .InsertAsSnippet,
+                        documentation: `Insert ${template.code}`,
+                    }));
+
+                    return {
+                        suggestions: [
+                            ...wordSuggestions,
+                            ...templateSuggestions,
+                        ],
+                    };
+                },
+            });
+
+            // Detect cursor position change
+            // editor.onDidChangeCursorPosition((event) => {
+            //     const position = event.position;
+            //     const cursorData = {
+            //         tabId: tabId,
+            //         cursorLine: position.lineNumber,
+            //         cursorColumn: position.column,
+            //         content: editor.getValue(),
+            //     };
+
+            //     if (socket.readyState === WebSocket.OPEN) {
+            //         socket.send(JSON.stringify(cursorData));
+            //     }
+            // });
+
+            editor.onDidChangeModelContent((event) => {
+                // console.log(this);
+                // console.log(editor);
+                // console.log(event);
+                // console.log(monaco);
+                const editorDomNode = editor.getDomNode();
+
+                event.changes.forEach((change) => {
+                    const changeFileData = {
+                        type: 'code',
+                        sender: member,
+                        code: {
+                            tabId: tabId,
+                            text: change.text,
+                            range: change.range, // 변경 범위
+                            sendDate: new Date(),
+                        },
+                    };
+                    console.log('ready to send server', changeFileData);
+
+                    // 변경 사항을 서버에 전송
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify(changeFileData));
+                    }
+                });
+            });
         });
 
-        editorInstances[tabId] = editor;
+        function fetchSettings(url, onSuccess) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                dataType: 'json',
+                success: onSuccess,
+                error: function (a, b, c) {
+                    console.error(a, b, c);
+                },
+            });
+        }
 
-        // Completion Item Provider 등록
-        monaco.languages.registerCompletionItemProvider('java', {
-            provideCompletionItems: function (model, position) {
-                const text = model.getValue();
-                const words = Array.from(new Set(text.match(/\b\w+\b/g)));
-                const wordSuggestions = words.map((word) => ({
-                    label: word,
-                    kind: monaco.languages.CompletionItemKind.Text,
-                    insertText: word,
+        function getThemeData(onComplete) {
+            fetchSettings('/editor/theme', function (themeData) {
+                onComplete(themeData);
+            });
+        }
+
+        function getColorData(themeData) {
+            fetchSettings('/editor/color', function (data) {
+                getColor(themeData, data); // 두 값을 함께 넘겨줌
+            });
+        }
+
+        function getFontData() {
+            fetchSettings('/editor/font', function (data) {
+                getFont(data);
+            });
+        }
+
+        function getTemplateData() {
+            fetchSettings('/editor/template', function (data) {
+                templates = data.map((template) => ({
+                    keyword: template.keyword,
+                    code: template.code,
                 }));
+                applyTemplateData(data);
+            });
+        }
 
-                const templateSuggestions = templates.map((template) => ({
-                    label: template.keyword,
-                    kind: monaco.languages.CompletionItemKind.Snippet,
-                    insertText: template.code.replace(/\\n/g, '\n'),
-                    insertTextRules:
-                        monaco.languages.CompletionItemInsertTextRule
-                            .InsertAsSnippet,
-                    documentation: `Insert ${template.code}`,
-                }));
+        function getProjectFileData(callback) {
+            $.ajax({
+                url: '/editor/explorer',
+                method: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    callback(data);
+                },
+                error: function (a, b, c) {
+                    console.error(a, b, c);
+                },
+            });
+        }
 
-                return {
-                    suggestions: [...wordSuggestions, ...templateSuggestions],
-                };
-            },
-        });
+        function getFont(data) {
+            const theme = 'vs-dark';
 
-        // Detect cursor position change
-        // editor.onDidChangeCursorPosition((event) => {
-        //     const position = event.position;
-        //     const cursorData = {
-        //         tabId: tabId,
-        //         cursorLine: position.lineNumber,
-        //         cursorColumn: position.column,
-        //         content: editor.getValue(),
-        //     };
+            if (data === '0') {
+                theme = 'vs-dark';
+            } else if (data === '1') {
+                theme = 'vs';
+            }
+        }
 
-        //     if (socket.readyState === WebSocket.OPEN) {
-        //         socket.send(JSON.stringify(cursorData));
-        //     }
-        // });
+        function applyTemplateData(data) {
+            const templateList = $('.template-list');
+            templateList.empty();
 
-        editor.onDidChangeModelContent((event) => {
-            // console.log(this);
-            // console.log(editor);
-            // console.log(event);
-            // console.log(monaco);
-            const editorDomNode = editor.getDomNode();
+            data.forEach((template) => {
+                const templateItem = `<li class="template-item" data-code="${template.code}">${template.keyword}</li>`;
+                templateList.append(templateItem);
+            });
 
-            event.changes.forEach((change) => {
-                const changeFileData = {
-                    type: 'code',
-                    sender: member,
-                    code: {
-                        tabId: tabId,
-                        text: change.text,
-                        range: change.range, // 변경 범위
-                        sendDate: new Date(),
-                    },
-                };
-                console.log('ready to send server', changeFileData);
+            $('.template-item').on('click', function () {
+                let code = $(this).data('code');
 
-                // 변경 사항을 서버에 전송
-                if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify(changeFileData));
+                code = code.replace(/\\n/g, '\n');
+
+                if (editor) {
+                    editor.setValue(code);
                 }
             });
-        });
-    });
-
-    function fetchSettings(url, onSuccess) {
-        $.ajax({
-            url: url,
-            method: 'GET',
-            dataType: 'json',
-            success: onSuccess,
-            error: function (a, b, c) {
-                console.error(a, b, c);
-            },
-        });
-    }
-
-    function getThemeData(onComplete) {
-        fetchSettings('/editor/theme', function (themeData) {
-            onComplete(themeData);
-        });
-    }
-
-    function getColorData(themeData) {
-        fetchSettings('/editor/color', function (data) {
-            getColor(themeData, data); // 두 값을 함께 넘겨줌
-        });
-    }
-
-    function getFontData() {
-        fetchSettings('/editor/font', function (data) {
-            getFont(data);
-        });
-    }
-
-    function getTemplateData() {
-        fetchSettings('/editor/template', function (data) {
-            templates = data.map((template) => ({
-                keyword: template.keyword,
-                code: template.code,
-            }));
-            applyTemplateData(data);
-        });
-    }
-
-    function getFont(data) {
-        const theme = 'vs-dark';
-
-        if (data === '0') {
-            theme = 'vs-dark';
-        } else if (data === '1') {
-            theme = 'vs';
         }
-    }
 
-    function applyTemplateData(data) {
-        const templateList = $('.template-list');
-        templateList.empty();
+        function getColor(themeData, data) {
+            let background = '#FFFFFF';
+            let foreground = '#000000';
+            let comment = '#FF0000';
+            let keyword = '#FF0000';
+            let string = '#FF0000';
 
-        data.forEach((template) => {
-            const templateItem = `<li class="template-item" data-code="${template.code}">${template.keyword}</li>`;
-            templateList.append(templateItem);
-        });
+            let theme = 'vs-dark';
 
-        $('.template-item').on('click', function () {
-            let code = $(this).data('code');
+            if (themeData == 0) {
+                theme = 'vs-dark';
+            } else if (themeData == 1) {
+                theme = 'vs';
+            }
 
-            code = code.replace(/\\n/g, '\n');
+            data.forEach((item) => {
+                if (item.styleType.category === 'editor.background') {
+                    background = item.value;
+                } else if (item.styleType.category === 'editor.foreground') {
+                    foreground = item.value;
+                } else if (item.styleType.category === 'java.comment') {
+                    comment = item.value;
+                } else if (item.styleType.category === 'java.keyword') {
+                    keyword = item.value;
+                } else if (item.styleType.category === 'java.string') {
+                    string = item.value;
+                }
+            });
+
+            monaco.editor.defineTheme('custom-theme', {
+                base: theme,
+                inherit: true,
+                rules: [
+                    { token: 'comment', foreground: comment },
+                    { token: 'keyword', foreground: keyword },
+                    { token: 'string', foreground: string },
+                ],
+                colors: {
+                    'editor.background': background,
+                    'editor.foreground': foreground,
+                },
+            });
+
+            // Apply the theme
+            monaco.editor.setTheme('custom-theme');
+        }
+
+        function getFont(data) {
+            let fontFamily = 'Courier'; // Default font
+            let fontSize = 14; // Default font size
+
+            data.forEach((item) => {
+                if (item.styleType.category === 'fontFamily') {
+                    fontFamily = item.value;
+                } else if (item.styleType.category === 'fontSize') {
+                    fontSize = parseInt(item.value, 10);
+                }
+            });
 
             if (editor) {
-                editor.setValue(code);
+                editor.updateOptions({
+                    fontFamily: fontFamily,
+                    fontSize: fontSize,
+                });
+            } else {
+                console.error('Editor is not defined');
             }
-        });
-    }
-
-    function getColor(themeData, data) {
-        let background = '#FFFFFF';
-        let foreground = '#000000';
-        let comment = '#FF0000';
-        let keyword = '#FF0000';
-        let string = '#FF0000';
-
-        let theme = 'vs-dark';
-
-        if (themeData == 0) {
-            theme = 'vs-dark';
-        } else if (themeData == 1) {
-            theme = 'vs';
         }
-
-        data.forEach((item) => {
-            if (item.styleType.category === 'editor.background') {
-                background = item.value;
-            } else if (item.styleType.category === 'editor.foreground') {
-                foreground = item.value;
-            } else if (item.styleType.category === 'java.comment') {
-                comment = item.value;
-            } else if (item.styleType.category === 'java.keyword') {
-                keyword = item.value;
-            } else if (item.styleType.category === 'java.string') {
-                string = item.value;
-            }
-        });
-
-        monaco.editor.defineTheme('custom-theme', {
-            base: theme,
-            inherit: true,
-            rules: [
-                { token: 'comment', foreground: comment },
-                { token: 'keyword', foreground: keyword },
-                { token: 'string', foreground: string },
-            ],
-            colors: {
-                'editor.background': background,
-                'editor.foreground': foreground,
-            },
-        });
-
-        // Apply the theme
-        monaco.editor.setTheme('custom-theme');
-    }
-
-    function getFont(data) {
-        let fontFamily = 'Courier'; // Default font
-        let fontSize = 14; // Default font size
-
-        data.forEach((item) => {
-            if (item.styleType.category === 'fontFamily') {
-                fontFamily = item.value;
-            } else if (item.styleType.category === 'fontSize') {
-                fontSize = parseInt(item.value, 10);
-            }
-        });
-
-        if (editor) {
-            editor.updateOptions({
-                fontFamily: fontFamily,
-                fontSize: fontSize,
-            });
-        }
-    }
+    });
 });
 
 // Close a tab on clicking 'x'
@@ -502,6 +541,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeTheme();
     handleRowClick();
     handleEditButtonClick();
+    getProjectFile();
 });
 
 function toggleSubMenu(menuId) {
@@ -1172,6 +1212,133 @@ function deleteTemplate(template_seq) {
         },
     });
 }
+
+function getProjectFile() {
+    $.ajax({
+        url: '/editor/explorer',
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            renderProjectStructure(data);
+        },
+        error: function (a, b, c) {
+            console.error(a, b, c);
+        },
+    });
+}
+
+function renderProjectStructure(data) {
+    let explorerContainer = document.getElementById('packageExplorer');
+    explorerContainer.innerHTML = '';
+
+    let folderDiv = document.createElement('div');
+    folderDiv.classList.add('folder');
+
+    let projectDiv = document.createElement('div');
+    projectDiv.classList.add('project');
+    projectDiv.innerHTML =
+        `
+        <button>
+            <img src="/editor/resources/image/icon/project.svg" />
+            <span class="white-text">` +
+        data[0].name +
+        `</span>
+        </button>
+    `;
+    folderDiv.appendChild(projectDiv);
+
+    let srcDiv = document.createElement('div');
+    srcDiv.classList.add('src');
+    srcDiv.innerHTML =
+        `
+        <button>
+            <img src="/editor/resources/image/icon/src.svg" />
+            <span class="white-text">` +
+        data[1].name +
+        `</span>
+        </button>
+    `;
+    folderDiv.appendChild(srcDiv);
+
+    let packageDiv = document.createElement('div');
+    packageDiv.classList.add('package');
+    packageDiv.innerHTML =
+        `
+        <button>
+            <img src="/editor/resources/image/icon/package.svg" />
+            <span class="white-text">` +
+        data[2].name +
+        `</span>
+        </button>
+    `;
+    srcDiv.appendChild(packageDiv);
+
+    for (let i = 3; i < data.length; i++) {
+        let fileDiv = createFileItem(data[i]);
+        packageDiv.appendChild(fileDiv);
+    }
+
+    // 모든 항목을 packageExplorer에 추가
+    explorerContainer.appendChild(folderDiv);
+}
+
+function createFileItem(item) {
+    let fileTypeClass = '';
+    let fileTypeIcon = '';
+    let fileName = item.name ? item.name : 'Unnamed File';
+    let fileType = item.fileType_seq ? parseInt(item.fileType_seq) : -1;
+
+    switch (fileType) {
+        case 4:
+            fileTypeClass = 'class';
+            fileTypeIcon = 'class.svg';
+            break;
+        case 5:
+            fileTypeClass = 'interface';
+            fileTypeIcon = 'interface.svg';
+            break;
+        case 6:
+            fileTypeClass = 'txt-file';
+            fileTypeIcon = 'txt.svg';
+            break;
+        case 7:
+            fileTypeClass = 'file';
+            fileTypeIcon = 'file.svg';
+            break;
+        default:
+            fileTypeClass = 'file';
+            fileTypeIcon = 'file.svg';
+            break;
+    }
+
+    let fileDiv = document.createElement('div');
+    fileDiv.classList.add(fileTypeClass);
+
+    fileDiv.innerHTML =
+        `
+        <button class="btn_open_editor" data-file-type="` +
+        fileTypeClass +
+        `" data-file-name="` +
+        fileName +
+        `">
+            <img src="/editor/resources/image/icon/` +
+        fileTypeIcon +
+        `" alt="` +
+        fileTypeClass +
+        `">
+            <span class="white-text">` +
+        fileName +
+        `</span>
+            <input type="hidden" class="file-seq" value="` +
+        item.seq +
+        `">
+        </button>
+    `;
+    console.log(item.seq);
+    return fileDiv;
+}
+
+window.onload = getProjectFile;
 
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 

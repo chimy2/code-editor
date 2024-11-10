@@ -56,6 +56,9 @@
 }
 
 /* explorer */
+explorer_sidebar button {
+	margin-bottom: 10px;
+}
 
 /* 사이드바 스타일 */
 .explorer_sidebar {

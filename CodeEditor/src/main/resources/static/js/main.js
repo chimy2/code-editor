@@ -207,18 +207,19 @@ function join(email, nick, password){
 }
 
 
-if (window.location.pathname.startsWith("/editor/")||
-	window.location.pathname.startsWith("/editor/code")) {
-	
-		document.querySelector('#sign_up').onclick = function(){
-			location.href = '/editor/join';
+if (window.location.pathname.startsWith("/editor/code")||
+	window.location.pathname.startsWith("/editor/")){
+		if(document.querySelector('#sign_up')!=null){
+			document.querySelector('#sign_up').onclick = function(){
+				location.href = '/editor/join';
+			}
 		}
 		
 		if(document.querySelector('#log_in')!=null){
 			document.querySelector('#log_in').onclick = function(){
 				location.href = '/editor/login';
 			}
-		}else{
+		}else if(document.querySelector('#log_out')!=null){
 			document.querySelector('#log_out').onclick = function(){
 				location.href = '/editor/logout';
 			}
@@ -357,7 +358,7 @@ function iconSelect(){
 	       
 	        const innerDiv = this.querySelector('div');
 	        if (innerDiv) {
-	            innerDiv.style.outline = '3px solid var(--orange)';
+	            innerDiv.style.outline = '4px solid var(--orange)';
 	        }
 	    });
 	});
@@ -368,5 +369,210 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 	document.querySelector('.calendar_box .contact').onclick = function() {
     	location.href = 'https://github.com/chimy2/code-editor';
     }
+    
+    
+    document.addEventListener('DOMContentLoaded', function() {
+	    /*
+	    const calendarEl = document.getElementById('calendar')
+	    const calendar = new FullCalendar.Calendar(calendarEl, {
+	      initialView: 'dayGridMonth'
+	    })
+	    */
+	    var calendarEl = document.getElementById('calendar');
+
+	  var calendar = new FullCalendar.Calendar(calendarEl, {
+	    initialView: 'dayGridMonth',
+	    headerToolbar: {
+	      center: 'addEventButton'
+	    },
+	    customButtons: {
+	      addEventButton: {
+	        text: '일정 추가',
+	        click: function() {
+	          var dateStr = prompt('날짜를 입력해주세요. (날짜 형식 : YYYY-MM-DD)');
+	          var date = new Date(dateStr + 'T00:00:00'); // will be in local time
+	
+	          if (!isNaN(date.valueOf())) { // valid?
+	            calendar.addEvent({
+	              title: 'UI 작업 완료하기',
+	              start: date,
+	              backgroundColor : 'gold',
+	              textColor : 'black',
+	              allDay: true
+	            });
+	            alert('Great. Now, update your database...');
+	          } else {
+	            alert('Invalid date.');
+	          }
+	        }
+	      }
+	    }
+	  });
+	    
+	    
+	    
+	    calendar.render()
+	  })
+    
+    document.querySelector('#member_setting_box').onclick = function() {
+    	document.querySelector('#mypage_setting_box').style.display = 'block';
+    	document.querySelector('#content_memberSetting').style.display = 'block';
+    	document.querySelector('.setting_name_edit input[class=setting_name]').focus();
+    	
+		document.querySelector('.setting_name_edit .setting_name_close').onclick = function() {
+    		document.querySelector('.setting_name_edit input[class=setting_name]').value ='';
+    	}
+
+    	
+    	if(document.querySelector('#content_memberSetting')!=null){
+    		document.querySelector('.logout_member_setting').onclick = function() {
+    		location.href = 'http://localhost:8090/editor/logout';
+    		}
+    	
+	    	document.querySelector('.button_member_setting').onclick = function() {
+	    		document.querySelector('#mypage_setting_box').style.display = 'none';
+	    		document.querySelector('#content_memberSetting').style.display = 'none';
+	    	}
+	    	
+	    	
+	    	document.querySelector('#nick_edit').onclick = function() {
+	    		const token = $("meta[name='_csrf']").attr("content");
+				const header = $("meta[name='_csrf_header']").attr("content");
+				const seq = document.querySelector('input[type = hidden]').value; 
+				const nick = document.querySelector('.setting_name_edit input[class = setting_name]').value; 
+	    		$.ajax({
+			        type: 'POST',
+			        url: '/editor/nickEdit/mypage',
+			        dataType: 'json',
+			        contentType: 'application/json', 
+			        data: JSON.stringify({ 
+			            nick : nick, 
+			            seq : seq
+			        }), 
+				    beforeSend : function(xhr) {
+				        xhr.setRequestHeader(header, token);
+				    },
+			        success: function(result) {
+			            if (result == 0) {
+			            	console.log("닉네임 업데이트 실패");
+			            } else if (result == 1) {
+			               	console.log("닉네입 업데이트 성공");
+			               	location.href = '/editor/mypage';
+			            }
+			        },
+			        error: function(a, b, c) {
+			            console.log(a, b, c);
+			        }
+			    });
+	    	}
+	    	
+    	
+    	}
+    	
+    }
 	
 }
+
+
+/*마이페이지 팀박스에서 우클릭했을 때 txt 가져오기 */
+document.addEventListener('contextmenu', function(event) {
+  // 우클릭한 요소가 .teamBox_icon인지 확인
+  const teamBoxIcon = event.target.closest('.teamBox_icon');
+  
+  const teamDel = document.querySelector('#team_delete');
+  const teamEdit = document.querySelector('#teamSetting');
+  const projectDel = document.querySelector('#project_delete');
+  const projectEdit = document.querySelector('#projectSetting');
+  
+  
+  if (teamBoxIcon) {
+    // 우클릭한 .teamBox_icon 요소의 텍스트를 가져오기
+    const text = teamBoxIcon.textContent.trim();
+    console.log('우클릭한 태그에서 텍스트:', text);
+  }
+
+  // 우클릭한 요소가 .team_project 내부일 때만 실행
+  if (event.target.closest('#teamBox')) {
+    event.preventDefault(); // 기본 우클릭 메뉴를 막음
+
+    let contextBox = document.querySelector('.teamcontextBox');
+   
+    
+    teamDel.style.display = 'none';
+    teamEdit.style.display = 'none';
+    projectDel.style.display = 'none';
+    projectEdit.style.display = 'none';
+    
+    const x = event.pageX;
+    const y = event.pageY;
+
+    // .contextBox의 위치 설정
+    contextBox.style.position = 'absolute';
+    contextBox.style.left = `${x}px`;
+    contextBox.style.top = `${y}px`;
+
+    contextBox.style.display = 'block';
+    
+    // 팀 삭제 버튼 클릭 시
+    contextBox.querySelector('.teamContextDelete').onclick = function() {
+      contextBox.style.display = 'none';
+      teamDel.style.display = 'block';
+
+      teamDel.querySelector('.logout_button button[type=button]').onclick = function() {
+        teamDel.style.display = 'none';
+      }
+    }
+
+    // 팀 설정 버튼 클릭 시
+    contextBox.querySelector('.teamContextSetting').onclick = function() {
+      contextBox.style.display = 'none';
+      teamEdit.style.display = 'block';
+
+      teamEdit.querySelectorAll('.button_member_setting button')[1].onclick = function() {
+        teamEdit.style.display = 'none';
+      }
+    }
+  }
+	
+  // 우클릭한 요소가 .project_project 내부일 때만 실행
+  if (event.target.closest('#projectBox')) {
+    event.preventDefault(); // 기본 우클릭 메뉴를 막음
+ 
+  	let contextBox = document.querySelector('.projectcontextBox');
+    
+    projectDel.style.display = 'none';
+    projectEdit.style.display = 'none'; // projectDel 중복을 수정
+    teamDel.style.display = 'none';
+    teamEdit.style.display = 'none';
+    
+    const x = event.pageX;
+    const y = event.pageY;
+
+    // .contextBox의 위치 설정
+    contextBox.style.position = 'absolute';
+    contextBox.style.left = `${x}px`;
+    contextBox.style.top = `${y}px`;
+
+    contextBox.style.display = 'block';
+    
+    // 프로젝트 삭제 버튼 클릭 시
+    contextBox.querySelector('.projectContextDelete').onclick = function() {
+      contextBox.style.display = 'none';
+      projectDel.style.display = 'block';
+
+      projectDel.querySelector('.logout_button button[type=button]').onclick = function() {
+        projectDel.style.display = 'none';
+      }
+    }
+    
+    // 프로젝트 설정 버튼 클릭 시
+    contextBox.querySelector('.projectContextSetting').onclick = function() {
+      contextBox.style.display = 'none';
+      projectEdit.style.display = 'block';
+
+      projectEdit.querySelectorAll('.button_member_setting button')[1].onclick = function() {
+        projectEdit.style.display = 'none';
+      }
+    }
+  }
+});
