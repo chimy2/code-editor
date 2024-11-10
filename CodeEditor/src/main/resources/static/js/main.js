@@ -425,8 +425,8 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 
     	
     	if(document.querySelector('#content_memberSetting')!=null){
-    		document.querySelector('.logout_member_setting').onclick = function() {
-    		location.href = 'http://localhost:8090/editor/logout';
+    		document.querySelector('#logout_member_setting').onclick = function() {
+    			location.href = '/editor/logout';
     		}
     	
 	    	document.querySelector('.button_member_setting').onclick = function() {
@@ -507,9 +507,68 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 		});
 	}
 	
+	// 프로젝트 헤더 변경
+	if(document.querySelector('#mypage_setting_box').style.display == ''){
+		document.querySelector('.teamBox_icon').onclick = function () {
+			setTimeout(projectHeaderChange,500);
+			getMemberProject();
+		}	
+	}
 	
+	//project select
+function getMemberProject() {
+	$.ajax({
+		url: "/editor/mypage/project",
+		method: "GET",
+		dataType: "json",
+		success: function(data) {
+			console.log(data);
+			getProject(data);
+		},
+		error: function(a, b, c) {
+			console.log(a, b, c);
+		}
+	});
+}
 	
-	
+window.onload = function() {
+	getMemberProject();
+}
+
+function getProject(data) { 
+
+	const innerBoxContent = document.querySelector('#project-container');
+	innerBoxContent.innerHTML = '';
+
+	data.forEach(project => { 
+		const projectHTML = 
+			'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
+			//'<div class="projectBox_icon" onclick="getExplorer(' + project.seq + ')' + '">' +
+				'<div>' +
+					'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
+				'</div>' + project.projectName +
+			'</div>';
+		console.log(projectHTML);
+		innerBoxContent.innerHTML += projectHTML;
+	});
+}
+
+function getSelProject(teamSeq) {
+	console.log(teamSeq);
+	$.ajax({
+		url: "/editor/mypage/project/" + teamSeq,
+		method: "GET",
+		dataType: "json",
+		success: function(data) {
+			console.log(data);
+			getProject(data);
+		},
+		error: function(a, b, c) {
+			console.log(a, b, c);
+		}
+	});
+}
+
 	
 }
 
@@ -627,83 +686,28 @@ document.addEventListener('contextmenu', function(event) {
 
 
 
-//project select
-function getMemberProject() {
-	$.ajax({
-		url: "/editor/mypage/project",
-		method: "GET",
-		dataType: "json",
-		success: function(data) {
-			console.log(data);
-			getProject(data);
-		},
-		error: function(a, b, c) {
-			console.log(a, b, c);
-		}
-	});
-}
-	
-window.onload = function() {
-	getMemberProject();
-}
-
-function getProject(data) { 
-
-	const innerBoxContent = document.querySelector('#project-container');
-	innerBoxContent.innerHTML = '';
-
-	data.forEach(project => { 
-		const projectHTML = 
-			'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
-			//'<div class="projectBox_icon" onclick="getExplorer(' + project.seq + ')' + '">' +
-				'<div>' +
-					'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
-				'</div>' + project.projectName +
-			'</div>';
-		console.log(projectHTML);
-		innerBoxContent.innerHTML += projectHTML;
-	});
-}
-
-function getSelProject(teamSeq) {
-	console.log(teamSeq);
-	$.ajax({
-		url: "/editor/mypage/project/" + teamSeq,
-		method: "GET",
-		dataType: "json",
-		success: function(data) {
-			console.log(data);
-			getProject(data);
-		},
-		error: function(a, b, c) {
-			console.log(a, b, c);
-		}
-	});
-}
 
 
-//team선택에 따라서 project header 변경
+
 function projectHeaderChange(){
 	document.addEventListener('click', function(event) {
 		const teamBoxIcon = event.target.closest('.teamBox_icon');
-		const nick = teamBoxIcon.innerText.trim();
-		console.log('팀 닉네임:', nick);
+		if(teamBoxIcon!=null){
+			const nick = teamBoxIcon.innerText.trim();
+			const id = teamBoxIcon.id;
+			const projectBoxHeaderIcon = document.querySelector('.projectBoxHeaderIcon');
+			const teamName = document.querySelector('#teamName');
+			console.log(id);
+			if(id=='teamBox'){
+				projectBoxHeaderIcon.innerHTML = '<img class="team_icon" src="/editor/resources/image/icon/team.svg">';
+			}else if(id=='userBox'){
+				projectBoxHeaderIcon.innerHTML = '<img class="user_icon" src="/editor/resources/image/icon/user.svg">';
+			}
+			
+			teamName.innerHTML = nick;
+		}
 	});
 }
 
-document.addEventListener('click', function(event) {
-		const teamBoxIcon = event.target.closest('.teamBox_icon');
-		const nick = teamBoxIcon.innerText.trim();
-		const id = teamBoxIcon.id;
-		const projectBoxHeaderIcon = document.querySelector('.projectBoxHeaderIcon');
-		const teamName = document.querySelector('#teamName');
-		
-		if(id=='teamBox'){
-			projectBoxHeaderIcon.innerHTML = '<img class="team_icon" src="/editor/resources/image/icon/team.svg">';
-		}else if(id=='userBox'){
-			projectBoxHeaderIcon.innerHTML = '<img class="user_icon" src="/editor/resources/image/icon/user.svg">';
-		}
-		
-		teamName.innerHTML = nick;
-});
+
 

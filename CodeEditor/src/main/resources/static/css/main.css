@@ -1025,21 +1025,44 @@ ul {
 
 /*document*/
 .document_content {
-    border: 1px solid var(--white);
     width: 100%;
     height: 100%;
-    display : flex;
-    flex-direction: column;
-    justify-content: space-between;
+    display: grid;
+	grid-template-columns: 250px auto;
 }
-.document_page {
-    font_size: 5rem;
-    color: var(--white);
+
+.document_content .contactUs{
+	margin-top : auto;	
 }
 
 .document_content .contactUs:hover{
 	cursor: pointer;
 }
+
+.document_content .document_page{
+	color : var(--white);	
+	display : flex;
+	justify-content: center;
+}
+
+.document_page ul li {
+	width: 1000px;
+	display : flex;
+	justify-content: center;
+	flex-direction: column;
+} 
+
+.document_page ul li p{
+	color : var(--white);
+} 
+
+
+.document_page ul li img{
+	width: 800px;
+    height: 500px;
+    border : 2px solid var(--white);
+}
+
 
 /*logout 창*/
 .content_logout {
@@ -1608,7 +1631,77 @@ ul {
 }
 
 
+/*팀과 프로젝트 삭제 창*/
+.content_team_delete,
+.content_project_delete {
+    width: 100%;
+    height: calc(100vh - 30px);
+}
 
+.team_delete,
+.project_delete{
+	border : 1px solid var(--white);
+	border-radius : 10px;
+	width : 480px;
+	height : 200px;
+	position: absolute;
+	top : 35%;
+	left : 37%;
+	background-color: var(--white);
+	color : var(--black);
+	flex-direction: column;
+	display: flex;
+	align-content: center;
+}
+
+.team_delete_text div:last-child,
+.project_delete_text div:last-child{
+	font-size : 1rem;
+	margin : 0 auto;
+	text-align: center;
+}
+
+.team_delete_text div:first-child,
+.project_delete_text div:first-child{
+	font-size: 1.5rem;
+	border-bottom : 1px solid var(--orange);
+	margin-bottom : 35px;
+	box-sizing: border-box;
+	padding : 8px;
+	padding-left : 12px;
+}
+
+
+.team_delete_button,
+.project_delete_button{
+	margin : 0 auto;
+	width : 406px;
+	display : flex;
+	justify-content: space-between;
+	margin-top : 30px;
+	padding-right : 0;
+}
+
+.team_delete_button button,
+.project_delete_button button{
+	background-color : var(--white);
+	border : 0;
+	outline : 0.5px solid var(--orange);
+	border-radius : 5px;
+	width : 160px;
+	height : 40px; 
+	border-radius: 5px;
+	margin-top : 8px;
+}
+
+
+.team_delete_button button:hover,
+.project_delete_button button:hover{
+	cursor : pointer;
+	color : var(--white);
+	outline : 0.5px solid var(--orange);
+	background-color : var(--orange);
+}
 
 
 

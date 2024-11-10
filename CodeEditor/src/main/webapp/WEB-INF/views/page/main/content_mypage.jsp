@@ -87,7 +87,7 @@
 						<input type="text" class="setting_name" value="<sec:authentication property="principal.member.nick"/> ">
 						<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
 					</div>
-					<button class="logout_member_setting">
+					<button id="logout_member_setting" class="logout_member_setting">
 						<img class="main_logout" src="/editor/resources/image/icon/logout.svg">
 						로그아웃
 					</button>
@@ -143,15 +143,15 @@
 
 <!-- 팀삭제 logout과 동일하게 생성 -->
 <div id="team_delete">
-	<div class="content_logout">
-		<div class="logout">
+	<div class="content_team_delete">
+		<div class="team_delete">
 			
-			<div class="logout_text">
+			<div class="team_delete_text">
 				<div>팀 삭제</div>
 				<div>팀을 삭제 하시겠습니까?</div>
 			</div>
 			
-			<div class="logout_button"> 
+			<div class="team_delete_button"> 
 				<button type="submit">예</button>
 				<button type="button">아니오</button>
 			</div>
@@ -213,15 +213,15 @@
 
 <!-- 프로젝트 삭제 logout과 동일하게 생성 -->
 <div id="project_delete">
-	<div class="content_logout">
-		<div class="logout">
+	<div class="content_project_delete">
+		<div class="project_delete">
 			
-			<div class="logout_text">
+			<div class="project_delete_text">
 				<div>프로젝트 삭제</div>
 				<div>프로젝트를 삭제 하시겠습니까?</div>
 			</div>
 			
-			<div class="logout_button"> 
+			<div class="project_delete_button"> 
 				<button type="submit">예</button>
 				<button type="button">아니오</button>
 			</div>

@@ -32,7 +32,7 @@
 			<!-- 로그인 한 후 -->
 			<sec:authorize access="isAuthenticated()">
 				<!-- project name으로 바꿔야함 -->
-				Spring project
+				스프링 프로젝트
 			</sec:authorize>
 		
 		</div>
