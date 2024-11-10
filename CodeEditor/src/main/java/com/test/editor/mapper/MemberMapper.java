@@ -1,8 +1,10 @@
 package com.test.editor.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import com.test.editor.model.MemberDTO;
+import com.test.editor.model.MemberProject;
 
 public interface MemberMapper {
 
@@ -26,7 +28,10 @@ public interface MemberMapper {
 
 	List<MemberDTO> load(String seq);
 
-	
+	List<MemberProject> getMemberProject(String member_seq);
+
+	List<MemberProject> getSelProject(Map<String, String> selTeam);
+
 
 	
 	

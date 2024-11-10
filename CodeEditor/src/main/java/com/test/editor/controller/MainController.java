@@ -1,6 +1,8 @@
 package com.test.editor.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,10 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.model.MemberDTO;
-import com.test.editor.model.TeamDTO;
+import com.test.editor.model.MemberProject;
 
 import lombok.RequiredArgsConstructor;
 
@@ -79,6 +82,7 @@ public class MainController {
 	public String logout() {
 		return "logout";
 	}
+
 	
 	// 나중에 mypage랑 합칠 예정 -> ui 먼저 하는 중
 	@GetMapping("/mypage/membersetting")
@@ -97,5 +101,28 @@ public class MainController {
 	}
 	
 	
+	@GetMapping(value="/mypage/project", produces="application/json")
+	@ResponseBody
+	public List<MemberProject> getMemberProject(HttpSession session) {
+		
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq();  
+		
+		return dao.getMemberProject(member_seq);
+	}
 	
+	@GetMapping(value="/mypage/project/{teamSeq}", produces="application/json")
+	@ResponseBody
+	public List<MemberProject> getSelProject(@PathVariable("teamSeq") String team_seq, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq();  
+		
+		Map<String, String> selTeam = new HashMap<>();
+		selTeam.put("member_seq", member_seq);
+		selTeam.put("team_seq", team_seq);
+		
+		return dao.getSelProject(selTeam);
+	}
+
 }

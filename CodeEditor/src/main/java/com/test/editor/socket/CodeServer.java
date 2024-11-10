@@ -14,8 +14,10 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.test.editor.domain.Code;
+import com.test.editor.domain.Message;
+import com.test.editor.model.MemberDTO;
 
-@ServerEndpoint("/vs/code/{project_seq}")
+@ServerEndpoint("/vs/code/{projectSeq}")
 public class CodeServer {
 	
 	private static ArrayList<Session> sessionList;
@@ -40,20 +42,28 @@ public class CodeServer {
 	}
 	
 	@OnMessage
-	public void handleMessage(Session session, String message) {
+	public void handleMessage(Session session, String receiveMessage) {
+
 	    try {
-	        // Deserialize incoming message to CodeDTO
-	        Code code = objectMapper.readValue(message, Code.class);
-
-	        // Log message content
-	        System.out.println("Received message: " + code);
-
-	        // Broadcast the received message to all other sessions
-	        for (Session s : sessionList) {
-	            if (!s.getId().equals(session.getId())) {  // Avoid sending back to sender
-	            	code.getReceiver().setId(message);
-	                s.getBasicRemote().sendText(objectMapper.writeValueAsString(code));
-	            }
+	    	Message message = objectMapper.readValue(receiveMessage, Message.class);
+	    	
+	    	message.setReceiver(new MemberDTO());
+	    	
+	        System.out.println("Received message: " + message);
+	        
+	        if (message.getType().equals("cursor")) {
+	        	
+	        } else if (message.getType().equals("code")) {
+	        	System.out.println("this is code");
+	        	
+		        // Broadcast the received message to all other sessions
+		        for (Session s : sessionList) {
+		            if (!s.getId().equals(session.getId())) {  // Avoid sending back to sender
+		            	
+		            	message.getReceiver().setId(s.getId());
+		                s.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
+		            }
+		        }
 	        }
 	    } catch (IOException e) {
 	        System.out.println("Error processing message: " + e.getMessage());

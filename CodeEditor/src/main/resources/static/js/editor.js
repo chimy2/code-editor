@@ -74,26 +74,42 @@ function initSocketEvent() {
     socket.onmessage = function (event) {
         console.log('message 받음');
         const data = JSON.parse(event.data);
+<<<<<<< HEAD
         console.log('socket on message', event);
+=======
+        if (data.type == 'cursor') {
+            const cursor = data.cursor;
+        } else if (data.type == 'code') {
+            const code = data.code;
+            const editorInstance = editorInstances[code.tabId]; // Ensure you have the correct editor instance
+>>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
 
-        const editorInstance = editorInstances[data.tabId];
-        if (editorInstance) {
-            // Apply received changes to the editor content
-            editorInstance.executeEdits(null, [
-                {
-                    range: new monaco.Range(
-                        data.range.startLineNumber,
-                        data.range.startColumn,
-                        data.range.endLineNumber,
-                        data.range.endColumn
-                    ),
-                    text: data.text,
-                },
-            ]);
+            if (editorInstance) {
+                // Save current scroll position and cursor position
+                const currentScrollTop = editorInstance.getScrollTop();
+                const currentScrollLeft = editorInstance.getScrollLeft();
+                const currentPosition = editorInstance.getPosition();
 
-            // Update the cursor position of other users
-            if (data.cursorPosition) {
-                renderUserCursor(data.userId, data.cursorPosition, data.tabId);
+                // Apply received changes to the editor content
+                editorInstance.executeEdits(null, [
+                    {
+                        range: new monaco.Range(
+                            code.range.startLineNumber,
+                            code.range.startColumn,
+                            code.range.endLineNumber,
+                            code.range.endColumn
+                        ),
+                        text: code.text,
+                        forceMoveMarkers: true, // Ensure markers like breakpoints move with the edit
+                    },
+                ]);
+
+                // Restore scroll and cursor positions
+                if (currentPosition) {
+                    editorInstance.setPosition(currentPosition);
+                }
+                editorInstance.setScrollTop(currentScrollTop);
+                editorInstance.setScrollLeft(currentScrollLeft);
             }
         }
     };
@@ -119,8 +135,11 @@ $('.editor-tab ul').sortable({
 
 let templates = [];
 
+<<<<<<< HEAD
 // Add a new tab with Monaco editor
 
+=======
+>>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
 $('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
     const fileName = $(this).find('span').text();
@@ -178,6 +197,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             });
 
             editorInstances[tabId] = editor;
+<<<<<<< HEAD
             // Detect cursor position change
             // editor.onDidChangeCursorPosition((event) => {
             //     const position = event.position;
@@ -200,6 +220,22 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                         insertText: word,
                     }));
 
+=======
+
+            getFontData();
+
+            // Completion Item Provider 등록
+            monaco.languages.registerCompletionItemProvider('java', {
+                provideCompletionItems: function (model, position) {
+                    const text = model.getValue();
+                    const words = Array.from(new Set(text.match(/\b\w+\b/g)));
+                    const wordSuggestions = words.map((word) => ({
+                        label: word,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: word,
+                    }));
+
+>>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
                     const templateSuggestions = templates.map((template) => ({
                         label: template.keyword,
                         kind: monaco.languages.CompletionItemKind.Snippet,
@@ -235,12 +271,15 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             // });
 
             editor.onDidChangeModelContent((event) => {
+<<<<<<< HEAD
                 // console.log(this);
                 // console.log(editor);
                 // console.log(event);
                 // console.log(monaco);
                 const editorDomNode = editor.getDomNode();
 
+=======
+>>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
                 event.changes.forEach((change) => {
                     const changeFileData = {
                         type: 'code',
@@ -1260,6 +1299,7 @@ function renderProjectStructure(data) {
     `;
     folderDiv.appendChild(srcDiv);
 
+<<<<<<< HEAD
     let packageDiv = document.createElement('div');
     packageDiv.classList.add('package');
     packageDiv.innerHTML =
@@ -1276,6 +1316,26 @@ function renderProjectStructure(data) {
     for (let i = 3; i < data.length; i++) {
         let fileDiv = createFileItem(data[i]);
         packageDiv.appendChild(fileDiv);
+=======
+    if(data[2] != null) {
+        let packageDiv = document.createElement('div');
+        packageDiv.classList.add('package');
+        packageDiv.innerHTML =
+            `
+            <button>
+                <img src="/editor/resources/image/icon/package.svg" />
+                <span class="white-text">` +
+            data[2].name +
+            `</span>
+            </button>
+        `;
+        srcDiv.appendChild(packageDiv);
+
+        for (let i = 3; i < data.length; i++) {
+            let fileDiv = createFileItem(data[i]);
+            packageDiv.appendChild(fileDiv);
+        }
+>>>>>>> 7b3fb4d71709b6117338115003141fc0a8e2c1ab
     }
 
     // 모든 항목을 packageExplorer에 추가
@@ -1335,12 +1395,13 @@ function createFileItem(item) {
         </button>
     `;
     console.log(item.seq);
+
     return fileDiv;
 }
 
 window.onload = getProjectFile;
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const versionItems = document.querySelectorAll(

@@ -56,6 +56,9 @@
 }
 
 /* explorer */
+explorer_sidebar button {
+	margin-bottom: 10px;
+}
 
 /* 사이드바 스타일 */
 .explorer_sidebar {
@@ -296,11 +299,9 @@ div.file {
 .editor-container {
     padding: 0;
     height: calc(100vh - 60px);
-    background: tomato;
 }
 .editor-container.active_console {
     height: calc(100vh - 360px);
-    background: tomato;
 }
 
 .editor-container.ui-tabs-panel {

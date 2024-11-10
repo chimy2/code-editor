@@ -30,19 +30,21 @@
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
 					 <c:if test="${status.index == 0}"> 
-				        <div class="teamBox_icon">
+				        <div class="teamBox_icon" id="userBox" onclick="getSelProject('${team.teamSeq}')">
 				            <div>
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
-				            ${team.teamName}
+				            ${dto[0].nick}
+				            <input type="hidden" id="teamSeq" value="${team.teamSeq}">
 				        </div>
 				    </c:if>
  					<c:if test="${status.index > 0}"> 
-					    <div class="teamBox_icon">
+					    <div class="teamBox_icon" id="teamBox" onclick="getSelProject('${team.teamSeq}')">
 					        <div>
 					            <img class="team_icon" src="/editor/resources/image/icon/team.svg">
 					        </div>
 					        ${team.teamName}
+							<input type="hidden" id="teamSeq" value="${team.teamSeq}">
 					    </div>
 				    </c:if>
 				</c:forEach>
@@ -52,87 +54,19 @@
 	<div class="team_project">
 		<div class="inner_box">
 			<div class="inner_box_header">
-				<div>
-					<img class="team_icon" src="/editor/resources/image/icon/team.svg">
+				<!-- teamBox에서 user와 팀 선택에 따라서 동적 변경 -->
+				<div class = "projectBoxHeaderIcon">
+					<img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				</div>
-				ssangyoung
+				<div id="teamName">
+					${dto[0].nick}
+				</div> 
 				<div class="total_project">전체 프로젝트 관리</div>
 				<img class="team_project_plus"
 					src="/editor/resources/image/icon/plus.svg">
 			</div>
-			<div class="inner_box_content">
-				<button class="projectBox_icon" onclick="location.href='/editor/code/1';">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</button>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-				<div class="projectBox_icon">
-					<div>
-						<img class="project2_icon"
-							src="/editor/resources/image/icon/project2.svg">
-					</div>
-					Spring project
-				</div>
-
-
+			<div class="inner_box_content" id="project-container">
+				<!-- 동적 추가 --> 
 			</div>
 		</div>
 	</div>
@@ -175,10 +109,133 @@
 </form>
 
 
+<!-- 팀 우클릭 메뉴 -->
+<div class = "teamcontextBox">
+	<div class ="teamContextSetting">팀 설정</div>
+	<div class ="teamContextDelete">팀 삭제</div>
+</div>
 
-<%-- <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-<sec:authentication property="principal.member.seq"/>
-<div><sec:authentication property="principal.member"/></div>
-<input type="hidden" value="<sec:authentication property="principal.member"/>"> --%>
-<%-- <input type="hidden" value ="${sessionScope.member}">  --%>
-<input type="hidden" value ="${sessionScope.member.seq}"> 
+<!-- 팀 설정 -->
+<div class="content_memberSetting" id="teamSetting">
+	<div class="header_setting">팀 설정</div>
+	<div class="body_setting">
+		<div class="info_setting">
+			<div class="setting_team_icon"><img src="/editor/resources/image/icon/team.svg"></div>
+			<div class="setting_name_edit">
+				<input type="text" class="setting_name" value="ssangyoung">
+				<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
+			</div>
+		</div>
+		<hr>
+		<div class="etc_setting">
+			<ul>
+				<li><img src="/editor/resources/image/icon/plus.svg"></li>
+				<li><div><img src="/editor/resources/image/icon/user.svg"></div>hong</li>
+				<li><div><img src="/editor/resources/image/icon/user.svg"></div>annie<img class="setting_team_delete" src="/editor/resources/image/icon/settings-close.svg"></li>				
+			</ul>
+		</div>
+	</div>
+	<div class="button_member_setting">
+		<button type="button">수정</button>
+		<button type="button">취소</button>
+	</div>
+</div>
+
+<!-- 팀삭제 logout과 동일하게 생성 -->
+<div id="team_delete">
+	<div class="content_logout">
+		<div class="logout">
+			
+			<div class="logout_text">
+				<div>팀 삭제</div>
+				<div>팀을 삭제 하시겠습니까?</div>
+			</div>
+			
+			<div class="logout_button"> 
+				<button type="submit">예</button>
+				<button type="button">아니오</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+<!-- 프로젝트 우클릭 메뉴 -->
+<div class = "projectcontextBox">
+	<div class ="projectContextSetting">프로젝트 설정</div>
+	<div class ="projectContextDelete">프로젝트 삭제</div>
+</div>
+
+<!-- 프로젝트 설정 -->
+<div class="content_memberSetting" id="projectSetting">
+	<div class="header_setting">프로젝트 설정</div>
+	<div class="body_setting">
+		<div class="info_project_setting">
+			<div class="setting_project_icon"><img src="/editor/resources/image/icon/project.svg"></div>
+			<div class="setting_name_edit">
+				<input type="text" class="setting_name" value="spring project">
+				<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
+			</div>
+			<div class="setting_project_explain_edit">
+				<textarea>스프링 프로젝트입니다.</textarea>
+				<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
+			</div>
+		</div>
+		<hr>
+		<div class="project_etc_setting">
+			<ul>
+				<li>
+					<div>Member</div>
+					<ul class="project_member">
+						<li>+</li>
+						<li>test</li>
+						<li>hong <img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg"></li>
+					</ul>
+				</li>				
+				<li><div>Project Date</div></li>				
+				<li><div>Registration Date</div></li>				
+				<li>
+					<div>Priority</div>
+					<ul class="priority_color">
+						<li>High</li>
+						<li>Medium</li>
+						<li>Low</li>
+					</ul>
+				</li>								
+			</ul>
+		</div>
+	</div>
+	<div class="button_member_setting">
+		<button type="button">수정</button>
+		<button type="button">취소</button>
+	</div>
+</div>
+
+<!-- 프로젝트 삭제 logout과 동일하게 생성 -->
+<div id="project_delete">
+	<div class="content_logout">
+		<div class="logout">
+			
+			<div class="logout_text">
+				<div>프로젝트 삭제</div>
+				<div>프로젝트를 삭제 하시겠습니까?</div>
+			</div>
+			
+			<div class="logout_button"> 
+				<button type="submit">예</button>
+				<button type="button">아니오</button>
+			</div>
+			
+		</div>
+	</div>
+</div>
+<input type="hidden" id="mypageMemberSeq" value ="${sessionScope.member.seq}"> 
+
+
+
+
+
+
+
+
+

@@ -8,8 +8,6 @@ import lombok.Data;
 public class Code {
 
     private String tabId;
-    private MemberDTO sender;
-    private MemberDTO receiver;
     private String text;
     private Range range;
     private String sendDate;
