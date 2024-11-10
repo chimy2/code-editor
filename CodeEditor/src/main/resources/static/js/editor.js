@@ -65,7 +65,7 @@ $('.editor-tab ul').sortable({
 let templates = [];
 
 // Add a new tab with Monaco editor
-$('.btn_open_editor').on('click', function () {
+$('.package-explorer').on('click', '.btn_open_editor', function () {
     if (!socket) {
         socket = new WebSocket(CODE_URL);
     }
@@ -96,130 +96,140 @@ $('.btn_open_editor').on('click', function () {
     let editor;
      
     require(['vs/editor/editor.main'], function () {
-    
-        getFontData(); 
+     
         getTemplateData();
         getThemeData(function (themeData) {
             getColorData(themeData); 
         });
 
-        // Create the editor and assign it to the global variable
-        editor = monaco.editor.create(document.getElementById(tabId), {
-            value: '// Start coding here...',
-            language: 'java',
-            theme: 'custom-theme',
-            minimap: {
-                enabled: false,
-            }, 
-            automaticLayout: true,
-            fontFamily: 'Courier', 
-            fontSize: 14, 
-            wordBasedSuggestions: true,
-        });
-    
-        // Completion Item Provider 등록
-        monaco.languages.registerCompletionItemProvider('java', {
-            provideCompletionItems: function (model, position) {
-                const text = model.getValue();
-                const words = Array.from(new Set(text.match(/\b\w+\b/g)));
-                const wordSuggestions = words.map((word) => ({
-                    label: word,
-                    kind: monaco.languages.CompletionItemKind.Text,
-                    insertText: word,
-                }));
+        getProjectFileData(function (projectFileData) {
 
-                const templateSuggestions = templates.map((template) => ({
-                    label: template.keyword,
-                    kind: monaco.languages.CompletionItemKind.Snippet,
-                    insertText: template.code.replace(/\\n/g, '\n'),
-                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                    documentation: `Insert ${template.code}`,
-                }));
-
-                return { suggestions: [...wordSuggestions, ...templateSuggestions] };
-            },
-        });
+            const currentFileData = projectFileData.find(file => file.name === fileName);
+            const codeValue = currentFileData && currentFileData.code
+                ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
+                : '// Start coding here...';
 
 
-        // Detect cursor position change
-        // editor.onDidChangeCursorPosition((event) => {
-        //     const position = event.position;
-        //     const cursorData = {
-        //         tabId: tabId,
-        //         cursorLine: position.lineNumber,
-        //         cursorColumn: position.column,
-        //         content: editor.getValue(),
-        //     };
-
-        //     if (socket.readyState === WebSocket.OPEN) {
-        //         socket.send(JSON.stringify(cursorData));
-        //     }
-        // });
-
-        editor.onDidChangeModelContent((event) => {
-            // console.log(this);
-            // console.log(editor);
-            console.log(event);
-            // console.log(monaco);
-            const editorDomNode = editor.getDomNode();
-            // const token = $("meta[name='_csrf']").attr('content');
-            const member = {
-                id: memberId,
-                nick: memberNick,
-            };
-            console.log('token', token);
-
-            event.changes.forEach((change) => {
-                const changeFileData = {
-                    tabId: tabId,
-                    sender: member,
-                    text: change.text,
-                    range: change.range, // 변경 범위
-                    sendDate: new Date(),
-                };
-                // 변경 사항을 서버에 전송
-                // sendChangeToServer(changeData);
-                if (socket.readyState === WebSocket.OPEN) {
-                    socket.send(JSON.stringify(changeFileData));
-                }
+            // Create the editor and assign it to the global variable
+            editor = monaco.editor.create(document.getElementById(tabId), {
+                value: codeValue,
+                language: 'java',
+                theme: 'custom-theme',
+                minimap: {
+                    enabled: false,
+                }, 
+                automaticLayout: true,
+                fontFamily: 'Courier', 
+                fontSize: 14, 
+                wordBasedSuggestions: true,
             });
-        });
 
-        // Handle WebSocket messages
-        socket.onmessage = function (event) {
-            const data = JSON.parse(event.data);
+            getFontData();
+        
+            // Completion Item Provider 등록
+            monaco.languages.registerCompletionItemProvider('java', {
+                provideCompletionItems: function (model, position) {
+                    const text = model.getValue();
+                    const words = Array.from(new Set(text.match(/\b\w+\b/g)));
+                    const wordSuggestions = words.map((word) => ({
+                        label: word,
+                        kind: monaco.languages.CompletionItemKind.Text,
+                        insertText: word,
+                    }));
 
-            if (data.tabId === tabId) {
-                const editorInstance = monaco.editor
-                    .getModels()
-                    .find((model) => model.uri.path.includes(data.tabId));
-                if (editorInstance) {
-                    // Update content if changed
-                    editorInstance.setValue(data.content);
+                    const templateSuggestions = templates.map((template) => ({
+                        label: template.keyword,
+                        kind: monaco.languages.CompletionItemKind.Snippet,
+                        insertText: template.code.replace(/\\n/g, '\n'),
+                        insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+                        documentation: `Insert ${template.code}`,
+                    }));
 
-                    // Display cursor position for other users
-                    if (data.userId && data.userId !== 'currentUser') {
-                        // Replace with real user ID check
-                        let range = new monaco.Range(
-                            data.cursorLine,
-                            data.cursorColumn,
-                            data.cursorLine,
-                            data.cursorColumn
-                        );
-                        const decorationId = editor.deltaDecorations(
-                            [],
-                            [
-                                {
-                                    range: range,
-                                    options: { className: 'cursorDecoration' },
-                                },
-                            ]
-                        );
-                        cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
+                    return { suggestions: [...wordSuggestions, ...templateSuggestions] };
+                },
+            });
+
+
+            // Detect cursor position change
+            // editor.onDidChangeCursorPosition((event) => {
+            //     const position = event.position;
+            //     const cursorData = {
+            //         tabId: tabId,
+            //         cursorLine: position.lineNumber,
+            //         cursorColumn: position.column,
+            //         content: editor.getValue(),
+            //     };
+
+            //     if (socket.readyState === WebSocket.OPEN) {
+            //         socket.send(JSON.stringify(cursorData));
+            //     }
+            // });
+
+            editor.onDidChangeModelContent((event) => {
+                // console.log(this);
+                // console.log(editor);
+                console.log(event);
+                // console.log(monaco);
+                const editorDomNode = editor.getDomNode();
+                // const token = $("meta[name='_csrf']").attr('content');
+                const member = {
+                    id: memberId,
+                    nick: memberNick,
+                };
+                console.log('token', token);
+
+                event.changes.forEach((change) => {
+                    const changeFileData = {
+                        tabId: tabId,
+                        sender: member,
+                        text: change.text,
+                        range: change.range, // 변경 범위
+                        sendDate: new Date(),
+                    };
+                    // 변경 사항을 서버에 전송
+                    // sendChangeToServer(changeData);
+                    if (socket.readyState === WebSocket.OPEN) {
+                        socket.send(JSON.stringify(changeFileData));
+                    }
+                });
+            });
+
+            // Handle WebSocket messages
+            socket.onmessage = function (event) {
+                const data = JSON.parse(event.data);
+
+                if (data.tabId === tabId) {
+                    const editorInstance = monaco.editor
+                        .getModels()
+                        .find((model) => model.uri.path.includes(data.tabId));
+                    if (editorInstance) {
+                        // Update content if changed
+                        editorInstance.setValue(data.content);
+
+                        // Display cursor position for other users
+                        if (data.userId && data.userId !== 'currentUser') {
+                            // Replace with real user ID check
+                            let range = new monaco.Range(
+                                data.cursorLine,
+                                data.cursorColumn,
+                                data.cursorLine,
+                                data.cursorColumn
+                            );
+                            const decorationId = editor.deltaDecorations(
+                                [],
+                                [
+                                    {
+                                        range: range,
+                                        options: { className: 'cursorDecoration' },
+                                    },
+                                ]
+                            );
+                            cursorPositions[data.userId] = decorationId; // Track each user's cursor decoration
+                        }
                     }
                 }
-            }
-        };
+            };
+        });
     });
 
     function fetchSettings(url, onSuccess) {
@@ -262,7 +272,20 @@ $('.btn_open_editor').on('click', function () {
         });
     }
 
-
+    function getProjectFileData(callback) {
+        $.ajax({
+            url: '/editor/explorer',
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                callback(data); 
+            },
+            error: function (a, b, c) {
+                console.error(a, b, c);
+            },
+        });
+    }
+    
     function getFont(data) {
 
         const theme = 'vs-dark';
@@ -355,13 +378,17 @@ $('.btn_open_editor').on('click', function () {
                 fontSize = parseInt(item.value, 10);
             }
         });
- 
+
+        console.log("fontFamily: ", fontFamily);
+        console.log("fontSize: ", fontSize);
  
         if (editor) { 
             editor.updateOptions({
                 fontFamily: fontFamily,
                 fontSize: fontSize
             });
+        } else {
+            console.error('Editor is not defined');
         }
     }
 
@@ -493,6 +520,7 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeTheme();
     handleRowClick();
     handleEditButtonClick();
+    getProjectFile();
 });
 
 function toggleSubMenu(menuId) {
@@ -1170,6 +1198,111 @@ function deleteTemplate(template_seq) {
 
 
 
+
+function getProjectFile() {
+    $.ajax({
+        url: "/editor/explorer",
+        method: "GET",
+        dataType: "json",
+        success: function (data) { 
+            renderProjectStructure(data);
+        },
+        error: function (a, b, c) {
+            console.error(a, b, c);
+        }
+    });
+}
+
+function renderProjectStructure(data) {
+    let explorerContainer = document.getElementById("packageExplorer");
+    explorerContainer.innerHTML = "";
+
+    let folderDiv = document.createElement("div");
+    folderDiv.classList.add("folder");
+
+    let projectDiv = document.createElement("div");
+    projectDiv.classList.add("project");
+    projectDiv.innerHTML = `
+        <button>
+            <img src="/editor/resources/image/icon/project.svg" />
+            <span class="white-text">` + data[0].name + `</span>
+        </button>
+    `;
+    folderDiv.appendChild(projectDiv);
+
+    let srcDiv = document.createElement("div");
+    srcDiv.classList.add("src");
+    srcDiv.innerHTML = `
+        <button>
+            <img src="/editor/resources/image/icon/src.svg" />
+            <span class="white-text">` + data[1].name + `</span>
+        </button>
+    `;
+    folderDiv.appendChild(srcDiv);
+
+    let packageDiv = document.createElement("div");
+    packageDiv.classList.add("package");
+    packageDiv.innerHTML = `
+        <button>
+            <img src="/editor/resources/image/icon/package.svg" />
+            <span class="white-text">` + data[2].name + `</span>
+        </button>
+    `;
+    srcDiv.appendChild(packageDiv);
+
+    for (let i = 3; i < data.length; i++) {
+        let fileDiv = createFileItem(data[i]); 
+        packageDiv.appendChild(fileDiv);
+    }
+
+    // 모든 항목을 packageExplorer에 추가
+    explorerContainer.appendChild(folderDiv); 
+}
+
+function createFileItem(item) {
+    let fileTypeClass = "";
+    let fileTypeIcon = "";
+    let fileName = item.name ? item.name : "Unnamed File"; 
+    let fileType = item.fileType_seq ? parseInt(item.fileType_seq) : -1; 
+
+    switch (fileType) {
+        case 4:
+            fileTypeClass = "class";
+            fileTypeIcon = "class.svg";
+            break;
+        case 5:
+            fileTypeClass = "interface";
+            fileTypeIcon = "interface.svg";
+            break;
+        case 6:
+            fileTypeClass = "txt-file";
+            fileTypeIcon = "txt.svg";
+            break;
+        case 7:
+            fileTypeClass = "file";
+            fileTypeIcon = "file.svg";
+            break;
+        default:
+            fileTypeClass = "file";
+            fileTypeIcon = "file.svg";
+            break;
+    } 
+    
+    let fileDiv = document.createElement("div");
+    fileDiv.classList.add(fileTypeClass);
+ 
+    fileDiv.innerHTML = `
+        <button class="btn_open_editor" data-file-type="` + fileTypeClass + `" data-file-name="` + fileName + `">
+            <img src="/editor/resources/image/icon/` + fileTypeIcon + `" alt="` + fileTypeClass + `">
+            <span class="white-text">` + fileName + `</span>
+            <input type="hidden" class="file-seq" value="` + item.seq + `">
+        </button>
+    `;
+	console.log(item.seq);
+    return fileDiv;
+}
+ 
+window.onload = getProjectFile;
 
 
 

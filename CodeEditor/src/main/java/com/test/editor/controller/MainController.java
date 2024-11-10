@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.model.MemberDTO;
@@ -20,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 public class MainController {
 	
 	private final MemberDAO dao;
+	
+	
 	
 	@PreAuthorize("isAnonymous() or isAuthenticated()")
 	@GetMapping("/")
