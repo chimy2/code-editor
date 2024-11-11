@@ -24,8 +24,7 @@
 	<div class="team_project">
 		<div class="inner_box">
 			<div class="inner_box_header">
-				Team <img class="team_project_plus"
-					src="/editor/resources/image/icon/plus.svg">
+				Team <img class="team_project_plus"	src="/editor/resources/image/icon/plus.svg">
 			</div>
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
@@ -115,7 +114,34 @@
 	<div class ="teamContextDelete">팀 삭제</div>
 </div>
 
-<!-- 팀 설정 -->
+
+<!-- 팀 생성 생성-->
+<div class="content_memberSetting" id="teamPlus">
+	<div class="header_setting">팀 생성</div>
+	<div class="body_setting">
+		<div class="info_setting">
+			<div class="setting_team_icon"><img src="/editor/resources/image/icon/team.svg"></div>
+			<div class="setting_name_edit">
+				<input type="text" class="setting_name">
+				<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
+			</div>
+		</div>
+		<hr>
+		<div class="etc_setting">
+			<ul>
+				<li><img src="/editor/resources/image/icon/plus.svg"></li>
+				<li><div><img src="/editor/resources/image/icon/user.svg"></div>dog</li>			
+			</ul>
+		</div>
+	</div>
+	<div class="button_member_setting">
+		<button type="button">생성</button>
+		<button type="button">취소</button>
+	</div>
+</div>
+
+
+<!-- 팀 설정 편집-->
 <div class="content_memberSetting" id="teamSetting">
 	<div class="header_setting">팀 설정</div>
 	<div class="body_setting">
@@ -130,8 +156,8 @@
 		<div class="etc_setting">
 			<ul>
 				<li><img src="/editor/resources/image/icon/plus.svg"></li>
-				<li><div><img src="/editor/resources/image/icon/user.svg"></div>hong</li>
-				<li><div><img src="/editor/resources/image/icon/user.svg"></div>annie<img class="setting_team_delete" src="/editor/resources/image/icon/settings-close.svg"></li>				
+				<li><div><img src="/editor/resources/image/icon/user.svg"></div>dog</li>
+				<li><div><img src="/editor/resources/image/icon/user.svg"></div>cat<img class="setting_team_delete" src="/editor/resources/image/icon/settings-close.svg"></li>				
 			</ul>
 		</div>
 	</div>
@@ -166,6 +192,58 @@
 	<div class ="projectContextDelete">프로젝트 삭제</div>
 </div>
 
+<!-- 프로젝트 추가 -->
+<div class="content_memberSetting" id="projectPlus">
+	<div class="header_setting">프로젝트 생성</div>
+	<div class="body_setting">
+		<div class="info_project_setting">
+			<div class="setting_project_icon"><img src="/editor/resources/image/icon/project.svg"></div>
+			<div class="setting_name_edit">
+				<input type="text" class="setting_name">
+				<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
+			</div>
+			<div class="setting_project_explain_edit">
+				<textarea></textarea>
+				<img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg">
+			</div>
+		</div>
+		<hr>
+		<div class="project_etc_setting">
+			<ul>
+				<li>
+					<div>Member</div>
+					<ul class="project_member">
+						<li>+</li>
+						<li>dog</li>
+					</ul>
+				</li>				
+				<li class="Project_Date">
+					<div>Project Date</div>
+					<input type="date"> ~ <input type="date">
+				</li>				
+				<li class="Registration_Date">
+					<div>Registration Date</div>
+					<input type="date">
+				</li>				
+				<li>
+					<div>Priority</div>
+					<ul class="priority_color">
+						<li>High</li>
+						<li>Medium</li>
+						<li>Low</li>
+					</ul>
+				</li>								
+			</ul>
+		</div>
+	</div>
+	<div class="button_member_setting">
+		<button type="button">생성</button>
+		<button type="button">취소</button>
+	</div>
+</div>
+
+
+
 <!-- 프로젝트 설정 -->
 <div class="content_memberSetting" id="projectSetting">
 	<div class="header_setting">프로젝트 설정</div>
@@ -188,12 +266,18 @@
 					<div>Member</div>
 					<ul class="project_member">
 						<li>+</li>
-						<li>test</li>
-						<li>hong <img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg"></li>
+						<li>dog <img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg"></li>
+						<li>cat <img class="setting_name_close" src="/editor/resources/image/icon/settings-close.svg"></li>
 					</ul>
 				</li>				
-				<li><div>Project Date</div></li>				
-				<li><div>Registration Date</div></li>				
+				<li class="Project_Date">
+					<div>Project Date</div>
+					<input type="date"> ~ <input type="date">
+				</li>				
+				<li class="Registration_Date">
+					<div>Registration Date</div>
+					<input type="date">
+				</li>		
 				<li>
 					<div>Priority</div>
 					<ul class="priority_color">

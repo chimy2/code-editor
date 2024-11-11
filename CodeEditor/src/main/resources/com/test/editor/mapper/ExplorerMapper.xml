@@ -7,7 +7,11 @@
 <mapper namespace="com.test.editor.mapper.ExplorerMapper">
 
 	<select id="getProjectFile" resultType="com.test.editor.model.ProjectFile">
-		select * from vwProjectFile where project_seq = #{project_seq} AND member_seq = #{member_seq}
+		
+		select * from vwProjectFile 
+		where member_seq = #{member_seq} and project_seq = #{project_seq} and 
+		versionInfo_seq = (select max(versionInfo_seq) from vwProjectFile where member_seq = #{member_seq} and project_seq = #{project_seq})
+
 	</select>
 	
 </mapper>

@@ -17,6 +17,7 @@
 		<put-attribute name="asset_main" value="/WEB-INF/views/inc/asset_main.jsp"></put-attribute>
 		<put-attribute name="header_main" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
 		<put-attribute name="content_login" value="/WEB-INF/views/page/main/content_login.jsp"></put-attribute>
+		<put-attribute name="content_logout" value="/WEB-INF/views/page/main/content_logout.jsp"></put-attribute>
 	</definition>
 	
 
