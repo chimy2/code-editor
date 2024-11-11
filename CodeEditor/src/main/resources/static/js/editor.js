@@ -190,6 +190,8 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                 wordBasedSuggestions: true,
             });
 
+            getFontData();
+
             editorInstances[tabId] = editor;
 
             // Detect cursor position change
@@ -201,8 +203,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             //         cursorColumn: position.column,
             //         content: editor.getValue(),
             //     };
-            getFontData();
-
+             
             // Completion Item Provider 등록
             monaco.languages.registerCompletionItemProvider('java', {
                 provideCompletionItems: function (model, position) {
@@ -216,7 +217,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                 },
             });
 
-            getFontData();
+            
 
             // Completion Item Provider 등록
             monaco.languages.registerCompletionItemProvider('java', {
@@ -318,6 +319,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
         function getFontData() {
             fetchSettings('/editor/font', function (data) {
                 getFont(data);
+                console.log(data);
             });
         }
 
