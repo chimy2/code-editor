@@ -145,7 +145,13 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
     const fileIcon = $(this).find('img').prop('outerHTML');
-    const filePath = $(this).parents('.package').children().first().find('span').text();
+    const filePath = $(this)
+        .parents('.package')
+        .children()
+        .first()
+        .find('span')
+        .text()
+        .replaceAll(/[.]/g, '__');
     const tabId = filePath + '__' + fileName.replaceAll(/[.]/g, '__');
 
     if ($('#' + tabId).length > 0) {
@@ -178,15 +184,18 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             const currentFileData = projectFileData.find(
                 (file) => file.name === fileName
             );
+            const fileType = fileName.endsWith('.java') ? 'java' : 'text/plain';
             const codeValue =
                 currentFileData && currentFileData.code
                     ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
-                    : '// Start coding here...';
+                    : fileType == 'java'
+                    ? '// Start coding here...'
+                    : 'Start here...';
 
             // Create the editor and assign it to the global variable
             editor = monaco.editor.create(document.getElementById(tabId), {
                 value: codeValue,
-                language: 'java',
+                language: fileType,
                 theme: 'custom-theme',
                 minimap: {
                     enabled: false,
