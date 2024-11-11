@@ -50,7 +50,7 @@ public class BotController {
         return dao.stats(seq);
     }
 	
-	@GetMapping("/stats/{member_seq}")
+	@GetMapping("/stats/${sessionScope.member.seq}")
 	public String stats(@PathVariable("member_seq") String member_seq, Model model, HttpSession session) {
 		
 	    System.out.println(member_seq);
