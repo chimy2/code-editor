@@ -145,7 +145,8 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
     const fileIcon = $(this).find('img').prop('outerHTML');
-    const tabId = 'file_path__' + fileName.replaceAll(/[.]/g, '__');
+    const filePath = $(this).parents('.package').children().first().find('span').text();
+    const tabId = filePath + '__' + fileName.replaceAll(/[.]/g, '__');
 
     if ($('#' + tabId).length > 0) {
         $(`a[href='#${tabId}']`).click();
