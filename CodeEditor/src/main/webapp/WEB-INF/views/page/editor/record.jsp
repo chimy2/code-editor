@@ -23,9 +23,18 @@
 			</form>
 		</div>
 		<div class="popup-footer record-footer">
-			<button class="btn_submit_record">
+			<button class="btn_submit_record" onclick="saveRecord();">
 		        Save
 			</button>
 		</div>
 	</div>
 </div>
+
+
+<script>
+
+	function saveRecord() {
+		console.log("saveRecord");
+	}
+
+</script>
