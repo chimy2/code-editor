@@ -1,17 +1,24 @@
 package com.test.editor.controller;
 
+import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.editor.dao.SettingsDAO;
+import com.test.editor.model.MemberDTO;
 import com.test.editor.model.StyleSettingDTO;
 import com.test.editor.model.TemplateDTO;
 import com.test.editor.model.ThemeDTO;
@@ -24,67 +31,136 @@ public class SettingsController {
 
 	private final SettingsDAO dao;
 
-	@GetMapping("/settings")
-	public String getSettingsPage() {
-
-		return "settings";
-	}
-
 	@GetMapping("/theme")
 	@ResponseBody
-	public String getTheme(HttpSession session) {
+	public String getTheme(Principal principal, HttpSession session) {
 
-		// String member_seq = (String) session.getAttribute("member_seq");
-		String member_seq = "1";
-		System.out.println("유정이 힘을내");
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq();  
+		
 		return dao.getTheme(member_seq);
 	}
 
-	@PutMapping(value = "/theme", produces = "application/json")
+	@PutMapping(value="/theme", produces="application/json")
 	@ResponseBody
 	public String updateTheme(@RequestBody ThemeDTO theme, HttpSession session) {
 
-		String member_seq = "1";
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
 		theme.setMember_seq(member_seq);
-
-		System.out.println(theme.toString());
-
 		dao.updateTheme(theme);
 
-		return "update !!!!";
+		return "update theme";
 	}
 
-	@GetMapping(value = "/font", produces = "application/json")
+	@GetMapping(value = "/font", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getFont(HttpSession session) {
-		String member_seq = "1";
+
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
 		return dao.getFont(member_seq);
 	}
+	
+	@PutMapping(value="/font", produces="application/json")
+	@ResponseBody
+	public String updateFont(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
 
-	@GetMapping(value = "/color", produces = "application/json")
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
+	    Map<String, Object> fontStyle = new HashMap<>();
+	    
+	    for (StyleSettingDTO setting : styleSettings) {
+	        if ("1".equals(setting.getStyleType_seq())) {
+	        	fontStyle.put("fontSize", setting);
+	        } else if ("2".equals(setting.getStyleType_seq())) {
+	        	fontStyle.put("fontFamily", setting);
+	        }
+	    }
+	    
+	    fontStyle.put("member_seq", member_seq);
+	    
+	    dao.updateFont(fontStyle);
+	    
+		return "update font";
+	}
+	
+	
+	@GetMapping(value="/color", produces="application/json")
 	@ResponseBody
 	public List<StyleSettingDTO> getColor(HttpSession session) {
 
-		String member_seq = "1";
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
 		return dao.getColor(member_seq);
 	}
+	
+	@PutMapping(value="/color", produces="application/json")
+	@ResponseBody
+	public String updateColor(@RequestBody List<StyleSettingDTO> styleSettings, HttpSession session) {
+		
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
+		Map<String, Object> colorStyle = new HashMap<>();
+		
+		for (StyleSettingDTO data : styleSettings) {
+			if ("3".equals(data.getStyleType_seq())) {
+			    colorStyle.put("background", data);
+			} else if ("4".equals(data.getStyleType_seq())) {
+			    colorStyle.put("foreground", data);
+			} else if ("5".equals(data.getStyleType_seq())) {
+			    colorStyle.put("comment", data);
+			} else if ("6".equals(data.getStyleType_seq())) {
+			    colorStyle.put("keyword", data);
+			} else if ("7".equals(data.getStyleType_seq())) {
+			    colorStyle.put("String", data);
+			} 
+			
+		}
+		colorStyle.put("member_seq", member_seq);
+		dao.updateColor(colorStyle);
+		
+		return "update color";
+	}
 
-	  @GetMapping(value = "/template", produces = "application/json")
-	  @ResponseBody 
-	  public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
-		  String member_seq = "1"; 
-		  List<TemplateDTO> template = dao.getTemplate(member_seq); 
-		  model.addAttribute("template", template);
-		  System.out.println("여기 >>>>>>>>>>>> " + template); 
-		  return template; 
-	  }
+    @GetMapping(value="/template", produces="application/json")
+    @ResponseBody 
+    public List<TemplateDTO> getTemplate(Model model, HttpSession session) {
 
-//	@GetMapping("/template")
-//	public String getTemplate(Model model, HttpSession session) {
-//	    String member_seq = "1";
-//	    List<TemplateDTO> template = dao.getTemplate(member_seq);
-//	    model.addAttribute("template", template);
-//	    return "code"; 
-//	}
+    	MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
+    	List<TemplateDTO> template = dao.getTemplate(member_seq); 
+	    model.addAttribute("template", template);
+	    return template; 
+    }
+    
+    @PutMapping(value="/template", produces="application/json")
+    @ResponseBody
+    public int updateTemplate(@RequestBody TemplateDTO template) {
+    	return dao.updateTemplate(template);
+    }
+    
+    @PostMapping(value="/template", produces="application/json")
+    @ResponseBody 
+    public int addTemplate(@RequestBody TemplateDTO template, HttpSession session) {
+    	
+    	MemberDTO member = (MemberDTO) session.getAttribute("member");
+		String member_seq = member.getSeq(); 
+		
+    	template.setMember_seq(member_seq);
+    	return dao.addTemplate(template);
+    }
+    
+    @DeleteMapping(value="/template/{template_seq}", produces="application/json")
+    @ResponseBody
+    public int delTemplate(@PathVariable("template_seq") String template_seq) {
+    	return dao.delTemplate(template_seq);
+    }
 
 }

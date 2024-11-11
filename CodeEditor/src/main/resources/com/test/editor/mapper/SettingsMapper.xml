@@ -10,9 +10,13 @@
 		select theme from theme where member_seq = #{member_seq}
 	</select>
 
-	<update id="updateTheme" parameterType="theme">
-		update theme set theme = #{theme} where seq = #{member_seq}
+	<update id="updateTheme">
+		update theme set theme = #{theme} where member_seq = #{member_seq} 
 	</update>
+	
+	<select id="callSwitchTheme" statementType="CALLABLE">
+	    { CALL switchTheme(#{theme, jdbcType=VARCHAR}, #{member_seq, jdbcType=VARCHAR}) }
+	</select>
 	
 	
 	<resultMap id="FontSettingResultMap" type="styleSetting">
@@ -35,6 +39,16 @@
 		where category in ('fontSize', 'fontFamily') 
 			and member_seq = #{member_seq}
 	</select> 
+ 
+	<update id="updateFont" parameterType="map">
+		UPDATE styleSetting
+		SET value = 
+	        CASE 
+	            WHEN styleType_seq = 1 THEN #{fontSize.value}
+	            WHEN styleType_seq = 2 THEN #{fontFamily.value}
+	        END
+		WHERE styleType_seq IN (1, 2) AND member_seq = #{member_seq}
+	</update>
 	
 	<resultMap id="ColorSettingResultMap" type="styleSetting">
 	    <id property="seq" column="seq"/>
@@ -57,8 +71,33 @@
 			and member_seq = #{member_seq}
 	</select> 
 	
+	<update id="updateColor" parameterType="map">
+		UPDATE styleSetting
+		SET value = 
+		       CASE 
+		            WHEN styleType_seq = 3 THEN #{background.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 4 THEN #{foreground.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 5 THEN #{comment.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 6 THEN #{keyword.value, jdbcType=VARCHAR}
+		            WHEN styleType_seq = 7 THEN #{String.value, jdbcType=VARCHAR}
+		       END
+		WHERE styleType_seq BETWEEN 3 AND 7 AND member_seq = #{member_seq}
+	</update>
+	
 	<select id="getTemplate" parameterType="String" resultType="template">
-		select * from template where member_seq = #{member_seq}
+		select * from template where member_seq = #{member_seq} order by keyword
 	</select>
+	
+	<update id="updateTemplate" parameterType="template">
+		update template set code = #{code}, keyword = #{keyword} where seq = #{seq}
+	</update>
+	
+	<insert id="addTemplate" parameterType="template">
+		INSERT INTO template (seq, member_seq, keyword, code) 
+		VALUES (seqTemplate.nextVal, #{member_seq}, #{keyword}, #{code})
+	</insert>
 
+	<delete id="delTemplate" parameterType="String">
+		DELETE FROM template WHERE seq = #{template_seq}	
+	</delete>
 </mapper>

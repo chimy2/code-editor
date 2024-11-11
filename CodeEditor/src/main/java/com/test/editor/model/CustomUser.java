@@ -3,6 +3,8 @@ package com.test.editor.model;
 import java.util.Collection;
 import java.util.Collections;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -13,8 +15,12 @@ import lombok.Getter;
 @Getter
 public class CustomUser extends User {
 
-private MemberDTO member;
-	
+	private MemberDTO member;
+		
+	public CustomUser() {
+        super("default", "default", Collections.emptyList());
+    }
+	   
 	public CustomUser(String username, String password, Collection<? extends GrantedAuthority> oAuthType){
 		super(username, password, oAuthType);
 	}
@@ -22,11 +28,13 @@ private MemberDTO member;
 	public CustomUser(MemberDTO dto) {
 		super(dto.getId(), dto.getPw(), Collections.singletonList(new SimpleGrantedAuthority(dto.getOAuthType())));
 		this.member = dto;
+
 	}
 	
-	 public MemberDTO getMember() {
-	        return member;
-	 }
+	
+	public MemberDTO getMemberDTO() {
+        return member;
+    }
 	
 	
 }

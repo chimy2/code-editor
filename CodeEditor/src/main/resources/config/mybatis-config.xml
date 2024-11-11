@@ -15,9 +15,14 @@
 	</typeAliases> -->
 	<typeAliases>
 		<typeAlias type="com.test.editor.model.MemberDTO" alias="member"/>
+		<typeAlias type="com.test.editor.model.TeamDTO" alias="team"/>
+		<typeAlias type="com.test.editor.model.ProjectDTO" alias="project"/>
+		<typeAlias type="com.test.editor.model.MemberTeamDTO" alias="memberTeam"/>
 		<typeAlias type="com.test.editor.model.ThemeDTO" alias="theme"/>
 		<typeAlias type="com.test.editor.model.StyleSettingDTO" alias="styleSetting"/>
 		<typeAlias type="com.test.editor.model.StyleTypeDTO" alias="styleType"/>
 		<typeAlias type="com.test.editor.model.TemplateDTO" alias="template"/>
+		<typeAlias type="com.test.editor.model.MemberProject" alias="memberProject"/>
+		<typeAlias type="com.test.editor.model.ProjectFile" alias="projectFile"/>
 	</typeAliases> 
 </configuration>

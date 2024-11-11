@@ -89,7 +89,7 @@
 		<put-attribute name="asset_chat" value="/WEB-INF/views/inc/asset_chat.jsp"></put-attribute>
 		<put-attribute name="asset_bot" value="/WEB-INF/views/inc/asset_bot.jsp"></put-attribute>
 		
-		<put-attribute name="main_header" value="/WEB-INF/views/inc/header_main.jsp"></put-attribute>
+		<put-attribute name="main_header" value="/WEB-INF/views/inc/header_mypage.jsp"></put-attribute>
 		<put-attribute name="editor_header" value="/WEB-INF/views/inc/header_editor.jsp"></put-attribute>
 		
 		<put-attribute name="left_side" value="/WEB-INF/views/page/editor/explorer.jsp"></put-attribute>

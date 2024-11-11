@@ -56,6 +56,10 @@
 }
 
 /* explorer */
+explorer_sidebar button {
+	margin-bottom: 10px;
+}
+
 /* 사이드바 스타일 */
 .explorer_sidebar {
     width: 0; /* 기본 상태에서 사이드바는 보이지 않음 */
@@ -189,15 +193,115 @@ div.file {
 
 
 
+
+/* 왼쪽 메뉴 (context-menu) 스타일 */
+.custom-context-menu {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 80px; /* 왼쪽 메뉴 너비 고정 */
+}
+
+/* 각 메뉴 항목 스타일 */
+.custom-context-menu-item {
+    padding: 8px 10px;
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* 서브메뉴 스타일 - 기본적으로 숨김 */
+.custom-submenu {
+    position: absolute;
+    top: 0;
+    left: 80px; /* 왼쪽 메뉴와 서브메뉴가 정확히 붙도록 설정 */
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    padding: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: none; /* 평상시에는 숨김 */
+    width: 120px; /* 서브메뉴 너비 고정 */
+    flex-direction: column; /* 서브메뉴 항목을 수직으로 정렬 */
+}
+
+/* New 항목에 호버할 때만 서브메뉴 표시 */
+.custom-context-menu-item:hover .custom-submenu {
+    display: flex;
+}
+
+/* 아이콘 스타일 */
+.custom-menu-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+/* 모달 */
+.project-modal {
+  display: none;
+  position: fixed;
+  z-index: 2;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+  backdrop-filter: blur(4px); /* 배경 흐림 효과 */
+}
+
+.project-modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 30px 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.15);
+  width: 320px;
+  text-align: center;
+}
+
+.project-modal-close {
+  color: #aaa;
+  float: right;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.project-modal-close:hover {
+  color: #444;
+}
+
+.custom-submenu .custom-context-menu-item {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+}
+
+.custom-submenu .custom-menu-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+}
+
+
+
+
+
+
 /* editor */
 .editor-container {
     padding: 0;
     height: calc(100vh - 60px);
-    background: tomato;
 }
 .editor-container.active_console {
     height: calc(100vh - 360px);
-    background: tomato;
 }
 
 .editor-container.ui-tabs-panel {
@@ -566,7 +670,7 @@ div.file {
     margin: 0;
     /* display: flex; */
     /* 귀차나서 해놓음!!!!!!!!!! 풀어야댐!!!!!!! */
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
 }
@@ -990,7 +1094,7 @@ div.file {
     background-color: var(--black2);
     padding-left: 5px;
     height: 25px;
-    max-width: 200px; /* 330 - 5 - 80에 해당하는 값 */
+    max-width: 175px; /* 330 - 5 - 80에 해당하는 값 */
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -1146,3 +1250,6 @@ div.file {
 .template-content tr:first-child {
     height: 60px;
 }
+
+
+

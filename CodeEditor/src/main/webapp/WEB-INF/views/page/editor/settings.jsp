@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="settings-body">
 	<div class="settings-main">
 		<div class="settings-header">
@@ -18,7 +19,7 @@
 					</button>
 					<ul class="settings-sub-menu" id="theme" style="display: none;">
 						<li onclick="getThemeData(); showContent('appearance')">Appearance</li>
-						<li onclick="showContent('colors')">Colors</li>
+						<li onclick="getColorData(); showContent('colors')">Colors</li>
 						<li onclick="getFontData(); showContent('font')">Font</li>
 					</ul>
 				</li>
@@ -51,53 +52,53 @@
 					</div>
 				</fieldset>
 			</div>
-			<div class="settings-content" id="colors-content"
-				style="display: none;">
-				<h2>Colors</h2>
-				<hr>
-				<div class="colors-container">
-					<div class="colors-selector">
-						<div class="colors">
-							<input type="color" id="editor-background" value="#1E1E1E">
-							<label>
-								Background color
-								<input type="hidden" class="color-category" value="editor.background">
-							</label>
-						</div>
-						<div class="colors">
-							<input type="color" id="editor-foreground" value="#D4D4D4"> 
-							<label>
-								Font color
-								<input type="hidden" class="color-category" value="editor.foreground">
-							</label>
-						</div> 
-						<div class="colors">
-							<input type="color" id="java-comment" value="#608B4E">
-							<label>
-								Comment color
-								<input type="hidden" class="color-category" value="java.comment">
-							</label>
-						</div>
-						<div class="colors">
-							<input type="color" id="java-keyword" value="#569CD6"> 
-							<label>
-								Keyword color
-								<input type="hidden" class="color-category" value="java.keyword">
-							</label>
-						</div>
-						<div class="colors">
-							<input type="color" id="java-String" value="#CE9178"> 
-							<label>
-								String Literal color
-								<input type="hidden" class="color-category" value="java.String">
-							</label>
-						</div>
-					</div>
-					<div class="btn-settings">
-						<button>Edit</button>
-					</div>
-				</div>
-			</div>
+            <div class="settings-content" id="colors-content"
+                style="display: none;">
+                <h2>Colors</h2>
+                <hr>
+                <div class="colors-container">
+                    <div class="colors-selector">
+                        <div class="colors">
+                            <input type="color" id="editor-background" value="">
+                            <label>
+                                Background color
+                                <input type="hidden" class="color-category" value="editor.background">
+                            </label>
+                        </div>
+                        <div class="colors">
+                            <input type="color" id="editor-foreground" value=""> 
+                            <label>
+                                Font color
+                                <input type="hidden" class="color-category" value="editor.foreground">
+                            </label>
+                        </div> 
+                        <div class="colors">
+                            <input type="color" id="java-comment" value="">
+                            <label>
+                                Comment color
+                                <input type="hidden" class="color-category" value="java.comment">
+                            </label>
+                        </div>
+                        <div class="colors">
+                            <input type="color" id="java-keyword" value=""> 
+                            <label>
+                                Keyword color
+                                <input type="hidden" class="color-category" value="java.keyword">
+                            </label>
+                        </div>
+                        <div class="colors">
+                            <input type="color" id="java-string" value=""> 
+                            <label>
+                                String Literal color
+                                <input type="hidden" class="color-category" value="java.string">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="btn-settings">
+                        <button>Edit</button>
+                    </div>
+                </div>
+            </div>
 
 			<div class="settings-content" id="font-content"
 				style="display: none;">
@@ -107,15 +108,15 @@
 					<div class="font-family">
 						<h3>글꼴</h3>
 						<div class="selected-font">
-							<span>D2Coding</span> <img
-								src="/editor/resources/image/icon/bottom-arrow.svg"
-								class="arrow-icon">
+							<span>D2Coding</span> 
+							<img src="/editor/resources/image/icon/bottom-arrow.svg" class="arrow-icon">
 						</div>
 						<ul class="select-font-family">
 							<li>Consolas</li>
 							<li>D2Coding</li>
 							<li>나눔 고딕 코딩</li>
 							<li>Monoplex KR</li>
+							<input type="hidden" id="styleType_seq" value="2">
 						</ul>
 					</div>
 					<div class="font-size">
@@ -125,6 +126,7 @@
 							<img src="/editor/resources/image/icon/bottom-arrow.svg" class="arrow-icon">
 						</div>
 						<ul class="select-font-size">
+							<input type="hidden" id="styleType_seq" value="1">
 							<c:forEach var="i" step="2" begin="8" end="30">
 								<li>${i}</li>
 							</c:forEach>
@@ -151,77 +153,6 @@
 						 	<tbody>
 						 	
 						 	</tbody>
-<%-- 						    <c:forEach var="template" items="${template}">
-						    	<tr>
-									<td>${template.keyword}</td>
-									<td>${template.code}</td>
-									<td>왜안돼</td>
-						    	</tr>
-						    </c:forEach> --%>
-<%-- 						    <tr>
-						        <td>catch</td>
-						        <td>catch (\${1:Exception} \${2:e}) {\n    \${3}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>dowhile</td>
-						        <td>do {\n    \${0}\n} while (\${1:condition});</td>
-						    </tr>
-						    <tr>
-						        <td>else</td>
-						        <td>else {\n    \${1}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>finally</td>
-						        <td>finally {\n    \${1}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>for</td>
-						        <td>for (int \${1:index} = 0; \${1:index} < \${2:array}.length; \${1:index}++) {\n    \${3}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>foreach</td>
-						        <td>for (\${1:Type} \${2:item} : \${3:collection}) {\n    \${0}\n}</td>
-						    </tr>
-						    <tr>
-						        <td>if</td>
-						        <td>if (\${1:condition}) {\n    \${2}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>ifelse</td>
-						        <td>if (\${1:condition}) {\n    \${2}\n} else {\n    \${2}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>ifelseif</td>
-						        <td>if (\${1:condition}) {\n    \${2}\n} else if (\${3:condition}) {\n    \${4}\n} else {\n    \${5}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>main</td>
-						        <td>public static void main(String[] args) {\n    \${0}\n}</td>
-						    </tr>
-						    <tr>
-						        <td>switch</td>
-						        <td>switch (\${1:key}) {\n    case \${2:value}:\n        \${0}\n        break;\n    default:\n        break;\n}</td>
-						    </tr>
-						    <tr>
-						        <td>syserr</td>
-						        <td>System.err.println(\${1});\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>sysout</td>
-						        <td>System.out.println(\${1});\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>tryfinally</td>
-						        <td>try {\n    \${1}\n} finally {\n    \${2}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>trycatch</td>
-						        <td>try {\n    \${1}\n} catch (\${2:Exception} \${3:e}) {\n    \${4}\n}\${0}</td>
-						    </tr>
-						    <tr>
-						        <td>while</td>
-						        <td>while (\${1:condition}) {\n    \${2}\n}\${0}</td>
-						    </tr> --%>
 						</table>
 					</div>
 					<div class="btn-settings">
@@ -232,7 +163,7 @@
 							<button>Edit</button>
 						</div>
 						<div id="delete-setting">
-							<button>Delete</button>
+							<button onclick="selDeleteSeq();">Delete</button>
 						</div>
 					</div>
 				</div>
@@ -269,13 +200,13 @@
         		<tr>
         			<th>Code</th>
        				<td>
-       					<textarea></textarea>
+       					<textarea class="template-code-input"></textarea>
        				</td>
         		</tr>
         	</table>
         </div>
         <div class="template-footer">
-            <img src="/editor/resources/image/icon/check-circle.svg">
+            <img src="/editor/resources/image/icon/check-circle.svg" onclick="addTemplate();">
         </div>
     </div>
 </div>
@@ -305,83 +236,7 @@
         	</table>
         </div>
         <div class="template-footer">
-            <button><img src="/editor/resources/image/icon/check-circle.svg"></button>
+            <button><img src="/editor/resources/image/icon/check-circle.svg" onclick="getTemplateVal();"></button>
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-	
-let themeModified = false; // 설정 변경 여부 추적
-let isModified = false;
-
-//테마 선택 변경 시 변경 여부 설정
-$('input[name="theme"]').on('change', function() {
- isModified = true;
- themeModified = true;
-});
-
-//색상 변경 시 변경 여부 설정
-$('input[type="color"]').on('input', function() {
- isModified = true;
-});
-
-//폰트 및 기타 설정 변경 시 변경 여부 설정
-$('.select-font-family li, .select-font-size li').on('click', function() {
- isModified = true;
-});
-
-function closeSettings() {
-    $('.settings-body').hide(); // 창을 숨기거나 다른 방식으로 닫기 처리
-}
-
-//저장 버튼 클릭 시 동작
-$('.settings-footer button').on('click', function() {
-    if (isModified) {
-    	
-    	if(themeModified) {
-    		updateTheme(); 
-    	}
-        
-        alert('업데이트해 뭐하는거야');
-    } else {
-        closeSettings(); // 변경사항이 없으면 창만 닫음
-    }
-});
-
-
-
-//예: 테마 업데이트 요청
-function updateTheme(selectedTheme) {
-	
-	console.log($('input[name="theme"]:checked').val());
-	const theme = $('input[name="theme"]:checked').val();
-	let themeNumber;
-	
-	if (theme === 'dark') {
-		themeNumber = '0';
-	} else if (theme === 'light') {
-		themeNumber = '1';
-	}
-	
-	console.log('뭐하는 거야 왜 안 돼 ' + themeNumber);
-	
-    $.ajax({
-        url: '/editor/theme',
-        method: 'PUT',
-        contentType: 'application/json',
-        data: JSON.stringify({ theme: themeNumber }),
-        success: function() {
-            console.log('Theme updated successfully.');
-        },
-        error: function(a,b,c) {
-            console.log(a, b, c);
-        }
-    });
-}
-
-</script>
-
-
-
