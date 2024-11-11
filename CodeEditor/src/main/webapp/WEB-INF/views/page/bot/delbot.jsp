@@ -122,10 +122,10 @@
 	                    xhr.setRequestHeader(header, token);
 	                },
 	                success: function(response) {
-	                	location.reload();
+	                	loadChatHistory();
 	                },
 	                error: function(a,b,c) {
-	                	location.reload();
+	                	alert("");
 	                }
 	            });
 	        }
@@ -135,6 +135,5 @@
 	        loadChatHistory();
 	    });
 	</script>
-
 </body>
 </html>

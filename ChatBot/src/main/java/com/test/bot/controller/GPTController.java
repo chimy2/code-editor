@@ -34,7 +34,7 @@ public class GPTController {
     @Autowired
     private ChatDAO dao;
 
-    private String model = "gpt-3.5-turbo";	//  "gpt-3.5-turbo" , "ft:gpt-4o-mini-2024-07-18:personal::AQ28Huai" 
+    private String model = "ft:gpt-4o-mini-2024-07-18:personal::AR8XWD7B";	//  "gpt-3.5-turbo" , "ft:gpt-4o-mini-2024-07-18:personal::AQ28Huai" , "ft:gpt-4o-mini-2024-07-18:personal::AR8XWD7B" 
     private String apiKey = "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";
     private String apiUrl = "https://api.openai.com/v1/chat/completions";
     private final RestTemplate restTemplate;
@@ -72,7 +72,7 @@ public class GPTController {
         messages.add(new Message("user", prompt));
 
         // GPTRequest 객체 생성 시 messages 리스트 전달
-        GPTRequest request = new GPTRequest(model, messages, 1, 256, 1, 2, 2);
+        GPTRequest request = new GPTRequest(model, messages, 1, 2000, 1, 2, 2);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + apiKey);

@@ -3,6 +3,7 @@
  */
 let socket;
 const editorInstances = {};
+let isServerChange = false;
 
 const exapleCode = {
     class: 'public class HelloWorld {\n\n    public static void main(String[] args) {\n\n        System.out.println("Hello World!");\n\n    }\n\n}',
@@ -72,10 +73,11 @@ function initSocketEvent() {
     };
 
     socket.onmessage = function (event) {
-        console.log('message 받음');
         const data = JSON.parse(event.data);
 
         console.log('socket on message', event);
+
+        isServerChange = true;
 
         if (data.type == 'cursor') {
             const cursor = data.cursor;
@@ -109,8 +111,12 @@ function initSocketEvent() {
                 }
                 editorInstance.setScrollTop(currentScrollTop);
                 editorInstance.setScrollLeft(currentScrollLeft);
+
+                editorInstance.pushUndoStop();
             }
         }
+
+        isServerChange = false;
     };
 
     socket.onerror = function (error) {
@@ -190,6 +196,8 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                 wordBasedSuggestions: true,
             });
 
+            getFontData();
+
             editorInstances[tabId] = editor;
 
             // Detect cursor position change
@@ -201,8 +209,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             //         cursorColumn: position.column,
             //         content: editor.getValue(),
             //     };
-            getFontData();
-
+             
             // Completion Item Provider 등록
             monaco.languages.registerCompletionItemProvider('java', {
                 provideCompletionItems: function (model, position) {
@@ -216,7 +223,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                 },
             });
 
-            getFontData();
+            
 
             // Completion Item Provider 등록
             monaco.languages.registerCompletionItemProvider('java', {
@@ -264,6 +271,9 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             // });
 
             editor.onDidChangeModelContent((event) => {
+                if (isServerChange) {
+                    return;
+                }
                 // console.log(this);
                 // console.log(editor);
                 // console.log(event);
@@ -318,6 +328,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
         function getFontData() {
             fetchSettings('/editor/font', function (data) {
                 getFont(data);
+                console.log(data);
             });
         }
 
@@ -1365,7 +1376,6 @@ function createFileItem(item) {
         `">
         </button>
     `;
-    console.log(item.seq);
 
     return fileDiv;
 }

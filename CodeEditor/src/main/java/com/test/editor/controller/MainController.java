@@ -49,13 +49,6 @@ public class MainController {
 		
 		return "mypage";
 	}
-
-	
-	@GetMapping("/stats")
-	public String stats() {
-		
-		return "stats";
-	}
 	
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/login")
