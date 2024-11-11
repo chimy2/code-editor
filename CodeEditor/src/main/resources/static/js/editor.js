@@ -498,8 +498,12 @@ $('.btn_run').click(() => {
 });
 
 $('.btn_console').click(() => {
-    $('#toggle-chatbot').animate({ bottom: '310px' }, 300);
     $('.editor-container').toggleClass('active_console');
+    if ($('.editor-container').hasClass('active_console')) {
+        $('#toggle-chatbot').animate({ bottom: '310px' }, 300);
+    } else {
+        $('#toggle-chatbot').animate({ bottom: '20px' }, 300);
+    }
 });
 
 $('.btn_download').click(() => {

@@ -41,6 +41,21 @@
     <tiles:insertAttribute name="header_main" />
 </head>
 <body>
+	<sec:authorize access="isAuthenticated()">
+		<meta name="_csrf" content="${_csrf.token}"/>
+		<meta name="_csrf_header" content="${_csrf.headerName}"/>
+		<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
+		<sec:authentication property="principal.member" var="member"/>
+		
+		<script type="text/javascript">
+		    const member = {
+		    	seq: '${member.seq}',
+		    	id: '${member.id}',
+		    	nick: '${member.nick}'
+		    };
+		</script>
+	</sec:authorize>
+	
 	<tiles:insertAttribute name="asset_main" />
     <h1 style="text-align: center;">My ChatBot 통계</h1>
 
@@ -68,19 +83,19 @@
 	            const statsData = response.statsData;
 	            console.log(statsData);
 	            
-	            let monthlyCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-	
+	            let monthlyCounts = Array(12).fill(0);
+
 	            // statsData에 따라 각 월별 데이터 채우기
-	            for (let i = 0; i < statsData.length; i++) {
-	                let monthIndex = parseInt(statsData[i].month) - 1;
-	                monthlyCounts[monthIndex] = statsData[i].count || 0;
-	            }
-	            
+	            statsData.forEach(data => {
+	                let monthIndex = parseInt(data.month) - 1;
+	                monthlyCounts[monthIndex] = data.count || 0;
+	            });
+
 	            // 현재 월을 가져와 그동안의 데이터 평균과 비교용 데이터를 계산
 	            const currentMonth = new Date().getMonth() + 1;
 	            const totalSoFar = monthlyCounts.slice(0, currentMonth).reduce((sum, count) => sum + count, 0);
 	            const averageSoFar = totalSoFar / currentMonth;
-	
+
 	            // 저번 달 데이터와 비교 (단, 1월이면 이전 달 비교 불가)
 	            const previousMonthCount = currentMonth > 1 ? monthlyCounts[currentMonth - 2] : 0;
 	            const currentMonthCount = monthlyCounts[currentMonth - 1];
@@ -89,13 +104,13 @@
 	            // 결과 정보를 DOM에 추가
 	            const summaryText = `
 				    <p>
-				        이번 달 (<span style="color: tomato;">\${currentMonth}월</span>) 과 지난 달의 차이는 
-				        <span style="color: tomato;">\${difference}</span> 건입니다.<br>
-				        월별 평균 통계는 약 <span style="color: tomato;">\${averageSoFar.toFixed(2)}</span> 건입니다.
+				        이번 달 (<span style="color: tomato;">${currentMonth}월</span>) 과 지난 달의 차이는 
+				        <span style="color: tomato;">${difference}</span> 건입니다.<br>
+				        월별 평균 통계는 약 <span style="color: tomato;">${averageSoFar.toFixed(2)}</span> 건입니다.
 				    </p>
 				`;
 	            document.querySelector('.stats-comment-container p').innerHTML = summaryText;
-	
+
 	            // 차트 생성
 	            const ctx = document.getElementById('myChart').getContext('2d');
 	            const myChart = new Chart(ctx, {

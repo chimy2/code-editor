@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+import javax.websocket.Session;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,13 +50,13 @@ public class BotController {
         return dao.stats(seq);
     }
 	
-	@GetMapping("/stats")
-    public String stats(@RequestParam("seq") String seq, Model model) {
+	@GetMapping("/stats/{member_seq}")
+	public String stats(@PathVariable("member_seq") String member_seq, Model model, HttpSession session) {
 		
-        model.addAttribute("seq", seq);
-        
-        return "stats";
-    }
+	    System.out.println(member_seq);
+	    session.setAttribute("member_seq", member_seq);
+	    return "stats";
+	}
 	
 	@GetMapping(value = "/statsData", produces = "application/json")
 	@ResponseBody
