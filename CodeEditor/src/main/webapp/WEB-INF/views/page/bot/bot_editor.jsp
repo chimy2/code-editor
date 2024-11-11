@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=expand_circle_down" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
 <link rel="stylesheet" href="/editor/resources/css/bot_editor.css"/>
 <%
 	String contextPath = request.getContextPath();
@@ -36,7 +38,6 @@
         <button type="button" id="btn-send">전송</button>
     </div>
 </div>
-
 <style>
     
 </style>
@@ -46,6 +47,9 @@
     const botIcon2 = "<%= botIcon2 %>";
     const userSeq = "<%= seq %>";
     let chatOpen = false;
+    
+    const token = $("meta[name='_csrf']").attr("content")
+	const header = $("meta[name='_csrf_header']").attr("content");
 
     function scrollToBottom() {
         const chatMessages = document.getElementById('chatbot-messages');
@@ -61,6 +65,7 @@
             scrollButton.style.display = 'none';
         }
     }
+    
     function loadChatHistory() {
 	    $.ajax({
 	        type: "GET",
@@ -87,7 +92,9 @@
 	                        botMessageHtml = `
 	                            <div class="message">
 	                                <img src="\${botIcon2}" class="bot-image" alt="Bot" />
-	                                <div class="bot-message">\${botMessage}</div>
+	                                <div class="bot-message">
+	                                	\${botMessage}
+	                                </div>
 	                            </div>
 	                        `;
 	                    }
@@ -123,6 +130,7 @@
                 const response = result.response;
                 $('#chatbot-messages').append('<div class="message"><img src="' + botIcon2 + '" class="bot-image" alt="Bot" /><div class="bot-message">' + response + '</div></div>');
                 scrollToBottom();
+                loadChatHistory();
             },
             error: function(xhr, status, error) {
                 console.error("Error sending message:", error);
@@ -144,6 +152,7 @@
                         right: '10px',
                         opacity: '1'
                     }, 300);
+                	scrollToBottom();
                     $('#toggle-chatbot').attr('src', botIcon2);
                 } else {
                 	if(isSidebarOpen) {
