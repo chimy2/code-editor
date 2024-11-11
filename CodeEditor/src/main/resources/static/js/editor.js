@@ -1752,17 +1752,17 @@ function confirmAndDeleteItem(element) {
 
 // 모달 열기 함수
 function openProjectModal() {
-    document.getElementById('projectModal').style.display = 'block';
+    document.getElementById('projectDialog').style.display = 'block';
 }
 
 // 모달 닫기 함수
 function closeProjectModal() {
-    document.getElementById('projectModal').style.display = 'none';
+    document.getElementById('projectDialog').style.display = 'none';
 }
 
 // 프로젝트 생성 함수
 function createProject() {
-    const projectName = document.getElementById('projectNameInput').value;
+    const projectName = document.getElementById('newProjectNameInput').value;
     if (projectName) {
         const projectContainer = addProjectToExplorer(projectName); // 프로젝트 추가
         addSourceFolderToProject(projectContainer); // 기본 src 디렉토리 추가
@@ -1831,7 +1831,7 @@ function createNewItem(itemType) {
 function addPackageToSourceFolder(srcDiv, packageName) {
     const packageDiv = document.createElement('div');
     packageDiv.classList.add('package-folder');
-    packageDiv.style.marginLeft = '40px'; // 패키지 들여쓰기 설정
+    packageDiv.style.marginLeft = '25px'; // 패키지 들여쓰기 설정
 
     // 패키지 버튼 생성 및 추가
     const packageButton = document.createElement('button');
@@ -1880,7 +1880,7 @@ function addFileToPackage(packageDiv, fileType, fileName) {
 
     const fileDiv = document.createElement('div');
     fileDiv.classList.add(`${fileType}-file`);
-    fileDiv.style.marginLeft = '60px'; // 파일 기본 들여쓰기 설정
+    fileDiv.style.marginLeft = '27px'; // 파일 기본 들여쓰기 설정
 
     const fileButton = document.createElement('button');
     fileButton.classList.add('btn_open_editor');
