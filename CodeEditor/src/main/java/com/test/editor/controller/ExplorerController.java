@@ -7,12 +7,12 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.test.editor.dao.ExplorerDAO;
 import com.test.editor.model.MemberDTO;
-import com.test.editor.model.MemberProject;
 import com.test.editor.model.ProjectFile;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,6 @@ public class ExplorerController {
 		String member_seq = member.getSeq(); 
 		
 	    String project_seq = (String) session.getAttribute("project_seq");
-	    System.out.println("here >>>>>>>>>>>>>>>>>> " + project_seq);
 		
 		Map<String, String> projectFile = new HashMap<>();
 		projectFile.put("member_seq", member_seq);
@@ -39,6 +38,7 @@ public class ExplorerController {
 		
 		return dao.getProjectFile(projectFile);
 	}
+	
 	
 	
 

@@ -427,6 +427,10 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 
     	
     	if(document.querySelector('#content_memberSetting')!=null){
+    		document.querySelector('.chat_member_setting').onclick = function() {
+    			location.href = 'http://localhost:8090/editor/stats/%7Bmember_seq%7D';
+    		}
+    	
     		document.querySelector('#logout_member_setting').onclick = function() {
     			location.href = '/editor/logout';
     		}
