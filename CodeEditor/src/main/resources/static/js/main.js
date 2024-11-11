@@ -430,11 +430,12 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 		document.querySelector('.setting_name_edit .setting_name_close').onclick = function() {
     		document.querySelector('.setting_name_edit input[class=setting_name]').value ='';
     	}
-
     	
     	if(document.querySelector('#content_memberSetting')!=null){
     		document.querySelector('.chat_member_setting').onclick = function() {
-    			location.href = 'http://localhost:8090/editor/stats/%7Bmember_seq%7D';
+    		
+    		console.log(memberSeq);
+    			location.href = `http://localhost:8090/editor/stats?seq=${memberSeq}`;
     		}
     	
     		document.querySelector('#logout_member_setting').onclick = function() {

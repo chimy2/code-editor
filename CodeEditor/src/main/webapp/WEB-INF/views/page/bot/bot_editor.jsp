@@ -43,9 +43,10 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script>
+	let userSeq;
+	
     const botIcon1 = "<%= botIcon1 %>";
     const botIcon2 = "<%= botIcon2 %>";
-    const userSeq = "<%= seq %>";
     let chatOpen = false;
     
     const token = $("meta[name='_csrf']").attr("content")
@@ -140,6 +141,15 @@
     }
 
     $(document).ready(function() {
+    	
+    	const member = {
+	    	seq: '${member.seq}'
+	    };
+    	
+    	userSeq = member.seq || "null";
+    	
+    	console.log(userSeq);
+    	
         if (!userSeq || userSeq === "null") {
             $('#toggle-chatbot').hide();
         } else {

@@ -38,11 +38,6 @@
 		</c:forEach>
 		<tiles:insertAttribute name="right_side"/>
 		
-		<!-- 로그인 한 후 -->
-		<sec:authorize access="isAuthenticated()">
-			<tiles:insertAttribute name="chat_main"/>
-			<tiles:insertAttribute name="editor_bot"/>
-		</sec:authorize>
 	</main>
 	
 	<!-- 로그인 한 후 -->
@@ -54,10 +49,17 @@
 		
 		<script type="text/javascript">
 		    const member = {
+		    	seq: '${member.seq}'
 		    	id: '${member.id}',
 		    	nick: '${member.nick}'
 		    };
 		</script>
+	</sec:authorize>
+	
+	<!-- 로그인 한 후 -->
+	<sec:authorize access="isAuthenticated()">
+		<tiles:insertAttribute name="chat_main"/>
+		<tiles:insertAttribute name="editor_bot"/>
 	</sec:authorize>
 	
 </body>
