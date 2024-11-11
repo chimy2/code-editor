@@ -220,9 +220,8 @@ if (window.location.pathname.startsWith("/editor/code")||
 				location.href = '/editor/login';
 			}
 		}else if(document.querySelector('#log_out')!=null){
-			document.querySelector('#log_out').onclick = function(){
-				location.href = '/editor/logout';
-			}
+					
+			document.querySelector('#logout_member_setting').onclick() = function(){location.href='/editor/logout';}
 		}
 }	
 function redirectTo() {
@@ -415,6 +414,9 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 	  })
     
     document.querySelector('#member_setting_box').onclick = function() {
+    	document.querySelector('#teamPlus').style.display = 'none';
+		document.querySelector('#projectPlus').style.display = 'none';
+    
     	document.querySelector('#mypage_setting_box').style.display = 'block';
     	document.querySelector('#content_memberSetting').style.display = 'block';
     	document.querySelector('.setting_name_edit input[class=setting_name]').focus();
@@ -516,59 +518,82 @@ if (window.location.pathname.startsWith("/editor/mypage")) {
 	}
 	
 	//project select
-function getMemberProject() {
-	$.ajax({
-		url: "/editor/mypage/project",
-		method: "GET",
-		dataType: "json",
-		success: function(data) {
-			console.log(data);
-			getProject(data);
-		},
-		error: function(a, b, c) {
-			console.log(a, b, c);
-		}
-	});
-}
+	function getMemberProject() {
+		$.ajax({
+			url: "/editor/mypage/project",
+			method: "GET",
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				getProject(data);
+			},
+			error: function(a, b, c) {
+				console.log(a, b, c);
+			}
+		});
+	}
+		
+	window.onload = function() {
+		getMemberProject();
+	}
 	
-window.onload = function() {
-	getMemberProject();
-}
+	function getProject(data) { 
+	
+		const innerBoxContent = document.querySelector('#project-container');
+		innerBoxContent.innerHTML = '';
+	
+		data.forEach(project => { 
+			const projectHTML = 
+				'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
+				//'<div class="projectBox_icon" onclick="getExplorer(' + project.seq + ')' + '">' +
+					'<div>' +
+						'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
+					'</div>' + project.projectName +
+				'</div>';
+			console.log(projectHTML);
+			innerBoxContent.innerHTML += projectHTML;
+		});
+	}
+	
+	function getSelProject(teamSeq) {
+		console.log(teamSeq);
+		$.ajax({
+			url: "/editor/mypage/project/" + teamSeq,
+			method: "GET",
+			dataType: "json",
+			success: function(data) {
+				console.log(data);
+				getProject(data);
+			},
+			error: function(a, b, c) {
+				console.log(a, b, c);
+			}
+		});
+	}
 
-function getProject(data) { 
-
-	const innerBoxContent = document.querySelector('#project-container');
-	innerBoxContent.innerHTML = '';
-
-	data.forEach(project => { 
-		const projectHTML = 
-			'<div class="projectBox_icon" onclick="location.href=\'/editor/code/' + project.seq + '\'">' +
-			//'<div class="projectBox_icon" onclick="getExplorer(' + project.seq + ')' + '">' +
-				'<div>' +
-					'<img class="project2_icon" src="/editor/resources/image/icon/project2.svg">' +
-				'</div>' + project.projectName +
-			'</div>';
-		console.log(projectHTML);
-		innerBoxContent.innerHTML += projectHTML;
-	});
-}
-
-function getSelProject(teamSeq) {
-	console.log(teamSeq);
-	$.ajax({
-		url: "/editor/mypage/project/" + teamSeq,
-		method: "GET",
-		dataType: "json",
-		success: function(data) {
-			console.log(data);
-			getProject(data);
-		},
-		error: function(a, b, c) {
-			console.log(a, b, c);
+	/*팀 생성*/
+	document.querySelectorAll('.inner_box_header .team_project_plus')[0].onclick = function() {
+		document.querySelector('#content_memberSetting').style.display = 'none';
+		document.querySelector('#projectPlus').style.display = 'none';
+		document.querySelector('#teamPlus').style.display = 'block';
+		
+		document.querySelectorAll('#teamPlus .button_member_setting button')[1].onclick = function() {
+			document.querySelector('#teamPlus').style.display = 'none';
 		}
-	});
-}
+		
+	}
 
+	/*프로젝트 생성*/
+	document.querySelectorAll('.inner_box_header .team_project_plus')[1].onclick = function() {
+		document.querySelector('#content_memberSetting').style.display = 'none';
+		document.querySelector('#teamPlus').style.display = 'none';
+		document.querySelector('#projectPlus').style.display = 'block';
+		
+		document.querySelectorAll('#projectPlus .button_member_setting button')[1].onclick = function() {
+			document.querySelector('#projectPlus').style.display = 'none';
+		}
+		
+	}
 	
 }
 
@@ -640,7 +665,7 @@ document.addEventListener('contextmenu', function(event) {
   }
 	
   // 우클릭한 요소가 .project_project 내부일 때만 실행
-  if (event.target.closest('#projectBox')) {
+  if (event.target.closest('.projectBox_icon')) {
     event.preventDefault(); // 기본 우클릭 메뉴를 막음
  	
  	let teamContextBox = document.querySelector('.teamcontextBox');
