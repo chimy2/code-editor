@@ -652,7 +652,7 @@ ul {
 /*content_join*/
 .content_join {
     width: 100%;
-    height: calc(100vh - 30px);
+    height: calc(100vh - 108px);
     display: felx;
     flex-direction: column;
     justify-items: center;
@@ -866,7 +866,7 @@ ul {
 /*loin 창*/
 .content_login {
     width: 100%;
-    height: calc(100vh - 30px);
+    height: calc(100vh - 108px);
     display: felx;
     flex-direction: column;
     justify-items: center;
@@ -1705,8 +1705,12 @@ ul {
 	background-color : var(--orange);
 }
 
-
-
+/* 자동 로그인 */
+#login_test{
+	position : absolute;
+	top : 10px;
+	left : 0;
+}
 
 
 

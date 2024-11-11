@@ -8,11 +8,7 @@
 		<div class="login_header_box" id="sign_up">
 			<img class="user_box" src="/editor/resources/image/icon/user_white.svg">
 			Sign up
-		</div>
-		<div class="login_header_box">
-			${member.nick}
-		</div>
-	
+		</div>	
 	<!-- 로그인 하기 전 -->
 	<sec:authorize access="isAnonymous()">
 		<div class="login_header_box" id="log_in">
