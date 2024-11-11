@@ -145,7 +145,13 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
     const fileIcon = $(this).find('img').prop('outerHTML');
-    const filePath = $(this).parents('.package').children().first().find('span').text();
+    const filePath = $(this)
+        .parents('.package')
+        .children()
+        .first()
+        .find('span')
+        .text()
+        .replaceAll(/[.]/g, '__');
     const tabId = filePath + '__' + fileName.replaceAll(/[.]/g, '__');
 
     if ($('#' + tabId).length > 0) {
@@ -178,15 +184,18 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             const currentFileData = projectFileData.find(
                 (file) => file.name === fileName
             );
+            const fileType = fileName.endsWith('.java') ? 'java' : 'text/plain';
             const codeValue =
                 currentFileData && currentFileData.code
                     ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
-                    : '// Start coding here...';
+                    : fileType == 'java'
+                    ? '// Start coding here...'
+                    : 'Start here...';
 
             // Create the editor and assign it to the global variable
             editor = monaco.editor.create(document.getElementById(tabId), {
                 value: codeValue,
-                language: 'java',
+                language: fileType,
                 theme: 'custom-theme',
                 minimap: {
                     enabled: false,
@@ -493,6 +502,12 @@ function renderUserCursor(userId, position, tabId) {
 /* editor header button event */
 $('.btn_run').click(() => {
     $('#toggle-chatbot').animate({ bottom: '310px' }, 300);
+    $.ajax({
+        url: '/editor/code/execute',
+    });
+
+    executeCode();
+
     $('.editor-container').addClass('active_console');
 });
 
@@ -506,7 +521,7 @@ $('.btn_console').click(() => {
 });
 
 $('.btn_download').click(() => {
-    alert('다운로드해 뭐하는거야');
+    // alert('다운로드해 뭐하는거야');
 });
 
 $('.btn_record').click(() => {
@@ -1701,7 +1716,7 @@ function showCustomContextMenu(event) {
     addCustomMenuItem(
         submenu,
         'Text-File',
-        () => createNewFile('txt-file'),
+        () => createNewFile('txt-file'), // 수정된 부분
         '/editor/resources/image/icon/txt.svg'
     );
     addCustomMenuItem(
@@ -1716,7 +1731,9 @@ function showCustomContextMenu(event) {
     contextMenu.appendChild(newMenuItem);
 
     // Delete 메뉴 추가
-    addCustomMenuItem(contextMenu, 'Delete', confirmAndDeleteItem);
+    addCustomMenuItem(contextMenu, 'Delete', () =>
+        confirmAndDeleteItem(event.target)
+    );
 
     // 컨텍스트 메뉴를 문서에 추가하고 위치 설정
     document.body.appendChild(contextMenu);
@@ -1755,9 +1772,10 @@ function addCustomMenuItem(menu, text, action, iconPath) {
 function confirmAndDeleteItem(element) {
     const isConfirmed = confirm('Are you sure you want to delete this item?');
     if (isConfirmed && element) {
+        // 정확한 클래스명을 찾도록 수정
         element
             .closest(
-                '.project-container, .source-folder, .package-folder, .file-item'
+                '.project-container, .source-folder, .package-folder, .file, .txt-file, .interface, .class'
             )
             .remove();
     }
@@ -1876,18 +1894,24 @@ function createNewFile(fileType) {
 // 패키지에 파일 추가 함수
 function addFileToPackage(packageDiv, fileType, fileName) {
     let fileExtension = '';
+    let iconPath = '';
+
     switch (fileType) {
         case 'class':
             fileExtension = '.java';
+            iconPath = '/editor/resources/image/icon/class.svg';
             break;
         case 'interface':
             fileExtension = '.inter';
+            iconPath = '/editor/resources/image/icon/interface.svg';
             break;
-        case 'txt-file':
+        case 'txt-file': // txt-file로 일관성 있게 사용
             fileExtension = '.txt';
+            iconPath = '/editor/resources/image/icon/txt.svg';
             break;
         case 'file':
             fileExtension = '.file';
+            iconPath = '/editor/resources/image/icon/file.svg';
             break;
     }
 
@@ -1898,10 +1922,51 @@ function addFileToPackage(packageDiv, fileType, fileName) {
     const fileButton = document.createElement('button');
     fileButton.classList.add('btn_open_editor');
     fileButton.innerHTML = `
-        <img src="/editor/resources/image/icon/${fileType}.svg" />
+        <img src="${iconPath}" alt="${fileType} icon" />
         <span class="white-text">${fileName}${fileExtension}</span>
     `;
     fileDiv.appendChild(fileButton);
 
     packageDiv.appendChild(fileDiv);
+}
+
+// 코드 실행함수
+function executeCode() {
+    const token = $("meta[name='_csrf']").attr('content');
+    const header = $("meta[name='_csrf_header']").attr('content');
+    const activeTab = $('.editor-tab .ui-tabs-active')[0];
+
+    if (!activeTab) {
+        alert('열려 있는 탭이 없습니다.');
+        return;
+    }
+
+    const tabId = $(activeTab).attr('aria-controls');
+    const editorInstance = editorInstances[tabId];
+    const paths = tabId.split('__');
+
+    if (paths[paths.length - 1] !== 'java') {
+        alert('Java File만 실행 가능합니다.');
+        return;
+    }
+
+    $.ajax({
+        url: '/editor/code/execute',
+        method: 'POST',
+        data: JSON.stringify({
+            className: paths[paths.length - 2],
+            code: editorInstance.getValue(),
+        }),
+        contentType: 'application/json',
+
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader(header, token);
+        },
+        success: function (data) {
+            const result = JSON.parse(data.replace(/\n|\r/g, ''));
+
+            $('.console-area').html(result.result);
+        },
+        error: function (a, b, c) {},
+    });
 }
