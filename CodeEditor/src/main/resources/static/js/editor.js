@@ -83,7 +83,6 @@ function initSocketEvent() {
             const code = data.code;
             const editorInstance = editorInstances[code.tabId]; // Ensure you have the correct editor instance
 
-
             if (editorInstance) {
                 // Save current scroll position and cursor position
                 const currentScrollTop = editorInstance.getScrollTop();
@@ -134,8 +133,6 @@ $('.editor-tab ul').sortable({
 });
 
 let templates = [];
-
-
 
 $('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
@@ -216,8 +213,8 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                         kind: monaco.languages.CompletionItemKind.Text,
                         insertText: word,
                     }));
-
-
+                },
+            });
 
             getFontData();
 
@@ -231,7 +228,6 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                         kind: monaco.languages.CompletionItemKind.Text,
                         insertText: word,
                     }));
-
 
                     const templateSuggestions = templates.map((template) => ({
                         label: template.keyword,
@@ -268,14 +264,11 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             // });
 
             editor.onDidChangeModelContent((event) => {
-
                 // console.log(this);
                 // console.log(editor);
                 // console.log(event);
                 // console.log(monaco);
                 const editorDomNode = editor.getDomNode();
-
-
 
                 event.changes.forEach((change) => {
                     const changeFileData = {
@@ -1296,7 +1289,7 @@ function renderProjectStructure(data) {
     `;
     folderDiv.appendChild(srcDiv);
 
-    if(data[2] != null) {
+    if (data[2] != null) {
         let packageDiv = document.createElement('div');
         packageDiv.classList.add('package');
         packageDiv.innerHTML =
@@ -1319,7 +1312,6 @@ function renderProjectStructure(data) {
     // 모든 항목을 packageExplorer에 추가
     explorerContainer.appendChild(folderDiv);
 }
-
 
 function createFileItem(item) {
     let fileTypeClass = '';
@@ -1379,8 +1371,6 @@ function createFileItem(item) {
 }
 
 window.onload = getProjectFile;
-
-
 
 document.addEventListener('DOMContentLoaded', function () {
     const versionItems = document.querySelectorAll(
@@ -1671,12 +1661,42 @@ function showCustomContextMenu(event) {
     submenu.classList.add('custom-submenu');
 
     // 서브메뉴 항목 추가
-    addCustomMenuItem(submenu, 'Project', openProjectModal, '/editor/resources/image/icon/project.svg');
-    addCustomMenuItem(submenu, 'Package', () => createNewItem('package'), '/editor/resources/image/icon/package.svg');
-    addCustomMenuItem(submenu, 'Class', () => createNewFile('class'), '/editor/resources/image/icon/class.svg');
-    addCustomMenuItem(submenu, 'Interface', () => createNewFile('interface'), '/editor/resources/image/icon/interface.svg');
-    addCustomMenuItem(submenu, 'Text-File', () => createNewFile('txt-file'), '/editor/resources/image/icon/txt.svg');
-    addCustomMenuItem(submenu, 'File', () => createNewFile('file'), '/editor/resources/image/icon/file.svg');
+    addCustomMenuItem(
+        submenu,
+        'Project',
+        openProjectModal,
+        '/editor/resources/image/icon/project.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Package',
+        () => createNewItem('package'),
+        '/editor/resources/image/icon/package.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Class',
+        () => createNewFile('class'),
+        '/editor/resources/image/icon/class.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Interface',
+        () => createNewFile('interface'),
+        '/editor/resources/image/icon/interface.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'Text-File',
+        () => createNewFile('txt-file'),
+        '/editor/resources/image/icon/txt.svg'
+    );
+    addCustomMenuItem(
+        submenu,
+        'File',
+        () => createNewFile('file'),
+        '/editor/resources/image/icon/file.svg'
+    );
 
     // 서브메뉴를 New 항목에 추가
     newMenuItem.appendChild(submenu);
@@ -1722,7 +1742,11 @@ function addCustomMenuItem(menu, text, action, iconPath) {
 function confirmAndDeleteItem(element) {
     const isConfirmed = confirm('Are you sure you want to delete this item?');
     if (isConfirmed && element) {
-        element.closest('.project-container, .source-folder, .package-folder, .file-item').remove();
+        element
+            .closest(
+                '.project-container, .source-folder, .package-folder, .file-item'
+            )
+            .remove();
     }
 }
 
@@ -1750,7 +1774,9 @@ function createProject() {
 
 // 패키지 익스플로러에 프로젝트 추가 함수
 function addProjectToExplorer(projectName) {
-    const explorerPanel = document.querySelector('.explorer_sidebar #packageExplorer');
+    const explorerPanel = document.querySelector(
+        '.explorer_sidebar #packageExplorer'
+    );
 
     // 새로운 프로젝트 div 생성
     const projectContainer = document.createElement('div');
@@ -1794,7 +1820,7 @@ function addSourceFolderToProject(projectContainer) {
 function createNewItem(itemType) {
     const srcContainer = document.querySelector('.source-folder'); // src에 패키지 생성
     if (itemType === 'package' && srcContainer) {
-        const packageName = prompt("Enter package name:");
+        const packageName = prompt('Enter package name:');
         if (packageName) {
             addPackageToSourceFolder(srcContainer, packageName);
         }
@@ -1838,10 +1864,18 @@ function createNewFile(fileType) {
 function addFileToPackage(packageDiv, fileType, fileName) {
     let fileExtension = '';
     switch (fileType) {
-        case 'class': fileExtension = '.java'; break;
-        case 'interface': fileExtension = '.inter'; break;
-        case 'txt-file': fileExtension = '.txt'; break;
-        case 'file': fileExtension = '.file'; break;
+        case 'class':
+            fileExtension = '.java';
+            break;
+        case 'interface':
+            fileExtension = '.inter';
+            break;
+        case 'txt-file':
+            fileExtension = '.txt';
+            break;
+        case 'file':
+            fileExtension = '.file';
+            break;
     }
 
     const fileDiv = document.createElement('div');
