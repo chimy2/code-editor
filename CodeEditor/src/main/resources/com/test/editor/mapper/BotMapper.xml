@@ -16,8 +16,9 @@
 		group by to_char(chatdate,'MM') order by month
 	</select>
 	
-	<select id="summary" resultType="com.test.editor.model.BotStatsDTO"> 
-		select membermsg , botmsg from Chatbot where member_seq=#{seq}
+	<select id="summary" resultType="com.test.editor.model.BotStatsDTO">
+		SELECT error_type, COUNT(*) AS error_count FROM chatbot_error_view
+		WHERE member_seq = #{seq} GROUP BY error_type;
 	</select>
 
 </mapper>

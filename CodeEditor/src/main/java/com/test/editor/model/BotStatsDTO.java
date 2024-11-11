@@ -10,6 +10,6 @@ public class BotStatsDTO {
 	private String month;
     private int count;
     
-    private String membermsg;
-    private String botmsg;
+    private String error_type;
+    private String error_count;
 }
