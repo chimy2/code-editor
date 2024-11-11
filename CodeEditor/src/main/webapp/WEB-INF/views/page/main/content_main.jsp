@@ -18,4 +18,4 @@
 	</div>
 </div>
 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-<input type="hidden" value ="${sessionScope.member.seq}"> 
+<input type="hidden" id="memberSeq" value ="${sessionScope.member.seq}">
