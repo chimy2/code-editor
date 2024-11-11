@@ -28,6 +28,7 @@
     gap: 10px;
     margin-top: 10px;
     width: 100%;
+    position: relative;
 }
 .user-message {
     align-self: flex-end;
@@ -136,4 +137,28 @@
 .bot-message .message-content {
     display: flex;
     align-items: center;
+}
+
+.delete-button {
+    background-color: transparent;
+    color: tomato;
+    border: none;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 6px;
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    display: none;
+}
+
+.message:hover .delete-button {
+    display: inline-block;
+}
+
+.delete-button:hover {
+    background-color: #FFA500;
+    color: white;
+    font-size: 18px;
 }
