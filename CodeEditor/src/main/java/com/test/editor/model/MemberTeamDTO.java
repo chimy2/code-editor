@@ -8,6 +8,6 @@ public class MemberTeamDTO {
 	private String seq;
 	private String team_seq;
 	private String project_seq;
-	private String postion;
+	private String position;
 	
 }

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.editor.dao.MemberDAO;
+import com.test.editor.model.CustomUser;
 import com.test.editor.model.MemberDTO;
 import com.test.editor.model.MemberProject;
 
@@ -35,15 +37,17 @@ public class MainController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
-	public String mypage(HttpSession session,Model model) {
+	public String mypage(HttpSession session,Model model, Authentication authentication) {
 		System.out.println(session.getAttribute("member"));
-		//MemberDTO dto = dao.loadUser()
+		System.out.println("여기 확인:>>>>>>>>>>>>>>>>>>"+authentication.toString());
+		System.out.println(((CustomUser)authentication.getPrincipal()).getMember());
+		
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		
 		 if (member != null) {
 	        String seq = member.getSeq(); 
 	        List<MemberDTO> dto = dao.load(seq);
-	        System.out.println(dto);
+	         System.out.println(dto);
 	        model.addAttribute("dto",dto);
 	    }
 		
@@ -90,7 +94,7 @@ public class MainController {
 	
 	@GetMapping(value="/mypage/project/{teamSeq}", produces="application/json")
 	@ResponseBody
-	public List<MemberProject> getSelProject(@PathVariable("teamSeq") String team_seq, HttpSession session) {
+	public List<MemberProject> getSelProject(@PathVariable("teamSeq") String team_seq, HttpSession session ) {
 		
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		String member_seq = member.getSeq();  
