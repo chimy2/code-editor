@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
 <meta name="_csrf" content="${_csrf.token}"/>
 <meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <form method="POST" action="/editor/login">
 <div class="content_login">
 	<div class="login">
@@ -36,17 +37,21 @@
 
 </form>
 
+<div id="login_test">
+	<c:forEach items="${username}" var="user">
+		<form method="POST" action="/editor/login">
+			<div class="login_header_box" 
+				style="color: white; border: 1px solid white; margin: 20px; width: 400px; height: 20px;">
+				<input type="hidden" name="username" value="${user.id}"> <input
+					type="hidden" name="password" value="a1234567!">
+				<button style="color: white;" type="submit">자동 로그인:
+					${user.id}</button>
+				<input type="hidden" name="${_csrf.parameterName }"
+					value="${_csrf.token }">
+			</div>
+		</form>
+	</c:forEach>
+</div>
 
-
-<c:forEach items="${username}" var="user">
-	<form method="POST" action="/editor/login">
-		<div class="login_header_box" style="color:white; border : 1px solid white; margin : 20px; width : 400px; height : 20px;">
-      		<input type="hidden" name="username" value="${user.id}">
-      		<input type="hidden" name="password" value="a1234567!">			
-			<button style="color:white;" type="submit">자동 로그인: ${user.id}</button>
-			<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
-		</div>
-	</form>
-  	</c:forEach>			
 
 

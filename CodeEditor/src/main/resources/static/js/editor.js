@@ -19,7 +19,7 @@ function startTabMonitoring() {
     // 정규표현식을 사용하여 /editor/code/ 다음의 숫자 추출
     const match = pathname.match(/\/editor\/code\/(\d+)/);
     const projectSeq = match ? match[1] : null;
-    let CODE_URL = 'ws://localhost:8090/editor/vs/code/' + projectSeq;
+    let CODE_URL = 'ws://' + location.host + '/editor/vs/code/' + projectSeq;
 
     // 감지할 부모 요소를 선택
     const targetNode = document.querySelector('.editor-tab');
@@ -145,7 +145,8 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
     const fileIcon = $(this).find('img').prop('outerHTML');
-    const tabId = 'file_path__' + fileName.replaceAll(/[.]/g, '__');
+    const filePath = $(this).parents('.package').children().first().find('span').text();
+    const tabId = filePath + '__' + fileName.replaceAll(/[.]/g, '__');
 
     if ($('#' + tabId).length > 0) {
         $(`a[href='#${tabId}']`).click();
@@ -209,7 +210,7 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             //         cursorColumn: position.column,
             //         content: editor.getValue(),
             //     };
-             
+
             // Completion Item Provider 등록
             monaco.languages.registerCompletionItemProvider('java', {
                 provideCompletionItems: function (model, position) {
@@ -222,8 +223,6 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
                     }));
                 },
             });
-
-            
 
             // Completion Item Provider 등록
             monaco.languages.registerCompletionItemProvider('java', {

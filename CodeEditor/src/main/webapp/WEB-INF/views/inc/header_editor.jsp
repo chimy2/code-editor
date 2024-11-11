@@ -18,12 +18,9 @@
 			<button class="btn_record">
 				<img src="/editor/resources/image/icon/record.svg" />
 			</button>
+			<!-- 
 			<button class="btn_new">test용 생성 버튼</button>
-			<button class="btn_open_editor" data-file-type="class"
-				data-file-name="test.java">
-				<img src="/editor/resources/image/icon/class.svg"> <span
-					class="white-text">test.java</span>
-			</button>
+			 -->
 		</sec:authorize>
 	</div>
 	<div>
