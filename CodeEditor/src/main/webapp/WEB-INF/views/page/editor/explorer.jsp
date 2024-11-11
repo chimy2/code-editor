@@ -94,5 +94,19 @@
                 class="explorer_sidetabImg"
             />
         </button>
+        
     </div>
+    
+    <!-- 모달 HTML -->
+	<div id="projectDialog" class="project-modal">
+	  <div class="project-modal-content">
+	    <span class="project-modal-close" onclick="closeProjectDialog()">&times;</span>
+	    <h2>Create New Project</h2>
+	    <input type="text" id="newProjectNameInput" placeholder="Enter project name" />
+	    <button onclick="createNewProject()">Create</button>
+	  </div>
+	</div>
+	    
+    
+    
 </div>
