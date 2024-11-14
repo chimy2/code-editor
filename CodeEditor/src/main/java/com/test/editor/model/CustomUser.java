@@ -7,10 +7,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
-import lombok.Getter;
+import lombok.Data;
 
 
-@Getter
+@Data
 public class CustomUser extends User {
 
 	private MemberDTO member;

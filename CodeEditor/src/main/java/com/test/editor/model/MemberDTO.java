@@ -14,7 +14,7 @@ public class MemberDTO {
 	private String regdate;
 	private String ing;
 	private String color;
-	//private String oAuthType; // 안씀 oAuth테이블에 category로 바꿈
+	private String oAuthType; // 안씀 oAuth테이블에 category로 바꿈
 	private List<TeamDTO> teamList;
 	private List<ProjectDTO> projectList;
 	private List<MemberTeamDTO> memberTeamList;
