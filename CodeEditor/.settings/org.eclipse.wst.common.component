@@ -18,6 +18,7 @@
     
     
     <wb-module deploy-name="editor-1.0.0-BUILD-SNAPSHOT">
+<<<<<<< HEAD
                                                                                                                                                         
         
         
@@ -82,6 +83,12 @@
         
         
         
+=======
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+>>>>>>> 33b54925046c3d66a402009fa7b207b1d42fec53
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/.apt_generated"/>
                                                                                                                                                 		
         

@@ -13,7 +13,7 @@
 		<!-- primary 제외 모든것 -->
 		<id property="seq" column="seq"/>
 		<result property="id" column="id"/>
-		<result property="pw" column="pw"/>
+		<result property="pw" column="pw" />
 		<result property="nick" column="nick"/>
 		<result property="regdate" column="regdate"/>
 		<result property="ing" column="ing"/>
@@ -45,7 +45,7 @@
 	<resultMap type="memberTeam" id="memberTeam">
 		<result property="team_seq"	column="team_seq" />
 		<result property="project_seq" 	column="project_seq" />
-		<result property="postion"	column="postion" />
+		<result property="position"	column="position" />
 	</resultMap>
 
 	<!-- team과 project 정보 가져오기 -->

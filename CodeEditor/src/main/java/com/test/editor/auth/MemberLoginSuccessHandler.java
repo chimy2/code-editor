@@ -31,7 +31,8 @@ public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler {
 		CustomUser customUser = (CustomUser) authentication.getPrincipal();
 		MemberDTO member = customUser.getMember();
 		// member.setPw(null);
-		
+		//System.out.println(customUser);
+		//System.out.println(member);
 		request.setAttribute("member", member);
 
 		HttpSession session = request.getSession();
