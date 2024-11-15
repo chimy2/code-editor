@@ -4,6 +4,13 @@ import java.util.List;
 
 import lombok.Data;
 
+/**
+ * 
+ * @author bohwa Jang
+ * MemberDTO
+ * 유저 테이블과 조인되는 관련 테이블 정보를 가진 클래스입니다.
+ *
+ */
 @Data
 public class MemberDTO {
 	

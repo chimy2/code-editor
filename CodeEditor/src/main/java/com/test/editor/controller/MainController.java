@@ -20,21 +20,42 @@ import com.test.editor.model.MemberDTO;
 import com.test.editor.model.MemberProject;
 
 import lombok.RequiredArgsConstructor;
+/**
+ * 
+ * @author bohwa Jang
+ * MainController
+ * 웹 애플리케이션에서 메인 페이지 및 마이페이지 관련된 요청을 처리하고, 메인 페이지와 마이페이지 렌더링하는 역할을 맡는 컨트롤러입니다.
+ *
+ */
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 	
+	/**
+	 * DB 처리를 위한 의존 객체입니다.
+	 * 
+	 */
 	private final MemberDAO dao;
 	
 	
-	
+	/**
+	 * 메인 페이지 요청 메서드
+	 * @return 메인 페이지
+	 */
 	@PreAuthorize("isAnonymous() or isAuthenticated()")
 	@GetMapping("/")
 	public String main() {
 		return "main";
 	}
 	
+	/**
+	 * 마이 페이지 요청 메서드
+	 * @param session 로그인된 유저 정보를 가진 HttpSession 객체
+     * @param model 마이페이지에 유저 정보를 넘기기 위한 Model 객체
+     * @param authentication 로그인된 유저 정보를 가진 Authentication 객체
+	 * @return 마이 페이지
+	 */
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
 	public String mypage(HttpSession session,Model model, Authentication authentication) {
@@ -54,6 +75,12 @@ public class MainController {
 		return "mypage";
 	}
 	
+	
+	/**
+	 * 로그인 페이지 요청 메서드
+	 * @param model 마이페이지에 유저 정보를 넘기기 위한 Model 객체
+	 * @return 로그인 페이지
+	 */
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/login")
 	public String login(Model model) {
@@ -62,18 +89,29 @@ public class MainController {
 		return "login";
 	}
 	
+	/**
+	 * 회원가입 페이지 요청 메서드
+	 * @return 회원가입 페이지
+	 */
 	@PreAuthorize("isAnonymous()")
 	@GetMapping("/join")
 	public String join() {
 		return "join";
 	}
 	
+	/**
+	 * 사이트 정보를 제공하는 페이지 요청 메서드
+	 * @return 사이트 정보 제공 페이지
+	 */
 	@GetMapping("/document")
 	public String document() {
 		return "document";
 	}
 	
-	
+	/**
+	 * 로그아웃 페이지 요청 메서드
+	 * @return 로그아웃 페이지
+	 */
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/logout")
 	public String logout() {
@@ -82,28 +120,5 @@ public class MainController {
 
 	
 	
-	@GetMapping(value="/mypage/project", produces="application/json")
-	@ResponseBody
-	public List<MemberProject> getMemberProject(HttpSession session) {
-		
-		MemberDTO member = (MemberDTO) session.getAttribute("member");
-		String member_seq = member.getSeq();  
-		
-		return dao.getMemberProject(member_seq);
-	}
-	
-	@GetMapping(value="/mypage/project/{teamSeq}", produces="application/json")
-	@ResponseBody
-	public List<MemberProject> getSelProject(@PathVariable("teamSeq") String team_seq, HttpSession session ) {
-		
-		MemberDTO member = (MemberDTO) session.getAttribute("member");
-		String member_seq = member.getSeq();  
-		
-		Map<String, String> selTeam = new HashMap<>();
-		selTeam.put("member_seq", member_seq);
-		selTeam.put("team_seq", team_seq);
-		
-		return dao.getSelProject(selTeam);
-	}
 
 }
