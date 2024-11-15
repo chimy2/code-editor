@@ -17,13 +17,25 @@ import com.test.editor.model.ProjectFile;
 
 import lombok.RequiredArgsConstructor;
 
-
+/**
+ * ExplorerController
+ * 프로젝트 파일 탐색을 처리하는 REST 컨트롤러입니다.
+ * @author ChoiYuJeong
+ */
 @RestController
 @RequiredArgsConstructor
 public class ExplorerController {
 	
+	/**
+	 * 데이터베이스와의 모든 작업은 ExplorerDAO를 통해 이루어집니다.
+	 */
 	private final ExplorerDAO dao;
 	
+	/**
+	 * 현재 사용자의 프로젝트 파일 목록을 가져옵니다.
+	 * @param session 현재 사용자의 세션
+	 * @return ProjectFile 리스트 (JSON 형식)
+	 */
 	@GetMapping(value = "/explorer", produces = "application/json")
 	public List<ProjectFile> getProjectFile(HttpSession session) {
 		
