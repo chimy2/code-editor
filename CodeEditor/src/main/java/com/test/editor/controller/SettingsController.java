@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 
 /** 
  * SettingsController
- * 설정 컨트롤러 입니다.
+ * 코드 에디터 설정 컨트롤러 입니다.
  * CRUD 작업: 폰트, 색상, 테마, 템플릿에 대한 CRUD 작업이 각각 구현되어 있어, 사용자가 자유롭게 설정을 관리할 수 있습니다.
  * 세션 관리: 모든 설정 메서드는 HttpSession을 사용해 현재 로그인된 사용자의 정보를 가져옵니다. member_seq는 사용자마다 고유한 ID로, 각 사용자별로 설정을 저장하고 관리하는 데 사용됩니다.
  * @author ChoiYuJeong
