@@ -20,14 +20,14 @@ import com.test.editor.model.MemberDTO;
 import com.test.editor.model.MemberProject;
 
 import lombok.RequiredArgsConstructor;
+
 /**
  * 
- * @author bohwa Jang
  * MainController
  * 웹 애플리케이션에서 메인 페이지 및 마이페이지 관련된 요청을 처리하고, 메인 페이지와 마이페이지 렌더링하는 역할을 맡는 컨트롤러입니다.
+ * @author bohwa Jang
  *
  */
-
 @Controller
 @RequiredArgsConstructor
 public class MainController {

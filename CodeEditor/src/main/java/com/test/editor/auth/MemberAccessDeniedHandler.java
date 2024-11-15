@@ -10,9 +10,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 /**
  * 
- * @author bohwa Jang
  * MemberAccessDeniedHandler
  * 로그인이 성공했을 때 요청을 처리하는 컨트롤러입니다.
+ * @author bohwa Jang
  * 
  */
 public class MemberAccessDeniedHandler implements AccessDeniedHandler{

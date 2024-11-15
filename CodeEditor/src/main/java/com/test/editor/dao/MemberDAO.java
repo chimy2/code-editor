@@ -13,9 +13,9 @@ import com.test.editor.model.MemberProject;
 
 /**
  * 
- * @author bohwa Jang
  * MemberDAO
  * 메인페이지와 마이페이지와 관련된 메서드를 모아둔 클래스입니다. 
+ * @author bohwa Jang
  *
  */
 @Repository

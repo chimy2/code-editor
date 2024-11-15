@@ -11,9 +11,9 @@ import com.test.editor.model.MemberDTO;
 
 /**
  * 
- * @author bohwa Jang
  * MemberDetailsService
  * 로그인 시 사용자 인증을 처리하는 클래스
+ * @author bohwa Jang
  *
  */
 public class MemberDetailsService implements UserDetailsService{
