@@ -1902,7 +1902,7 @@ function addFileToPackage(packageDiv, fileType, fileName) {
             iconPath = '/editor/resources/image/icon/class.svg';
             break;
         case 'interface':
-            fileExtension = '.inter';
+            fileExtension = '.java';
             iconPath = '/editor/resources/image/icon/interface.svg';
             break;
         case 'txt-file': // txt-file로 일관성 있게 사용
@@ -1970,3 +1970,26 @@ function executeCode() {
         error: function (a, b, c) {},
     });
 }
+
+
+
+function adjustEditorTabPosition() {
+    const explorer = document.querySelector('.explorer_sidetab');
+    const editorTab = document.querySelector('.editor-tab');
+    const explorerWidth = explorer.offsetWidth;
+
+    editorTab.style.marginLeft = explorerWidth + 'px';
+}
+
+// 창 크기가 변경될 때마다 조정
+window.addEventListener('resize', adjustEditorTabPosition);
+
+// 페이지 로드 시 초기 조정
+adjustEditorTabPosition();
+
+
+
+
+
+
+

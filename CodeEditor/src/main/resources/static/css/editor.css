@@ -295,6 +295,8 @@ div.file {
 
 
 
+
+
 /* editor */
 .editor-container {
     padding: 0;
@@ -312,6 +314,7 @@ div.file {
     padding: 0;
     border: 0;
     height: 100%;
+    
 }
 
 .editor-tab ul {
