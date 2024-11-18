@@ -3,9 +3,16 @@
 @import url("main.css");
 
 
+
+
+
+
+
+
+/* 
  .chat_body {
     z-index: 100;
-  }
+  } */
   .chat_menubar a {
     text-decoration: none;
    
@@ -140,7 +147,7 @@
     z-index: 99;
     /* transition: 0.8s ease; */
 	
-  	background-color: var(--black);
+  	background-color: var(--gray8);
     border: none;
   }
   
@@ -297,7 +304,7 @@
 
 .chatting-container {
 	 width: 93%;
-    height: 85%; 
+    height: 92%; 
     background-color: #3a3a3a;
     color: white;
     padding: 10px;
@@ -330,3 +337,177 @@
 	background-color: white;	
 		
 }
+
+
+
+
+
+/* ajax 채팅창 css */
+
+
+/* 		html, body {
+			padding: 0 !important;
+			margin: 0 !important;
+			background-color: #FFF !important; 
+			display: block;
+			overflow: hidden;
+		} */
+		
+/* 		.div {
+			margin: 0; 
+			padding: 0; 
+		} */
+	
+		#chatScreenMain {
+			width: 200px;
+			height: 510px;
+			margin: 3px;
+			display: grid;
+			grid-template-rows: repeat(12, 1fr);
+		}
+		
+		#chatScreenheader {
+		
+		}
+		
+		#chatScreenheader > h2 {		
+			margin: 0px;
+			margin-bottom: 10px;
+			padding: 5px;
+		}
+	
+		#chatScreenList {
+			border: 1px solid var(--border-color);
+			box-sizing: content-box;
+			padding: .5rem;
+			grid-row-start: 2;
+			grid-row-end: 12;
+			font-size: 14px;
+			overflow: auto;
+		}
+		
+		
+		#chatScreenMsg {
+			margin-top: 3px;
+		}
+		
+		#chatScreenList .item {
+			font-size: 14px;
+			margin: 15px 0;
+		}
+		
+		#chatScreenList .item > div:first-child {
+			display: flex;
+		}
+		
+		#chatScreenList .item.me > div:first-child {
+			justify-content: flex-end;
+		}
+		
+		#chatScreenList .item.other > div:first-child {
+			justify-content: flex-end;
+			flex-direction: row-reverse;
+		}
+		
+		#chatScreenList .item > div:first-child > div:first-child {
+			font-size: 10px;
+			color: #777;
+			margin: 3px 5px;
+		}
+		
+		#chatScreenList .item > div:first-child > div:nth-child(2) {
+			border: 1px solid var(--border-color);
+			display: inline-block;
+			min-width: 100px;
+			max-width: 250px;
+			text-align: left;
+			padding: 3px 7px;
+		}
+		
+		#chatScreenList .state.item > div:first-child > div:nth-child(2) {
+			background-color: #EEE;
+		}
+		
+		#chatScreenList .item > div:last-child {
+			font-size: 10px;
+			color: #777;
+			margin-top: 5px;
+		}
+		
+		#chatScreenList .me {
+			text-align: right;
+		}
+		
+		#chatScreenList .other {
+			text-align: left;
+		}
+		
+		#chatScreenList .chatScreenMsg.me.item > div:first-child > div:nth-child(2) {
+			background-color: rgba(255, 99, 71, .2);
+		}
+		
+		#chatScreenList .chatScreenMsg.other.item > div:first-child > div:nth-child(2) {
+			background-color: rgba(100, 149, 237, .2);
+		}
+		
+		#chatScreenList .chatScreenMsg img {
+			width: 150px;
+		}
+
+
+		#chatArea{
+			border:1px solid #ccc;		
+			padding:10px;		
+			height:500px;
+			overflow-y:scroll;
+			
+			overflow:hidden;
+			background-color:var(--gray4);
+			color:var(--white)
+
+		}
+
+	    #chatsendform {
+	        display: flex; /* 수평 배치 */
+	        align-items: center; /* 세로 중앙 정렬 */
+	        gap: 10px; /* 입력 필드와 버튼 사이 간격 */
+	    }
+	
+	    /* 입력 필드의 크기 조절 */
+	    #messageInput {
+	        flex: 1; /* 남은 공간을 채우도록 설정 */
+	        padding: 8px; /* 내부 여백 */
+	        font-size: 16px;
+	        background-color:var(--gray4);
+			
+	    }
+	
+	    /* 버튼 스타일 */
+	    #chatSendButton {
+	        
+	       border:1px solid #ccc;
+	        padding: 1px 1px; /* 상하, 좌우 여백 */
+	        color: var(--white);
+	        font-size: 12px;
+	        cursor: pointer; /* 커서 모양 변경 */
+	    }
+	    
+	    
+	    
+	    #ProjectJoinButton{
+	    	background-color: #3a3a3a;
+	    	color:#3a3a3a;
+	    }
+	    
+	    
+	    
+	    #NewChat-content{
+	    	background-color: white;	
+	    	overflow:hidden;
+	    
+	    }
+	    
+	    #roomId{
+	    background-color:var(--gray4);
+	    color:var(--white)
+	    }
