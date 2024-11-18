@@ -39,7 +39,7 @@ public class VersionFileDAO {
     /**
      * 모든 버전 파일 정보를 조회합니다.
      * 
-     * @return List<VersionFileDTO> - 데이터베이스에서 조회된 모든 버전 파일 목록
+     * @return 데이터베이스에서 조회된 모든 버전 파일 목록
      * 
      * 추가 로직을 작성할 경우 메서드 내부에서 처리 가능합니다.
      */

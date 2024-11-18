@@ -37,7 +37,7 @@ public class VersionFileService {
     /**
      * 모든 버전 파일 정보를 조회합니다.
      * 
-     * @return List<VersionFileDTO> - 모든 버전 파일 목록
+     * @return 모든 버전 파일 목록
      */
     public List<VersionFileDTO> getAllVersionFiles() {
         return versionFileDAO.getAllVersionFiles();

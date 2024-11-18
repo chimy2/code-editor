@@ -17,8 +17,7 @@ import com.test.editor.service.VersionService;
 
 /**
  * VersionFileController는 버전 파일과 관련된 HTTP 요청을 처리하는 컨트롤러 클래스입니다.
- * @Controller: 이 클래스가 Spring MVC의 컨트롤러임을 나타내며, 클라이언트 요청을 처리합니다.
- * @RequestMapping: 이 컨트롤러에서 처리하는 URL 경로를 "/versionFile"로 설정합니다.
+ *
  */
 @Controller
 @RequestMapping("/versionFile")

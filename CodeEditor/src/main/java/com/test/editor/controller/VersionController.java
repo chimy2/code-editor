@@ -30,13 +30,7 @@ public class VersionController {
      * 클라이언트로부터 JSON 형식의 요청을 받아, 해당 버전을 복원하는 작업을 수행합니다.
      * 
      * @param request 클라이언트에서 전달된 JSON 데이터를 맵으로 매핑한 객체입니다.
-     *                예: {"versionDate": "2024-01-01"}
-     * @return Map<String, Object> - 성공 여부를 포함한 응답 데이터입니다.
-     *                               예: {"success": true}
-     * 
-     * PostMapping: 이 메서드가 /restoreVersion 경로의 POST 요청을 처리하도록 지정합니다.
-     * ResponseBody: 메서드의 반환 값을 JSON 형식으로 클라이언트에 응답하도록 지정합니다.
-     * RequestBody: 요청 본문에 포함된 JSON 데이터를 Java 객체(Map<String, String>)로 변환합니다.
+     * @return 성공 여부를 포함한 응답 데이터입니다.
      */
     @PostMapping("/restoreVersion")
     @ResponseBody

@@ -19,14 +19,13 @@ public interface VersionFileMapper {
      * @param seq 버전 파일의 고유 식별자
      * @return VersionFileDTO - 조회된 버전 파일 정보
      * 
-     * @Param("seq"): MyBatis 쿼리에서 "seq"라는 이름으로 이 매개변수를 참조할 수 있도록 지정합니다.
      */
     VersionFileDTO getVersionFileById(@Param("seq") Integer seq);
 
     /**
      * 모든 버전 파일 정보를 조회합니다.
      * 
-     * @return List<VersionFileDTO> - 데이터베이스에서 조회된 모든 버전 파일 목록
+     * @return 데이터베이스에서 조회된 모든 버전 파일 목록
      */
     List<VersionFileDTO> getAllVersionFiles();
 
