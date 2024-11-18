@@ -10,7 +10,7 @@ import com.test.editor.model.VersionFileDTO;
 /**
  * VersionFileService는 비즈니스 로직을 처리하는 서비스 계층 클래스입니다.
  * 
- * @Service: Spring 컨테이너에 이 클래스를 서비스 컴포넌트로 등록합니다.
+ * Service: Spring 컨테이너에 이 클래스를 서비스 컴포넌트로 등록합니다.
  *           비즈니스 로직을 처리하고 DAO 계층과 Controller 계층 간의 중개 역할을 합니다.
  */
 @Service
@@ -19,7 +19,7 @@ public class VersionFileService {
     /**
      * VersionFileDAO는 데이터베이스와 상호작용하는 DAO 계층 클래스입니다.
      * 
-     * @Autowired: Spring 컨테이너에서 VersionFileDAO 객체를 자동으로 주입받아 사용합니다.
+     * Autowired: Spring 컨테이너에서 VersionFileDAO 객체를 자동으로 주입받아 사용합니다.
      */
     @Autowired
     private VersionFileDAO versionFileDAO;

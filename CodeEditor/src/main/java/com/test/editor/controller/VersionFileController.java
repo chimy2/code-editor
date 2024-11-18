@@ -45,8 +45,8 @@ public class VersionFileController {
      * @param model 뷰에 데이터를 전달하기 위한 Spring MVC의 Model 객체
      * @return "version" 뷰 이름
      * 
-     * @PostMapping("/create"): /versionFile/create 경로로 들어오는 POST 요청을 처리합니다.
-     * @ModelAttribute: 클라이언트에서 전송된 데이터를 VersionFileDTO 객체로 바인딩합니다.
+     * PostMapping("/create"): /versionFile/create 경로로 들어오는 POST 요청을 처리합니다.
+     * ModelAttribute: 클라이언트에서 전송된 데이터를 VersionFileDTO 객체로 바인딩합니다.
      */
     @PostMapping("/create")
     public String createVersionFile(@ModelAttribute VersionFileDTO versionFile, Model model) {
@@ -65,8 +65,8 @@ public class VersionFileController {
      * @param model 뷰에 데이터를 전달하기 위한 Spring MVC의 Model 객체
      * @return "version" 뷰 이름
      * 
-     * @PostMapping("/upload"): /versionFile/upload 경로로 들어오는 POST 요청을 처리합니다.
-     * @ModelAttribute: 클라이언트에서 전송된 데이터를 VersionFileDTO 객체로 바인딩합니다.
+     * PostMapping("/upload"): /versionFile/upload 경로로 들어오는 POST 요청을 처리합니다.
+     * ModelAttribute: 클라이언트에서 전송된 데이터를 VersionFileDTO 객체로 바인딩합니다.
      */
     @PostMapping("/upload")
     public String uploadFile(@ModelAttribute VersionFileDTO versionFile, Model model) {
@@ -84,7 +84,7 @@ public class VersionFileController {
      * @param model 뷰에 데이터를 전달하기 위한 Spring MVC의 Model 객체
      * @return "version" 뷰 이름
      * 
-     * @GetMapping("/list"): /versionFile/list 경로로 들어오는 GET 요청을 처리합니다.
+     * GetMapping("/list"): /versionFile/list 경로로 들어오는 GET 요청을 처리합니다.
      */
     @GetMapping("/list")
     public String listVersionFiles(Model model) {
@@ -100,7 +100,7 @@ public class VersionFileController {
      * @param model 뷰에 데이터를 전달하기 위한 Spring MVC의 Model 객체
      * @return "version" 뷰 이름
      * 
-     * @GetMapping("/versions"): /versionFile/versions 경로로 들어오는 GET 요청을 처리합니다.
+     * GetMapping("/versions"): /versionFile/versions 경로로 들어오는 GET 요청을 처리합니다.
      */
     @GetMapping("/versions")
     public String getVersionInfo(Model model) {

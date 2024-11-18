@@ -13,14 +13,14 @@ import com.test.editor.service.VersionService;
 
 /**
  * VersionController는 버전 관리와 관련된 HTTP 요청을 처리하는 컨트롤러 클래스입니다.
- * Spring의 @Controller 애노테이션을 사용하여 스프링 컨테이너에 등록됩니다.
+ * Spring의 Controller 애노테이션을 사용하여 스프링 컨테이너에 등록됩니다.
  */
 @Controller
 public class VersionController {
 
     /**
      * VersionService는 버전 복원과 관련된 비즈니스 로직을 처리하는 서비스 클래스입니다.
-     * @Autowired 애노테이션을 사용하여 Spring 컨테이너에서 자동으로 주입됩니다.
+     * Autowired 애노테이션을 사용하여 Spring 컨테이너에서 자동으로 주입됩니다.
      */
     @Autowired
     private VersionService versionService;
@@ -34,9 +34,9 @@ public class VersionController {
      * @return Map<String, Object> - 성공 여부를 포함한 응답 데이터입니다.
      *                               예: {"success": true}
      * 
-     * @PostMapping: 이 메서드가 /restoreVersion 경로의 POST 요청을 처리하도록 지정합니다.
-     * @ResponseBody: 메서드의 반환 값을 JSON 형식으로 클라이언트에 응답하도록 지정합니다.
-     * @RequestBody: 요청 본문에 포함된 JSON 데이터를 Java 객체(Map<String, String>)로 변환합니다.
+     * PostMapping: 이 메서드가 /restoreVersion 경로의 POST 요청을 처리하도록 지정합니다.
+     * ResponseBody: 메서드의 반환 값을 JSON 형식으로 클라이언트에 응답하도록 지정합니다.
+     * RequestBody: 요청 본문에 포함된 JSON 데이터를 Java 객체(Map<String, String>)로 변환합니다.
      */
     @PostMapping("/restoreVersion")
     @ResponseBody
