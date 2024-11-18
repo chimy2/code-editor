@@ -2,9 +2,9 @@
 if (window.location.pathname.startsWith("/editor/join")) {
 
 	// 카카오톡 로그인
-	Kakao.init('${54092e63c5822207d7811adc401f30b8}'); // 사용하려는 앱의 JavaScript 키 입력
-	Kakao.init('JAVASCRIPT_KEY');
-	Kakao.isInitialized(); //JavaScript SDK 초기화 함수를 호출
+	//Kakao.init('${54092e63c5822207d7811adc401f30b8}'); // 사용하려는 앱의 JavaScript 키 입력
+	//Kakao.init('JAVASCRIPT_KEY');
+	//Kakao.isInitialized(); //JavaScript SDK 초기화 함수를 호출
 
 
     document.querySelector('#email_duplicate button').onclick = function () {

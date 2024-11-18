@@ -13,6 +13,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import com.test.editor.model.CustomUser;
 import com.test.editor.model.MemberDTO;
 
+/**
+ * 
+ * MemberLoginSuccessHandler
+ * 로그인 시 사용자 인증을 처리하는 클래스
+ * @author bohwa Jang
+ *
+ */
 public class MemberLoginSuccessHandler implements AuthenticationSuccessHandler {
 
 	@Override

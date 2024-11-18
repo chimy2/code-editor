@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"com.test.bot.dto","c":"Message","l":"Message()","url":"%3Cinit%3E()"}]

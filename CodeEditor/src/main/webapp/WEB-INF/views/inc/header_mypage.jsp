@@ -21,7 +21,7 @@
 
 	</div>
 	<div class="header_project">
-		<div class="header_project_icon"><img src="/editor/resources/image/icon/project2.svg"></div>
+		<!-- <div class="header_project_icon"><img src="/editor/resources/image/icon/project2.svg"></div> -->
 		<div class="project_name">
 			
 			<!-- 로그인 하기 전 -->
@@ -32,7 +32,7 @@
 			<!-- 로그인 한 후 -->
 			<sec:authorize access="isAuthenticated()">
 				<!-- project name으로 바꿔야함 -->
-				스프링 프로젝트
+			<!-- 	스프링 프로젝트 -->
 			</sec:authorize>
 		
 		</div>

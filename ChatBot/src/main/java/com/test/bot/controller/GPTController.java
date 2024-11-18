@@ -27,6 +27,13 @@ import com.test.bot.dto.GPTRequest;
 import com.test.bot.dto.GPTResponse;
 import com.test.bot.dto.Message;
 
+/**
+ * GPTController 클래스
+ * 
+ * OpenAI GPT API와 통신하여 사용자와 챗봇 간의 대화를 처리하는 컨트롤러입니다.
+ * 사용자 입력을 받아 OpenAI GPT 모델에 요청하고, 결과를 저장 및 반환합니다.
+ * @author JGChoi
+ */
 @Controller
 @RequestMapping("/gpt")
 public class GPTController {
@@ -34,7 +41,7 @@ public class GPTController {
     @Autowired
     private ChatDAO dao;
 
-    private String model = "ft:gpt-4o-mini-2024-07-18:personal::AR8XWD7B";	//  "gpt-3.5-turbo" , "ft:gpt-4o-mini-2024-07-18:personal::AQ28Huai" , "ft:gpt-4o-mini-2024-07-18:personal::AR8XWD7B" 
+    private String model = "ft:gpt-4o-mini-2024-07-18:personal::AR8XWD7B"; 
     private String apiKey = "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";
     private String apiUrl = "https://api.openai.com/v1/chat/completions";
     private final RestTemplate restTemplate;
@@ -42,11 +49,26 @@ public class GPTController {
     // 대화 내역을 저장할 리스트
     private List<Message> messages = new ArrayList<>();
 
+    /**
+     * 기본 생성자
+     * 
+     * RestTemplate을 UTF-8 인코딩을 지원하도록 초기화합니다.
+     * @author JGChoi
+     */
     public GPTController() {
         this.restTemplate = new RestTemplate();
         this.restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
     }
     
+    /**
+     * GET 요청 처리 메서드
+     * 
+     * 사용자의 대화 내역을 데이터베이스에서 조회하여 반환합니다.
+     * 
+     * @param seq 사용자의 고유 식별자
+     * @return 대화 내역을 포함한 Map 객체
+     * @author JGChoi
+     */
     @GetMapping(value = "/chat", produces = "application/json")
     @ResponseBody
     public Map<String, Object> chatPage(@RequestParam("seq") String seq) {
@@ -64,7 +86,17 @@ public class GPTController {
         return response;
     }
 
-
+    /**
+     * POST 요청 처리 메서드
+     * 
+     * 사용자 입력을 받아 OpenAI GPT 모델에 요청하고, 결과를 반환 및 저장합니다.
+     * 
+     * @param prompt 사용자 입력 메시지
+     * @param seq 사용자의 고유 식별자
+     * @param dto 대화 데이터 객체
+     * @return GPT 응답 메시지를 포함한 Map 객체
+     * @author JGChoi
+     */
     @PostMapping(value = "/chat", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public Map<String, String> chatPost(@RequestParam("prompt") String prompt, @RequestParam("seq") String seq, ChatDTO dto) {
