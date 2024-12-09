@@ -72,9 +72,8 @@
 	<!-- 회원가입 -->
 	<insert id="joinOk">
 		insert into member (seq, id, pw, nick, regdate, ing, color, oAuthType) 
-		values ((select max(seq) + 1 from member), #{id}, #{pw}, #{nick}, default, default,  
-    			(select case when max((select max(color) from member where seq = (select max(seq) from member))) >= 7 then 1 
-    							else max((select max(color) from member where seq = (select max(seq) from member)))+1 end from member), default) 
+		values (seqMember.nextVal, #{id}, #{pw}, #{nick}, default, default,  
+    			mod(seqMember.nextVal, 7), default) 
 	</insert>
 	
 	<select id="getMaxSeq" resultType="String">
