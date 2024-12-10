@@ -36,6 +36,11 @@ local.properties
 .loadpath
 .recommenders
 
+# Eclipse 추가본
+**/.settings/
+**/.factorypath/
+**/.springBeans/
+
 Servers/
 .vscode/
 
