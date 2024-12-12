@@ -1,9 +1,6 @@
 package com.test.editor;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
+import static org.junit.Assert.assertTrue;
 
 import javax.sql.DataSource;
 
@@ -14,12 +11,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.test.editor.dao.MemberDAO;
 import com.test.editor.mapper.EditorMapper;
+import com.test.editor.mapper.TeamMapper;
+import com.test.editor.model.TeamDTO;
+import com.test.editor.service.TeamService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
 		"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
-		"file:src/main/webapp/WEB-INF/spring/security-context.xml"
+		"file:src/main/webapp/WEB-INF/spring/security-context.xml",
+	    "classpath:test-context.xml"
 	})
 public class DBTest {
 	
@@ -31,6 +33,15 @@ public class DBTest {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private MemberDAO memberDAO;
+	
+	@Test
+	public void test() {
+		
+		assertTrue(true);
+	}
 
 	/*
 	@Test
@@ -99,6 +110,5 @@ public class DBTest {
 		
 	}
 	*/
-	
 	
 }
