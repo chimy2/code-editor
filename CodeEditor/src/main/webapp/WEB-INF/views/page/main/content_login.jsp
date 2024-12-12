@@ -43,7 +43,7 @@
 			<div class="login_header_box" 
 				style="color: white; border: 1px solid white; margin: 20px; width: 400px; height: 20px;">
 				<input type="hidden" name="username" value="${user.id}"> <input
-					type="hidden" name="password" value="a1234567!">
+					type="hidden" name="password" value="qwe123!@">
 				<button style="color: white;" type="submit">자동 로그인:
 					${user.id}</button>
 				<input type="hidden" name="${_csrf.parameterName }"
