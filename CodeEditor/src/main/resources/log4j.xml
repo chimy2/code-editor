@@ -10,6 +10,12 @@
 		</layout>
 	</appender>
 	
+	<!-- Root Logger -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="console" />
+	</root>
+	
 	<!-- Application Loggers -->
 	<logger name="com.test.editor">
 		<level value="info" />
@@ -32,11 +38,6 @@
 		<level value="info" />
 	</logger>
 
-	<!-- Root Logger -->
-	<root>
-		<priority value="info" />
-		<appender-ref ref="console" />
-	</root>
 	
 	<logger name="jdbc.audit">
 		<level value="warn" />
@@ -54,4 +55,21 @@
 		<level value="debug" />
 	</logger>
 	
+    <!-- Transaction & MyBatis 로그 -->
+    <logger name="org.springframework.transaction">
+        <level value="debug"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc.datasource">
+        <level value="debug"/>
+    </logger>
+
+    <logger name="org.mybatis">
+        <level value="DEBUG"/>
+    </logger>
+
+    <logger name="org.springframework.jdbc.core">
+        <level value="DEBUG"/>
+    </logger>
+
 </log4j:configuration>
