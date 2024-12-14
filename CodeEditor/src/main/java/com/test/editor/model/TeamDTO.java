@@ -10,6 +10,4 @@ public class TeamDTO {
 	private String teamEx;
 	private String teamType;
 	private String regdate;
-	private String teamSeq;
-	
 }

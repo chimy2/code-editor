@@ -35,12 +35,37 @@ public class DBTest {
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
+	private TeamService teamService;
+	
+	@Autowired
 	private MemberDAO memberDAO;
+	
+	@Autowired
+	private TeamMapper teamMapper;
 	
 	@Test
 	public void test() {
 		
 		assertTrue(true);
+	}
+
+	
+	@Test
+	public void insertTeam() {
+		
+		TeamDTO dto = new TeamDTO();
+		
+		dto.setTeamName("팀이름");
+		dto.setTeamEx("팀설명입니다.");
+		dto.setTeamType("1");
+		
+		
+		teamService.insert(dto);
+		
+		System.out.println("시퀀스값은 " + dto.getSeq());
+		
+		assertTrue(true);
+		
 	}
 
 	/*
