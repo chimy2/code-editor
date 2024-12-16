@@ -66,6 +66,10 @@ public class MemberDAO  {
 
 		return mapper.joinOk(dto);
 	}
+	
+	public void join(MemberDTO member) {
+		mapper.join(member);
+	}
 
 	/**
 	 * 자동 로그인을 위한 메서드

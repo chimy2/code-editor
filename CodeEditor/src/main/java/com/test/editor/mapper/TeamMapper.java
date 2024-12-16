@@ -1,8 +1,11 @@
 package com.test.editor.mapper;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.test.editor.model.TeamDTO;
 
+@Mapper
 public interface TeamMapper {
 	
-	void insert(TeamDTO team);
+	int insert(TeamDTO team);
 }

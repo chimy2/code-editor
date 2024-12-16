@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.model.MemberDTO;
 import com.test.editor.model.MemberProject;
+import com.test.editor.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 /**
@@ -31,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
+	
+	private final MemberService service;
 
 	/**
 	 * DB 처리를 위한 의존 객체입니다.
@@ -76,15 +79,8 @@ public class MemberController {
 		
 		dto.setPw(passwordEncoder.encode(dto.getPw()));
 		
-		int result = dao.joinOk(dto);
-	    System.out.println(result);
-	    
-	    if (result > 0) {
-	    	String member_seq = dao.getMaxSeq();
-	    	System.out.println(member_seq);
-	        dao.callInsertDefaultSettings(member_seq);
-	    }
-	    
+		int result = service.join(dto);
+		
 		return result;
 	}
 	

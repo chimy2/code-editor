@@ -7,6 +7,7 @@ import javax.sql.DataSource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -14,7 +15,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.mapper.EditorMapper;
 import com.test.editor.mapper.TeamMapper;
+import com.test.editor.model.MemberDTO;
 import com.test.editor.model.TeamDTO;
+import com.test.editor.service.MemberService;
 import com.test.editor.service.TeamService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,6 +46,21 @@ public class DBTest {
 	@Autowired
 	private TeamMapper teamMapper;
 	
+	@Autowired
+	private MemberService memberService;
+	
+	@Test
+	public void testJoin() {
+		MemberDTO member = new MemberDTO();
+		
+		member.setNick("nick2");
+		member.setId("id2");
+		member.setPw("1234");
+		member.setIng("1");
+		
+		memberService.join(member);
+	}
+	
 	@Test
 	public void test() {
 		
@@ -53,17 +71,20 @@ public class DBTest {
 	@Test
 	public void insertTeam() {
 		
-		TeamDTO dto = new TeamDTO();
+//		MemberDTO member = memberDAO.load(null)
 		
-		dto.setTeamName("팀이름");
-		dto.setTeamEx("팀설명입니다.");
-		dto.setTeamType("1");
+		TeamDTO team = new TeamDTO();
+		
+		team.setTeamName("팀이름");
+		team.setTeamEx("팀설명입니다.");
+		team.setTeamType("1");
 		
 		
-		teamService.insert(dto);
-		
-		System.out.println("시퀀스값은 " + dto.getSeq());
-		
+		teamService.insert(team);
+
+		System.out.println(team);
+		System.out.println("시퀀스값은 " + team.getSeq());
+
 		assertTrue(true);
 		
 	}

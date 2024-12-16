@@ -3,6 +3,8 @@ package com.test.editor.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.test.editor.model.ProjectFile;
 
 
@@ -12,6 +14,7 @@ import com.test.editor.model.ProjectFile;
  * @author ChoiYuJeong
  *
  */
+@Mapper
 public interface ExplorerMapper {
 
 	/**

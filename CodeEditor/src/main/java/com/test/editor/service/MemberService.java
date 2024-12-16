@@ -1,23 +1,44 @@
 package com.test.editor.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.test.editor.dao.MemberDAO;
 import com.test.editor.model.MemberDTO;
 
-import java.util.List;
-
 @Service
 public class MemberService {
 
-    @Autowired
-    private MemberDAO dao;
+	private final MemberDAO dao;
+	private final TeamService teamService;
 
-    // MemberDAO의 username() 메서드를 호출하는 서비스 메서드 추가
-    public List<MemberDTO> getUsernames() {
-        return dao.username();
-    }
+	@Autowired
+	public MemberService(MemberDAO dao, TeamService teamService) {
+		this.dao = dao;
+		this.teamService = teamService;
+	}
 
-    // 필요한 다른 DAO 메서드도 추가할 수 있습니다.
+	public List<MemberDTO> getUsernames() {
+		return dao.username();
+	}
+
+	@Transactional(rollbackFor = Exception.class)
+	public int join(MemberDTO member) {
+		dao.join(member);
+		
+		if (member.getSeq() != null) {
+			dao.callInsertDefaultSettings(member.getSeq());
+			return teamService.insertDefault(member);
+		}
+		
+		return 0;
+	}
+
+	public void checkTransaction() {
+		System.out.println("트랜잭션 활성화 여부: " + TransactionSynchronizationManager.isActualTransactionActive());
+	}
 }

@@ -3,9 +3,12 @@ package com.test.editor.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.test.editor.model.MemberDTO;
 import com.test.editor.model.MemberProject;
 
+@Mapper
 public interface MemberMapper {
 
 	MemberDTO loadUser(String username);
@@ -32,8 +35,6 @@ public interface MemberMapper {
 
 	List<MemberProject> getSelProject(Map<String, String> selTeam);
 
+	void join(MemberDTO dto);
 
-	
-	
-	
 }

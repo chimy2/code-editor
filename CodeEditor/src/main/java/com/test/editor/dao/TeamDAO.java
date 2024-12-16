@@ -12,7 +12,7 @@ public class TeamDAO {
 	@Autowired
 	private TeamMapper mapper;
 	
-	public void insert(TeamDTO team) {
-		mapper.insert(team);
+	public int insert(TeamDTO team) {
+		return mapper.insert(team);
 	}
 }

@@ -6,11 +6,12 @@
 
 <mapper namespace="com.test.editor.mapper.TeamMapper">
 	
-	<insert id="insert" parameterType="team">
+	<insert id="insert">
 		<selectKey keyProperty="seq" resultType="String" order="BEFORE">
 			select seqTeam.nextVal from dual
 		</selectKey>
 		insert into team (seq, teamName, teamEx, teamType, regdate)
 			values (#{seq}, #{teamName}, #{teamEx}, #{teamType}, default)
 	</insert>
+	
 </mapper>

@@ -3,6 +3,8 @@ package com.test.editor.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
+
 import com.test.editor.model.StyleSettingDTO;
 import com.test.editor.model.TemplateDTO;
 import com.test.editor.model.ThemeDTO;
@@ -13,6 +15,7 @@ import com.test.editor.model.ThemeDTO;
  * @author ChoiYuJeong
  *
  */
+@Mapper
 public interface SettingsMapper {
 
 	/**
