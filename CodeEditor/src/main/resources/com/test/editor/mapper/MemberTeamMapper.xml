@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.test.editor.mapper.MemberTeamMapper">
+	
+	<insert id="insert">
+		insert into memberTeam (seq, position, member_seq, team_seq)
+			values (seqMemberTeam.nextVal, 1, #{member.seq}, #{team.seq})
+	</insert>
+</mapper>

@@ -37,4 +37,6 @@ public interface MemberMapper {
 
 	void join(MemberDTO dto);
 
+	MemberDTO get(String seq);
+
 }

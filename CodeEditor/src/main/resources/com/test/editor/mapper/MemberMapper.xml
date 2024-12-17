@@ -121,5 +121,8 @@
 		SELECT * FROM vwMemberProject WHERE member_seq = #{member_seq} AND team_seq = #{team_seq} 
 	</select>
 	
+	<select id="get" resultType="member" >
+		select * from member where seq = #{seq}
+	</select>
 
 </mapper>

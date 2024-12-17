@@ -14,13 +14,18 @@ public class TeamService {
 
 	private final TeamDAO dao;
 	
-	public int insert(TeamDTO dto) {
-		return dao.insert(dto);
+	private final MemberTeamService memberTeamService;
+	
+	public int insert(MemberDTO member, TeamDTO team) {
+		dao.insert(team);
+		return memberTeamService.insert(member, team);
 	}
 	
 	public int insertDefault(MemberDTO member) {
 		TeamDTO team = new TeamDTO(member);
 		team.setTeamType("1");
-		return dao.insert(team);
+		return insert(member, team);
 	}
+	
+	
 }

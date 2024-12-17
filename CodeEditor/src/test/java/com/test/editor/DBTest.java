@@ -71,22 +71,23 @@ public class DBTest {
 	@Test
 	public void insertTeam() {
 		
-//		MemberDTO member = memberDAO.load(null)
+		MemberDTO member = memberDAO.get("5");
 		
-		TeamDTO team = new TeamDTO();
-		
-		team.setTeamName("팀이름");
-		team.setTeamEx("팀설명입니다.");
-		team.setTeamType("1");
-		
-		
-		teamService.insert(team);
+		if(member != null) {
+			TeamDTO team = new TeamDTO();
+			
+			team.setTeamName("팀이름");
+			team.setTeamEx("팀설명입니다.");
+			team.setTeamType("1");
+			
+			
+			teamService.insert(member, team);
 
-		System.out.println(team);
-		System.out.println("시퀀스값은 " + team.getSeq());
-
+			System.out.println(team);
+			System.out.println("시퀀스값은 " + team.getSeq());
+		}
+		
 		assertTrue(true);
-		
 	}
 
 	/*

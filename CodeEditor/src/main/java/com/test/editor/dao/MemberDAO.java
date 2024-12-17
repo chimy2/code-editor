@@ -70,6 +70,10 @@ public class MemberDAO  {
 	public void join(MemberDTO member) {
 		mapper.join(member);
 	}
+	
+	public MemberDTO get(String seq) {
+		return mapper.get(seq);
+	}
 
 	/**
 	 * 자동 로그인을 위한 메서드
