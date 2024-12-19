@@ -92,7 +92,7 @@ CREATE TABLE memberTeam (
     constraint fk_memberTeam_team foreign key(team_seq) references team(seq)
 );
 
-create sequence seqTseamProject;
+create sequence seqTeamProject;
 
 CREATE TABLE teamProject (
 	seq	number	primary key,
@@ -276,6 +276,22 @@ CREATE TABLE voiceChannelSetting (
     constraint fk_voiceSetting_voiceChannel foreign key(voiceChannel_seq) references voiceChannel(seq)
 );
 
+SELECT * FROM v$session WHERE username = 'EDITOR';
+SELECT blocking_session, sid, serial#, wait_class, event FROM v$session WHERE blocking_session IS NOT NULL;
+
+
+CALL insert_default_settings('23');
+select * from team;
+select seqTheme.nextVal from dual;
+select * from member order by seq desc;
+select * from theme;
+select * from theme;
+    INSERT INTO theme (seq, theme, member_seq) VALUES (seqTheme.nextVal, 0, 1);
+select * from styleType;
+Call insert_default_settings(14);
+SHOW PROCESSLIST;
+
+
 CREATE OR REPLACE PROCEDURE insert_default_settings(p_member_seq NUMBER) AS
 BEGIN
 
@@ -359,5 +375,4 @@ INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'editor.fore
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'java.comment');
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'java.keyword');
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'java.String');
-
 
