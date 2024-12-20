@@ -3,7 +3,7 @@ drop sequence seqMember;
 drop sequence seqTeam;
 drop sequence seqProject;
 drop sequence seqMemberTeam;
-drop sequence seqTseamProject;
+drop sequence seqTeamProject;
 drop sequence seqCalendar;
 drop sequence seqChatbot;
 drop sequence seqTheme;
@@ -95,11 +95,13 @@ CREATE TABLE memberTeam (
 create sequence seqTeamProject;
 
 CREATE TABLE teamProject (
-	seq	number	primary key,
-	team_seq	number	NOT NULL,
-	project_seq	number	NOT NULL,
+	seq number PRIMARY KEY, 
+	team_seq number NOT NULL,
+    project_seq number NOT NULL, 
+    constraint fk_teamProject_team foreign key(team_seq) references team(seq),
     constraint fk_teamProject_project foreign key(project_seq) references project(seq)
 );
+
 
 create sequence seqCalendar;
 
@@ -204,7 +206,6 @@ CREATE TABLE versionFile (
     constraint fk_versionFile_parent foreign key(parent_seq) references versionFile(seq)
 );
 
-
 create sequence seqBasicFile;
 
 CREATE TABLE basicFile (
@@ -276,22 +277,6 @@ CREATE TABLE voiceChannelSetting (
     constraint fk_voiceSetting_voiceChannel foreign key(voiceChannel_seq) references voiceChannel(seq)
 );
 
-SELECT * FROM v$session WHERE username = 'EDITOR';
-SELECT blocking_session, sid, serial#, wait_class, event FROM v$session WHERE blocking_session IS NOT NULL;
-
-
-CALL insert_default_settings('23');
-select * from team;
-select seqTheme.nextVal from dual;
-select * from member order by seq desc;
-select * from theme;
-select * from theme;
-    INSERT INTO theme (seq, theme, member_seq) VALUES (seqTheme.nextVal, 0, 1);
-select * from styleType;
-Call insert_default_settings(14);
-SHOW PROCESSLIST;
-
-
 CREATE OR REPLACE PROCEDURE insert_default_settings(p_member_seq NUMBER) AS
 BEGIN
 
@@ -358,7 +343,6 @@ insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Interface');
 insert into fileType (seq, fileType) values (seqFileType.nextVal, 'TextFile');
 insert into fileType (seq, fileType) values (seqFileType.nextVal, 'File');
 
-
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'TestProject', null, 1, null);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'src', null, 2, 1);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'com.test.main', null, 3, 2);
@@ -366,7 +350,6 @@ INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBas
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'Inter.java', UTL_RAW.CAST_TO_RAW('public interface Inter {\n\n}'), 5, 3);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'txt.file', null, 6, 3);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'file', null, 7, 3);
-
 
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'fontSize');
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'fontFamily');
@@ -376,3 +359,4 @@ INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'java.commen
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'java.keyword');
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'java.String');
 
+commit;
