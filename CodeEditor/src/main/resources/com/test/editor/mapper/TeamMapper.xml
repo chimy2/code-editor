@@ -14,4 +14,11 @@
 			values (#{seq}, #{teamName}, #{teamEx}, #{teamType}, default)
 	</insert>
 	
+	<select id="get" resultType="team">
+		select * from team where seq = #{seq} for update
+	</select>
+	
+	<select id="getList" resultType="team"> 
+		select * from team
+	</select>
 </mapper>

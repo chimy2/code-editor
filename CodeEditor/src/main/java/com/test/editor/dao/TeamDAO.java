@@ -1,5 +1,7 @@
 package com.test.editor.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +16,17 @@ public class TeamDAO {
 	
 	public int insert(TeamDTO team) {
 		return mapper.insert(team);
+	}
+	
+	public TeamDTO get(String seq) {
+		return mapper.get(seq);
+	}
+	
+	public TeamDTO get(int seq) {
+		return mapper.get(String.valueOf(seq));
+	}
+
+	public List<TeamDTO> getList() {
+		return mapper.getList();
 	}
 }
