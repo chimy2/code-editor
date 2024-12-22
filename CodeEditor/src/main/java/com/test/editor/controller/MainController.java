@@ -59,9 +59,9 @@ public class MainController {
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/mypage")
 	public String mypage(HttpSession session,Model model, Authentication authentication) {
-		System.out.println(session.getAttribute("member"));
-		System.out.println("여기 확인:>>>>>>>>>>>>>>>>>>"+authentication.toString());
-		System.out.println(((CustomUser)authentication.getPrincipal()).getMember());
+//		System.out.println(session.getAttribute("member"));
+//		System.out.println("여기 확인:>>>>>>>>>>>>>>>>>>"+authentication.toString());
+//		System.out.println(((CustomUser)authentication.getPrincipal()).getMember());
 		
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		

@@ -29,21 +29,21 @@
 			<div class="inner_box_content">
 				<c:forEach var="team" items="${dto[0].teamList}" varStatus="status">
 					 <c:if test="${status.index == 0}"> 
-				        <div class="teamBox_icon" id="userBox" onclick="getSelProject('${team.teamSeq}')">
+				        <div class="teamBox_icon" id="userBox" onclick="getSelProject('${team.seq}')">
 				            <div>
 				                <img class="user_icon" src="/editor/resources/image/icon/user.svg">
 				            </div>
 				            ${dto[0].nick}
-				            <input type="hidden" id="teamSeq" value="${team.teamSeq}">
+				            <input type="hidden" id="teamSeq" value="${team.seq}">
 				        </div>
 				    </c:if>
  					<c:if test="${status.index > 0}"> 
-					    <div class="teamBox_icon" id="teamBox" onclick="getSelProject('${team.teamSeq}')">
+					    <div class="teamBox_icon" id="teamBox" onclick="getSelProject('${team.seq}')">
 					        <div>
 					            <img class="team_icon" src="/editor/resources/image/icon/team.svg">
 					        </div>
 					        ${team.teamName}
-							<input type="hidden" id="teamSeq" value="${team.teamSeq}">
+							<input type="hidden" id="teamSeq" value="${team.seq}">
 					    </div>
 				    </c:if>
 				</c:forEach>

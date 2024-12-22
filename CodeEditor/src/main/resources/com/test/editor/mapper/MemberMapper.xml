@@ -26,7 +26,7 @@
 	</resultMap>
 	
 	<resultMap type="team" id="team">
-		<result property="teamSeq"	column="teamSeq" />
+		<result property="seq"	column="teamSeq" />
 		<result property="teamName"	column="teamName" />
 		<result property="teamEx" 	column="teamEx" />
 		<result property="teamType"	column="teamType" />
