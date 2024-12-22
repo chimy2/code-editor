@@ -24,6 +24,10 @@ public class VersionFileDAO {
     @Autowired
     private VersionFileMapper versionFileMapper;
 
+	public int insertBasicFiles() {
+		return 0;
+	}
+	
     /**
      * 주어진 ID(seq)에 해당하는 버전 파일 정보를 조회합니다.
      * 

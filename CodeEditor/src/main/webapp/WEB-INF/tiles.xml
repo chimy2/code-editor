@@ -98,9 +98,8 @@
 		<put-attribute name="console" value="/WEB-INF/views/page/editor/console.jsp"></put-attribute>
 		
 		<put-attribute name="settings" value="/WEB-INF/views/page/editor/settings.jsp"></put-attribute>
-		<put-attribute name="right_side" value="/WEB-INF/views/layout/right_side.jsp"></put-attribute>
-		<put-attribute name="chat_main" value="/WEB-INF/views/page/chat/chat_main.jsp"></put-attribute>
 		
+		<put-attribute name="chat_main" value="/WEB-INF/views/page/chat/chat_main.jsp"></put-attribute>
 		<put-attribute name="editor_bot" value="/WEB-INF/views/page/bot/bot_editor.jsp"></put-attribute>
 		
 		<put-list-attribute name="popups">

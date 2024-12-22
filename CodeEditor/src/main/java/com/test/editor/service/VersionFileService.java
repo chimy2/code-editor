@@ -22,8 +22,12 @@ public class VersionFileService {
      * Autowired: Spring 컨테이너에서 VersionFileDAO 객체를 자동으로 주입받아 사용합니다.
      */
     @Autowired
-    private VersionFileDAO versionFileDAO;
+    private VersionFileDAO dao;
 
+    public int insertBasicFiles() {
+    	return dao.insertBasicFiles();
+    }
+    
     /**
      * 주어진 ID(seq)에 해당하는 버전 파일 정보를 조회합니다.
      * 
@@ -31,7 +35,7 @@ public class VersionFileService {
      * @return VersionFileDTO - 조회된 버전 파일 정보
      */
     public VersionFileDTO getVersionFileById(Integer seq) {
-        return versionFileDAO.getVersionFileById(seq);
+        return dao.getVersionFileById(seq);
     }
 
     /**
@@ -40,7 +44,7 @@ public class VersionFileService {
      * @return 모든 버전 파일 목록
      */
     public List<VersionFileDTO> getAllVersionFiles() {
-        return versionFileDAO.getAllVersionFiles();
+        return dao.getAllVersionFiles();
     }
 
     /**
@@ -49,7 +53,7 @@ public class VersionFileService {
      * @param versionFile 추가할 버전 파일 정보
      */
     public void insertVersionFile(VersionFileDTO versionFile) {
-        versionFileDAO.insertVersionFile(versionFile);
+        dao.insertVersionFile(versionFile);
     }
 
     /**
@@ -59,6 +63,6 @@ public class VersionFileService {
      * @param versionFile 저장할 버전 파일 정보
      */
     public void saveVersionFile(VersionFileDTO versionFile) {
-        versionFileDAO.insertVersionFile(versionFile);
+        dao.insertVersionFile(versionFile);
     }
 }

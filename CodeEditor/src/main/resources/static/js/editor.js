@@ -5,7 +5,7 @@ let socket;
 const editorInstances = {};
 let isServerChange = false;
 
-const exapleCode = {
+const exampleCode = {
     class: 'public class HelloWorld {\n\n    public static void main(String[] args) {\n\n        System.out.println("Hello World!");\n\n    }\n\n}',
     interface: 'public interface Hello {\n\n    void sayHello();\n\n}',
     text: 'Hello, world!',
@@ -1971,8 +1971,6 @@ function executeCode() {
     });
 }
 
-
-
 function adjustEditorTabPosition() {
     const explorer = document.querySelector('.explorer_sidetab');
     const editorTab = document.querySelector('.editor-tab');
@@ -1986,10 +1984,3 @@ window.addEventListener('resize', adjustEditorTabPosition);
 
 // 페이지 로드 시 초기 조정
 adjustEditorTabPosition();
-
-
-
-
-
-
-

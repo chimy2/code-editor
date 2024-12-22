@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.test.editor.model.VersionFileDTO;
 import com.test.editor.model.VersionInfoDTO;
 import com.test.editor.service.VersionFileService;
-import com.test.editor.service.VersionService;
+import com.test.editor.service.VersionInfoService;
 
 /**
  * VersionFileController는 버전 파일과 관련된 HTTP 요청을 처리하는 컨트롤러 클래스입니다.
@@ -35,7 +35,7 @@ public class VersionFileController {
      * @Autowired: Spring 컨테이너에서 VersionService 객체를 자동으로 주입합니다.
      */
     @Autowired
-    private VersionService versionService;
+    private VersionInfoService versionService;
 
     /**
      * 버전 파일 생성 요청을 처리합니다.

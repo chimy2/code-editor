@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.test.editor.service.VersionService;
+import com.test.editor.service.VersionInfoService;
 
 /**
  * VersionController는 버전 관리와 관련된 HTTP 요청을 처리하는 컨트롤러 클래스입니다.
@@ -23,7 +23,7 @@ public class VersionController {
      * Autowired 애노테이션을 사용하여 Spring 컨테이너에서 자동으로 주입됩니다.
      */
     @Autowired
-    private VersionService versionService;
+    private VersionInfoService versionService;
 
     /**
      * /restoreVersion 경로로 들어오는 POST 요청을 처리합니다.
