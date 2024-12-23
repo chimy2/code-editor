@@ -27,10 +27,6 @@ public class ProjectDAO {
 		return mapper.get(seq);
 	}
 	
-	public ProjectDTO get(int seq) {
-		return get(String.valueOf(seq));
-	}
-	
 	public List<ProjectDTO> getList() {
 		return mapper.getList();
 	}

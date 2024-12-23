@@ -26,5 +26,13 @@ public class ProjectService {
 		dao.insertDefault(project);
 		return teamProjectService.insert(team, project);
 	}
+
+	public ProjectDTO get(int seq) {
+		return get(String.valueOf(seq));
+	}
+
+	private ProjectDTO get(String seq) {
+		return dao.get(seq);
+	}
 	
 }

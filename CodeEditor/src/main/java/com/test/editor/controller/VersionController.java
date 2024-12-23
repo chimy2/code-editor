@@ -39,11 +39,11 @@ public class VersionController {
         String versionDate = request.get("versionDate");
         
         // VersionService를 통해 지정된 버전 복원을 수행
-        boolean success = versionService.restoreVersion(versionDate);
+//        boolean success = versionService.restoreVersion(versionDate);
         
         // 결과를 담은 응답 맵 생성 및 반환
         Map<String, Object> response = new HashMap<>();
-        response.put("success", success);
+//        response.put("success", success);
         return response;
     }
 }

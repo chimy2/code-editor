@@ -13,26 +13,4 @@ import com.test.editor.model.VersionFileDTO;
 @Mapper
 public interface VersionFileMapper {
 
-    /**
-     * 주어진 ID(seq)에 해당하는 버전 파일 정보를 조회합니다.
-     * 
-     * @param seq 버전 파일의 고유 식별자
-     * @return VersionFileDTO - 조회된 버전 파일 정보
-     * 
-     */
-    VersionFileDTO getVersionFileById(@Param("seq") Integer seq);
-
-    /**
-     * 모든 버전 파일 정보를 조회합니다.
-     * 
-     * @return 데이터베이스에서 조회된 모든 버전 파일 목록
-     */
-    List<VersionFileDTO> getAllVersionFiles();
-
-    /**
-     * 새로운 버전 파일을 데이터베이스에 추가합니다.
-     * 
-     * @param versionFile 추가할 버전 파일 정보
-     */
-    void insertVersionFile(VersionFileDTO versionFile);
 }

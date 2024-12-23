@@ -37,4 +37,12 @@ public class MemberService {
 		
 		return 0;
 	}
+	
+	public MemberDTO get(String seq) {
+		return dao.get(seq);
+	}
+
+	public MemberDTO get(int seq) {
+		return get(String.valueOf(seq));
+	}
 }

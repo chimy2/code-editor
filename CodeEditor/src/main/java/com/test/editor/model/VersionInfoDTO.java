@@ -41,4 +41,9 @@ public class VersionInfoDTO {
      * 이 버전을 등록한 사용자를 참조합니다.
      */
     private Integer member_seq;
+
+	public VersionInfoDTO getDefault() {
+		this.message = "기본 버전입니다.";
+		return this;
+	}
 }
