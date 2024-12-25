@@ -7,10 +7,10 @@
 <mapper namespace="com.test.editor.mapper.VersionInfoMapper">
 	
 	<insert id="insert">
-		<selectKey keyProperty="seq" resultType="String" order="BEFORE">
+		<selectKey keyProperty="versionInfo.seq" resultType="String" order="BEFORE">
 			select seqVersionInfo.nextVal from dual
 		</selectKey>
 		insert into versionInfo (seq, regDate, message, member_seq, project_seq) 
-			values(#{seq}, default, #{versionInfo.message}, #{member.seq}, #{project.seq})
+			values(#{versionInfo.seq}, default, #{versionInfo.message}, #{member.seq}, #{project.seq})
 	</insert>
 </mapper>

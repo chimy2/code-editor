@@ -16,7 +16,7 @@ public class VersionInfoDTO {
     /**
      * 버전 정보의 고유 식별자.
      */
-    private Integer seq;
+    private String seq;
 
     /**
      * 버전이 등록된 날짜.
@@ -34,13 +34,13 @@ public class VersionInfoDTO {
      * 프로젝트의 고유 식별자.
      * 이 버전이 속한 프로젝트를 참조합니다.
      */
-    private Integer project_seq;
+    private String project_seq;
 
     /**
      * 멤버(사용자)의 고유 식별자.
      * 이 버전을 등록한 사용자를 참조합니다.
      */
-    private Integer member_seq;
+    private String member_seq;
 
 	public VersionInfoDTO getDefault() {
 		this.message = "기본 버전입니다.";

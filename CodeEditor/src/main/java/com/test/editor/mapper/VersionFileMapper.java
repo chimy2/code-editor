@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.test.editor.model.VersionFileDTO;
+import com.test.editor.model.VersionInfoDTO;
 
 /**
  * VersionFileMapper는 MyBatis를 사용하여 데이터베이스와 상호작용하는 매퍼 인터페이스입니다.
@@ -12,5 +13,7 @@ import com.test.editor.model.VersionFileDTO;
  */
 @Mapper
 public interface VersionFileMapper {
+
+	int insertBasicFiles(@Param("versionInfo") VersionInfoDTO versionInfo);
 
 }

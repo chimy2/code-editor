@@ -7,5 +7,7 @@
 <mapper namespace="com.test.editor.mapper.VersionFileMapper">
 	
 	<insert id="insertBasicFiles">
+		insert into versionFile (seq, versionInfo_seq, name, code, fileType_seq, parent_seq)
+			select seqVersionFile.nextVal, #{versionInfo.seq}, name, code, fileType_seq, parent_seq from basicFile
 	</insert>
 </mapper>
