@@ -27,7 +27,7 @@ public class TeamService {
 	public int insertDefault(MemberDTO member) {
 		TeamDTO team = new TeamDTO(member);
 		insert(member, team);
-		return projectService.insertDefault(team);
+		return projectService.insertDefault(member, team);
 	}
 	
 }
