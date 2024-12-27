@@ -1,8 +1,11 @@
 package com.test.editor.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.test.editor.mapper.VersionFileMapper;
+import com.test.editor.model.VersionFileDTO;
 import com.test.editor.model.VersionInfoDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -25,5 +28,9 @@ public class VersionFileDAO {
 
 	public int insertBasicFiles(VersionInfoDTO versionInfo) {
 		return mapper.insertBasicFiles(versionInfo);
+	}
+
+	public List<VersionFileDTO> getAllVersionFiles(String versionInfoSeq) {
+		return mapper.getAllVersionFiles(versionInfoSeq);
 	}
 }

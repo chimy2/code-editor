@@ -6,8 +6,25 @@
 
 <mapper namespace="com.test.editor.mapper.VersionFileMapper">
 	
+	
 	<insert id="insertBasicFiles">
 		insert into versionFile (seq, versionInfo_seq, name, code, fileType_seq, parent_seq)
 			select seqVersionFile.nextVal, #{versionInfo.seq}, name, code, fileType_seq, parent_seq from basicFile
 	</insert>
+	
+	<select id="getAllVersionFiles" resultMap="versionFileResultMap">
+		select * from versionFile where versionInfo_seq = #{seq}
+			start with parent_seq  is null
+			connect by prior seq = parent_seq
+			order by seq
+	</select>
+	
+	<resultMap type="com.test.editor.model.VersionFileDTO" id="versionFileResultMap">
+		<id property="seq" column="seq"/>
+		<result property="name" column="name"/>
+		<result property="code" column="code" jdbcType="BLOB" typeHandler="com.test.editor.handler.BlobToStringTypeHandler"/>
+	    <result property="versionInfoSeq" column="versionInfo_seq"/>
+	    <result property="fileTypeSeq" column="fileType_seq"/>
+	    <result property="parentSeq" column="parent_seq"/>
+	</resultMap>
 </mapper>

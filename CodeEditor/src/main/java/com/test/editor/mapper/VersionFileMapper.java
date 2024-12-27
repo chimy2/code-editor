@@ -16,4 +16,6 @@ public interface VersionFileMapper {
 
 	int insertBasicFiles(@Param("versionInfo") VersionInfoDTO versionInfo);
 
+	List<VersionFileDTO> getAllVersionFiles(String versionInfoSeq);
+
 }

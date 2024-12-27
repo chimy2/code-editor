@@ -1,7 +1,9 @@
 package com.test.editor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -16,11 +18,12 @@ import com.test.editor.dao.MemberDAO;
 import com.test.editor.mapper.EditorMapper;
 import com.test.editor.mapper.TeamMapper;
 import com.test.editor.model.MemberDTO;
-import com.test.editor.model.ProjectDTO;
 import com.test.editor.model.TeamDTO;
+import com.test.editor.model.VersionFileDTO;
 import com.test.editor.service.MemberService;
 import com.test.editor.service.ProjectService;
 import com.test.editor.service.TeamService;
+import com.test.editor.service.VersionFileService;
 import com.test.editor.service.VersionInfoService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -54,15 +57,16 @@ public class DBTest {
 
 	@Autowired
 	private VersionInfoService versionInfoService;
+	
+	@Autowired
+	private VersionFileService versionFileService;
 
 	@Test
-	public void testInsertVersionInfo() {
-		MemberDTO member = memberService.get(5);
-		ProjectDTO project = projectService.get(1);
+	public void testSelectVersionFiles() {
+		List<VersionFileDTO> files = versionFileService.getAllVersionFiles("6");
 
-		int result = versionInfoService.insertBasicVersion(member, project);
-
-		assertEquals(1, result);
+		System.out.println(files);
+		assertNotNull(files);
 	}
 
 	@Test
