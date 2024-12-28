@@ -27,4 +27,8 @@
 	    <result property="fileTypeSeq" column="fileType_seq"/>
 	    <result property="parentSeq" column="parent_seq"/>
 	</resultMap>
+	
+	<select id="getNextSeq">
+		select seqVersionFile.nextVal from dual
+	</select>
 </mapper>

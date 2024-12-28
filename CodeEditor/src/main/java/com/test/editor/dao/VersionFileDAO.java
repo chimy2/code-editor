@@ -33,4 +33,9 @@ public class VersionFileDAO {
 	public List<VersionFileDTO> getAllVersionFiles(String versionInfoSeq) {
 		return mapper.getAllVersionFiles(versionInfoSeq);
 	}
+
+	public int getNextSeq() {
+		return mapper.getNextSeq();
+	}
+	
 }

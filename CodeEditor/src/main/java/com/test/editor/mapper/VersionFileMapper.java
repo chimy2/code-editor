@@ -18,4 +18,6 @@ public interface VersionFileMapper {
 
 	List<VersionFileDTO> getAllVersionFiles(String versionInfoSeq);
 
+	int getNextSeq();
+
 }

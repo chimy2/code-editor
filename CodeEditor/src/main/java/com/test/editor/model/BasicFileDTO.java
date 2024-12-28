@@ -1,5 +1,6 @@
 package com.test.editor.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -11,6 +12,7 @@ import lombok.Data;
  *        - 기본 생성자 및 모든 필드를 포함하는 생성자
  */
 @Data
+@Builder
 public class BasicFileDTO {
 
     /**
@@ -32,12 +34,22 @@ public class BasicFileDTO {
      * 파일 유형의 고유 식별자.
      * fileType_seq는 파일 유형(예: class, interface, txt 등)을 나타내는 외래 키 역할을 합니다.
      */
-    private String fileType_seq;
+    private String fileTypeSeq;
 
     /**
      * 상위 파일의 고유 식별자.
      * parent_seq는 이 파일의 부모 파일(예: 디렉터리 또는 프로젝트)의 식별자를 나타냅니다.
      */
-    private String parent_seq;
+    private String parentSeq;
 
+    public VersionFileDTO toVersionFile(String versionInfoSeq) {
+    	int versionSeq = Integer.parseInt(versionInfoSeq);
+    	
+		return VersionFileDTO.builder()
+    			.name(this.name)
+    			.code(this.code)
+    			.fileTypeSeq(this.fileTypeSeq)
+    			.parentSeq(this.parentSeq == null ? null : versionSeq + this.parentSeq)
+    			.build();
+    }
 }
