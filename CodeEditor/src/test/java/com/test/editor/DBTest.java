@@ -58,17 +58,6 @@ public class DBTest {
 	@Autowired
 	private VersionInfoService versionInfoService;
 	
-	@Autowired
-	private VersionFileService versionFileService;
-
-	@Test
-	public void testSelectVersionFiles() {
-		List<VersionFileDTO> files = versionFileService.getAllVersionFiles("6");
-
-		System.out.println(files);
-		assertNotNull(files);
-	}
-
 	@Test
 	public void testJoin() {
 		MemberDTO member = new MemberDTO();

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.test.editor.dao.VersionFileDAO;
+import com.test.editor.model.BasicFileDTO;
 import com.test.editor.model.VersionFileDTO;
 import com.test.editor.model.VersionInfoDTO;
 
@@ -21,8 +22,13 @@ import lombok.RequiredArgsConstructor;
 public class VersionFileService {
 
     private final VersionFileDAO dao;
+    
+    private final BasicFileService basicFileService;
 
     public int insertBasicFiles(VersionInfoDTO versionInfo) {
+    	List<BasicFileDTO> basicFiles = basicFileService.getAllFiles();
+    	
+    	
     	return dao.insertBasicFiles(versionInfo);
     }
     

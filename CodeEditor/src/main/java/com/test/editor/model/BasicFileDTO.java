@@ -1,7 +1,9 @@
 package com.test.editor.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * BasicFileDTO는 파일의 기본 정보를 저장하고 전달하기 위한 데이터 전송 객체입니다.
@@ -12,6 +14,8 @@ import lombok.Data;
  *        - 기본 생성자 및 모든 필드를 포함하는 생성자
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class BasicFileDTO {
 
