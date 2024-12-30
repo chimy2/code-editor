@@ -46,29 +46,6 @@ public class DBTest {
 	@Autowired
 	private MemberDAO memberDAO;
 
-	@Autowired
-	private TeamMapper teamMapper;
-
-	@Autowired
-	private MemberService memberService;
-
-	@Autowired
-	private ProjectService projectService;
-
-	@Autowired
-	private VersionInfoService versionInfoService;
-	
-	@Test
-	public void testJoin() {
-		MemberDTO member = new MemberDTO();
-
-		member.setNick("nick2");
-		member.setId("id2");
-		member.setPw("1234");
-		member.setIng("1");
-
-		memberService.join(member);
-	}
 
 	@Test
 	public void test() {

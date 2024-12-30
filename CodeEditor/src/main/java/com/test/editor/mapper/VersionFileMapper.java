@@ -20,4 +20,8 @@ public interface VersionFileMapper {
 
 	int getNextSeq();
 
+	int insertList(List<VersionFileDTO> versionFiles);
+
+	int insert(VersionFileDTO file);
+
 }

@@ -46,14 +46,15 @@ public class BasicFileDTO {
      */
     private String parentSeq;
 
-    public VersionFileDTO toVersionFile(String versionInfoSeq) {
-    	int versionSeq = Integer.parseInt(versionInfoSeq);
+    public VersionFileDTO toVersionFile(VersionInfoDTO versionInfo, int versionInfoSeq) {
+    	String parentSeq = this.parentSeq == null ? null : String.valueOf(versionInfoSeq + Integer.parseInt(this.parentSeq));
     	
 		return VersionFileDTO.builder()
     			.name(this.name)
     			.code(this.code)
+    			.versionInfoSeq(versionInfo.getSeq())
     			.fileTypeSeq(this.fileTypeSeq)
-    			.parentSeq(this.parentSeq == null ? null : versionSeq + this.parentSeq)
+    			.parentSeq(parentSeq)
     			.build();
     }
 }

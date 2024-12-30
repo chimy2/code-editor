@@ -1,5 +1,6 @@
 package com.test.editor.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,10 +27,15 @@ public class VersionFileService {
     private final BasicFileService basicFileService;
 
     public int insertBasicFiles(VersionInfoDTO versionInfo) {
+    	int firstSeq = getNextSeq();
     	List<BasicFileDTO> basicFiles = basicFileService.getAllFiles();
+    	List<VersionFileDTO> versionFiles = new ArrayList<VersionFileDTO>();
     	
-    	
-    	return dao.insertBasicFiles(versionInfo);
+    	for(int i=0; i<basicFiles.size(); i++) {
+    		BasicFileDTO basicFile = basicFiles.get(i);
+    		versionFiles.add(basicFile.toVersionFile(versionInfo, firstSeq));
+    	}
+    	return dao.insertList(versionFiles);
     }
     
     public List<VersionFileDTO> getAllVersionFiles(String versionInfoSeq) {

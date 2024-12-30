@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import com.test.editor.mapper.VersionFileMapper;
 import com.test.editor.model.VersionFileDTO;
-import com.test.editor.model.VersionInfoDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,16 +25,28 @@ public class VersionFileDAO {
      */
     private final VersionFileMapper mapper;
 
-	public int insertBasicFiles(VersionInfoDTO versionInfo) {
-		return mapper.insertBasicFiles(versionInfo);
-	}
-
 	public List<VersionFileDTO> getAllVersionFiles(String versionInfoSeq) {
 		return mapper.getAllVersionFiles(versionInfoSeq);
 	}
 
 	public int getNextSeq() {
 		return mapper.getNextSeq();
+	}
+
+	public int insertList(List<VersionFileDTO> versionFiles) {
+		int count = 0;
+		
+		for (int i=0; i<versionFiles.size(); i++) {
+			insert(versionFiles.get(i));
+			count++;
+			
+		}
+		
+		return count == 7 ? 1 : 0;
+	}
+	
+	public int insert(VersionFileDTO verionFile) {
+		return mapper.insert(verionFile);
 	}
 	
 }
