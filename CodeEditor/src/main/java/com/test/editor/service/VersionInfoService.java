@@ -29,4 +29,9 @@ public class VersionInfoService {
     public int insert(MemberDTO member, ProjectDTO project, VersionInfoDTO versionInfo) {
     	return dao.insert(member, project, versionInfo);
     }
+    
+    public Integer getLastVersionSeq(String projectSeq) {
+    	return dao.getLastVersionSeq(projectSeq);
+    }
+    
 }

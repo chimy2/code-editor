@@ -13,4 +13,8 @@
 		insert into versionInfo (seq, regDate, message, member_seq, project_seq) 
 			values(#{versionInfo.seq}, default, #{versionInfo.message}, #{member.seq}, #{project.seq})
 	</insert>
+	
+	<select id="getLastVersionSeq" resultType="Integer">
+		select max(seq) from versionInfo where project_seq = #{seq} 
+	</select>
 </mapper>

@@ -18,6 +18,10 @@ public class VersionInfoDAO {
 	public int insert(MemberDTO member, ProjectDTO project, VersionInfoDTO versionInfo) {
 		return mapper.insert(member, project, versionInfo);
 	}
+
+	public Integer getLastVersionSeq(String projectSeq) {
+		return mapper.getLastVersionSeq(projectSeq);
+	}
 	
 	
 }

@@ -45,4 +45,8 @@ public class VersionFileService {
     public int getNextSeq() {
     	return dao.getNextSeq();
     }
+
+	public List<VersionFileDTO> getAllVersionFiles(int lastVersionSeq) {
+		return getAllVersionFiles(String.valueOf(lastVersionSeq));
+	}
 }

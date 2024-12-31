@@ -13,4 +13,6 @@ public interface VersionInfoMapper {
 	int insert(@Param("member") MemberDTO member, @Param("project") ProjectDTO project,
 			@Param("versionInfo") VersionInfoDTO versionInfo);
 
+	Integer getLastVersionSeq(String projectSeq);
+
 }
