@@ -48,7 +48,8 @@ public class ExplorerController {
 		projectFile.put("member_seq", member_seq);
 		projectFile.put("project_seq", project_seq);
 		
-		return dao.getProjectFile(projectFile);
+//		return dao.getProjectFile(projectFile);
+		return null;
 	}
 	
 	

@@ -45,4 +45,8 @@ public class MemberService {
 	public MemberDTO get(int seq) {
 		return get(String.valueOf(seq));
 	}
+	
+	public List<String> getAutoLoginIDs() {
+		return dao.getAutoLoginIDs();
+	}
 }

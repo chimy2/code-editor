@@ -27,7 +27,7 @@
 	
 		<!-- 로그인 한 후 -->
 		<sec:authorize access="isAuthenticated()">
-			<tiles:insertAttribute name="left_side"/>
+			<tiles:insertAttribute name="explorer"/>
 		</sec:authorize>
 		<tiles:insertAttribute name="content"/>
 		

@@ -110,7 +110,9 @@
 	        },
 	        error: function(xhr, status, error) {
 	            console.error("Error loading chat history:", error);
+	            /* 
 	            alert("An error occurred while loading chat history: " + error);
+	             */
 	        }
 	    });
 	}

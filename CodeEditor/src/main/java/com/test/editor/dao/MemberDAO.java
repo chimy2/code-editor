@@ -138,6 +138,10 @@ public class MemberDAO  {
 		return mapper.getSelProject(selTeam);
 	}
 
+	public List<String> getAutoLoginIDs() {
+		return mapper.getAutoLoginIDs();
+	}
+
 
 
 

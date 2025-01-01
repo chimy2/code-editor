@@ -38,6 +38,19 @@
 </form>
 
 <div id="login_test">
+	<c:forEach items="${autoLoginIDs}" var="id">
+		<form method="POST" action="/editor/login">
+			<div class="login_header_box" 
+				style="color: white; border: 1px solid white; margin: 20px; width: 400px; height: 20px;">
+				<input type="hidden" name="username" value="${id}"> <input
+					type="hidden" name="password" value="1234">
+				<button style="color: white;" type="submit">자동 로그인:
+					${id}</button>
+				<input type="hidden" name="${_csrf.parameterName }"
+					value="${_csrf.token }">
+			</div>
+		</form>
+	</c:forEach>
 	<c:forEach items="${username}" var="user">
 		<form method="POST" action="/editor/login">
 			<div class="login_header_box" 

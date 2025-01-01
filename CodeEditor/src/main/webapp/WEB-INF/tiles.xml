@@ -93,7 +93,7 @@
 		<put-attribute name="main_header" value="/WEB-INF/views/inc/header_mypage.jsp"></put-attribute>
 		<put-attribute name="editor_header" value="/WEB-INF/views/inc/header_editor.jsp"></put-attribute>
 		
-		<put-attribute name="left_side" value="/WEB-INF/views/page/editor/explorer.jsp"></put-attribute>
+		<put-attribute name="explorer" value="/WEB-INF/views/page/editor/explorer.jsp"></put-attribute>
 		<put-attribute name="content" value="/WEB-INF/views/page/editor/editor.jsp"></put-attribute>
 		<put-attribute name="console" value="/WEB-INF/views/page/editor/console.jsp"></put-attribute>
 		
@@ -108,5 +108,7 @@
 			<add-attribute value="/WEB-INF/views/page/editor/version.jsp" />
 			<add-attribute value="/WEB-INF/views/page/editor/settings.jsp" />
 		</put-list-attribute>
+		
 	</definition>
+	
 </tiles-definitions>

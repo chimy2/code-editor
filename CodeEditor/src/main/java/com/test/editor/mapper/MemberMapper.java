@@ -39,4 +39,6 @@ public interface MemberMapper {
 
 	MemberDTO get(String seq);
 
+	List<String> getAutoLoginIDs();
+
 }

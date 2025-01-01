@@ -23,6 +23,17 @@ public class MemberServiceTest {
 	private PasswordEncoder passwordEncoder;
 	
 	@Test
+	public void testCreateAutoLoginUser() {
+		int result = 0;
+		
+		result += memberService.join(getTestMember());
+		result += memberService.join(getTestMember2());
+		result += memberService.join(getTestMember3());
+		
+		assertEquals(3, result);
+	}
+	
+	@Test
 	public void testJoin() {
 		MemberDTO member = getTestMember();
 		

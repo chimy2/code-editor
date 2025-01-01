@@ -93,7 +93,7 @@
 	    CALL insert_default_settings(#{member_seq, jdbcType=VARCHAR})
 	</insert>
 		
-	<!-- 자동 로그인 -->
+	<!-- 이전버전 자동 로그인 -->
 	<select id="username" resultType="member">
 		select id from member where seq = 21 or seq = 22
 	</select>
@@ -123,6 +123,10 @@
 	
 	<select id="get" resultType="member" >
 		select * from member where seq = #{seq}
+	</select>
+	
+	<select id="getAutoLoginIDs" resultType="String">
+		select id from member where regexp_like(id, '^test[23]?@test.com$')
 	</select>
 
 </mapper>

@@ -3,27 +3,29 @@ package com.test.editor.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
-import com.test.editor.service.VersionInfoService;
+import com.test.editor.service.VersionService;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * VersionController는 버전 관리와 관련된 HTTP 요청을 처리하는 컨트롤러 클래스입니다.
  * Spring의 Controller 애노테이션을 사용하여 스프링 컨테이너에 등록됩니다.
  */
-@Controller
+@RestController
+@RequiredArgsConstructor
 public class VersionController {
 
     /**
      * VersionService는 버전 복원과 관련된 비즈니스 로직을 처리하는 서비스 클래스입니다.
-     * Autowired 애노테이션을 사용하여 Spring 컨테이너에서 자동으로 주입됩니다.
      */
-    @Autowired
-    private VersionInfoService versionService;
+    private final VersionService versionService;
+    
+    
 
     /**
      * /restoreVersion 경로로 들어오는 POST 요청을 처리합니다.

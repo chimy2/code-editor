@@ -30,9 +30,9 @@ public class ExplorerDAO {
 	 * @param projectFile 프로젝트와 관련된 파일 정보가 담긴 맵 (member_seq 및 project_seq)
 	 * @return 객체 리스트
 	 */
-	public List<ProjectFile> getProjectFile(Map<String, String> projectFile) {
-		return mapper.getProjectFile(projectFile);
-	}
+//	public List<ProjectFile> getProjectFile(Map<String, String> projectFile) {
+//		return mapper.getProjectFile(projectFile);
+//	}
  
 
 }

@@ -1,6 +1,8 @@
 package com.test.editor.service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,13 @@ public class VersionService {
 			return null;
 		}
 		return versionFileService.getAllVersionFiles(lastVersionSeq); 
+	}
+	
+	public Map<String, List<VersionFileDTO>> groupByParentSeq(List<VersionFileDTO> files) {
+
+        Map<String, List<VersionFileDTO>> fileMap = files.stream()
+            .collect(Collectors.groupingBy(file -> file.getParentSeq() == null ? "0" : file.getParentSeq()));
+
+        return fileMap;
 	}
 }

@@ -1,8 +1,6 @@
 package com.test.editor.controller;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,13 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.test.editor.dao.MemberDAO;
-import com.test.editor.model.CustomUser;
 import com.test.editor.model.MemberDTO;
-import com.test.editor.model.MemberProject;
+import com.test.editor.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,6 +32,8 @@ public class MainController {
 	 * 
 	 */
 	private final MemberDAO dao;
+	
+	private final MemberService service;
 	
 	
 	/**
@@ -85,7 +82,10 @@ public class MainController {
 	@GetMapping("/login")
 	public String login(Model model) {
 		List<MemberDTO> username = dao.username();
+		List<String> autoLoginIDs = service.getAutoLoginIDs();
+		
 		model.addAttribute("username", username);
+		model.addAttribute("autoLoginIDs", autoLoginIDs);
 		return "login";
 	}
 	
