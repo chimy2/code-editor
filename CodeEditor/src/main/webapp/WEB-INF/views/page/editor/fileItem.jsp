@@ -5,13 +5,37 @@
 
 <c:set var="seq" value="${file.seq}" />
 <c:set var="name" value="${file.name}" />
-<c:set var="type" value="${file.fileTypeSeq}" />
+<c:set var="typeSeq" value="${file.fileTypeSeq}" />
 
 <c:choose>
-	<c:when test="${type == 1}">
-		<div class="project">
+	<c:when test="${typeSeq == 1}">
+		<c:set var="type" value="project" />
+	</c:when>
+	<c:when test="${typeSeq == 2}">
+		<c:set var="type" value="src" />
+	</c:when>
+	<c:when test="${typeSeq == 3}">
+		<c:set var="type" value="package" />
+	</c:when>
+	<c:when test="${typeSeq == 4}">
+		<c:set var="type" value="class" />
+	</c:when>
+	<c:when test="${typeSeq == 5}">
+		<c:set var="type" value="interface" />
+	</c:when>
+	<c:when test="${typeSeq == 6}">
+		<c:set var="type" value="txt-file" />
+	</c:when>
+	<c:when test="${typeSeq == 7}">
+		<c:set var="type" value="file" />
+	</c:when>
+</c:choose>
+
+<c:choose>
+	<c:when test="${typeSeq <= 3}">
+		<div class="${type}">
 			<button>
-				<img src="/editor/resources/image/icon/project.svg" /> <span
+				<img src="/editor/resources/image/icon/${type}.svg" /> <span
 					class="white-text">${name}</span>
 			</button>
 			<c:forEach var="file" items="${fileMap[seq]}">
@@ -20,64 +44,13 @@
 			</c:forEach>
 		</div>
 	</c:when>
-	<c:when test="${type == 2}">
-		<div class="src">
-			<button>
-				<img src="/editor/resources/image/icon/src.svg" /> <span
-					class="white-text">${name}</span>
-			</button>
-			<c:forEach var="file" items="${fileMap[seq]}">
-				<c:set var="file" value="${file}" scope="request" />
-				<jsp:include page="/WEB-INF/views/page/editor/fileItem.jsp" />
-			</c:forEach>
-		</div>
-	</c:when>
-	<c:when test="${type == 3}">
-		<div class="package">
-			<button>
-				<img src="/editor/resources/image/icon/package.svg" /> <span
-					class="white-text">${name}</span>
-			</button>
-			<c:forEach var="file" items="${fileMap[seq]}">
-				<c:set var="file" value="${file}" scope="request" />
-				<jsp:include page="/WEB-INF/views/page/editor/fileItem.jsp" />
-			</c:forEach>
-		</div>
-	</c:when>
-	<c:when test="${type == 4}">
-		<div class="class">
-			<button class="btn_open_editor" data-file-type="class"
+	<c:otherwise>
+		<div class="${type}">
+			<button class="btn_open_editor" data-file-type="${type}"
 				data-file-name="${name}">
-				<img src="/editor/resources/image/icon/class.svg" /> <span
+				<img src="/editor/resources/image/icon/${type}.svg" /> <span
 					class="white-text">${name}</span>
 			</button>
 		</div>
-	</c:when>
-	<c:when test="${type == 5}">
-		<div class="interface">
-			<button class="btn_open_editor" data-file-type="interface"
-				data-file-name="${name}">
-				<img src="/editor/resources/image/icon/interface.svg" /> <span
-					class="white-text">${name}</span>
-			</button>
-		</div>
-	</c:when>
-	<c:when test="${type == 6}">
-		<div class="txt-file">
-			<button class="btn_open_editor" data-file-type="txt"
-				data-file-name="${name}">
-				<img src="/editor/resources/image/icon/txt.svg" /> <span
-					class="white-text">${name}</span>
-			</button>
-		</div>
-	</c:when>
-	<c:when test="${type == 7}">
-		<div class="file">
-			<button class="btn_open_editor" data-file-type="file"
-				data-file-name="${name}">
-				<img src="/editor/resources/image/icon/file.svg" /> <span
-					class="white-text">${name}</span>
-			</button>
-		</div>
-	</c:when>
+	</c:otherwise>
 </c:choose>
