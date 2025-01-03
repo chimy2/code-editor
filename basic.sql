@@ -335,20 +335,20 @@ BEGIN
 END switchTheme;
 /
 
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Project');
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Folder');
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Package');
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Class');
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Interface');
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'TextFile');
-insert into fileType (seq, fileType) values (seqFileType.nextVal, 'File');
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Project');   -- 1
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Folder');    -- 2
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Package');   -- 3
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Class');     -- 4
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'Interface'); -- 5
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'TextFile');  -- 6
+insert into fileType (seq, fileType) values (seqFileType.nextVal, 'File');      -- 7
 
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'TestProject', null, 1, null);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'src', null, 2, 1);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'com.test.main', null, 3, 2);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'Test.java', UTL_RAW.CAST_TO_RAW('public class Test {\n    public static void main(String[] args) {\n        System.out.println("test");\n    }\n}'), 4, 3);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'Inter.java', UTL_RAW.CAST_TO_RAW('public interface Inter {\n\n}'), 5, 3);
-INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'txt.file', null, 6, 3);
+INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'file.txt', null, 6, 3);
 INSERT INTO basicFile (seq, name, code, fileType_seq, parent_seq) VALUES (seqBasicFile.nextVal, 'file', null, 7, 3);
 
 INSERT INTO styleType (seq, category) VALUES (seqStyleType.nextVal, 'fontSize');
