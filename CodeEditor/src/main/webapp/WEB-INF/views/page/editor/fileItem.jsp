@@ -46,8 +46,8 @@
 	</c:when>
 	<c:otherwise>
 		<div class="${type}">
-			<button class="btn_open_editor" data-file-type="${type}"
-				data-file-name="${name}">
+			<button class="btn_open_editor" data-file-seq="${seq}"
+				data-file-type="${type}" data-file-name="${name}">
 				<img src="/editor/resources/image/icon/${type}.svg" /> <span
 					class="white-text">${name}</span>
 			</button>

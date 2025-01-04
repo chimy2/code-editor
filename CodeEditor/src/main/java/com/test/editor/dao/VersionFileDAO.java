@@ -48,5 +48,9 @@ public class VersionFileDAO {
 	public int insert(VersionFileDTO verionFile) {
 		return mapper.insert(verionFile);
 	}
+
 	
+	public VersionFileDTO get(String seq) {
+		return mapper.get(seq);
+	}
 }

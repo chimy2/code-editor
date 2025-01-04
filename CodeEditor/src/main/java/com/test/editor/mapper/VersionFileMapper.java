@@ -24,4 +24,6 @@ public interface VersionFileMapper {
 
 	int insert(VersionFileDTO file);
 
+	VersionFileDTO get(String seq);
+
 }

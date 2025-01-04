@@ -31,4 +31,8 @@
 			values (seqVersionFile.nextVal, #{name}, #{code, jdbcType=BLOB, typeHandler=com.test.editor.handler.BlobToStringTypeHandler}, 
 	               #{versionInfoSeq}, #{fileTypeSeq}, #{parentSeq, jdbcType=INTEGER})
 	</insert>
+	
+	<select id="get" resultMap="versionFileResultMap">
+		select * from versionFile where seq = #{seq}
+	</select>
 </mapper>

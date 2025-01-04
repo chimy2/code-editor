@@ -142,6 +142,7 @@ let templates = [];
 
 $('.package-explorer').on('click', '.btn_open_editor', function () {
     // Configure Monaco path once
+    const fileSeq = $(this).data('file-seq');
     const fileName = $(this).find('span').text();
     const tabCount = $('.monaco-editor').length;
     const fileIcon = $(this).find('img').prop('outerHTML');
@@ -180,14 +181,14 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             getColorData(themeData);
         });
 
-        getProjectFileData(function (projectFileData) {
-            const currentFileData = projectFileData.find(
-                (file) => file.name === fileName
-            );
+        getProjectFileData(fileSeq, function (projectFileData) {
+            const currentFileData = projectFileData.code;
             const fileType = fileName.endsWith('.java') ? 'java' : 'text/plain';
             const codeValue =
-                currentFileData && currentFileData.code
-                    ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
+                // currentFileData && currentFileData.code
+                currentFileData
+                    ? // ? currentFileData.code.replace(/\\n/g, '\n') // Replace escaped newlines
+                      currentFileData.replace(/\\n/g, '\n') // Replace escaped newlines
                     : fileType == 'java'
                     ? '// Start coding here...'
                     : 'Start here...';
@@ -350,9 +351,9 @@ $('.package-explorer').on('click', '.btn_open_editor', function () {
             });
         }
 
-        function getProjectFileData(callback) {
+        function getProjectFileData(seq, callback) {
             $.ajax({
-                url: '/editor/explorer',
+                url: '/editor/version-file/' + encodeURIComponent(seq),
                 method: 'GET',
                 dataType: 'json',
                 success: function (data) {
@@ -1271,77 +1272,6 @@ function deleteTemplate(template_seq) {
     });
 }
 
-function getProjectFile() {
-    $.ajax({
-        url: '/editor/explorer',
-        method: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            renderProjectStructure(data);
-        },
-        error: function (a, b, c) {
-            console.error(a, b, c);
-        },
-    });
-}
-
-function renderProjectStructure(data) {
-    let explorerContainer = document.getElementById('packageExplorer');
-    explorerContainer.innerHTML = '';
-
-    let folderDiv = document.createElement('div');
-    folderDiv.classList.add('folder');
-
-    let projectDiv = document.createElement('div');
-    projectDiv.classList.add('project');
-    projectDiv.innerHTML =
-        `
-        <button>
-            <img src="/editor/resources/image/icon/project.svg" />
-            <span class="white-text">` +
-        data[0].name +
-        `</span>
-        </button>
-    `;
-    folderDiv.appendChild(projectDiv);
-
-    let srcDiv = document.createElement('div');
-    srcDiv.classList.add('src');
-    srcDiv.innerHTML =
-        `
-        <button>
-            <img src="/editor/resources/image/icon/src.svg" />
-            <span class="white-text">` +
-        data[1].name +
-        `</span>
-        </button>
-    `;
-    folderDiv.appendChild(srcDiv);
-
-    if (data[2] != null) {
-        let packageDiv = document.createElement('div');
-        packageDiv.classList.add('package');
-        packageDiv.innerHTML =
-            `
-            <button>
-                <img src="/editor/resources/image/icon/package.svg" />
-                <span class="white-text">` +
-            data[2].name +
-            `</span>
-            </button>
-        `;
-        srcDiv.appendChild(packageDiv);
-
-        for (let i = 3; i < data.length; i++) {
-            let fileDiv = createFileItem(data[i]);
-            packageDiv.appendChild(fileDiv);
-        }
-    }
-
-    // 모든 항목을 packageExplorer에 추가
-    explorerContainer.appendChild(folderDiv);
-}
-
 function createFileItem(item) {
     let fileTypeClass = '';
     let fileTypeIcon = '';
@@ -1397,8 +1327,6 @@ function createFileItem(item) {
 
     return fileDiv;
 }
-
-window.onload = getProjectFile;
 
 document.addEventListener('DOMContentLoaded', function () {
     const versionItems = document.querySelectorAll(

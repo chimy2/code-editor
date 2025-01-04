@@ -49,4 +49,8 @@ public class VersionFileService {
 	public List<VersionFileDTO> getAllVersionFiles(int lastVersionSeq) {
 		return getAllVersionFiles(String.valueOf(lastVersionSeq));
 	}
+
+	public VersionFileDTO get(String seq) {
+		return dao.get(seq);
+	}
 }
