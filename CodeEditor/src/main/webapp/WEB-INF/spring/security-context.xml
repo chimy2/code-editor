@@ -26,7 +26,8 @@
 		<security:intercept-url pattern="/editor/code" access="permitAll"/>
 		<security:intercept-url pattern="/editor/login" access="permitAll"/> -->
 
-		<!-- <security:intercept-url pattern="/editor/mypage" access="hasRole(1)"/> --><!-- 로그인 대상자만 접근 -->
+		<!-- 로그인 대상자만 접근 -->
+		<security:intercept-url pattern="/mypage" access="isAuthenticated()"/>
 		<!-- 어노테이션으로 하는 방식 -->
 		<!-- BoardController에서 직접 + servlet-context.xml-->
 		

@@ -34,11 +34,8 @@ public class EditorController {
 		List<VersionFileDTO> files = versionService.getLastVersionFiles(projectSeq);
 		Map<String, List<VersionFileDTO>> fileMap = versionService.groupByParentSeq(files);
 
-		System.out.println("projectSeq" + projectSeq);
 		session.setAttribute("project_seq", projectSeq); 
 		model.addAttribute("fileMap", fileMap);
-		
-		System.out.println(fileMap);
 		
 		return "editor";
 	}

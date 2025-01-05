@@ -75,9 +75,7 @@ public class CodeServer {
 
 			System.out.println("Received message: " + message);
 
-			if (message.getType().equals("cursor")) {
-
-			} else if (message.getType().equals("code")) {
+			if (message.getType().equals("code")) {
 				System.out.println("this is code");
 
 				// Broadcast the received message to all other sessions
@@ -88,6 +86,9 @@ public class CodeServer {
 						s.getBasicRemote().sendText(objectMapper.writeValueAsString(message));
 					}
 				}
+
+			} else if (message.getType().equals("cursor")) {
+				
 			}
 		} catch (IOException e) {
 			System.out.println("Error processing message: " + e.getMessage());
