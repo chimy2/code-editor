@@ -1,54 +1,83 @@
-# Code editor
-Web Java Code Editor Spring Project 입니다.
+# 🌟 Zenith
 
-### git 저장소 연결하기
+## 📌 프로젝트 개요
 
----
+**Zenith**는 Spring 기반의 **실시간 코드 편집기 웹 애플리케이션**으로, 주니어 개발자들이 개발 환경을 설정하지 않아도 **실시간 협업이 가능**하도록 설계되었습니다.
 
-#### 1. 원하는 디렉토리에 저장소 불러오기
-- git clone <원격 저장소 주소> .
-1. 원하는 디렉토리 경로로 git bash를 연다
-2. 원격 저장소 주소는 가져오고 싶은 github 저장소 메인 페이지를 열고 <> code 클릭 > url을 복사해서 가져온다
-3. 위 명령어를 입력하고 <원격 저장소 주소> 자리에 해당 주소를 붙여넣는다(마우스 우클릭 > 붙여넣기)
-- . : 현재 디렉토리에 원격 저장소 내용을 불러옴
+## 🎯 기획 의도 및 목표
 
-#### 2. elipse에서 해당 .git이 있는 디렉토리를 열고 프로젝트 불러오기
-1. Project Explorer 우클릭 > Import 클릭
-2. General > Existing Projects Into WorkSpace > Selected root directory > Browse > 해당 디렉토리 선택
-3. Select All로 모든 Projects 선택 > Finish
+-   개발 환경 설정 없이 **협업 코드 편집** 가능
+-   **실시간 코드 수정 및 실행** 지원
+-   **AI 챗봇 및 대화 통계 분석** 기능 제공
+-   **채팅 및 음성 채팅** 기능 포함
 
----
+## 📅 프로젝트 기간
 
-### 로컬 저장소에서 원격 저장소에 올리기
+-   **2024.10.22 \~ 2024.11.11**
 
----
+## 👨‍💻 개발 인원
 
-1. git add로 staging area에 올린다
-2. git commit으로 로컬 저장소에 저장한다(커밋 메세지 포함)
-3. git pull(원격 저장소에 자신의 저장내용을 올리기 전에 원격저장소에 있는 내용을 받아옴)
-4. git push(로컬저장소(자신의 컴퓨터)에 있는 내용을 저장함)
+-   **6명**
 
+## 🛠 개발 환경
 
-#### 1. 로컬  저장소의 내용을 추가 staging area에 올림
-- git add .
-- 이 때 git status로 본인이 올릴 파일 목록을 확인
-- staging area에 올라간 목록을 초기화하고 싶다면 git reset
+-   **운영체제**: Windows 11, Linux(Ubuntu)
+-   **서버**: Apache Tomcat, AWS EC2, Oracle
+-   **개발 툴**: STS 3, Visual Studio Code, SQL Developer
+-   **협업 툴**: GitHub, Notion, Discord, ERD Cloud, Draw\.io, Figma, Google Drive, MiriCanvas
 
+## 💻 사용 기술
 
-#### 2. 로컬 저장소에 저장할 소스를 진짜 저장한다
-- git commit -m "원하는 메세지"
-- 자신의 컴퓨터의 내용을 기록함
+-   **프로그래밍 언어**: Java 11, HTML, CSS, JavaScript (ES6), ANSI-SQL, PL/SQL
+-   **프레임워크 및 라이브러리**:
+    -   Spring, Maven, Spring Security, Lombok, HikariCP, MyBatis, Tiles, Jackson
+    -   jQuery, jQuery UI, Ajax, RESTful API
+    -   Monaco Editor, OpenAI API, FullCalendar Library
+-   **데이터베이스**: Oracle 11g EX
 
+## 🚀 주요 기능
 
-#### 3. 원격 저장소의 저장내용을 받아온다
-- git pull
-- conflict가 나면 해당 파일을 확인해서 꺽쇄 안에 내용을 비교해서 저장하고 로컬 저장소에 저장
+✅ **코드 편집 및 실시간 협업**
 
+-   다수의 사용자가 동시에 코드 편집 가능
+-   WebSocket을 활용한 실시간 동기화
+-   CRDT를 활용한 충돌 방지
 
-#### 4. 원격 저장소에 로컬 저장소의 내용을 저장한다
-- git push
+✅ **코드 컴파일 및 실행 결과 제공**
 
----
+-   코드 실행 결과를 실시간으로 확인 가능
+-   에러 감지 및 코드 분석 지원
 
-##### Git 참고 자료
-- https://training.github.com/downloads/ko/github-git-cheat-sheet/
+✅ **AI 챗봇 및 대화 통계 분석**
+
+-   OpenAI API를 활용한 AI 코드 도우미
+-   사용자의 코드 작성 패턴 분석 및 피드백 제공
+
+✅ **채팅 기능 지원**
+
+-   텍스트 채팅 및 음성 채팅 지원
+
+## 📌 구현 화면
+
+<table>
+  <tr>
+    <th>메인 페이지</th>
+    <th>마이 페이지</th>
+    <th>챗봇</th>
+  </tr>
+  <tr>
+    <td><img src="images/main.png" style="height:200px; object-fit:cover;"></td>
+    <td><img src="images/mypage.png" style="height:200px; object-fit:cover;"></td>
+    <td><img src="images/chatbot.png" style="width: 100%; height:200px; object-fit:cover;"></td>
+  </tr>
+  <tr>
+    <th>에디터</th>
+    <th>코드 실행</th>
+    <th>에디터 설정</th>
+  </tr>
+  <tr>
+    <td><img src="images/editor.png" style="height:200px; object-fit:cover;"></td>
+    <td><img src="images/editor_run.png" style="height:200px; object-fit:cover;"></td>
+    <td><img src="images/edtior_setting.png" style="width: 100%; height:200px; object-fit:cover;"></td>
+  </tr>
+</table>
