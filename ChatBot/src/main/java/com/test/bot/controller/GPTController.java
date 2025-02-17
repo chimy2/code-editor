@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,9 +41,17 @@ public class GPTController {
     @Autowired
     private ChatDAO dao;
 
-    private String model = "ft:gpt-4o-mini-2024-07-18:personal::AR8XWD7B"; 
-    private String apiKey = "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";
-    private String apiUrl = "https://api.openai.com/v1/chat/completions";
+    
+    //API키 노출 방지 > application.properties로 환경 변수 적용 완료 
+    @Value("${openai.api.key}")
+    private String apiKey;
+
+    @Value("${openai.api.url}")
+    private String apiUrl;
+
+    @Value("${openai.model}")
+    private String model;  
+    
     private final RestTemplate restTemplate;
     
     // 대화 내역을 저장할 리스트
