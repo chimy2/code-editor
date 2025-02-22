@@ -79,7 +79,7 @@ explorer_sidebar button {
     position: fixed;
     top: 60px;
     left: -4px; /* 사이드탭은 항상 화면 오른쪽 끝에 위치 */
-    width: 20px;
+    width: 24px;
     height: 100vh;
     background-color: #eaeaea;
     display: flex;
@@ -100,6 +100,7 @@ explorer_sidebar button {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-left: 5px;
 }
 
 /* 사이드바 확장된 상태 */
@@ -301,9 +302,11 @@ div.file {
 .editor-container {
     padding: 0;
     height: calc(100vh - 60px);
+    background-color: #EAEAEA;
 }
 .editor-container.active_console {
     height: calc(100vh - 360px);
+    margin-left: -5px;
 }
 
 .editor-container.ui-tabs-panel {
@@ -405,10 +408,12 @@ div.file {
     display: none;
     height: 300px;
     font-family: 'D2Coding';
+    margin-left: 10px;
 }
 
 .editor-container.active_console + .console-container {
     display: block;
+    margin-left: 20px;
 }
 
 .console-header {
@@ -1254,5 +1259,11 @@ div.file {
     height: 60px;
 }
 
+.open-modal {
+	display: none;
+}
 
+.ui-tabs .ui-tabs-nav .ui-tabs-ancho {
+	background: #C4C4C4;
+}
 
